@@ -1,0 +1,95 @@
+{
+  "common": {
+    "appName": "AI Tarot",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "getStarted": "Get Started",
+    "save": "Save Changes",
+    "back": "Back",
+    "continue": "Continue",
+    "loading": "Loading...",
+    "error": "Something went wrong"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "newReading": "New Reading",
+    "billing": "Billing",
+    "settings": "Settings"
+  },
+  "landing": {
+    "heroTitle": "Tarot Readings That Tell Your Story",
+    "heroSubtitle": "Not generic card meanings — a narrative woven from your entire spread. AI-powered readings with real conversational depth.",
+    "startFree": "Start Free Reading",
+    "learnMore": "Learn More",
+    "howItWorks": "How It Works",
+    "step1Title": "Choose Your Spread",
+    "step1Desc": "Single card for quick insight, three-card for past-present-future, or Celtic Cross for deep exploration.",
+    "step2Title": "Draw Your Cards",
+    "step2Desc": "Cards are shuffled using cryptographic randomness — verifiable, fair, and truly random.",
+    "step3Title": "Receive Your Story",
+    "step3Desc": "AI reads all cards together as one narrative. Ask follow-up questions to go deeper.",
+    "features": "What Makes Us Different",
+    "pricing": "Simple Pricing",
+    "pricingSubtitle": "Start free. Upgrade when you want deeper readings.",
+    "waitlistTitle": "Join the Waitlist",
+    "waitlistSubtitle": "Be the first to know when we launch.",
+    "waitlistSuccess": "You're on the list! We'll be in touch.",
+    "join": "Join"
+  },
+  "reading": {
+    "newReading": "New Reading",
+    "chooseSpread": "Choose your spread type",
+    "enterQuestion": "What would you like to explore? (optional)",
+    "drawCards": "Focus your energy and draw your cards",
+    "tapToReveal": "Tap each card to reveal it",
+    "revealAll": "Reveal all cards",
+    "getReading": "Get Your Reading",
+    "readingCards": "Reading the cards...",
+    "yourReading": "Your Reading",
+    "viewFull": "View Full Reading & Follow-up",
+    "followUp": "Ask Follow-up Questions",
+    "askFollowUp": "Ask a follow-up question...",
+    "ask": "Ask",
+    "remaining": "{remaining} of {limit} questions remaining",
+    "upgradeFollowUp": "Follow-up questions are available with Pro.",
+    "limitReached": "You've used all your follow-up questions for this reading.",
+    "reversed": "Reversed",
+    "upright": "Upright"
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {name}",
+    "subtitle": "Your readings are waiting for you.",
+    "newReading": "New Reading",
+    "newReadingDesc": "Draw cards and receive your narrative interpretation.",
+    "upgradePro": "Upgrade to Pro",
+    "upgradeDesc": "Unlimited readings, deeper interpretation, follow-up questions.",
+    "recentReadings": "Recent Readings",
+    "noReadings": "No readings yet. Start your first one!"
+  },
+  "billing": {
+    "title": "Billing",
+    "subtitle": "Manage your subscription and billing.",
+    "currentPlan": "Current Plan",
+    "activeSub": "Active subscription",
+    "manageBilling": "Manage Billing",
+    "free": "Free",
+    "pro": "Pro",
+    "premium": "Premium",
+    "upgrade": "Upgrade",
+    "mostPopular": "Most Popular",
+    "freeForever": "Free Forever"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your profile and preferences.",
+    "displayName": "Display Name",
+    "language": "Language",
+    "saved": "Saved!"
+  },
+  "footer": {
+    "disclaimer": "For entertainment purposes.",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  }
+}

@@ -1,0 +1,15 @@
+.tmp/
+.env
+credentials.json
+token.json
+__pycache__/
+*.pyc
+
+# Next.js
+app/node_modules/
+app/.next/
+app/.env.local
+app/.env*.local
+
+# SQLite database
+app/data/
