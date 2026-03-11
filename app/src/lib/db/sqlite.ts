@@ -5,11 +5,8 @@ let _initialized = false;
 
 export function getDb(): Client {
   if (!_client) {
-    const url = process.env.TURSO_DATABASE_URL || 'file:data/tarot.db';
-    console.log('[DB] Creating client with URL:', url.substring(0, 30) + '...');
-    console.log('[DB] Auth token present:', !!process.env.TURSO_AUTH_TOKEN);
     _client = createClient({
-      url,
+      url: process.env.TURSO_DATABASE_URL || 'file:data/tarot.db',
       authToken: process.env.TURSO_AUTH_TOKEN,
     });
   }
