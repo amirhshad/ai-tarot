@@ -130,7 +130,13 @@ function CelticPosition({
   return (
     <motion.div
       className="absolute flex flex-col items-center gap-1"
-      style={{ top, left, transform: rotate ? 'rotate(90deg)' : undefined }}
+      style={{
+        top,
+        left,
+        transform: rotate ? 'rotate(90deg)' : undefined,
+        zIndex: rotate && revealed ? 0 : rotate ? 2 : 1,
+        pointerEvents: rotate && revealed ? 'none' : 'auto',
+      }}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: idx * 0.1 }}
