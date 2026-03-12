@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TarotCard } from '@/lib/tarot/types';
 import CardBack from './CardBack';
 import CardFace from './CardFace';
@@ -24,6 +24,13 @@ export default function Card({
   className = '',
 }: CardProps) {
   const [flipped, setFlipped] = useState(isRevealed);
+
+  // Sync with parent state (e.g. "Reveal all" button)
+  useEffect(() => {
+    if (isRevealed && !flipped) {
+      setFlipped(true);
+    }
+  }, [isRevealed]);
 
   const handleClick = () => {
     if (!flipped) {

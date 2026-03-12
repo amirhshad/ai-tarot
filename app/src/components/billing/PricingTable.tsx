@@ -110,7 +110,7 @@ export default function PricingTable({
 
             <ul className="mt-6 space-y-3 flex-1">
               {features.map((feature, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-purple-200">
+                <li key={i} className="flex items-start gap-2 text-sm font-medium text-purple-100">
                   <span className="text-amber-400 mt-0.5">&#10003;</span>
                   {feature}
                 </li>

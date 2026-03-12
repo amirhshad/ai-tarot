@@ -35,7 +35,7 @@ export default function SpreadLayout({
 
   if (spreadType === 'three-card') {
     return (
-      <div className="flex justify-center gap-4 md:gap-8">
+      <div className="flex justify-center gap-3 md:gap-8 px-2">
         {cards.map((dc, i) => (
           <CardSlot
             key={i}
@@ -44,6 +44,7 @@ export default function SpreadLayout({
             revealed={revealedIndices.has(i)}
             onReveal={onRevealCard}
             language={language}
+            shrinkOnMobile
           />
         ))}
       </div>
@@ -75,18 +76,20 @@ function CardSlot({
   revealed,
   onReveal,
   language,
+  shrinkOnMobile = false,
 }: {
   drawnCard: DrawnCard;
   index: number;
   revealed: boolean;
   onReveal: (i: number) => void;
   language: 'en' | 'fa';
+  shrinkOnMobile?: boolean;
 }) {
   const posName = language === 'en' ? drawnCard.position.name : drawnCard.position.nameFA;
 
   return (
     <motion.div
-      className="flex flex-col items-center gap-2"
+      className={`flex flex-col items-center gap-2 ${shrinkOnMobile ? 'scale-[0.75] md:scale-100 origin-top' : ''}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.15 }}
