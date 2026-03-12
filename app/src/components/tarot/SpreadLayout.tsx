@@ -51,21 +51,56 @@ export default function SpreadLayout({
     );
   }
 
-  // Celtic Cross layout
+  // Celtic Cross layout — grid-based for proper spacing
+  // Cross (left):       [4-Crown]
+  //              [3-Past] [0+1] [5-Future]
+  //                    [2-Foundation]
+  // Staff (right): [9-Outcome] [8-Hopes] [7-Environment] [6-Self]
   return (
-    <div className="relative mx-auto" style={{ width: '600px', height: '520px' }}>
-      {/* Cross section */}
-      <CelticPosition dc={cards[0]} idx={0} top={180} left={180} revealed={revealedIndices.has(0)} onReveal={onRevealCard} language={language} />
-      <CelticPosition dc={cards[1]} idx={1} top={180} left={180} revealed={revealedIndices.has(1)} onReveal={onRevealCard} language={language} rotate />
-      <CelticPosition dc={cards[2]} idx={2} top={290} left={180} revealed={revealedIndices.has(2)} onReveal={onRevealCard} language={language} />
-      <CelticPosition dc={cards[3]} idx={3} top={180} left={50} revealed={revealedIndices.has(3)} onReveal={onRevealCard} language={language} />
-      <CelticPosition dc={cards[4]} idx={4} top={70} left={180} revealed={revealedIndices.has(4)} onReveal={onRevealCard} language={language} />
-      <CelticPosition dc={cards[5]} idx={5} top={180} left={310} revealed={revealedIndices.has(5)} onReveal={onRevealCard} language={language} />
-      {/* Staff section */}
-      <CelticPosition dc={cards[6]} idx={6} top={380} left={450} revealed={revealedIndices.has(6)} onReveal={onRevealCard} language={language} />
-      <CelticPosition dc={cards[7]} idx={7} top={270} left={450} revealed={revealedIndices.has(7)} onReveal={onRevealCard} language={language} />
-      <CelticPosition dc={cards[8]} idx={8} top={160} left={450} revealed={revealedIndices.has(8)} onReveal={onRevealCard} language={language} />
-      <CelticPosition dc={cards[9]} idx={9} top={50} left={450} revealed={revealedIndices.has(9)} onReveal={onRevealCard} language={language} />
+    <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-10 lg:gap-16 px-4">
+      {/* ── Cross Section ── */}
+      <div className="grid grid-cols-3 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-4 place-items-center">
+        {/* Row 1: Crown (top center) */}
+        <div className="col-start-2">
+          <CelticCard dc={cards[4]} idx={4} revealed={revealedIndices.has(4)} onReveal={onRevealCard} language={language} />
+        </div>
+
+        {/* Row 2: Past | Present+Crossing | Future */}
+        <div>
+          <CelticCard dc={cards[3]} idx={3} revealed={revealedIndices.has(3)} onReveal={onRevealCard} language={language} />
+        </div>
+        <div className="relative">
+          {/* Present card (below) */}
+          <CelticCard dc={cards[0]} idx={0} revealed={revealedIndices.has(0)} onReveal={onRevealCard} language={language} />
+          {/* Crossing card (on top, rotated) */}
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            style={{
+              zIndex: revealedIndices.has(1) ? 0 : 2,
+              pointerEvents: revealedIndices.has(1) ? 'none' : 'auto',
+            }}
+          >
+            <div className="rotate-90">
+              <CelticCard dc={cards[1]} idx={1} revealed={revealedIndices.has(1)} onReveal={onRevealCard} language={language} hideLabel />
+            </div>
+          </div>
+        </div>
+        <div>
+          <CelticCard dc={cards[5]} idx={5} revealed={revealedIndices.has(5)} onReveal={onRevealCard} language={language} />
+        </div>
+
+        {/* Row 3: Foundation (bottom center) */}
+        <div className="col-start-2">
+          <CelticCard dc={cards[2]} idx={2} revealed={revealedIndices.has(2)} onReveal={onRevealCard} language={language} />
+        </div>
+      </div>
+
+      {/* ── Staff Section (vertical column, bottom to top) ── */}
+      <div className="flex flex-row lg:flex-col-reverse gap-3 md:gap-4">
+        {[6, 7, 8, 9].map((i) => (
+          <CelticCard key={i} dc={cards[i]} idx={i} revealed={revealedIndices.has(i)} onReveal={onRevealCard} language={language} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -106,40 +141,29 @@ function CardSlot({
   );
 }
 
-function CelticPosition({
+function CelticCard({
   dc,
   idx,
-  top,
-  left,
   revealed,
   onReveal,
   language,
-  rotate = false,
+  hideLabel = false,
 }: {
   dc: DrawnCard;
   idx: number;
-  top: number;
-  left: number;
   revealed: boolean;
   onReveal: (i: number) => void;
   language: 'en' | 'fa';
-  rotate?: boolean;
+  hideLabel?: boolean;
 }) {
   const posName = language === 'en' ? dc.position.name : dc.position.nameFA;
 
   return (
     <motion.div
-      className="absolute flex flex-col items-center gap-1"
-      style={{
-        top,
-        left,
-        transform: rotate ? 'rotate(90deg)' : undefined,
-        zIndex: rotate && revealed ? 0 : rotate ? 2 : 1,
-        pointerEvents: rotate && revealed ? 'none' : 'auto',
-      }}
-      initial={{ opacity: 0, scale: 0.8 }}
+      className="flex flex-col items-center gap-1.5"
+      initial={{ opacity: 0, scale: 0.85 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: idx * 0.1 }}
+      transition={{ delay: idx * 0.08 }}
     >
       <Card
         card={dc.card}
@@ -147,10 +171,12 @@ function CelticPosition({
         isRevealed={revealed}
         onReveal={() => onReveal(idx)}
         language={language}
-        className="scale-75"
+        className="scale-[0.65] md:scale-75 origin-top"
       />
-      {!rotate && (
-        <p className="text-[10px] text-purple-300/80 text-center">{posName}</p>
+      {!hideLabel && (
+        <p className="text-[10px] md:text-xs text-purple-300/70 font-light text-center -mt-6 md:-mt-4">
+          {posName}
+        </p>
       )}
     </motion.div>
   );
