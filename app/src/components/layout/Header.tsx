@@ -79,6 +79,12 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
                 {language === 'en' ? 'Card Meanings' : 'معانی کارت‌ها'}
               </Link>
               <Link
+                href="/spreads"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
+                {language === 'en' ? 'Spreads' : 'گسترش‌ها'}
+              </Link>
+              <Link
                 href="/login"
                 className="text-sm text-gray-400 hover:text-white transition-colors"
               >

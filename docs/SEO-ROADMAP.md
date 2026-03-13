@@ -6,9 +6,9 @@
 
 ## Current State Summary
 
-- **Google Indexing**: ❌ Not indexed (`site:tarotveil.com` returns 0 results)
-- **SEO Grade**: B+ (strong technical foundation, zero content footprint)
-- **Sitemap**: Only 3 URLs (/, /login, /signup)
+- **Google Indexing**: ✅ Submitted to GSC, indexing requested (2026-03-13)
+- **SEO Grade**: A- (technical foundation complete, content engine next)
+- **Sitemap**: 89 URLs (static pages + 78 card pages + 4 spread pages)
 - **Structured Data**: Comprehensive JSON-LD (WebSite, Organization, SoftwareApplication, FAQPage)
 - **Competitors Indexed**: Tarotap, TarotCards.io, TarotReader.ai, PiTarot, BiddyTarot all rank well
 
@@ -21,13 +21,13 @@ Timeline: 1-2 days of implementation.
 
 ### Checklist
 
-- [ ] **A1. Google Search Console Setup**
+- [x] **A1. Google Search Console Setup** ✅ (2026-03-13)
   - Verify domain ownership (DNS TXT record or HTML file method)
   - Submit sitemap.xml
   - Request indexing for key pages
   - Monitor crawl errors and coverage reports
 
-- [ ] **A2. Bing Webmaster Tools Setup**
+- [x] **A2. Bing Webmaster Tools Setup** ✅ (2026-03-13)
   - Verify domain and submit sitemap
   - Import settings from Google Search Console if possible
 
@@ -84,37 +84,37 @@ Timeline: 2-4 weeks of implementation.
 
 ### B1. Tarot Card Meaning Pages (Highest ROI)
 
-- [ ] **Create 78 individual card pages** (`/cards/[slug]`)
+- [x] **Create 78 individual card pages** ✅ (2026-03-13) (`/cards/[slug]`)
   - URL pattern: `/cards/the-fool`, `/cards/ace-of-cups`, `/cards/ten-of-swords`
   - Each page includes: card image, upright meaning, reversed meaning, keywords, AI narrative
   - Internal link to "Get a reading featuring this card"
   - Target keywords: "[card name] meaning" (e.g., "the fool tarot card meaning")
   - Schema: Add `Article` or `WebPage` structured data per page
 
-- [ ] **Create card index page** (`/cards`)
+- [x] **Create card index page** (`/cards`) ✅ (2026-03-13)
   - Grid of all 78 cards organized by Major Arcana / Suits
   - Targets: "tarot card meanings" (9,900/mo), "major arcana" (880/mo)
 
-- [ ] **Programmatic generation**
+- [x] **Programmatic generation** ✅ (2026-03-13)
   - Build from existing deck data in `app/src/lib/tarot/deck.ts`
   - Use `generateStaticParams` for static generation at build time
   - Add all 78 + index page to sitemap dynamically
 
 ### B2. Spread Guide Pages
 
-- [ ] **Three-Card Spread** (`/spreads/three-card`)
+- [x] **Three-Card Spread** (`/spreads/three-card`) ✅ (2026-03-13)
   - How it works, position meanings, sample reading, CTA
   - Target: "three card tarot spread" (8,100/mo)
 
-- [ ] **Celtic Cross** (`/spreads/celtic-cross`)
+- [x] **Celtic Cross** (`/spreads/celtic-cross`) ✅ (2026-03-13)
   - Detailed position guide, when to use, sample interpretation
   - Target: "celtic cross tarot spread" (1,500/mo)
 
-- [ ] **Single Card** (`/spreads/single-card`)
+- [x] **Single Card** (`/spreads/single-card`) ✅ (2026-03-13)
   - Quick guidance, daily use, beginner-friendly
   - Target: "one card tarot reading" (~1,000/mo)
 
-- [ ] **Spread index page** (`/spreads`)
+- [x] **Spread index page** (`/spreads`) ✅ (2026-03-13)
   - Overview of all available spreads with links
 
 ### B3. Blog / Learn Section
