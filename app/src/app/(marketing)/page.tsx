@@ -148,7 +148,7 @@ export default function LandingPage() {
           <div className="w-[600px] h-[600px] rounded-full bg-amber-500/[0.03] blur-[100px]" />
         </div>
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 pointer-events-none">
-          <div className="w-[400px] h-[300px] rounded-full bg-purple-600/[0.04] blur-[80px]" />
+          <div className="w-[400px] h-[300px] rounded-full bg-amber-500/[0.03] blur-[80px]" />
         </div>
 
         <motion.div style={{ opacity: heroOpacity, y: heroY }} className="relative z-10 text-center">
@@ -435,6 +435,14 @@ export default function LandingPage() {
               )}
             </motion.div>
           </div>
+
+          {/* CTA to card meanings */}
+          <Link
+            href="/cards"
+            className="inline-block mt-10 px-8 py-3 border border-gold-400/20 text-gold-400/80 font-display text-base tracking-wide rounded-sm hover:border-gold-400/40 hover:text-gold-400 transition-all duration-300"
+          >
+            Explore All 78 Card Meanings
+          </Link>
         </div>
       </RevealSection>
 
@@ -450,7 +458,9 @@ export default function LandingPage() {
           </p>
           <Ornament />
           <div className="mt-14">
-            <PricingTable />
+            <PricingTable onSelectPlan={(plan) => {
+              window.location.href = `/signup?plan=${plan}`;
+            }} />
           </div>
         </div>
       </RevealSection>

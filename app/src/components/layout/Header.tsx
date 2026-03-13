@@ -37,7 +37,7 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
   }
 
   return (
-    <header className="border-b border-purple-800/30 bg-purple-950/80 backdrop-blur-sm sticky top-0 z-50">
+    <header className="border-b border-white/10 bg-black/80 backdrop-blur-sm sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between" dir={isRTL ? 'rtl' : 'ltr'}>
         <Link href={user ? '/dashboard' : '/'} className="flex items-center gap-2">
           <span className="text-amber-400 text-xl">&#10022;</span>
@@ -50,12 +50,12 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
               <NavLink href="/dashboard" current={pathname} label={language === 'en' ? 'Dashboard' : 'داشبورد'} />
               <NavLink href="/reading/new" current={pathname} label={language === 'en' ? 'New Reading' : 'خوانش جدید'} />
               <NavLink href="/billing" current={pathname} label={language === 'en' ? 'Billing' : 'اشتراک'} />
-              <span className="text-xs px-2 py-1 rounded-full bg-purple-800/50 text-purple-300 capitalize">
+              <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-amber-200/80 capitalize">
                 {user.tier}
               </span>
               <button
                 onClick={toggleLanguage}
-                className="text-xs px-2 py-1 rounded-full border border-purple-700/50 text-purple-300 hover:border-amber-400/50 hover:text-amber-400 transition-colors"
+                className="text-xs px-2 py-1 rounded-full border border-white/15 text-gray-400 hover:border-amber-400/50 hover:text-amber-400 transition-colors"
                 title={language === 'en' ? 'Switch to Farsi' : 'تغییر به انگلیسی'}
               >
                 {language === 'en' ? 'فا' : 'EN'}
@@ -63,7 +63,7 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
               <button
                 onClick={handleLogout}
                 disabled={loggingOut}
-                className="text-sm text-purple-400 hover:text-red-400 transition-colors disabled:opacity-50"
+                className="text-sm text-gray-500 hover:text-red-400 transition-colors disabled:opacity-50"
               >
                 {loggingOut
                   ? '...'
@@ -73,8 +73,14 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
           ) : (
             <>
               <Link
+                href="/cards"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
+                {language === 'en' ? 'Card Meanings' : 'معانی کارت‌ها'}
+              </Link>
+              <Link
                 href="/login"
-                className="text-sm text-purple-300 hover:text-white transition-colors"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
               >
                 {language === 'en' ? 'Sign In' : 'ورود'}
               </Link>
@@ -98,7 +104,7 @@ function NavLink({ href, current, label }: { href: string; current: string; labe
     <Link
       href={href}
       className={`text-sm transition-colors ${
-        isActive ? 'text-amber-400' : 'text-purple-300 hover:text-white'
+        isActive ? 'text-amber-400' : 'text-gray-400 hover:text-white'
       }`}
     >
       {label}
