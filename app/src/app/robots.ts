@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
-        disallow: ['/api/', '/dashboard', '/reading/', '/settings', '/billing'],
+        allow: ['/', '/reading/free'],
+        disallow: ['/api/', '/dashboard', '/reading/new', '/settings', '/billing'],
       },
     ],
     sitemap: 'https://www.tarotveil.com/sitemap.xml',

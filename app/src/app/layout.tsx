@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: '%s | TarotVeil',
   },
   description:
-    'Experience tarot like never before. AI-powered narrative readings that weave all your cards into one cohesive story. Crypto-random draws, conversational follow-ups, and multi-language support.',
+    'AI-powered tarot readings that weave your cards into one narrative story. Crypto-random draws, follow-up conversations, and multi-language support.',
   keywords: [
     'tarot reading',
     'AI tarot',
@@ -58,6 +58,11 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: siteUrl,
+    languages: {
+      'en': siteUrl,
+      'fa': siteUrl,
+      'x-default': siteUrl,
+    },
   },
   openGraph: {
     type: 'website',
