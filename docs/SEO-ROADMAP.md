@@ -8,7 +8,7 @@
 
 - **Google Indexing**: ✅ Submitted to GSC, indexing requested (2026-03-13)
 - **SEO Grade**: A- (technical foundation complete, content engine next)
-- **Sitemap**: 89 URLs (static pages + 78 card pages + 4 spread pages)
+- **Sitemap**: 92 URLs (static pages + 78 card pages + 4 spread pages + 3 topic pages)
 - **Structured Data**: Comprehensive JSON-LD (WebSite, Organization, SoftwareApplication, FAQPage)
 - **Competitors Indexed**: Tarotap, TarotCards.io, TarotReader.ai, PiTarot, BiddyTarot all rank well
 
@@ -144,10 +144,10 @@ Timeline: 2-4 weeks of implementation.
 
 ### B5. Topic-Based Landing Pages
 
-- [ ] `/love-tarot` — Love & relationship readings (4,400/mo)
-- [ ] `/career-tarot` — Career & work guidance
-- [ ] `/yes-or-no` — Simple yes/no tarot (3,000/mo)
-- [ ] Each page: topic intro, relevant spread, sample reading, CTA to start
+- [x] `/love-tarot` — Love & relationship readings (4,400/mo) ✅ (2026-03-13)
+- [x] `/career-tarot` — Career & work guidance ✅ (2026-03-13)
+- [x] `/yes-or-no` — Simple yes/no tarot (3,000/mo) ✅ (2026-03-13)
+- [x] Each page: topic intro, relevant spread, sample reading, CTA to start ✅ (2026-03-13)
 
 ---
 
