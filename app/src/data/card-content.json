@@ -1,0 +1,1406 @@
+{
+  "the-fool": {
+    "id": 0,
+    "name": "The Fool",
+    "slug": "the-fool",
+    "arcana": "major",
+    "suit": null,
+    "number": 0,
+    "keywords": [
+      "beginnings",
+      "innocence",
+      "spontaneity",
+      "free spirit"
+    ],
+    "upright": "The Fool appears at the threshold of transformation—barefoot, moving toward a cliff's edge with eyes on the sky. This is the card of new beginnings stripped of pretense. It speaks to stepping into the unknown with faith rather than certainty, trusting your instincts over detailed plans. The Fool represents innocence not as naivety but as openness: the willingness to start fresh without baggage from past failures. When this card surfaces, you're being called to embrace spontaneity, take that leap, or begin something that genuinely excites you. The small dog nipping at the Fool's heels reminds us that growth requires a touch of recklessness—calculated risk, not foolhardiness. This is permission to move forward even when the path isn't fully visible.",
+    "reversed": "Reversed, The Fool's optimism becomes hesitation or poor judgment. This can manifest as fear holding you back from necessary action—analysis paralysis disguised as caution. Alternatively, it warns of carelessness: moving forward without thinking through consequences, confusing spontaneity with irresponsibility. The reversed Fool sometimes indicates missed opportunities due to self-doubt, or conversely, reckless choices made without consideration. It's worth examining whether you're sabotaging yourself through excessive caution or failing to respect the gravity of a decision. The reversal asks: are you protecting yourself wisely, or simply stuck?",
+    "inReading": "In the past, The Fool suggests a fresh start or bold choice that shaped your current situation. In the present, it signals you're at a decision point—move or stay still. In the future, expect new chapters and transitions. The Fool works well alongside cards of commitment (The Magician, The Lovers) to show faith paired with action. Near challenging cards (The Tower, The Devil), it can suggest courage is needed. This card answers: What's my next step? Should I take this risk? What do I need to release to move forward?",
+    "summary": "The Fool: leap faithfully into new beginnings, trusting your instincts over certainty."
+  },
+  "the-magician": {
+    "id": 1,
+    "name": "The Magician",
+    "slug": "the-magician",
+    "arcana": "major",
+    "suit": null,
+    "number": 1,
+    "keywords": [
+      "manifestation",
+      "resourcefulness",
+      "power",
+      "inspired action"
+    ],
+    "upright": "The Magician appears when you're standing at the threshold of creation. This card shows a figure with one hand raised toward the heavens and the other pointing to earth—the conduit between inspiration and material reality. You possess the tools you need right now: skill, focus, willpower, and resourcefulness. The Magician reveals that manifestation isn't wishful thinking—it's deliberate action backed by clear intention. This is the moment to take charge, harness your talents, and transform potential into tangible results. Whether starting a project, negotiating a deal, or committing to a goal, the Magician confirms you have what it takes. Trust your abilities and act with conviction.",
+    "reversed": "Reversed, The Magician suggests misaligned power. You may possess skills but lack direction, or have clear intent but struggle to execute. Self-doubt, scattered focus, or manipulation—either by you or others—can block manifestation. This card reversed sometimes indicates underestimating yourself or overestimating obstacles. It may also signal using your talents selfishly or dishonestly. The remedy isn't passivity but recalibration: reconnect with your authentic purpose, gather your scattered energy, and align your actions with integrity. What's blocking your power to create?",
+    "inReading": "In past positions, The Magician shows you've already demonstrated resourcefulness or initiated something significant. Present placement confirms you're in a moment of power—act now. Future positions promise successful manifestation if current focus remains sharp. The Magician strengthens cards about new ventures, communication, or skill-building. It challenges cards about victimhood or helplessness. Best for questions about 'Can I do this?', 'What's my next move?', or 'How do I make this real?' Surrounding cards reveal whether your power aligns with intention.",
+    "summary": "You have the tools and power to manifest what you envision right now."
+  },
+  "the-high-priestess": {
+    "id": 2,
+    "name": "The High Priestess",
+    "slug": "the-high-priestess",
+    "arcana": "major",
+    "suit": null,
+    "number": 2,
+    "keywords": [
+      "intuition",
+      "sacred knowledge",
+      "divine feminine",
+      "subconscious"
+    ],
+    "upright": "The High Priestess sits veiled between two pillars, her finger pressed to her lips in knowing silence. This card appears when your intuition is speaking louder than logic—trust it. She guards sacred knowledge that lives beneath conscious awareness: the dreams you dismiss, the body sensations you ignore, the patterns only your subconscious recognizes. The High Priestess reveals that answers already exist within you, waiting in the quiet spaces. She signals a time to listen rather than act, to observe rather than control. In readings, she often points to hidden information, mysteries unfolding behind the scenes, or the need to access your own inner wisdom before taking external steps. She's the card of threshold moments, when you stand at the edge of understanding something profound.",
+    "reversed": "The High Priestess reversed suggests blocked intuition or ignored inner knowing. You may be caught in overthinking, dismissing gut feelings as illogical, or refusing to acknowledge what you already sense to be true. This card can also indicate that secrets are being kept from you, or that someone's hidden motives are becoming visible. Sometimes it points to scattered intuition—too many voices competing for attention, making it hard to hear your own. The reversal asks: What are you refusing to see? Where have you silenced your own knowing?",
+    "inReading": "In the past, The High Priestess suggests you've relied on inner wisdom before or developed it through mystery and hidden learning. In the present, she urges you to pause and trust what you already know beneath the surface. In the future, she points toward revelation—mysteries clarifying, hidden knowledge becoming conscious. She works powerfully near cards about communication (demanding silence first) or action cards (suggesting you wait). She answers questions about what you truly know, what's hidden, and whether to trust your gut.",
+    "summary": "Trust the knowing beneath your awareness; answers live in silence and intuition."
+  },
+  "the-empress": {
+    "id": 3,
+    "name": "The Empress",
+    "slug": "the-empress",
+    "arcana": "major",
+    "suit": null,
+    "number": 3,
+    "keywords": [
+      "femininity",
+      "beauty",
+      "nature",
+      "abundance"
+    ],
+    "upright": "The Empress embodies creative potential and nurturing abundance. In the Rider-Waite-Smith deck, she sits crowned and pregnant, surrounded by lush vegetation and a flowing waterfall—symbols of fertility, growth, and natural cycles. This card signals a time of manifestation, whether through creative projects, relationships, or material prosperity. The Empress reveals that conditions are ripe for something to flourish. She speaks to self-care, sensuality, and the power of receiving what you've cultivated. When she appears, you're in a generative phase—capable of bringing ideas to life and attracting what you need. This card often points to feminine power, not as gender-specific but as receptive, generative energy. Her presence suggests that beauty and pleasure aren't luxuries but essential nutrients for growth.",
+    "reversed": "Reversed, The Empress loses her generative momentum. Creative blocks replace flow; projects stall or lack direction. This can signal neglect—of self, relationships, or responsibilities—where abundance becomes scattered or unfulfilled. Sometimes it reflects external blocks: limited resources, unsupportive conditions, or feeling creatively drained. The reversed Empress may also point to dependency or difficulty in self-nurturing, appearing when you've given too much without replenishment. Occasionally, it warns against superficiality or relying solely on appearance. The reversal asks: Where have you stopped investing in growth? What needs tending?",
+    "inReading": "In the past, The Empress shows a fertile foundation or nurturing influence that shaped you. Present placement signals you're in a creative or abundant phase—act on it. Future placement promises manifestation if current conditions hold. She pairs well with The Emperor (partnership, balance) or The Magician (channeling potential into action). Next to challenging cards, she softens the reading; nearby abundance cards amplify her message. Ask her about creative projects, self-care practices, relationships, or material growth. She's less useful for urgent practical questions and stronger for understanding cycles of creation and nurture.",
+    "summary": "Creative abundance flows when conditions align for growth and nurturing."
+  },
+  "the-emperor": {
+    "id": 4,
+    "name": "The Emperor",
+    "slug": "the-emperor",
+    "arcana": "major",
+    "suit": null,
+    "number": 4,
+    "keywords": [
+      "authority",
+      "structure",
+      "control",
+      "fatherhood"
+    ],
+    "upright": "The Emperor sits enthroned, armored and commanding, his scepter and orb symbols of absolute authority. This card reveals leadership, structure, and the power to impose order on chaos. When it appears, you're either stepping into a position of control or being called to claim the authority you've earned. The Emperor doesn't ask permission—he establishes rules, builds systems, and takes responsibility for outcomes. In readings, this card often signals a need for discipline, clear boundaries, or masculine energy (whether you identify as male or not). It can represent a father figure, mentor, or the part of yourself that knows how to lead with conviction. The message is clear: establish your foundation, take command of your circumstances, and don't apologize for the space you occupy.",
+    "reversed": "The reversed Emperor suggests authority gone wrong—either wielded too rigidly or abdicated entirely. You might be facing someone's tyranny, or you're being too controlling yourself, suffocating others with rules. Alternatively, this card can indicate a loss of power or influence, or refusal to take necessary leadership. There's an immaturity here: either someone acting like a tyrant without earned legitimacy, or someone avoiding the hard work of structure and accountability. Look for where you've either surrendered your authority or used it to dominate rather than guide.",
+    "inReading": "In the past, The Emperor shows established foundations or a controlling figure who shaped you. In the present, it calls for decisive action and clear leadership—stop hesitating. In the future, it promises stability and recognition of your authority. Near challenge cards, it can indicate power struggles; near nurturing cards, it balances emotion with practical action. This card answers questions about leadership, career advancement, discipline, and masculine influence. It's excellent for clarifying who holds power in a situation and what structure needs building.",
+    "summary": "Authority, leadership, and the power to build lasting structure through discipline and command."
+  },
+  "the-hierophant": {
+    "id": 5,
+    "name": "The Hierophant",
+    "slug": "the-hierophant",
+    "arcana": "major",
+    "suit": null,
+    "number": 5,
+    "keywords": [
+      "spiritual wisdom",
+      "tradition",
+      "conformity",
+      "education"
+    ],
+    "upright": "The Hierophant appears as a spiritual authority figure robed in elaborate vestments, holding a triple cross while seated between two pillars. This card reveals a moment calling for structure, tradition, and established wisdom. When it surfaces in your reading, you're being guided toward institutions, mentors, or belief systems that provide solid ground—whether that's formal education, religious practice, or time-tested methods. The Hierophant doesn't ask you to reinvent the wheel; it suggests that inherited knowledge and conventional pathways hold real value for where you are now. This card often indicates a need to respect protocol, seek guidance from experienced teachers, or honor commitments to shared values. It's about finding your place within larger systems and communities.",
+    "reversed": "Reversed, The Hierophant loses its reverence for authority without becoming rebellious—instead, it signals questioning, skepticism toward institutions, or feeling constrained by rigid expectations. You may be outgrowing dogmatic frameworks or rejecting rules that no longer serve you. This position can also indicate spiritual searching outside traditional structures, unconventional beliefs, or a reluctance to seek help when it's actually needed. Sometimes it suggests hypocrisy within institutions or discovering that revered figures aren't who you thought. The reversal isn't liberation for its own sake; it's friction between your authentic path and external demands.",
+    "inReading": "In the past, The Hierophant shows formative training or values that shaped you. Present placement indicates current reliance on tradition or an active search for guidance—pay attention to whether you're thriving or stifled. Future position suggests learning opportunities, mentorship, or a need to stabilize life through established frameworks. This card aligns well with cards of authority (The Emperor) or learning (The Hermit), and clashes with rebellion cards (The Fool, The Devil). It answers questions about education, career advancement, spiritual direction, and whether to follow convention. Best asked when seeking permission or clarity about what's considered 'right.'",
+    "summary": "Tradition, wisdom, and spiritual authority offer solid ground beneath your feet right now."
+  },
+  "the-lovers": {
+    "id": 6,
+    "name": "The Lovers",
+    "slug": "the-lovers",
+    "arcana": "major",
+    "suit": null,
+    "number": 6,
+    "keywords": [
+      "love",
+      "harmony",
+      "relationships",
+      "values alignment"
+    ],
+    "upright": "The Lovers reveals a moment of genuine alignment—whether in romance, friendship, or with yourself. The Rider-Waite imagery shows two figures beneath an angel, naked and unguarded, suggesting vulnerability met with acceptance. This card signals harmony between what you want and what you value, between desire and integrity. It appears when choices are made from the heart rather than obligation, when two people (or parts of yourself) move in the same direction. The card doesn't promise ease—it promises resonance. Relationships deepen here, decisions clarify, and you recognize someone or something worth choosing consciously, repeatedly.",
+    "reversed": "The Lovers reversed doesn't mean love dies—it means misalignment. Values clash with actions. Communication breaks down or was never honest to begin with. You might be choosing based on fear or habit rather than genuine connection. The card can also suggest internal conflict: your head and heart pulling in different directions, or recognizing that shared values weren't as solid as assumed. Sometimes it signals a relationship at a crossroads where both people must decide whether to realign or part.",
+    "inReading": "In the past, this card shows a formative choice or relationship that shaped your values. In the present, it asks: Are you in alignment right now? It answers questions about compatibility, commitment readiness, and whether a decision honors your core self. In the future, it promises clarity and conscious choice. Beside difficult cards, The Lovers softens the reading—suggesting a relationship or choice will ground you. Next to obstacle cards, it warns that misalignment is the real issue.",
+    "summary": "A moment of true alignment between desire, values, and choice."
+  },
+  "the-chariot": {
+    "id": 7,
+    "name": "The Chariot",
+    "slug": "the-chariot",
+    "arcana": "major",
+    "suit": null,
+    "number": 7,
+    "keywords": [
+      "control",
+      "willpower",
+      "success",
+      "determination"
+    ],
+    "upright": "The Chariot depicts a determined figure commanding two sphinxes—one black, one white—harnessed together and moving forward. This card arrives when you've found your direction and the willpower to pursue it. You're integrating opposing forces within yourself: logic and intuition, aggression and restraint, ambition and ethics. Success isn't handed to you here—it's seized through focus and disciplined effort. The Chariot reveals a moment when scattered energy crystallizes into purpose. You're in control, moving with momentum, and obstacles yield to your resolve. This card often appears when external circumstances align with internal determination, creating breakthrough conditions. Whether you're advancing a project, overcoming resistance, or reclaiming agency in your life, The Chariot confirms you have what it takes to win.",
+    "reversed": "Control collapses when The Chariot reverses. You may feel pulled in conflicting directions, unable to harness your energy effectively. Rather than external failure, this suggests internal discord—ambition without discipline, willpower without direction, or forcing movement before you're genuinely ready. Sometimes this card signals that aggressive pushing won't work now; the sphinxes won't budge. You might be encountering resistance that demands a different approach than sheer determination. Alternatively, this reversal can indicate overreliance on control itself—rigidity masking fear. The card asks whether you're truly driving toward what you want, or whether you've mistaken motion for progress.",
+    "inReading": "In the past, The Chariot shows you've overcome obstacles through determination or that a decisive period shaped your current position. Present Chariot signals momentum—take action now while conditions support you. In the future, it promises success through focused effort, though the timing depends on surrounding cards. The Chariot responds to questions about willpower, ambition, and overcoming obstacles. Paired with The Magician, you have both tools and mastery. With challenging cards nearby, The Chariot reinforces that you have agency despite circumstances.",
+    "summary": "Willpower and determination drive you forward toward victory through focused control."
+  },
+  "the-hermit": {
+    "id": 9,
+    "name": "The Hermit",
+    "slug": "the-hermit",
+    "arcana": "major",
+    "suit": null,
+    "number": 9,
+    "keywords": [
+      "soul-searching",
+      "introspection",
+      "being alone",
+      "inner guidance"
+    ],
+    "upright": "The Hermit depicts a solitary figure on a mountain peak, lantern held high, illuminating the path ahead. This card signals a necessary withdrawal from external noise to access your inner wisdom. You're in a phase where solitude serves a purpose—not isolation, but intentional retreat for reflection and clarity. The lantern represents self-knowledge; by looking inward, you discover truths that daylight and distraction would obscure. This is about trust in your own guidance system. Whether you're processing a decision, questioning your direction, or simply need space to remember who you are beneath the roles you play, The Hermit validates that introspection now will yield genuine insight. This card appears when the answers you seek already live within you.",
+    "reversed": "The Hermit reversed suggests you're either avoiding necessary solitude or becoming too isolated to sustain wellbeing. You might be stuck in introspection—overthinking without moving forward, or using withdrawal as avoidance rather than wisdom-seeking. Alternatively, this card can indicate loneliness masquerading as contemplation, or a resistance to the quiet work required for real growth. The reversed Hermit asks: Are you hiding, or are you healing? There's a difference. It may also point to rejecting wise counsel or ignoring your own inner voice because you've become disconnected from it.",
+    "inReading": "In the past, The Hermit reveals a period of reflection that shaped who you are. In the present, it emphasizes that clarity comes through stillness right now. In the future, it suggests answers will emerge through your own investigation. This card works well adjacent to cards about decision-making or confusion—it's the voice saying 'you already know.' Near relationship cards, it can indicate healthy boundaries or a need for space. The Hermit rarely suggests permanent isolation; it's about timing and seasons.",
+    "summary": "A necessary retreat inward to find the clarity you already possess."
+  },
+  "wheel-of-fortune": {
+    "id": 10,
+    "name": "Wheel of Fortune",
+    "slug": "wheel-of-fortune",
+    "arcana": "major",
+    "suit": null,
+    "number": 10,
+    "keywords": [
+      "good luck",
+      "karma",
+      "life cycles",
+      "destiny"
+    ],
+    "upright": "The Wheel of Fortune signals a turning point where destiny and timing align in your favor. This card depicts a great wheel adorned with alchemical symbols, held in motion by universal forces beyond personal control. It reveals that you're entering a cycle of positive momentum—what you've planted is now bearing fruit. The wheel's constant rotation reminds you that luck isn't random; it follows patterns of cause and effect, karma, and natural rhythms. This is the card of good timing, synchronicity, and recognizing yourself as part of larger patterns. When it appears upright, surrender to the current flow while remaining aware that all cycles—good and challenging—are temporary. Your role is to work with the momentum, not against it.",
+    "reversed": "Reversed, the Wheel suggests resistance to natural cycles or a failure to see the larger pattern unfolding. This doesn't mean bad luck, but rather feeling stuck or out of sync with timing. You may be clinging to a cycle that's ending, or struggling against momentum instead of reading it. The card can also point to bad timing in external circumstances—doors closing not because of failure, but because the season has shifted. Sometimes it reveals a victim mentality, where you blame fate while overlooking the role your choices play. Consider where you're resisting change or ignoring signals that a cycle is complete.",
+    "inReading": "In the past, Wheel of Fortune explains how you arrived at your current moment—previous cycles and karma at work. Present placement shows you're at a pivotal turning point; pay attention to timing and what's unfolding naturally. Future position predicts a significant shift, often positive, but the meaning depends heavily on surrounding cards. Next to cards of challenge, it suggests relief is coming. Beside stagnant cards, it breaks the pattern. This card pairs well with cards of manifestation and action—it's the universe's answer to \"when?\" It answers questions about timing, luck, destiny, and why certain doors are opening or closing now.",
+    "summary": "A turning point where timing and destiny align; what you've initiated returns to you now."
+  },
+  "justice": {
+    "id": 11,
+    "name": "Justice",
+    "slug": "justice",
+    "arcana": "major",
+    "suit": null,
+    "number": 11,
+    "keywords": [
+      "justice",
+      "fairness",
+      "truth",
+      "cause and effect"
+    ],
+    "upright": "Justice appears when truth demands attention and balance requires restoration. The figure depicted holds a sword of clarity and scales of measurement—symbols that this card concerns itself with facts, not opinions. When Justice appears upright, you're being called to examine situations through an objective lens. This card often signals that cause and effect are operating visibly; actions have consequences you can now see. Legal matters, contracts, and moral decisions benefit from Justice's presence. It suggests accountability is at work, either yours or another's. This card rewards honest assessment and fair dealing. It confirms that weighing all sides—not rushing to judgment—will reveal the path forward.",
+    "reversed": "Reversed Justice suggests imbalance has gone unaddressed or accountability has been sidestepped. This doesn't necessarily mean injustice is happening to you; it can indicate you're avoiding responsibility, or that bias is clouding your perception. The scales tip unevenly. Legal matters may stall or become complicated. This card can also signal that the full truth hasn't yet emerged—more information is needed before judgment can be rendered fairly. Self-deception is possible. Where upright Justice cuts through confusion, reversed Justice indicates fog remains. The correction hasn't happened yet.",
+    "inReading": "In the past, Justice reveals that a prior decision shaped your current reality—you're living with its consequences. In the present, it calls for honest evaluation and fair action right now. In the future, it promises that balance will be restored or truth will surface. Justice gravitates toward outcome positions; it often indicates resolution is coming. Surrounded by difficult cards, Justice suggests accountability will address the problem. Near cards about relationships signal the need for honest conversation. This card answers questions about: What does fairness require? Will truth emerge? What are the real consequences of this choice?",
+    "summary": "Truth and accountability are operating—weigh all sides and act fairly."
+  },
+  "the-hanged-man": {
+    "id": 12,
+    "name": "The Hanged Man",
+    "slug": "the-hanged-man",
+    "arcana": "major",
+    "suit": null,
+    "number": 12,
+    "keywords": [
+      "pause",
+      "surrender",
+      "letting go",
+      "new perspectives"
+    ],
+    "upright": "The Hanged Man appears when you're suspended in deliberate stillness—not trapped, but paused. In the Rider-Waite-Smith imagery, the figure hangs calmly by one foot, head down, creating a halo of light. This card signals voluntary surrender: you're choosing to release control, shift your perspective, or sit with uncertainty rather than force resolution. It reveals moments when doing nothing is the right action. The card speaks to spiritual insight gained through surrender, the value of seeing situations upside-down, and trusting that this suspension is temporary and purposeful. Whether you're waiting for clarity, releasing old patterns, or contemplating a decision from a radically different angle, The Hanged Man affirms that you're exactly where you need to be.",
+    "reversed": "Reversed, The Hanged Man suggests resistance to necessary pause. You may be struggling against stillness, unwilling to surrender control, or impatient with waiting. This card can indicate avoidance of deeper perspective—staying busy to escape reflection, or refusing to see situations from new angles. It may also signal stagnation masquerading as pause: being stuck rather than productively suspended. The reversal sometimes points to premature action taken to escape discomfort, or resentment building from forced delays. Alternatively, it can mean you've already learned the lesson and are ready to move forward—the suspension has served its purpose.",
+    "inReading": "In past positions, The Hanged Man reveals a recent pivot or period of necessary stillness that shaped your current situation. Present placement indicates you're in active pause—clarity is coming, but not yet. Future position suggests a needed recalibration or gain of new perspective ahead. Alongside cards of struggle or stagnation, it softens the reading, suggesting purposeful waiting rather than defeat. Near action cards, it counsels timing and patience. Near wisdom or insight cards, it amplifies spiritual growth. This card answers questions about timing, perspective shifts, and whether to wait or act.",
+    "summary": "Voluntary suspension reveals truth unavailable from ordinary angles."
+  },
+  "death": {
+    "id": 13,
+    "name": "Death",
+    "slug": "death",
+    "arcana": "major",
+    "suit": null,
+    "number": 13,
+    "keywords": [
+      "endings",
+      "change",
+      "transformation",
+      "transition"
+    ],
+    "upright": "Death arrives not as destruction but as necessary passage. In the Rider-Waite-Smith deck, the skeleton knight rides forward while figures kneel or resist below—a visual truth about transformation's inevitability. This card signals genuine endings: relationships concluding, jobs shifting, old identities dissolving. Yet the white horse and rising sun suggest what follows isn't void but renewal. Death reveals that clinging to what's already dying drains your energy. The card appears when life demands you release the familiar, whether you're ready or not. It's the closure that precedes possibility, the clearing that makes space for growth. This is change at its most fundamental level, where nothing returns to its previous form.",
+    "reversed": "Reversed Death suggests resistance to necessary change. You may be clinging to expired situations, relationships, or versions of yourself—extending grief or denial beyond its natural span. This can manifest as stagnation, where fear of endings keeps you suspended. Alternatively, reversed Death can indicate that transformation is approaching but delayed; you sense the shift coming but haven't yet surrendered to it. The card may also suggest incomplete transitions—partial endings that leave loose threads and unresolved chapters. The work here is discernment: distinguish between healthy attachment and unhelpful resistance, between timing and avoidance.",
+    "inReading": "In past positions, Death marks what has genuinely closed or transformed you. Present Death indicates active transition—you're in the threshold now. Future Death warns of or promises significant change ahead. This card works powerfully beside cards of loss (Five of Cups) or new beginnings (The Fool), clarifying that one phase must end for another to start. With The Tower, it intensifies upheaval; with The Hermit, it suggests solitary contemplation through transition. Death answers 'What must I release?' and 'What's truly ending here?' Ask it when you sense change but aren't naming it clearly.",
+    "summary": "Endings that transform. Necessary cycles completing. What dies makes space for what's next."
+  },
+  "temperance": {
+    "id": 14,
+    "name": "Temperance",
+    "slug": "temperance",
+    "arcana": "major",
+    "suit": null,
+    "number": 14,
+    "keywords": [
+      "balance",
+      "moderation",
+      "patience",
+      "purpose"
+    ],
+    "upright": "Temperance depicts an angel pouring water between two cups, one foot on land and one in water—a figure suspended between worlds. This card appears when your life requires calibration. It signals that you're finding your rhythm after chaos, or that patience and measured action will serve you better than force. The flowing water represents emotions and intuition moving smoothly; the angel's steady hands suggest conscious control without rigidity. Temperance rewards those who resist extremes—whether that's overwork, indulgence, or emotional volatility. It's the card of integration: blending opposing forces into something whole. When it appears, you're learning to trust the process and understanding that lasting progress comes from consistency, not intensity.",
+    "reversed": "Reversed Temperance suggests imbalance has tipped into instability. You may be swinging between extremes—binge and restrict, rush and stall, overcommit and withdraw. This card can indicate that patience has worn thin or that moderation feels impossible right now. Rather than a gentle mixing, energies clash. It might reflect internal conflict where different parts of you want opposing things, creating tension rather than flow. Sometimes it appears when you're forcing harmony where conflict is actually necessary, or when you're using 'balance' as an excuse to avoid taking a clear stance. The reversal asks: where are you actually out of alignment, and what would honest adjustment look like?",
+    "inReading": "In the past, Temperance suggests you've developed hard-won equilibrium or learned restraint through difficulty. In the present, it indicates you're in a stabilizing phase—decisions benefit from patience now. In the future, it predicts a resolution that requires mixing seemingly opposite elements or a period of steadier flow ahead. Temperance works well beside cards of conflict (the Five of Pentacles, Mars cards) to suggest resolution is possible. Paired with abundance cards, it cautions against excess. It answers questions about timing, whether opposing forces can coexist, and how to navigate transitions gracefully.",
+    "summary": "Find your balance; patience and measured action create lasting change."
+  },
+  "the-devil": {
+    "id": 15,
+    "name": "The Devil",
+    "slug": "the-devil",
+    "arcana": "major",
+    "suit": null,
+    "number": 15,
+    "keywords": [
+      "shadow self",
+      "attachment",
+      "addiction",
+      "restriction"
+    ],
+    "upright": "The Devil reveals where you've given your power away—to habits, relationships, or beliefs that feel inescapable. In the Rider-Waite-Smith imagery, two figures stand chained to the Devil's throne, yet their chains are loose enough to remove. This card doesn't announce doom; it exposes the gap between your actual circumstances and your perception of them. You may feel trapped by addiction, toxic attachment, or self-imposed limitation, but the looseness of those chains is the card's quiet truth: the cage has a door you haven't noticed. The Devil appears when shadow work becomes necessary—when denied parts of yourself demand acknowledgment. This is about recognizing what you're complicit in, not what's happening to you.",
+    "reversed": "When reversed, The Devil signals the beginning of release. Chains begin to loosen as awareness breaks the spell of denial. You're recognizing patterns you once rationalized, naming attachments you once minimized. This isn't instant freedom—reversed Devil is messy, marked by small rebellions and uncomfortable truths. You might be breaking a cycle, stepping back from someone, or finally admitting something needs to change. The reversal also suggests you're reclaiming agency, even if the work feels heavy. Sometimes this card reversed points to forgiveness of yourself for what you've tolerated or accepted.",
+    "inReading": "In the past, The Devil explains how you arrived at your current constraint. Present position reveals what's operating beneath the surface right now—the story you're telling yourself. As a future card, it warns of escalating patterns unless awareness shifts. The Devil strengthens readings about addiction, codependency, power dynamics, and self-sabotage. Positioned near the Hermit, it suggests shadow work ahead. Near the Lovers, it questions whether a relationship is mutual or transactional. Surrounding cards show whether you're in denial (Major Arcana nearby) or recognizing reality (Minor Arcana). Ask this card specifically about hidden patterns, what you're refusing to see, and where you've abandoned your own needs.",
+    "summary": "The Devil exposes what you've accepted as inevitable but secretly resent."
+  },
+  "the-tower": {
+    "id": 16,
+    "name": "The Tower",
+    "slug": "the-tower",
+    "arcana": "major",
+    "suit": null,
+    "number": 16,
+    "keywords": [
+      "sudden change",
+      "upheaval",
+      "chaos",
+      "revelation"
+    ],
+    "upright": "The Tower appears when your life meets sudden, unavoidable change. In the Rider-Waite-Smith deck, lightning strikes a tall structure, figures tumble through the air, and the crown at its peak falls—imagery that speaks to the collapse of what felt solid. This card rarely brings comfort, but it brings clarity. The revelation here is often overdue: the job that wasn't working, the relationship built on illusion, the belief system that no longer fits. The Tower clears away false foundations so something truer can be built. Yes, it's disruptive and sometimes painful, but the destruction serves a purpose. What emerges after the dust settles is more authentic than what stood before.",
+    "reversed": "Reversed, The Tower suggests resistance to necessary change. You might be postponing an inevitable reckoning, clinging to a structure you know is crumbling, or experiencing smaller tremors of what could become a larger collapse if ignored. There's also a gentler reading: the worst has already passed, and you're beginning to rebuild. The intensity has peaked. Sometimes this card reversed simply means the upheaval is slower, less dramatic—a gradual unraveling rather than sudden rupture. Pay attention to what you're avoiding. Delaying the tower doesn't prevent it; it only extends the instability.",
+    "inReading": "In the past, The Tower explains current circumstances—you're still processing or rebuilding from significant upheaval. In the present, it signals active disruption demanding your attention now. In the future, it warns of incoming change or promises that current chaos will eventually clear. Alongside cards like The Star or The Sun, The Tower becomes about necessary clearing before renewal. Next to The Hermit, it suggests you'll seek solitude to process what's breaking. This card answers questions about why things are falling apart, what's being revealed, and whether change is coming. It rarely appears when everything is fine.",
+    "summary": "Sudden, necessary upheaval that breaks false structures and reveals what's real."
+  },
+  "the-star": {
+    "id": 17,
+    "name": "The Star",
+    "slug": "the-star",
+    "arcana": "major",
+    "suit": null,
+    "number": 17,
+    "keywords": [
+      "hope",
+      "faith",
+      "purpose",
+      "renewal"
+    ],
+    "upright": "The Star appears as a moment of clarity after darkness. In the Rider-Waite-Smith deck, a naked woman kneels by water beneath eight stars, pouring her gifts into both the earthly and spiritual realms. This card speaks to renewed faith in yourself and the future—not blind optimism, but grounded hope rooted in understanding your authentic purpose. It emerges when you've found direction after confusion, when meaning crystallizes. The Star reflects your ability to see your path clearly and believe in possibilities again. It suggests you're reconnecting with what genuinely matters to you, whether through creative expression, spiritual practice, or a sense of belonging. This is the card of the guiding light you've been searching for—both external inspiration and your own inner knowing.",
+    "reversed": "The Star reversed suggests you've lost sight of your direction or are doubting what once seemed clear. Your faith has been shaken—perhaps by setbacks, disappointment, or external criticism that undermined your confidence. This reversal doesn't indicate permanent darkness, but rather a temporary disconnection from hope and purpose. You may feel uninspired, trapped in cynicism, or uncertain whether your efforts matter. The challenge is reconnecting with your authentic vision rather than accepting despair as truth. Sometimes this card reversed reveals that you're following someone else's star instead of your own.",
+    "inReading": "In the past, The Star indicates a moment when hope or clarity emerged from difficulty. Present appearances suggest you're currently aligned with purpose or experiencing renewed faith. Future positions point toward resolution and finding your direction. The Star amplifies optimism in spreads with growth cards and stabilizes readings with heavier cards nearby. It answers questions about meaning, creative potential, and whether to trust a path forward. Reversed nearby cards may suggest obstacles to realizing this vision, while complementary cards like The Sun reinforce themes of positive emergence.",
+    "summary": "Hope and clarity return as you reconnect with your authentic purpose and direction."
+  },
+  "the-moon": {
+    "id": 18,
+    "name": "The Moon",
+    "slug": "the-moon",
+    "arcana": "major",
+    "suit": null,
+    "number": 18,
+    "keywords": [
+      "illusion",
+      "fear",
+      "anxiety",
+      "subconscious"
+    ],
+    "upright": "The Moon reveals the territory between what you know and what you fear. In the Rider-Waite-Smith imagery, two towers frame a path while a dog and wolf howl at a full moon—depicting the internal conflict between instinct and reason. This card appears when anxiety clouds your perception, when you're caught between competing truths, or when your subconscious is demanding attention. The Moon doesn't lie; it illuminates what darkness conceals. You're navigating uncertainty, possibly experiencing vivid dreams, intuitive hits, or emotional confusion. Trust that this fog is temporary. The card suggests your task is neither to banish fear nor ignore it, but to look directly at what unsettles you. What feels unclear now will clarify as you move through this passage.",
+    "reversed": "The reversed Moon suggests clarity breaking through confusion. Illusions dissolve, deceptions unravel, and you gain clearer sight of a situation previously obscured. However, this isn't always comfortable—sometimes seeing plainly means acknowledging harsh truths you've avoided. The reversal can also indicate you're moving away from imaginative or intuitive work, becoming more rational and grounded, which may be necessary but risks losing creative insight. In some readings, it warns that you're ignoring your intuition in favor of logical reasoning alone.",
+    "inReading": "Past: unresolved fears or illusions that shaped your choices. Present: you're in an unclear situation requiring trust in your intuition. Future: clarity approaching, but you must first navigate this uncertain passage. The Moon amplifies the meaning of surrounding cards—next to The Sun, it promises confusion followed by revelation. Near The Hermit, it suggests deep introspective work. This card answers questions about fear, intuition, dreams, and what's hidden. It rarely appears in practical matters; it addresses the emotional and psychological layers beneath surface situations.",
+    "summary": "Trust what unsettles you—clarity lies beyond the fear."
+  },
+  "the-sun": {
+    "id": 19,
+    "name": "The Sun",
+    "slug": "the-sun",
+    "arcana": "major",
+    "suit": null,
+    "number": 19,
+    "keywords": [
+      "positivity",
+      "fun",
+      "warmth",
+      "success"
+    ],
+    "upright": "The Sun arrives as a card of unambiguous clarity and radiance. In the Rider-Waite-Smith imagery, a child rides naked on a white horse beneath a golden sun, surrounded by sunflowers—symbols of vitality and growth turning toward light. This card reveals a period where success feels inevitable, not earned through struggle but through alignment with your authentic self. The nakedness of the child suggests innocence and transparency; there's nothing hidden, nothing to prove. The Sun strips away confusion and illuminates your path forward. When this card appears upright, it signals genuine joy, creative confidence, and the warmth of being in the right place at the right time. External validation aligns with internal knowing. This is achievement without the weight of doubt.",
+    "reversed": "The reversed Sun suggests the light hasn't dimmed—it's obscured. You may be in circumstances where success exists but feels inaccessible, blocked by external pressures, self-doubt, or simply poor timing. Perhaps you're waiting for a cycle to turn, or you've internalized criticism that dims your natural confidence. Unlike despair cards, the reversed Sun indicates the brilliance is still there; you're experiencing shadow rather than darkness. Watch for burnout from pushing too hard or loss of joy in pursuits that once delighted you. The reversal can also indicate a delay rather than denial—the breakthrough is coming, but not today.",
+    "inReading": "In the past, The Sun reveals a golden period you're either recovering from or building upon. In the present, it confirms you're exactly where you need to be. In the future position, it's one of the strongest affirmations a reading can offer. The Sun amplifies surrounding cards—next to The Lovers, it's passionate clarity; next to Five of Pentacles, it's the light breaking through hardship. It answers questions about creative potential, relationship joy, career success, and personal confidence directly and affirmatively. Paired with challenging cards, The Sun suggests resolution is coming.",
+    "summary": "Authentic success, clarity, and joy aligned with your true self."
+  },
+  "judgement": {
+    "id": 20,
+    "name": "Judgement",
+    "slug": "judgement",
+    "arcana": "major",
+    "suit": null,
+    "number": 20,
+    "keywords": [
+      "judgement",
+      "rebirth",
+      "inner calling",
+      "absolution"
+    ],
+    "upright": "Judgement arrives when you stand at a threshold, called to shed what no longer serves you. The card depicts souls rising toward an angel's trumpet—a visual promise of awakening and transformation. This is rebirth earned through honest self-assessment, not punishment or external force. You're recognizing patterns, answering an inner voice that demands authenticity, and moving toward alignment with your truest self. Whether that means leaving a relationship, changing careers, or releasing old shame, Judgement signals a reckoning that leads to freedom. This card rarely appears without consequence; it marks the moment you stop sleepwalking and claim responsibility for your life. Absolution follows clarity.",
+    "reversed": "Reversed, Judgement suggests avoidance or postponement. You may sense an inner calling but lack courage to act, or you're resisting feedback that asks you to change. Self-doubt clouds your vision—uncertainty about whether you're making the right choice keeps you paralyzed between worlds. Sometimes this card points to harsh self-judgment, shame that locks you in place rather than propels you forward. The transformation Judgement promises remains blocked when you won't listen to that quiet voice or when external voices drown it out. Consider what you're refusing to see about yourself.",
+    "inReading": "In the past, Judgement reveals a major turning point that shaped your current position. Present placements indicate you're in active transition—decisions matter now. Future positions promise significant change or the culmination of a cycle. Judgement works powerfully with cards of endings (Tower, Five of Pentacles) to show transformation through difficulty, or with Hermit and High Priestess to emphasize inner knowing. It answers questions about life direction, whether you're on the right path, and what must change. Rarely a comfortable card, but reliably honest.",
+    "summary": "A call to transform through honest reckoning and rebirth into your authentic self."
+  },
+  "the-world": {
+    "id": 21,
+    "name": "The World",
+    "slug": "the-world",
+    "arcana": "major",
+    "suit": null,
+    "number": 21,
+    "keywords": [
+      "completion",
+      "integration",
+      "accomplishment",
+      "travel"
+    ],
+    "upright": "The World represents the completion of a cycle and the integration of lessons learned. In the Rider-Waite-Smith deck, a figure dances within a wreath—enclosed yet boundless—suggesting wholeness achieved through experience. This card appears when you've moved through a full arc of growth, bringing disparate parts of yourself or a project into harmony. It signals accomplishment that feels earned rather than lucky, closure that opens new possibilities, and the readiness to begin again from a more evolved vantage point. Travel, literal or metaphorical, features prominently: you've journeyed somewhere meaningful and arrived transformed.",
+    "reversed": "Reversed, The World suggests incompleteness rather than failure—a cycle stalled before integration. You may be resisting closure, clinging to a chapter that's ready to close, or struggling to synthesize what you've learned. Sometimes this card indicates feeling stuck between chapters, caught in limbo. There's also a note of fragmentation: pieces exist but haven't cohered into a unified whole. The reversal doesn't promise disaster; it asks whether you're avoiding a necessary ending or whether external circumstances have interrupted natural progression.",
+    "inReading": "In the past, The World reflects completed chapters that shaped your present foundation. Present placement suggests you're in or near a significant completion—trust the process even if the finish line isn't yet visible. In the future, it promises resolution and new beginning. The World acts as a connector card, synthesizing meaning from surrounding cards and amplifying their integration into a larger narrative. It answers questions about closure, readiness for transition, and whether a cycle has truly finished.",
+    "summary": "Completion and integration—you've arrived at what you set out to find."
+  },
+  "ace-of-wands": {
+    "id": 22,
+    "name": "Ace of Wands",
+    "slug": "ace-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 1,
+    "keywords": [
+      "inspiration",
+      "new opportunities",
+      "growth",
+      "potential"
+    ],
+    "upright": "The Ace of Wands arrives as pure creative spark—a hand emerging from clouds offering a flowering wand wreathed in leaves and bursting with potential. This card signals the arrival of inspiration that demands action, not mere dreaming. You're being presented with an opportunity to ignite something meaningful: a project, relationship, or personal direction that aligns with your authentic passion. The imagery shows divine timing and readiness; this isn't a distant possibility but a gift within reach. When this card appears, you're being called to recognize the momentum building around you and channel it into focused effort. New ventures started now carry genuine vitality. This is about recognizing the spark within yourself and the external conditions that support its expression.",
+    "reversed": "The reversed Ace suggests inspiration blocked or delayed—the wand hasn't yet reached your hand. You may feel creatively stalled, lacking direction, or surrounded by false starts that haven't gained traction. This often points to internal resistance rather than external obstacles: self-doubt, unclear intentions, or competing priorities that scatter your energy. Sometimes this card indicates opportunities that arrive at the wrong moment, or initiatives begun without proper grounding. Rather than indicating permanent loss, reversal asks you to examine what's preventing the spark from catching fire. Patience, clarity, and honest self-assessment are needed before momentum can build.",
+    "inReading": "In the past, this card shows a spark that ignited your current situation. Present placement indicates immediate creative potential or a choice point requiring commitment. As a future card, it promises fresh direction and renewed vitality. Paired with challenge cards, the Ace suggests the solution lies in tapping creative resources or shifting perspective. Alongside stable cards like Fours, it indicates ideas ready to be built into something lasting. The Ace answers questions about timing (favorable), potential projects (go forward), and creative blocks (seek the source of resistance). Its appearance typically validates that you're sensing something real and worth pursuing.",
+    "summary": "A creative spark arrives—recognize it, claim it, and direct it toward meaningful action."
+  },
+  "two-of-wands": {
+    "id": 23,
+    "name": "Two of Wands",
+    "slug": "two-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 2,
+    "keywords": [
+      "future planning",
+      "progress",
+      "decisions",
+      "discovery"
+    ],
+    "upright": "The Two of Wands shows a figure holding the world in one hand, gazing outward from a high vantage point. This card signals you're at a threshold—you've built something solid and now face meaningful choices about what comes next. The world in their palm represents potential within reach; the distant landscape suggests unexplored territory. You're moving beyond initial spark into deliberate planning. This card appears when you're ready to think bigger, when you have options and the clarity to weigh them. It speaks to ambition tempered with foresight, to understanding that your next move matters. Progress isn't passive here—it requires you to decide which direction aligns with your vision.",
+    "reversed": "Reversed, this card suggests hesitation where there should be momentum. You may have gathered resources or reached a decision point but struggle to commit to a direction. Fear of choosing wrong, or analysis paralysis, keeps you holding the world without moving. Alternatively, this points to limited options—the expansive future feels narrower than expected. There's restlessness without clarity, ambition without a viable path forward. Sometimes this reversal indicates you're trying to control outcomes too tightly, refusing to adapt when circumstances shift. The key here is recognizing whether you need more information before deciding, or whether fear itself is the obstacle.",
+    "inReading": "As a past card, Two of Wands suggests you made a significant choice or identified a clear direction. In the present, it indicates you're actively planning or weighing options—decision-making is happening now. As a future card, it promises progress through deliberate choice and expanded horizons. Paired with grounded cards like Pentacles, it amplifies strategic thinking. Next to Major Arcana, it contextualizes how bigger life themes will unfold. Ask this card about direction, timing, and next steps. It answers best: What choice am I avoiding? Where does my ambition lead next?",
+    "summary": "You've built momentum and stand at a crossroads—choose your next direction with intention."
+  },
+  "three-of-wands": {
+    "id": 24,
+    "name": "Three of Wands",
+    "slug": "three-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 3,
+    "keywords": [
+      "progress",
+      "expansion",
+      "foresight",
+      "overseas opportunities"
+    ],
+    "upright": "The Three of Wands depicts a figure gazing across distant horizons, three wands planted firmly behind them—a visual anchor for progress already made. This card signals expansion beyond familiar territory. You've established a foundation and now you're ready to explore what lies beyond. The distant ships and foreign landscapes point to opportunities that require travel, collaboration, or thinking bigger than your current scope. This is foresight in action: you can sense momentum building and you're positioning yourself to meet it. Whether literal international ventures or metaphorical expansion into new markets, networks, or expertise, this card marks the transition from preparation to implementation. Progress is visible; opportunity knocks from the horizon.",
+    "reversed": "When reversed, the Three of Wands suggests hesitation at the threshold. You see the opportunities—they're visible—but you're not stepping through. This might reflect fear of expansion, lack of confidence in your readiness, or external delays blocking your path forward. Sometimes it indicates looking outward while ignoring internal work still needed. Disappointments in partnerships or plans may surface. The card can also point to poor timing or miscalculation of what expansion requires. Rather than a complete halt, it's more often a slowdown: the momentum stalls, or you're second-guessing decisions made in the upright position.",
+    "inReading": "In the past, this card shows completed groundwork enabling current growth. Present placement indicates you're actively pursuing expansion—the time to act is now. In future position, it promises opportunity approaching but requiring your initiative. The Three of Wands pairs well with cards of communication (Hermit, Mercury) for networking success, or with challenge cards (Five of Wands) suggesting competitive expansion. It answers questions about timing, whether you're ready to scale, and what opportunities align with your current trajectory. Adjacent cards reveal whether expansion succeeds or whether the reversed hesitation dominates.",
+    "summary": "Foresight and expansion: you've prepared the ground and horizons are opening."
+  },
+  "four-of-wands": {
+    "id": 25,
+    "name": "Four of Wands",
+    "slug": "four-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 4,
+    "keywords": [
+      "celebration",
+      "joy",
+      "harmony",
+      "relaxation"
+    ],
+    "upright": "The Four of Wands shows four staffs adorned with garlands, anchored in fertile ground while figures celebrate beneath them. This card marks a genuine turning point—the hard work has paid off, and you're invited to pause and acknowledge it. Harmony flows naturally when effort meets timing. This isn't forced positivity; it's the earned relief of completion, a wedding, a promotion finalized, a home secured. The card speaks to stability that supports joy, community that recognizes your wins, and the permission to actually enjoy what you've built. When upright, this card confirms that celebration is warranted and grounding—you're not floating in false hope but standing on solid achievement.",
+    "reversed": "Reversed, the Four of Wands suggests celebration is premature, delayed, or hollow. You might be forcing festivity when the situation doesn't feel settled, or external pressure demands you celebrate before you're ready. Alternatively, success arrives but feels incomplete—the party happens, but something essential is missing. This can indicate conflict within your circle, celebrations that fall flat, or the dawning realization that reaching a milestone doesn't feel how you expected. The reversal doesn't negate progress; it flags that alignment between external achievement and internal satisfaction has fractured. Pause before committing fully.",
+    "inReading": "In the past, this card reveals a foundation of genuine joy or resolution you've built upon. Present placement suggests now is the time to acknowledge wins and gather support—don't rush forward yet. As a future card, it promises earned celebration, though context matters: surrounded by challenge cards, it may signal relief is coming; near difficult cards, it warns against premature closure. The Four of Wands works best with cards of completion (Tens, Page reversals) and strengthens readings about milestones, relationships stabilizing, or community events. It answers: 'Is this ready?' 'Can I relax now?' 'Do others acknowledge this?'",
+    "summary": "Earned celebration and stable joy after genuine progress—permission to pause and acknowledge what you've built."
+  },
+  "five-of-wands": {
+    "id": 26,
+    "name": "Five of Wands",
+    "slug": "five-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 5,
+    "keywords": [
+      "disagreement",
+      "competition",
+      "tension",
+      "conflict"
+    ],
+    "upright": "The Five of Wands shows five figures brandishing staffs, each seemingly at odds with the others—a snapshot of active disagreement and competing agendas. This card appears when multiple perspectives clash or when you're caught in a struggle for dominance or direction. It's not hidden resentment; it's visible, even chaotic tension that demands acknowledgment. The wands crossing in mid-air reveal raw energy without a clear victor, suggesting that the conflict itself is the issue, not necessarily any one person's fault. This card signals a moment to step back and ask whether the fight serves a purpose, or whether everyone's expending energy that could be redirected toward shared goals. It often appears when ambition, passion, or strong-willed people occupy the same space.",
+    "reversed": "When reversed, the Five of Wands loses its frantic energy—the disagreement either resolves or goes underground. This can mean genuine compromise has been reached, or that people have simply exhausted themselves and abandoned the fight. Sometimes it indicates avoidance rather than resolution: the tension remains unspoken, simmering beneath surface harmony. The card can also suggest you're breaking free from a competitive dynamic that no longer serves you, or recognizing when to let others' conflicts pass you by. In some contexts, it points to newfound cooperation or the realization that conflict wasn't as insurmountable as it seemed.",
+    "inReading": "In the past, this card reveals recent upheaval or a conflict that shaped present circumstances. In the present, it's an active alert—something needs addressing now. In the future, it warns of coming friction or shows how current tensions will escalate if unexamined. The Five of Wands amplifies conflict when surrounded by heavy cards and softens slightly near reconciliation cards like the Two of Cups. It answers questions about workplace friction, creative disagreements, competition, or any scenario where passionate people want different outcomes.",
+    "summary": "Active conflict and competing wills demand your honest attention and redirection."
+  },
+  "six-of-wands": {
+    "id": 27,
+    "name": "Six of Wands",
+    "slug": "six-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 6,
+    "keywords": [
+      "success",
+      "public recognition",
+      "progress",
+      "self-confidence"
+    ],
+    "upright": "The Six of Wands depicts a figure on horseback, crowned and holding a wand aloft while others gather below in admiration. This card arrives when your efforts are being recognized—not in quiet ways, but publicly. Success here isn't private achievement; it's the kind that gets seen, acknowledged, celebrated. You've moved beyond the struggle phase into a moment where confidence and competence align visibly. This card shows progress that others can witness: a promotion, an award, social validation, or a creative work gaining traction. The energy is uplifting but grounded—your accomplishments are real, and the recognition is earned. Beware only of mistaking temporary acclaim for lasting foundation.",
+    "reversed": "Reversed, the Six of Wands suggests recognition that feels hollow, delayed, or undeserved. You may be receiving praise that doesn't match your internal sense of accomplishment, or seeking validation that hasn't arrived despite genuine effort. Sometimes this card appears when confidence has eroded—you once felt assured but now doubt creeps in. It can also indicate that comparison with others is stealing your joy, or that you're chasing external approval at the expense of authentic work. The reversal asks: Are you building for lasting success, or performing for applause?",
+    "inReading": "In the past, this card shows previous wins that shaped your current confidence or may now feel distant. In the present, it indicates momentum and visibility—keep moving forward. In the future, it promises recognition or a breakthrough moment coming. The Six of Wands amplifies positive cards around it and can soften challenging ones by suggesting obstacles lead to eventual acknowledgment. It answers questions about visibility, timing of success, and whether your work will be seen. Paired with Cups, recognition brings emotional fulfillment; with Pentacles, financial gain follows.",
+    "summary": "Public recognition and earned success arrive—your accomplishments are being seen and celebrated."
+  },
+  "seven-of-wands": {
+    "id": 28,
+    "name": "Seven of Wands",
+    "slug": "seven-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 7,
+    "keywords": [
+      "challenge",
+      "competition",
+      "protection",
+      "perseverance"
+    ],
+    "upright": "The Seven of Wands shows a figure standing on higher ground, defending against six wands thrust upward from below. This is the card of holding your position under pressure. You're facing competition, criticism, or opposition, but you have the skill and determination to stand firm. The imagery reveals someone who refuses to back down—not through aggression, but through grounded confidence. This card appears when you're being tested, when others challenge your ideas or threaten your territory. The key is that you're capable of this defense. You have what it takes to protect what matters to you, though it requires vigilance and honest self-assessment. This isn't about winning at all costs; it's about knowing your worth and refusing to surrender it.",
+    "reversed": "When reversed, the Seven of Wands reveals surrender or exhaustion. You may be backing down from a fight that matters, either because you've lost faith in your position or because the effort has drained you. This card can also signal capitulation to external pressure—abandoning your stance not because it was wrong, but because resistance felt too costly. Sometimes it points to a more graceful outcome: you've made your stand and now recognize when to step back with dignity. The reversal asks whether you're yielding strategically or simply giving up.",
+    "inReading": "In the past, this card shows a challenge you overcame or a stand you took. In the present, it signals active opposition requiring your attention now. In the future, it suggests coming pressure or a test of your conviction. Paired with supportive cards, the Seven of Wands indicates you'll succeed in your defense. Surrounded by difficult cards, it warns that the struggle ahead is real and requires preparation. This card answers questions about competition, boundaries, and whether you should fight for something.",
+    "summary": "Stand your ground with skill and conviction despite mounting pressure."
+  },
+  "eight-of-wands": {
+    "id": 29,
+    "name": "Eight of Wands",
+    "slug": "eight-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 8,
+    "keywords": [
+      "speed",
+      "action",
+      "air travel",
+      "movement"
+    ],
+    "upright": "The Eight of Wands captures momentum at its peak. Eight wands fly through clear sky, unobstructed and rapid—this card signals things are finally moving. Projects gain traction, communication flows freely, and delays dissolve. You're in a phase where action produces immediate results. The Rider-Waite imagery shows these wands in perfect alignment, suggesting harmony between your efforts and external conditions. This isn't forced movement; it's the natural acceleration that follows preparation. Travel, swift decisions, and rapid progress define this moment. The card reveals that stagnation has broken and you're riding genuine forward momentum.",
+    "reversed": "Delays and frustration replace the swift flight of the upright Eight. This reversal suggests obstacles blocking your path—miscommunication, logistical snags, or simply timing working against you. Energy exists but finds no outlet; you're pushing while circumstances resist. This card can also indicate scattered focus; multiple directions prevent progress rather than enable it. Sometimes it points to impatience creating problems, or resistance to necessary slowness. The reversed Eight asks whether you're forcing movement that isn't ready, or accepting delays you could actually influence.",
+    "inReading": "In the past, this card shows a period of rapid change or swift decision-making that shaped your current position. Present placement confirms things are moving now—trust the pace. Future position promises relief from waiting; action accelerates ahead. Surrounding cards matter greatly: paired with The Magician, manifestation happens fast; near The Tower, swift transformation; beside The Eight of Pentacles, rapid skill-building. This card answers questions about timing, travel plans, and whether stagnation will break. It works best for queries about momentum, decision speed, and when something will finally happen.",
+    "summary": "Swift movement, clear momentum, and rapid progress breaking through delay."
+  },
+  "nine-of-wands": {
+    "id": 30,
+    "name": "Nine of Wands",
+    "slug": "nine-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 9,
+    "keywords": [
+      "resilience",
+      "courage",
+      "persistence",
+      "test of faith"
+    ],
+    "upright": "The Nine of Wands shows a figure standing guard before eight wands already planted behind them—a visual testament to battles already won and ground already held. This card speaks to the resilience that comes from experience. You've been tested repeatedly, and each trial has strengthened your resolve. The wounds are visible; the weariness is real. Yet you remain standing, alert, protective of what you've built. This card appears when you're nearing the finish line but facing one final test—perhaps doubt creeping in, or one more obstacle demanding your attention. It's not about being invincible; it's about choosing to hold the line despite exhaustion. Your persistence has earned you the wisdom to recognize what's worth defending.",
+    "reversed": "When reversed, the Nine of Wands suggests you may be holding your guard too tightly—defending against threats that have already passed, or investing energy in battles you've already won. There's a rigidity here; flexibility and trust have given way to hypervigilance. Alternatively, this card can signal burnout, a moment where your resilience has reached its limit and rest isn't optional anymore. The reversed position asks: Are you still fighting because you must, or because you've forgotten how to put down your weapons? Sometimes stepping back isn't surrender—it's survival.",
+    "inReading": "In the past, this card reflects obstacles overcome and strength forged through difficulty. In the present, it signals you're in an active test requiring courage and persistence—hold steady. In the future, it suggests a final challenge before breakthrough, or warns against unnecessary defensiveness ahead. Surrounding cards matter greatly: paired with positive outcomes, the Nine promises your perseverance pays off; with difficult cards, it may suggest stubbornness blocking resolution. This card answers questions about resilience, endurance, and whether you have the stamina to see something through.",
+    "summary": "Stand firm through the final test; your persistence has already proven its worth."
+  },
+  "ten-of-wands": {
+    "id": 31,
+    "name": "Ten of Wands",
+    "slug": "ten-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 10,
+    "keywords": [
+      "burden",
+      "extra responsibility",
+      "hard work",
+      "completion"
+    ],
+    "upright": "The Ten of Wands shows a figure struggling beneath a heavy load of ten wands, barely visible behind the burden they carry. This card reveals the weight of over-commitment and accumulated responsibility. You've taken on too much—whether through ambition, obligation, or difficulty saying no. The wands symbolize creative energy and passion, but ten of them become unwieldy, suggesting your drive has tipped into exhaustion. This isn't failure; it's the natural consequence of pushing toward completion. The card asks: are you carrying this load out of necessity or habit? Relief comes not from abandoning your goals, but from dropping what isn't truly yours to carry. Recognition of this burden is the first step toward redistribution.",
+    "reversed": "Reversed, the Ten of Wands suggests liberation from excessive load. You're either setting down responsibilities that no longer serve you, or you're recognizing you never needed to carry them alone. This can indicate delegation, asking for help, or simply deciding your own wellbeing matters more than perfect completion. However, this card reversed can also reveal avoidance—abandoning commitments prematurely or refusing necessary effort. The nuance lies in discerning whether you're releasing what's truly excessive or dodging what's genuinely yours to do.",
+    "inReading": "In the past, this card indicates you've weathered a demanding period. Present placement shows current overwhelm—a signal to reassess priorities. In the future, it warns of approaching pressure unless boundaries shift now. The Ten of Wands amplifies stress in surrounding cards and softens in combination with The Hermit or Four of Pentacles, suggesting introspection or rest. This card answers: What's draining my energy? When have I overcommitted? How do I lighten my load?",
+    "summary": "Overwhelming responsibility demands recognition and release before collapse."
+  },
+  "page-of-wands": {
+    "id": 32,
+    "name": "Page of Wands",
+    "slug": "page-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 11,
+    "keywords": [
+      "inspiration",
+      "ideas",
+      "discovery",
+      "limitless potential"
+    ],
+    "upright": "The Page of Wands embodies the spark of creative potential waiting to ignite. In the Rider-Waite-Smith deck, a young figure stands alert, holding a sprouting wand—symbolizing ideas freshly rooted in fertile ground. This card appears when inspiration strikes, when curiosity pulls you toward unexplored territory, or when you're at the threshold of a new project or discovery. The Page's energy is restless and eager, suggesting messages arriving, opportunities for learning, and the courage to explore unconventional paths. Unlike the refined mastery of higher cards, the Page operates from wonder rather than experience. This reading reveals a moment of genuine potential—your ideas haven't yet been tested by reality, which is precisely their power. Trust the impulse to experiment, to ask bold questions, and to pursue what fascinates you without needing a guaranteed outcome.",
+    "reversed": "When reversed, the Page's spark dims into scattered restlessness or blocked expression. Ideas may feel stuck—either you're struggling to articulate them, or external circumstances keep interrupting. This can also signal impatience, where enthusiasm outpaces follow-through, or youthful impulsivity that hasn't learned boundaries. Sometimes the reversed Page suggests someone isn't listening, that your message isn't landing, or that you're doubting inspirations that actually merit attention. Rather than abundance of ideas, you're experiencing either creative drought or the frustration of ideas trapped inside. The card may be asking whether you're burning out from overstimulation or whether you need to slow down and focus before chasing the next shiny possibility.",
+    "inReading": "In past positions, the Page suggests a recent spark or discovery that shaped your current situation. Present placement indicates active inspiration or a decision point about pursuing a new direction. Future positions suggest incoming opportunities, messages, or creative breakthroughs. The Page responds well to grounded cards (Pentacles) that provide structure, and energizes cards of movement (other Wands). Adjacent major arcana cards reveal whether this inspiration aligns with larger life themes. This card answers questions about creative direction, whether to start something new, or what's blocking your natural curiosity. It works best for inquiries about potential rather than established outcomes.",
+    "summary": "Inspiration strikes—an idea, opportunity, or discovery demanding your creative attention."
+  },
+  "knight-of-wands": {
+    "id": 33,
+    "name": "Knight of Wands",
+    "slug": "knight-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 12,
+    "keywords": [
+      "energy",
+      "passion",
+      "adventure",
+      "impulsiveness"
+    ],
+    "upright": "The Knight of Wands gallops forward on a red horse, his wand held high and flames flickering across his tunic—pure kinetic energy made visible. This card arrives when momentum matters. You're driven by genuine passion, not fantasy, and ready to act on what excites you. The Knight doesn't overthink; he channels restless fire into motion. In readings, this figure signals adventure calling, whether that's a new project, travel, romance, or creative pursuit. He represents the impulse to explore, to test boundaries, to prove yourself through action. There's youthful confidence here, sometimes bordering on recklessness, but his energy is authentic. This card reveals someone (or a situation) that's alive, unpredictable, and moving fast. The question isn't whether you have passion—it's whether you can channel it wisely.",
+    "reversed": "When reversed, the Knight's fire loses direction. Energy scatters into impulsiveness without purpose, restlessness without results. You might feel trapped between wanting to move and being unable to commit, or you're starting projects without finishing them. The reversed Knight can also signal impatience creating conflict, or passion cooling into apathy. Sometimes it warns that recklessness has consequences—speed without awareness leads to crashes. This reversal asks: Are you avoiding something by staying busy? Is your fire burning out? The card doesn't say don't act; it says check your motive and your aim first.",
+    "inReading": "In the past, this card shows what drove you—youthful ambition, a bold decision, or a relationship that burned bright. In the present, it's asking what you're chasing and whether you're chasing it for the right reasons. In the future, expect rapid movement and change. Surrounded by cautionary cards (like The Tower), the Knight warns of avoidable chaos. Paired with stable cards (like The Hermit reversed), it suggests channeling passion into real achievement. This card answers questions about motivation, timing, and whether to take that leap now.",
+    "summary": "Raw passion and momentum seeking direction—act now, but know your why."
+  },
+  "queen-of-wands": {
+    "id": 34,
+    "name": "Queen of Wands",
+    "slug": "queen-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 13,
+    "keywords": [
+      "courage",
+      "confidence",
+      "independence",
+      "social butterfly"
+    ],
+    "upright": "The Queen of Wands sits confidently on her throne, a black cat at her feet and a sunflower in her hand—symbols of independence, magnetism, and creative vitality. She radiates warmth and natural charisma. When this card appears upright, it signals a period of bold self-expression and social momentum. You're operating from a place of genuine confidence, not arrogance. This is the energy of someone who knows what they want and isn't afraid to pursue it visibly. The Queen of Wands suggests you're ready to take creative risks, lead projects, or step into the spotlight. She embodies the courage to be unapologetically yourself—to speak your truth and inspire others through authentic presence. This card often indicates you're in a generative phase where your natural enthusiasm becomes contagious.",
+    "reversed": "Reversed, the Queen of Wands suggests confidence has shifted into defensiveness or self-doubt. You may be withdrawing socially, doubting your abilities, or overcompensating with forced enthusiasm that doesn't feel genuine. There's also potential for scattered energy—spreading yourself too thin across projects or relationships without depth. The fire that typically fuels this queen can turn inward as anxiety or outward as aggression when blocked. This card may indicate you're suppressing your natural voice to fit in, or conversely, that you're isolating yourself when connection would help. It's worth examining whether fear is masking as independence, or whether you've lost touch with what genuinely excites you.",
+    "inReading": "In the past, the Queen of Wands reflects a period when you acted with conviction or basked in social confidence. In the present, she signals you're in an active, self-directed phase—trust your instincts. In the future, she promises newfound boldness or a key opportunity to step forward. She pairs well with other fire cards (strengthening momentum) and with cups (softening intensity with emotion). Alongside swords, she can indicate standing your ground. This card answers questions about confidence, creative projects, social dynamics, and whether to take a visible role.",
+    "summary": "Fierce confidence and magnetic presence. You're ready to lead authentically."
+  },
+  "king-of-wands": {
+    "id": 35,
+    "name": "King of Wands",
+    "slug": "king-of-wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 14,
+    "keywords": [
+      "natural leader",
+      "vision",
+      "entrepreneur",
+      "honour"
+    ],
+    "upright": "The King of Wands sits astride his horse, crowned and commanding, holding a wand that blazes with creative potential. This card embodies the natural leader who transforms vision into action. You're experiencing a surge of confidence and charisma—the kind that draws others into your orbit. This is entrepreneurial energy at its peak: bold decisions, strategic thinking, and the courage to pioneer new territory. The King of Wands doesn't hesitate or second-guess; he trusts his instincts and inspires loyalty through genuine passion. Whether launching a project, taking charge of a situation, or stepping into your authority, this card signals you're ready. Your honour and integrity are your currency. The fire element suggests momentum is building—this is the time to lead decisively and trust your vision.",
+    "reversed": "The reversed King of Wands loses some of his focus. Energy scatters into impulsiveness, impatience, or domineering behaviour. Where the upright King commands respect, the reversed version may demand it—ego inflating without substance. Leadership becomes controlling rather than inspiring. You might be burning bridges through aggression or burning out through overcommitment. Alternatively, this card can indicate blocked creative power: vision without execution, or authority withheld from you. There's a warning here about confusing confidence with recklessness, or letting passion override wisdom. Examine whether you're leading from genuine conviction or just wanting to prove something.",
+    "inReading": "In the past, this card shows you've already demonstrated leadership or entrepreneurial initiative. Present placement signals active decision-making—lead now. Future position promises authority and successful ventures ahead. The King of Wands works best alongside cards of manifestation (Ace of Wands, Eight of Pentacles) and poorly beside cards of obstruction (Tower, Devil). It answers questions about leadership capacity, project viability, and whether someone is trustworthy in authority. Paired with major arcana, it clarifies how you'll approach major life changes—with boldness or restraint.",
+    "summary": "The visionary leader ready to command and inspire through passionate, decisive action."
+  },
+  "ace-of-cups": {
+    "id": 36,
+    "name": "Ace of Cups",
+    "slug": "ace-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 1,
+    "keywords": [
+      "love",
+      "new feelings",
+      "emotional awakening",
+      "creativity"
+    ],
+    "upright": "The Ace of Cups shows a hand emerging from a cloud, offering a single overflowing chalice. This is the beginning of emotional abundance—a heart opening to love, joy, or creative inspiration. When this card appears, something genuine is stirring within or arriving from outside. It signals readiness to feel deeply, whether that's romantic love, spiritual connection, or artistic awakening. The cup's overflow suggests emotions too full to contain. This isn't manufactured happiness; it's authentic feeling breaking through. The card often marks a threshold where numbness gives way to aliveness, where creative blocks dissolve, or where emotional walls come down. It promises that the heart has something real to offer or receive.",
+    "reversed": "Reversed, the Ace of Cups suggests emotional blockage or hesitation. Feelings may be present but unexpressed, withheld, or difficult to access. This can indicate emotional unavailability, creative drought, or resistance to vulnerability. Sometimes it points to disappointment—an expected emotional opening that didn't arrive, or feelings that dried up before they could bloom. The cup remains full but closed off, inaccessible. This isn't rejection of emotion entirely, but rather a pause or barrier. It may signal that the timing isn't right, that self-protection is active, or that emotional clarity is still forming.",
+    "inReading": "In the past, Ace of Cups reveals when emotional awakening or love first entered a situation. In the present, it marks active emotional flow or a choice to open the heart now. In the future, it promises emotional fulfillment, creative breakthrough, or relational deepening ahead. Paired with major arcana, it softens and personalizes their themes. Next to difficult cards, it offers hope for emotional resolution. This card answers questions about love, creative potential, emotional readiness, and whether feelings are genuine. It's strongest when asking 'Is this worth pursuing?' or 'When will I feel again?'",
+    "summary": "The beginning of genuine emotion, love, or creative inspiration breaking through."
+  },
+  "two-of-cups": {
+    "id": 37,
+    "name": "Two of Cups",
+    "slug": "two-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 2,
+    "keywords": [
+      "unified love",
+      "partnership",
+      "mutual attraction",
+      "connection"
+    ],
+    "upright": "The Two of Cups depicts two figures standing in balanced exchange, a goblet offered by Winged Mercury hovering above them—this card speaks to genuine mutual recognition. When it appears upright, you're encountering a moment of true partnership, whether romantic, creative, or deeply platonic. Both people bring equal investment and vulnerability. The card reveals conditions where attraction flows both directions and commitment feels natural rather than forced. This is the card of real chemistry, of contracts and promises that hold weight because both parties want them to. It can indicate a new relationship crystallizing, a deepening of existing bonds, or the recognition that someone truly sees you. The imagery suggests spiritual alignment matching physical reality.",
+    "reversed": "When reversed, the Two of Cups signals imbalance rather than absence. One person may be giving more than receiving, or both parties are disconnected despite proximity. Miscommunication replaces understanding—people talk past each other or avoid difficult conversations. Attraction may be one-sided, or the partnership has drifted into obligation. This card reversed doesn't always mean ending; it often means the relationship requires honest renegotiation. Trust has fractured, or it was never genuine to begin with. Sometimes it appears when someone is settling rather than connecting, or when fear prevents true intimacy from developing.",
+    "inReading": "In the past, Two of Cups indicates a formative connection that shaped your relational patterns. Present position suggests you're in or approaching genuine partnership—pay attention to whether dynamics feel reciprocal. Future placement promises reconciliation or a meaningful meeting. This card strengthens nearby relationship indicators and complicates cards of isolation or conflict. It answers: Is this connection mutual? Will this partnership deepen? Do we truly know each other? Surrounding cards reveal whether conditions support lasting union or signal where work is needed.",
+    "summary": "Mutual recognition and balanced partnership—two people genuinely choosing each other."
+  },
+  "three-of-cups": {
+    "id": 38,
+    "name": "Three of Cups",
+    "slug": "three-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 3,
+    "keywords": [
+      "celebration",
+      "friendship",
+      "creativity",
+      "community"
+    ],
+    "upright": "The Three of Cups depicts three figures raising their cups in celebration, surrounded by abundance and joy. This card signals a time of genuine connection and shared happiness. It represents moments when creativity flourishes in community—whether through collaboration, celebration, or simply being around people who energize you. The card reveals that your current situation benefits from openness and participation. If you've felt isolated, this is permission to seek your people. If you're already connected, expect deepening bonds or a significant gathering. The imagery suggests abundance isn't hoarded but shared, making this card about the generosity that flows between people when they show up for one another.",
+    "reversed": "Reversed, this card points to disconnection within social circles or creative stagnation when working alone. It may indicate feeling like an outsider, or friendships that have cooled. Sometimes it signals overindulgence or relying on social validation to feel whole. The celebration becomes hollow, forced, or exhausting rather than genuine. This doesn't always mean isolation is bad—sometimes the reversal calls for healthy boundaries or solo creative work. Pay attention to whether you're withdrawing by choice or feeling pushed out. The card asks: are your connections authentic, or are you performing?",
+    "inReading": "In the past, this card reflects where community or creative collaboration shaped you. In the present, it describes your current social energy or collaborative potential. In the future, it promises gathering, celebration, or a creative breakthrough with others. Beside difficult cards, it offers relief or suggests support is available. Near Major Arcana cards, it grounds their themes in real relationships and tangible moments. This card answers questions about friendship dynamics, creative partnerships, whether to join a group, or when celebration is warranted. It thrives in spreads exploring social life, creative projects, and emotional fulfillment.",
+    "summary": "Celebration, genuine connection, and creative energy shared among trusted people."
+  },
+  "four-of-cups": {
+    "id": 39,
+    "name": "Four of Cups",
+    "slug": "four-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 4,
+    "keywords": [
+      "meditation",
+      "contemplation",
+      "apathy",
+      "reevaluation"
+    ],
+    "upright": "The Four of Cups depicts a figure seated beneath a tree, arms crossed, while three cups rest before them and a fourth mysteriously descends from above. This is the card of deliberate pause—a moment where you've stepped back to assess what truly matters. You're in a reflective state, possibly fatigued by emotional demands or questioning whether current offerings align with your deeper needs. This isn't indifference; it's discernment. The card suggests you're wise to hold space before accepting or committing. You're evaluating past patterns, present circumstances, and what you actually want moving forward. There's a gift being offered (the descending cup), but you're not yet ready to receive it—and that's appropriate self-protection. This card validates the need for contemplation before the next chapter begins.",
+    "reversed": "When reversed, the Four of Cups suggests you're breaking free from stagnation. You've finished your period of reflection and are now ready to engage again—accepting opportunities you previously declined, or releasing apathy that no longer serves you. This can indicate renewed motivation, fresh perspectives, or finally saying yes to something meaningful. However, watch for rushing past necessary contemplation, accepting offers without proper evaluation, or swinging from detachment into impulsive action. The reversed card asks: Are you moving forward with clarity, or simply moving because standing still feels uncomfortable?",
+    "inReading": "In the past, this card shows a period of withdrawal or reevaluation that shaped current circumstances. In the present, it signals you're in a holding pattern—take time to clarify your needs before responding to external pressure. In the future, it warns against missed opportunities if you remain disconnected, or promises clarity emerging from current introspection. This card pairs well with cards of action (Wands) to suggest timing, and with challenging cards (Swords) to show healthy boundary-setting. Best for questions about readiness, life transitions, and whether to accept current opportunities.",
+    "summary": "A necessary pause for reflection before moving forward; wisdom in discernment over hasty acceptance."
+  },
+  "five-of-cups": {
+    "id": 40,
+    "name": "Five of Cups",
+    "slug": "five-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 5,
+    "keywords": [
+      "regret",
+      "failure",
+      "disappointment",
+      "pessimism"
+    ],
+    "upright": "The Five of Cups shows a figure in dark robes facing three spilled cups, with two cups still standing behind them—a detail many miss. This card speaks to disappointment and loss, but not without nuance. You're grieving something that mattered: a relationship ended, a goal fell through, a betrayal stung. The imagery suggests you're focused on what's broken rather than what remains. This card appears when you're in the thick of it, when disappointment feels total. It's not about catastrophe, but about the very human experience of things not working out as hoped. The message isn't that recovery is impossible—those two standing cups hint otherwise—but that right now, your attention is on the loss. The card validates that this matters, that your disappointment is real.",
+    "reversed": "The Five of Cups reversed suggests movement through grief rather than immersion in it. You're beginning to accept what happened, or you're choosing to shift your focus from loss to what's salvageable. Some situations show lighter interpretations: perhaps the disappointment was smaller than feared, or you're discovering resilience you didn't expect. This card reversed can also indicate forgiveness—of others or yourself—releasing the weight of regret. It's not forced positivity; rather, you're reaching a turning point where staying stuck no longer serves you.",
+    "inReading": "In the past, this card indicates recent disappointment shaping current circumstances. Present placement suggests you're navigating grief now—the reading asks what you'll do with it. Future position warns of potential loss unless actions change, or shows that disappointment will eventually resolve. The Five of Cups intensifies nearby difficult cards and softens optimistic ones. It pairs meaningfully with The Tower (larger loss), The Hermit (withdrawal), or The Wheel of Fortune (hope returning). Best for questions about romantic setbacks, professional failures, or unmet expectations.",
+    "summary": "Disappointment and loss reveal what matters most to you; grief is the price of caring."
+  },
+  "six-of-cups": {
+    "id": 41,
+    "name": "Six of Cups",
+    "slug": "six-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 6,
+    "keywords": [
+      "revisiting the past",
+      "childhood memories",
+      "innocence",
+      "joy"
+    ],
+    "upright": "The Six of Cups shows two children exchanging flowers in a sunlit garden, a moment of pure connection untainted by adult complexity. This card reveals the power of nostalgia and emotional innocence in your current situation. It suggests you're revisiting meaningful memories, rekindling a past relationship, or accessing the uncomplicated joy that defined an earlier chapter of your life. The card doesn't advise living in the past, but rather drawing on its lessons and warmth. It often appears when reconciliation is possible, when generosity flows naturally, or when you need to remember what once brought you genuine happiness. In creative or emotional work, it signals authenticity emerging from your core self.",
+    "reversed": "Reversed, this card suggests you're struggling to move beyond a memory or person. Nostalgia may have become a trap—clinging to 'the way things were' rather than engaging with what's actually present. The card can indicate blocked communication with someone from your past, unresolved hurt dressed up as sentimentality, or an inability to see a situation clearly because you're filtered through childhood wounds. It may also point to lost innocence or disillusionment. The work here is discernment: distinguishing between healthy remembrance and unhealthy fixation.",
+    "inReading": "In the past position, this card explains formative experiences shaping your current values. In the present, it suggests you're actively engaged with memory or reconnection. In the future, it indicates resolution, reunion, or a return to emotional simplicity. Surrounding cards matter greatly—placed near the Tower, it warns of nostalgia masking denial; near the Ace of Cups, it amplifies emotional renewal. It answers questions about reconciliation, what you've lost, what still matters from your past, and whether reconnection serves your growth.",
+    "summary": "Nostalgic warmth and emotional innocence offer guidance or signal attachment to the past."
+  },
+  "seven-of-cups": {
+    "id": 42,
+    "name": "Seven of Cups",
+    "slug": "seven-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 7,
+    "keywords": [
+      "opportunities",
+      "choices",
+      "wishful thinking",
+      "illusion"
+    ],
+    "upright": "The Seven of Cups shows a figure gazing at seven golden chalices floating in mist, each containing a different prize—wealth, love, power, victory. This card speaks to the abundance of possibilities available to you, but with a crucial catch: not all of them are real or worth pursuing. The mist obscuring the cups signals the card's core tension: you're facing multiple opportunities or desires, yet clarity about which ones genuinely serve you remains elusive. This is wishful thinking territory—where fantasy can masquerade as opportunity. The card asks whether you're chasing what you truly want or what you think you should want. In readings, it often appears when you're scattered across too many paths, dazzled by potential without discerning what's substance and what's illusion.",
+    "reversed": "When reversed, the Seven of Cups shifts from confusion to discernment. The mist clears—you're beginning to see through illusions and recognize which opportunities are genuine versus which were mirages. This can mean making a definitive choice after wavering, or stepping back from false promises that initially seduced you. Sometimes it signals the end of wishful thinking altogether, replaced by pragmatic assessment. However, it can also suggest disillusionment—the letdown when a shimmering possibility reveals itself as empty. The reversed card asks: are you finally seeing clearly, or have you become cynical about your options?",
+    "inReading": "In past positions, Seven of Cups indicates you've been caught between competing desires or distracted by false leads. Present placements suggest you're currently facing multiple pulls on your attention—sort out what's real. Future positions warn of upcoming choices requiring discernment, or promise clarity emerging from confusion. Alongside grounding cards (Pentacles, structured Majors), this card warns against scattered energy. Paired with The Magician, it emphasizes manifesting what you consciously choose rather than chasing fantasies. Works well for questions about decision-making, priorities, and distinguishing genuine opportunity from escapism.",
+    "summary": "Multiple paths shimmer before you—discern which are real before committing your energy."
+  },
+  "eight-of-cups": {
+    "id": 43,
+    "name": "Eight of Cups",
+    "slug": "eight-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 8,
+    "keywords": [
+      "disappointment",
+      "abandonment",
+      "withdrawal",
+      "escapism"
+    ],
+    "upright": "The Eight of Cups shows a figure walking away from eight arranged cups, heading toward distant mountains under moonlight. This card signals a necessary withdrawal from situations that no longer serve you—whether relationships, jobs, or beliefs. The cups left behind represent emotional investment that's become hollow or unfulfilling. This isn't impulsive rejection; it's a conscious choice to seek something more authentic. The card reveals dissatisfaction has reached a tipping point. You're recognizing that staying would mean compromising your integrity or growth. The solitary journey ahead feels lonely but clarifying. Eight of Cups asks whether you're honoring what your gut already knows: some chapters must close before better ones can begin.",
+    "reversed": "Reversed, this card softens its finality. Rather than abandonment, you're hesitating at the threshold—stuck between leaving and staying. There's resistance to letting go, whether from fear, guilt, or unfinished business. Sometimes this signals a premature escape you'll later regret, or alternatively, the difficult decision to stay and work through conflict instead of fleeing. The card can also indicate you're receiving a second chance or discovering renewed meaning in something you nearly discarded. Avoidance and denial may be blocking your path forward.",
+    "inReading": "In the past, Eight of Cups shows a significant departure or loss that shaped your current situation. In the present, it signals you're at a crossroads—the question is whether you'll act on what you already know. In the future, it predicts necessary change or a period of solitary soul-searching. This card sharpens readings about endings, burnout, and major life transitions. Paired with Major Arcana, it emphasizes spiritual or existential shifts. Near other Cups, it highlights emotional exhaustion; near Wands, it suggests creative restlessness. It answers questions about whether to leave, what's blocking fulfillment, and whether walking away is wise.",
+    "summary": "Recognizing what no longer fits and having the courage to move toward authenticity."
+  },
+  "nine-of-cups": {
+    "id": 44,
+    "name": "Nine of Cups",
+    "slug": "nine-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 9,
+    "keywords": [
+      "contentment",
+      "satisfaction",
+      "gratitude",
+      "wish come true"
+    ],
+    "upright": "The Nine of Cups shows a figure seated before nine golden vessels arranged in an arc—a visual representation of abundance already achieved. This card arrives when wishes materialize and contentment becomes tangible. It speaks to satisfaction earned through patience or alignment, revealing a moment where desires transform into reality. The figure's relaxed posture suggests fulfillment isn't distant or theoretical but present and embodied. In readings, this card signals genuine gratification, emotional completion, or the arrival of something long-anticipated. It's less about fantasy and more about the quiet joy of having what you genuinely wanted. This is the card of the wish granted, the goal met, the heart settling into peace.",
+    "reversed": "Reversed, the Nine of Cups loses its certainty. Instead of satisfaction, you encounter impatience—the sense that something promised hasn't arrived, or that fulfillment feels hollow upon arrival. This card can signal unfulfilled expectations, the discovery that what you wanted doesn't satisfy the way you imagined, or difficulty accepting good things when they arrive. There's sometimes an element of self-sabotage here, or the tendency to overlook what's already present while chasing what's missing. It may also indicate complacency mistaken for contentment, or unexamined desires that don't align with your actual needs.",
+    "inReading": "In the past, this card shows fulfilled desires that shaped current circumstances. In the present, it confirms you're in or approaching a satisfying phase. In the future, it promises resolution or wish fulfillment. The Nine of Cups strengthens surrounding positive cards, adding a note of genuine achievement rather than mere hope. Near difficulty cards, it suggests eventual resolution. This card answers questions about whether desires will manifest (yes), whether you'll feel satisfied (affirmatively), and whether the current phase brings peace. It's most reliable when the querent's expectations align with reality.",
+    "summary": "Your wish comes true; satisfaction arrives as tangible, present reality."
+  },
+  "ten-of-cups": {
+    "id": 45,
+    "name": "Ten of Cups",
+    "slug": "ten-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 10,
+    "keywords": [
+      "divine love",
+      "blissful relationships",
+      "harmony",
+      "alignment"
+    ],
+    "upright": "The Ten of Cups depicts a family beneath a rainbow, their arms raised in celebration—a portrait of emotional fulfillment and alignment across all relationships. This card signals that harmony isn't abstract; it's tangible and present. When upright, it reveals a season where your relational world clicks into place. Conflicts resolve, communication flows naturally, and shared values become visible. The rainbow symbolizes divine blessing over human connection—suggesting this contentment carries spiritual weight, not mere luck. This card appears when love, family, friendship, or community reaches its fullest expression. It's the promise that emotional wholeness comes through genuine connection, and that joy multiplies when shared. The Ten represents completion within the cups suit—love's arc has found its destination.",
+    "reversed": "Reversed, the Ten of Cups suggests fractured harmony rather than its absence. Relationships exist but feel incomplete—discord beneath the surface, unmet expectations, or a family dynamic that looks intact publicly but lacks genuine warmth. This card can indicate idealized versions of connection that don't match reality, or the pain of recognizing that a relationship won't deliver the fulfillment you hoped for. Sometimes it signals distance: you're separate from loved ones, isolated from community, or caught between conflicting loyalties. The reversal doesn't promise heartbreak, but it does reveal cracks in the foundation that need acknowledgment before healing can occur.",
+    "inReading": "In past positions, this card shows a foundation of love or family support that shaped you. Present placement indicates you're living within harmony or should be seeking it. Future positions promise emotional alignment ahead. The Ten of Cups strengthens adjacent cards about relationships or home—it affirms their positive trajectory. Paired with challenge cards (Tower, Five of Cups), it can suggest resilience or eventual restoration. Best suited for questions about family health, romantic commitment, community belonging, and long-term relational satisfaction. It rarely appears when someone needs to leave a relationship; instead, it confirms when they should invest deeper.",
+    "summary": "Harmony, love, and shared joy reach their fullest expression and completion."
+  },
+  "page-of-cups": {
+    "id": 46,
+    "name": "Page of Cups",
+    "slug": "page-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 11,
+    "keywords": [
+      "creative opportunities",
+      "intuitive messages",
+      "curiosity",
+      "possibility"
+    ],
+    "upright": "The Page of Cups stands at the water's edge, gazing at a fish emerging from his cup—a symbol of intuitive insight breaking through to conscious awareness. This card signals creative sparks and imaginative possibilities knocking at your door. You're receiving intuitive messages, whether through dreams, hunches, or sudden inspiration that feels fresh and alive. There's genuine curiosity driving you forward, a willingness to explore new emotional or creative territory. The Page embodies openness without the cynicism of experience; you're receptive to what wants to emerge. In readings, this card often indicates artistic inspiration, love messages, or the beginning stages of exploring your own inner world. The fish suggests something valuable surfacing from your unconscious—pay attention to what's trying to get your attention.",
+    "reversed": "When reversed, the Page of Cups suggests creative messages that aren't landing or inspiration that feels blocked. You may be receiving intuitive nudges but dismissing them, or your curiosity is being stifled by doubt and self-criticism. There's a withdrawal from emotional openness—perhaps defensiveness replacing receptivity. Sometimes this indicates immaturity around emotions, avoiding feelings rather than exploring them. The reversed Page can also point to creative ideas that need more development before they're ready, or misjudgment about what's worth pursuing. Unlike the upright's fresh possibilities, this reversal shows stagnation or resistance to the very growth opportunities presenting themselves.",
+    "inReading": "As a present card, the Page of Cups indicates you're in a receptive phase, open to creative or emotional development. In the past, it suggests an inspiration or message that shaped your current direction. As a future card, it promises creative opportunities or important intuitive information arriving soon. Surrounding cards matter significantly: the Page strengthens creative cards (Wands, Swords in creative context) but can feel lost next to heavy cards like the Tower or Five of Pentacles. This card answers questions about creative beginnings, intuitive messages, and whether you should trust your hunches. It's particularly helpful in readings about artistic pursuits, emotional clarity, or upcoming opportunities.",
+    "summary": "Fresh creative inspiration and intuitive messages emerging from within or arriving unexpectedly."
+  },
+  "knight-of-cups": {
+    "id": 47,
+    "name": "Knight of Cups",
+    "slug": "knight-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 12,
+    "keywords": [
+      "creativity",
+      "romance",
+      "charm",
+      "imagination"
+    ],
+    "upright": "The Knight of Cups rides a white horse across calm waters, holding a golden chalice aloft—a figure embodying emotional idealism and creative vision. This card reveals someone (or an energy within you) driven by imagination, artistic sensitivity, and romantic possibility. The Knight isn't reckless; he's a messenger of inspiration, bringing proposals, opportunities, or genuine emotional depth. When upright, this card suggests you're in a phase of following your creative instincts or encountering someone whose charm and emotional intelligence create meaningful connection. It speaks to the courage required to pursue what moves you, whether that's an artistic endeavor, a relationship, or a heartfelt dream. The water beneath the horse indicates emotional flow—you're navigating feelings with grace rather than resistance.",
+    "reversed": "The reversed Knight of Cups loses his direction. Creativity becomes scattered; charm turns manipulative or self-absorbed. This can indicate emotional immaturity, unfulfilled promises, or creative blocks where inspiration feels blocked. The card may also suggest you're receiving insincere flattery or pursuing romantic/creative goals with unrealistic expectations. Sometimes it points to emotional withdrawal—the opposite of the upright's openness. This isn't necessarily destructive; it can mean you need to ground your visions before acting, or recognize when someone's words don't match their actions.",
+    "inReading": "In the past, this card shows creative or romantic foundations that shaped you. In the present, it indicates current emotional currents or creative opportunities unfolding now. In the future, it suggests incoming inspiration, a meaningful encounter, or a creative breakthrough ahead. Surrounding cards matter significantly: next to the Lovers, romantic possibility deepens; with the Eight of Cups, emotional confusion emerges; with creative cards like the Ace of Wands, artistic collaboration flows naturally. This card answers questions about creativity, romantic prospects, emotional sincerity, and whether to follow inspiration.",
+    "summary": "A messenger of romantic possibility and artistic vision carrying genuine emotional depth."
+  },
+  "queen-of-cups": {
+    "id": 48,
+    "name": "Queen of Cups",
+    "slug": "queen-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 13,
+    "keywords": [
+      "compassion",
+      "calm",
+      "comfort",
+      "emotional security"
+    ],
+    "upright": "The Queen of Cups sits enthroned, holding a goblet adorned with handles shaped like angels—a vessel for emotional depth and spiritual nourishment. She represents someone who has mastered their inner world: calm, compassionate, and emotionally secure enough to offer genuine support to others. This card appears when you're accessing your intuition with clarity, or when someone in your life embodies unconditional acceptance. The still water beneath her throne suggests emotional stability, not numbness. She's the therapist, the trusted friend, the parent who listens without judgment. When upright, this card signals emotional maturity, creative flow, and the ability to hold space for complexity. It affirms that you're developing resilience through self-awareness rather than avoidance.",
+    "reversed": "The reversed Queen of Cups suggests emotional overwhelm or withdrawal. Rather than wise compassion, you may be drowning in others' emotions or cutting yourself off entirely to avoid feeling. This can indicate boundary problems—either absorbing too much or becoming cold and dismissive. Emotional intuition becomes clouded; you second-guess your own needs. Codependency patterns may surface, or you might struggle to receive support even when offered. This reversal asks: Are you protecting yourself through numbness? Are you responsible for everyone's feelings but your own? It's not failure—it's a signal to rebuild emotional foundations before pouring from an empty cup.",
+    "inReading": "In the past, this card shows emotional groundwork or a nurturing influence that shaped you. Present position indicates you're in an emotionally stable phase or need to cultivate that stability now. Future placement suggests healing, emotional maturity, or meaningful relationships ahead. Alongside challenging cards, the Queen offers resilience and perspective. Near the Lovers, she deepens emotional intimacy. Next to the Five of Cups, she suggests recovery is possible. This card answers questions about emotional readiness, relationship dynamics, self-care capacity, and whether you're in a place to support others.",
+    "summary": "Emotional maturity and compassionate presence grounded in inner security and calm intuition."
+  },
+  "ace-of-swords": {
+    "id": 50,
+    "name": "Ace of Swords",
+    "slug": "ace-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 1,
+    "keywords": [
+      "breakthrough",
+      "clarity",
+      "sharp mind",
+      "truth"
+    ],
+    "upright": "The Ace of Swords cuts through confusion with a single, piercing truth. In the Rider-Waite-Smith imagery, a hand emerges from clouds holding an upright sword crowned with victory laurels—a moment of sudden clarity breaking through fog. This card signals breakthrough thinking, mental clarity, and the arrival of honest communication. You're accessing sharp insight, perhaps after period of uncertainty. Ideas crystallize. Problems reveal their actual structure beneath layers of emotion or complexity. This is the card of intellectual triumph, of seeing what was previously hidden, of truth that demands acknowledgment. Whether in communication, understanding, or problem-solving, the Ace of Swords indicates you have what you need to cut through to what matters.",
+    "reversed": "Clarity becomes cloudiness. The sword still exists but its point dulls—sharp truths become difficult to articulate or accept. This reversal suggests confusion, miscommunication, or resistance to hard truths. You might be avoiding a necessary conversation, or struggling to think clearly under stress. Sometimes this card indicates that honesty, while needed, hasn't yet arrived. Other times it shows an idea that seemed brilliant loses coherence when examined closely. The reversed Ace doesn't deny truth exists; it indicates the path to it remains blocked or obscured.",
+    "inReading": "In past positions, the Ace of Swords reveals a previous moment of clarity that changed your direction. Present position indicates current mental clarity or breakthrough occurring now. Future placement suggests truth or understanding approaching. This card strengthens nearby cards about communication and decision-making; it clarifies their meaning. It weakens cards about confusion or self-deception. Best for questions about what's really going on, what you need to understand, whether truth will emerge, or what insight you're missing.",
+    "summary": "A sudden breakthrough reveals truth; clarity cuts through confusion."
+  },
+  "two-of-swords": {
+    "id": 51,
+    "name": "Two of Swords",
+    "slug": "two-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 2,
+    "keywords": [
+      "difficult choices",
+      "indecision",
+      "stalemate",
+      "blocked emotions"
+    ],
+    "upright": "The Two of Swords depicts a blindfolded figure holding two swords in perfect balance, unable to see the landscape before them. This card appears when you're caught between competing truths or equally weighted options, neither clearly superior to the other. The blindfold suggests willful avoidance—you may not want to see what choosing requires. This is genuine stalemate: not indecision born from fear alone, but a real impasse where both paths carry valid weight. The card reveals situations where you've temporarily surrendered agency, waiting for external circumstances to break the tie. It speaks to blocked emotions and suppressed information, the cost of maintaining balance through willful ignorance. Resolution requires removing the blindfold, even if what you see proves uncomfortable.",
+    "reversed": "The blindfold lifts, but not always gently. Reversed, this card suggests you're finally seeing the situation clearly—or being forced to. You may be breaking through denial, accepting information you've resisted, or making a choice you've avoided. This isn't necessarily positive; clarity can bring harsh truths. Alternatively, the reversal can indicate you're trapped in indecision without even the dignity of balance—scattered, unable to commit to either path, caught in analysis paralysis rather than careful equilibrium. The stalemate breaks, but what follows depends on whether you're moving toward clarity or into confusion.",
+    "inReading": "In the past, this card shows a decision you deferred or information you deliberately avoided. Present position reveals your current stalemate and the cost of suspension. As a future card, it warns of an approaching choice point unless circumstances shift. The Two of Swords grows heavier beside cards of consequence (Death, Tower) and lighter near clarifying cards (The Sun, clarity-focused cards). It answers: What am I avoiding? What choice am I delaying? What am I unwilling to see? Best in readings about decisions, relationships at crossroads, and situations requiring honest assessment.",
+    "summary": "A difficult choice suspended in balance, waiting for you to truly look."
+  },
+  "three-of-swords": {
+    "id": 52,
+    "name": "Three of Swords",
+    "slug": "three-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 3,
+    "keywords": [
+      "heartbreak",
+      "emotional pain",
+      "sorrow",
+      "grief"
+    ],
+    "upright": "The Three of Swords depicts heartbreak in its rawest form. Three blades pierce a heart against stormy skies—a visual declaration of emotional pain that's impossible to ignore. This card appears when you're experiencing genuine sorrow: a relationship ending, a difficult truth revealed, or grief that demands acknowledgment. The Rider-Waite imagery shows no escape or softening; the pain is central and unavoidable. Yet this card's presence in a reading serves an important function: it validates that what you're feeling matters. The Three of Swords asks you to stop minimizing your hurt and instead move through it directly. This is the card of necessary suffering—the kind that cracks you open rather than hardens you. It signals a difficult passage, but passages end.",
+    "reversed": "Reversed, this card suggests pain beginning to lift or becoming bearable. The sharp edges dull slightly—you're moving from acute crisis into something more manageable, though not yet resolved. This can indicate emerging from grief, choosing to release resentment, or discovering that a situation causing heartache is becoming clearer. Sometimes it points to suppressed sorrow finally surfacing so it can be processed. The reversal doesn't promise happiness yet, but it does signal movement. You're either beginning to heal, finding perspective, or preparing to let something go. The storm hasn't entirely passed, but you're learning to steady yourself within it.",
+    "inReading": "In the past, this card explains current pain's origins—a wound that still shapes you. Present position means you're in active heartbreak requiring honest acknowledgment rather than distraction. Future placement warns of incoming difficulty, giving you time to prepare emotionally. Surrounded by supportive cards (cups, stars), it softens into temporary hardship. Beside other swords cards, it intensifies conflict or mental anguish. This card answers questions about relationship endings, grief, and why something hurts. It rarely appears for small disappointments—when it shows, something genuine requires your emotional attention.",
+    "summary": "Heartbreak and emotional pain demanding acknowledgment and passage through grief."
+  },
+  "four-of-swords": {
+    "id": 53,
+    "name": "Four of Swords",
+    "slug": "four-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 4,
+    "keywords": [
+      "rest",
+      "relaxation",
+      "meditation",
+      "contemplation"
+    ],
+    "upright": "The Four of Swords depicts a figure in repose, lying in stillness while swords hang above—a visual reminder that rest exists within conflict. This card signals a necessary pause in struggle. You're not giving up; you're recharging. The Rider-Waite imagery shows a tomb-like setting, suggesting this rest is intentional and protected, a deliberate withdrawal from mental turbulence. When this card appears, you need recuperation from stress, anxiety, or exhaustion. It validates taking time away from problems that won't resolve through force. This is meditation, sleep, or simple mental quiet. The card asks: What would happen if you stopped trying to solve everything right now? Often appearing after difficulty, it promises that clarity returns when you allow yourself genuine rest.",
+    "reversed": "Reversed, the Four of Swords suggests rest isn't happening—you're restless, unable to settle, or unwilling to step back when you should. This can indicate prolonged stress without reprieve, insomnia, racing thoughts, or refusing to pause even when exhausted. Sometimes it signals you're avoiding necessary action by hiding away rather than actually resting. The distinction matters: are you protecting yourself through retreat, or are you stuck in limbo? Reversed can also reveal that someone around you isn't respecting boundaries or that external pressure won't allow the peace you need. The tension remains unresolved because the pause never properly occurred.",
+    "inReading": "In the past, this card shows you've recovered from something difficult. In the present, it recommends you take that pause now—today. In the future, it promises respite is coming. The Four of Swords works well alongside cards of conflict (Fives, Mars cards) to suggest a ceasefire or nearby recovery. Next to The Hermit, it deepens contemplative work. Reversed, it flags burnout or delayed healing. Best for questions about stress management, timing of action, and permission-seeking around self-care.",
+    "summary": "Rest now; the struggle will still be there when you're ready."
+  },
+  "five-of-swords": {
+    "id": 54,
+    "name": "Five of Swords",
+    "slug": "five-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 5,
+    "keywords": [
+      "conflict",
+      "disagreements",
+      "competition",
+      "defeat"
+    ],
+    "upright": "The Five of Swords depicts a figure walking away from a battlefield, swords in hand, while others retreat in defeat. This card signals conflict that has left emotional wreckage—arguments won through manipulation, competitions decided unfairly, or victories that taste hollow. It reveals situations where winning came at too high a cost, where pride or stubbornness prevented reconciliation, or where someone prioritized being right over being connected. In the Rider-Waite imagery, the stormy sky reflects the turbulent aftermath. This card often appears when you're caught in an unresolved disagreement, facing the consequences of harsh words, or recognizing that a conflict resolved your way has actually isolated you. It's less about the battle itself and more about what remains when the fighting stops—regret, disconnection, and the realization that some victories diminish everyone involved.",
+    "reversed": "Reversed, the Five of Swords suggests movement toward resolution or a willingness to step back from pointless conflict. Someone may be choosing peace over winning, extending an olive branch, or recognizing that continued fighting serves no one. This can also indicate the worst of the conflict has passed and healing is beginning. However, it can sometimes mean unresolved tension is being swept under the rug rather than genuinely addressed—a truce without actual reconciliation. The card may also reveal that you're finally seeing a situation clearly after the fog of disagreement lifts.",
+    "inReading": "In the past, this card shows old wounds or conflicts that shaped current relationship patterns. In the present, it signals active conflict requiring attention before it escalates further. In the future, it warns of potential fallout if current disagreements continue unaddressed. Surrounded by healing cards (like the Star or Temperance), it suggests conflict leading to growth. Near relationship cards, it points to partnership strain. This card answers questions about why connections feel fractured, whether arguments can be resolved, and what price winning an argument carries.",
+    "summary": "Conflict resolved through force or stubbornness leaves everyone diminished."
+  },
+  "six-of-swords": {
+    "id": 55,
+    "name": "Six of Swords",
+    "slug": "six-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 6,
+    "keywords": [
+      "transition",
+      "change",
+      "rite of passage",
+      "releasing baggage"
+    ],
+    "upright": "The Six of Swords depicts a figure being ferried across water, leaving turbulent shores behind. This card signals necessary movement—a transition you're making or need to make. It's not about running away, but about releasing what no longer serves you and moving toward calmer waters. The swords in the boat represent mental clarity emerging from confusion; you're thinking your way through a difficult passage. This card appears when you're in the liminal space between chapters, when hard decisions have been made and action follows. It acknowledges that change is uncomfortable but essential, and that moving forward—even slowly—is itself a form of healing.",
+    "reversed": "When reversed, the Six of Swords suggests you're stuck in transition. You may be resisting necessary change, clinging to a situation you've outgrown, or unable to move past a difficult period despite recognizing its time to go. Sometimes this card indicates delayed departure—the boat hasn't left the shore yet. It can also mean the transition you're experiencing is chaotic or poorly planned, lacking the quiet purposefulness of the upright version. There's tension between knowing you need to move forward and feeling paralyzed by uncertainty about what comes next.",
+    "inReading": "In the past, this card shows you've survived a significant transition and learned from it. In the present, it indicates you're actively moving through change—trust the process. In the future, it promises relief and forward momentum after current difficulties. The Six of Swords works well alongside cards of closure (Death, Five of Cups) to show healthy progression. Near cards of stability (Hermit, Four of Pentacles) it suggests reaching safe harbor. It answers questions about timing (when to leave), direction (moving away from pain), and readiness (you're more prepared than you think).",
+    "summary": "Moving through necessary change toward calmer, clearer ground."
+  },
+  "seven-of-swords": {
+    "id": 56,
+    "name": "Seven of Swords",
+    "slug": "seven-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 7,
+    "keywords": [
+      "betrayal",
+      "deception",
+      "getting away with something",
+      "strategy"
+    ],
+    "upright": "The Seven of Swords shows a figure sneaking away with stolen blades, looking back nervously over their shoulder. This card speaks to calculated deception—not impulsive dishonesty, but strategy disguised as cunning. It appears when someone is getting away with something, operating in shadows, or deliberately withholding truth. The card doesn't judge; it observes the gap between appearance and reality. In readings, it warns of hidden agendas, whether yours or others'. It might reveal that you're taking shortcuts, keeping secrets, or noticing inconsistencies in someone's story. The Swords suit's mental clarity here becomes manipulation: using intellect to obscure rather than illuminate. This card asks whether the deception serves you long-term or merely postpones reckoning.",
+    "reversed": "Reversed, the Seven of Swords suggests deception unraveling or being caught mid-scheme. The figure can no longer slip away unnoticed. This can mean confession, exposure, or the exhaustion of maintaining a lie. It sometimes indicates choosing honesty over strategy, or recognizing that shortcuts cost more than they save. The reversed card may also show someone finally seeing through another's tricks. There's relief here alongside consequence—the weight of secrecy lifted, though truth comes with its own discomfort. This card can point to transparency winning out, or to the moment when concealment becomes impossible.",
+    "inReading": "In the past, this card reveals hidden actions or old deceptions shaping current circumstances. Present position suggests active concealment or awareness of someone else's game. Future placement warns of exposure or a moment when truth surfaces. The Seven of Swords strengthens near cards of accountability (Justice, The Devil) and shifts meaning near cards of openness (The Hermit reversed, Strength). It answers: What am I—or others—not saying? Where is strategy becoming dishonesty? What truth needs uncovering? Surrounding cards determine whether this signals danger or necessary discretion.",
+    "summary": "Calculated deception unfolding—truth hidden beneath a surface of strategy and cunning."
+  },
+  "eight-of-swords": {
+    "id": 57,
+    "name": "Eight of Swords",
+    "slug": "eight-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 8,
+    "keywords": [
+      "negative thoughts",
+      "self-imposed restriction",
+      "imprisonment",
+      "victim mentality"
+    ],
+    "upright": "The Eight of Swords shows a blindfolded figure surrounded by eight swords, seemingly trapped. This card appears when you're caught in mental confinement—not by external circumstances, but by beliefs about what's possible. The blindfold is key: you cannot see the ways out because you've accepted a narrative of powerlessness. You might feel victimized by situations, ruminate obsessively, or convince yourself that your options don't exist. Often, the prison is more psychological than real. This card reveals the moment before liberation, when you're still identifying with restriction rather than recognizing your agency. It speaks to anxiety loops, self-sabotage, and the stories you tell yourself about your limitations.",
+    "reversed": "When reversed, the blindfold begins to slip. You're recognizing that the cage was never as solid as it seemed, and mental clarity is returning. This signals breaking free from victim thinking—not through external rescue, but through your own shift in perspective. You're reclaiming agency and questioning the beliefs that confined you. However, this isn't instant freedom. Reversed, this card can indicate the messy process of untangling yourself: discomfort as you adjust to new possibilities, or lingering self-doubt even as you move forward. It asks whether you're truly ready to step outside.",
+    "inReading": "In the past, this card shows where self-imposed limitations began—a mental pattern or belief system you've carried. In the present, it signals you're still engaged in that restrictive thinking and need awareness of it. In the future, it warns that current mindset patterns will compound unless interrupted. Alongside challenge cards (Tower, Three of Swords), it softens the blow—suggesting mental resistance rather than concrete disaster. Near clarity cards (Hermit, Star), it emphasizes the breakthrough moment. This card answers: What am I believing about myself that isn't true? Where am I playing smaller than I am?",
+    "summary": "Mental confinement masquerading as circumstance; the cage you've built from thoughts."
+  },
+  "nine-of-swords": {
+    "id": 58,
+    "name": "Nine of Swords",
+    "slug": "nine-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 9,
+    "keywords": [
+      "anxiety",
+      "worry",
+      "fear",
+      "depression"
+    ],
+    "upright": "The Nine of Swords shows a figure sitting upright in bed, hands pressed to their face, while nine swords hang mounted on the wall behind them. This card represents the mental anguish that keeps you awake at night—the anxious thoughts that spiral and multiply in darkness. It's the difference between actual danger and perceived danger; the threat living in your mind rather than your circumstances. When this card appears, you're likely caught in a cycle of worry, catastrophizing, or rumination. The Swords suit governs thought and communication, and at nine—the card before completion—your mind has exhausted itself. This isn't about external crisis but internal turmoil. The card asks: Are your fears based on what's actually happening, or on what you fear might happen?",
+    "reversed": "Reversed, the Nine of Swords suggests the grip of anxiety is loosening. You're beginning to see your worries more clearly, recognizing that many of your fears haven't materialized. This card can indicate moving past insomnia, finding perspective, or choosing to redirect obsessive thinking patterns. However, it's not a clean resolution—more often it shows you're in the process of learning to manage distress rather than eliminating it entirely. Sometimes it warns against suppressing legitimate concerns. The shift is toward agency: you're reclaiming your mind rather than being controlled by it.",
+    "inReading": "In the past, this card reveals previous anxiety or a period of mental struggle that shaped current patterns. In the present, it demands attention to your thought spirals and asks whether worry is serving you. In the future, it's a warning to address anxiety now before it intensifies, or occasionally, reassurance that anxiety will fade. Surrounding cards matter greatly—a reversed card nearby suggests relief; harsh cards reinforce the cycle. This card answers: What am I afraid of? What thoughts keep me stuck? Is my fear proportionate to reality?",
+    "summary": "Anxiety and sleepless worry—the mind's prison before dawn breaks."
+  },
+  "ten-of-swords": {
+    "id": 59,
+    "name": "Ten of Swords",
+    "slug": "ten-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 10,
+    "keywords": [
+      "painful endings",
+      "deep wounds",
+      "betrayal",
+      "loss"
+    ],
+    "upright": "The Ten of Swords depicts a figure pierced by ten blades, lying face-down beneath a dark sky. This card signals the completion of a painful cycle—a relationship ending, a betrayal coming to light, or a loss you can no longer deny. The imagery isn't random cruelty; it's finality. This card appears when you've reached the bottom of something, when the worst has already happened. What makes it bearable is that completion itself: you're not falling anymore, you've landed. The Ten of Swords asks you to acknowledge what's broken so you can stop trying to fix it. Grief, anger, and exhaustion are valid here. This is the card that says sometimes things end, and that's the whole story.",
+    "reversed": "Reversed, the Ten of Swords suggests the worst has passed or is passing. You're beginning to pull yourself up from rock bottom, though slowly. This can also indicate that you've been catastrophizing—the situation isn't as dire as you feared, or you're finally seeing past your own despair. Sometimes this card reversed means you're releasing victim narratives or stopping the cycle of self-inflicted wounds. It's not recovery yet, but it's the moment you decide recovery is possible. You're either genuinely healing or ready to stop the bleeding and face tomorrow.",
+    "inReading": "In the past, this card explains a significant loss or betrayal that shaped your current circumstance. In the present, it indicates you're living through or freshly confronting something painful that demands acceptance. In the future position, it warns of a difficult ending or suggests a necessary completion. Surrounded by healing cards (The Sun, The Hermit), Ten of Swords becomes a doorway. Paired with cards of stagnation, it suggests you're stuck in this pain and need to move through it. This card answers questions about what's broken, whether something will end, and how to face loss.",
+    "summary": "A painful ending that brings closure and the clarity that comes with hitting bottom."
+  },
+  "page-of-swords": {
+    "id": 60,
+    "name": "Page of Swords",
+    "slug": "page-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 11,
+    "keywords": [
+      "new ideas",
+      "curiosity",
+      "thirst for knowledge",
+      "new communication"
+    ],
+    "upright": "The Page of Swords depicts a young figure standing alert, blade raised toward a cloudy sky—embodying intellectual awakening and the hunger for truth. This card signals fresh perspectives emerging in your life, whether through new learning, communication, or a shift in how you see a situation. The Page's youthful energy suggests curiosity without yet having the weight of experience; there's an eagerness to question, investigate, and gather information. When upright, this card reveals a mind in motion—you're asking better questions, noticing details others miss, or beginning to articulate something you've long felt. It often appears when you're at the threshold of understanding, gathering evidence before committing to action, or engaging in honest dialogue that clarifies confusion.",
+    "reversed": "Reversed, the Page of Swords becomes scattered rather than sharp. Where the upright card seeks answers, the reversed version struggles with unfocused thinking, half-finished research, or communication that confuses rather than clarifies. There's an impulsive quality here—speaking without thinking, chasing ideas without depth, or creating drama through careless words. This card can also indicate being on the receiving end of gossip, misinformation, or arguments that go nowhere. The intellectual energy hasn't disappeared, but it's turned inward as anxiety or outward as restlessness, without productive direction.",
+    "inReading": "In past positions, the Page of Swords shows where curiosity or communication shaped recent events. Present placement suggests you're actively gathering information or in a learning phase right now. Future position indicates new knowledge or conversations arriving. This card pairs well with Hermit (deeper research) or The Lovers (important dialogue). It struggles alongside the Nine of Swords (anxiety blocking clarity). Best for questions about learning, communication, starting investigations, or understanding someone's perspective.",
+    "summary": "A mind awakening to new questions, truths, and ways of seeing."
+  },
+  "knight-of-swords": {
+    "id": 61,
+    "name": "Knight of Swords",
+    "slug": "knight-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 12,
+    "keywords": [
+      "ambitious",
+      "action-oriented",
+      "driven to succeed",
+      "fast thinking"
+    ],
+    "upright": "The Knight of Swords gallops forward with sword raised, cutting through confusion with sharp intellect and relentless momentum. This card embodies the drive to win through clarity, quick wit, and decisive action. When it appears upright, you're in a phase of intellectual mastery—your mind is sharp, your arguments compelling, your strategy sound. This Knight reveals someone (or an aspect of yourself) who asks hard questions, speaks truth directly, and refuses to accept surface-level answers. The restless energy here is purposeful: you're moving toward goals with speed and precision. Watch for the impulse to charge ahead without considering consequences; this card's greatest strength—cutting through—can also wound if wielded without awareness.",
+    "reversed": "The reversed Knight loses direction. Sharp thinking becomes scattered thinking; ambition turns into restless agitation or argumentativeness for its own sake. This card reversed often signals getting caught in mental loops, overthinking without action, or using intellect as a weapon defensively rather than productively. You might be rushing to conclusions, talking over others, or pushing an agenda that isn't truly yours. There's also a gentler reading: exhaustion from pushing too hard, burnout from constant mental intensity, or a needed pause in the race. The reversal asks whether your drive is authentic or borrowed—whether you're moving toward something or away from something else.",
+    "inReading": "In the past, this card shows recent quick thinking or a period of intellectual growth that shaped current circumstances. Present position reveals active mental work, strategic moves, or an important conversation happening now. Future placement suggests momentum building—expect fast developments and the need for sharp responses. Paired with Cups cards, the Knight's intensity softens into persuasion or passionate advocacy. Next to Pentacles, it indicates strategic business moves. Alongside other Swords, it amplifies conflict or intense debate. This card answers questions about ambition, communication strategy, intellectual capacity, and whether to move fast or slow down.",
+    "summary": "Intellectual ambition in motion—sharp, driven, cutting through to truth with speed and purpose."
+  },
+  "queen-of-swords": {
+    "id": 62,
+    "name": "Queen of Swords",
+    "slug": "queen-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 13,
+    "keywords": [
+      "independent",
+      "unbiased judgement",
+      "clear boundaries",
+      "direct communication"
+    ],
+    "upright": "The Queen of Swords embodies intellectual clarity and emotional independence. Seated on her throne with sword raised high, she represents someone who sees situations with unflinching honesty. This card appears when you need to trust your discernment and speak your truth, even when it's uncomfortable. She's unswayed by sentiment or social pressure—her boundaries are firm and her judgment sound. In readings, she signals a time to think critically, communicate directly, and rely on your own understanding rather than others' opinions. This is about cutting through confusion and refusing to accept half-truths. The Queen of Swords reminds you that clarity often requires some distance, and that protecting your mental space isn't coldness—it's wisdom.",
+    "reversed": "When reversed, the Queen of Swords' clarity becomes clouded. You might be caught in overthinking, spinning scenarios endlessly without reaching resolution. Alternatively, this can indicate harsh communication—words used as weapons rather than tools for understanding. There's a risk of isolation taken too far, of pushing people away under the guise of independence. Sometimes this card suggests you're being swayed by others' opinions despite your better judgment, or struggling to express what you actually think. The reversed Queen asks: Are you thinking clearly, or just thinking in circles? Are you protecting boundaries or building walls?",
+    "inReading": "In the past, this card shows a period when you learned to trust your own mind. In the present, it signals a need for honest assessment and direct communication right now. As a future card, it promises clarity and the ability to make sound decisions ahead. The Queen of Swords strengthens nearby cards about truth-telling (Hermit, Eight of Swords) and can soften harsher cards by introducing objectivity. She answers questions about whether you're thinking clearly, what your authentic opinion is, and whether you should speak up. She's less about emotions and more about what's actually true.",
+    "summary": "Clear judgment and honest communication spoken without apology or fear."
+  },
+  "king-of-swords": {
+    "id": 63,
+    "name": "King of Swords",
+    "slug": "king-of-swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 14,
+    "keywords": [
+      "mental clarity",
+      "intellectual power",
+      "authority",
+      "truth"
+    ],
+    "upright": "The King of Swords embodies intellectual mastery and clear thinking. In the Rider-Waite-Smith deck, he sits upright on his throne, sword held high, with clouds swirling behind him—symbolizing thoughts in motion and mental clarity achieved through discipline. This card appears when you've developed sharp analytical skills or need to exercise them. It represents a person of authority grounded in logic, fairness, and truth-seeking. You're either embodying this energy yourself or encountering someone who operates from pure reason and direct communication. The King of Swords rewards those willing to cut through confusion, ask difficult questions, and speak honestly. This is intellectual power married to responsibility—the ability to see clearly and communicate what you've seen, even when it's uncomfortable.",
+    "reversed": "When reversed, the King of Swords loses his grounding. Intellectual power becomes rigid dogmatism, or sharp thinking turns into manipulation through words. This card can signal someone using logic as a weapon, twisting facts to serve themselves, or becoming so caught in abstract thinking they've lost touch with human reality. It may also indicate mental confusion disguised as certainty, or brilliant ideas that remain unexpressed due to self-doubt. The reversed King suggests overthinking without wisdom, or communication that cuts without purpose. Sometimes it points to intellectual arrogance—confusing cleverness with actual understanding.",
+    "inReading": "As a past card, the King of Swords shows how clarity or a logical approach shaped your situation. In the present, it suggests you're in a mental clarity phase or need to exercise objectivity. As a future card, clear thinking and honest communication will resolve matters. Positioned near relationship cards, it can indicate communication issues or the need for frank discussion. Near emotional cards, it warns against letting intellect override feeling. The King of Swords answers questions about decisions, truth, and how to think through problems strategically.",
+    "summary": "Mental clarity, intellectual authority, and truth spoken with precision and responsibility."
+  },
+  "ace-of-pentacles": {
+    "id": 64,
+    "name": "Ace of Pentacles",
+    "slug": "ace-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 1,
+    "keywords": [
+      "new financial opportunity",
+      "prosperity",
+      "abundance",
+      "security"
+    ],
+    "upright": "The Ace of Pentacles shows a hand emerging from clouds, offering a golden coin inscribed with the pentacle symbol. This is the universe presenting opportunity directly to you. The card signals a genuine financial opening—a job offer, inheritance, investment return, or business deal worth pursuing. Unlike vague promises, this arrival feels concrete and timely. The lush garden below symbolizes fertile ground; your effort will have real returns. This card appears when doors open because conditions align, not through wishful thinking. It asks: are you ready to receive? The appearance of an Ace means this is a beginning, a seed being planted. Your job is to tend it carefully and watch it grow into lasting security and abundance.",
+    "reversed": "Reversed, the Ace loses its certainty. The opportunity exists but feels blocked or missed—timing is off, details don't quite work, or you hesitate at the crucial moment. Sometimes this reflects missed chances due to fear or distraction. Other times the offer itself is incomplete; terms are unclear or something feels unstable beneath the surface. The card can also signal you're not yet ready to receive—you lack the foundation, knowledge, or confidence to handle what's offered. This isn't permanent failure, just a delay. The reversed Ace warns against rushing into financial decisions without full clarity. It calls for patience, asking deeper questions, and waiting for conditions to fully align before committing.",
+    "inReading": "In the past, this card shows you've already received key opportunities or built financial foundations that matter today. In the present, it's announcing arrival—something real is happening now, whether you've noticed it yet. In the future, it promises incoming opportunity and improved circumstances. Surrounding cards matter greatly: placement near obstacles cards suggests delays; next to confirmations (like Tens or court cards) strengthens the promise. The Ace works best answering questions about money, career timing, and whether a specific offer should be taken. It rarely appears alongside major hardship—its presence typically confirms positive momentum is genuine and worth acting on.",
+    "summary": "A genuine financial opportunity arrives; the question is whether you're ready to receive it."
+  },
+  "two-of-pentacles": {
+    "id": 65,
+    "name": "Two of Pentacles",
+    "slug": "two-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 2,
+    "keywords": [
+      "balance",
+      "adaptability",
+      "time management",
+      "prioritisation"
+    ],
+    "upright": "The Two of Pentacles shows a figure juggling two coins while dancing, with a ship moving steadily in the background. This card speaks to the art of keeping multiple priorities in motion without dropping them. You're managing competing demands—work and personal life, finances and health, different relationships—with surprising grace. The infinity loop formed by the coins suggests these aren't temporary obligations but ongoing rhythms you're learning to navigate. This card appears when you've found your footing amid complexity, or when you're being asked to trust your ability to adapt. The key isn't perfection; it's flexibility and staying present enough to catch what matters when circumstances shift.",
+    "reversed": "When reversed, the juggling act falls apart. You're either overwhelmed by too many commitments, spreading yourself so thin that nothing gets adequate attention, or you're procrastinating and avoiding decisions altogether. This reversal can signal poor time management, scattered energy, or the refusal to prioritize what actually matters. Sometimes it means you've taken on obligations that aren't truly yours to carry, or you're resisting the reality that you can't do everything. The card asks: what are you refusing to let drop, and at what cost?",
+    "inReading": "In the past, this card shows a period where you successfully juggled demands or learned adaptability. Present-position readings reveal current balancing acts—what's requiring your attention now. Future placement suggests you'll need or develop these skills ahead. With heavy cards nearby, Two of Pentacles can indicate relief or necessary perspective-shifting. Near cards about stagnation, it suggests needed movement. This card answers questions about time management, work-life balance, and whether you can handle upcoming changes. It rarely predicts hard outcomes—instead, it reflects your capacity to stay flexible within them.",
+    "summary": "Juggling competing demands with grace; adaptability and balance in motion."
+  },
+  "three-of-pentacles": {
+    "id": 66,
+    "name": "Three of Pentacles",
+    "slug": "three-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 3,
+    "keywords": [
+      "teamwork",
+      "collaboration",
+      "learning",
+      "implementation"
+    ],
+    "upright": "The Three of Pentacles shows skilled craftspeople collaborating on a cathedral, each contributing their expertise toward a shared vision. This card reveals a moment of productive teamwork, where individual talents combine into something greater than any one person could achieve alone. You're operating within a capable group—whether at work, in a creative project, or within a learning community. The card signals that recognition and respect flow naturally here; your efforts are valued. Mastery is being built through practical collaboration, not isolation. This is a time when mentorship matters, feedback improves your work, and collective momentum carries you forward. The card suggests that success now depends on staying engaged with others, valuing different perspectives, and committing to the shared outcome.",
+    "reversed": "When reversed, the Three of Pentacles suggests collaboration has fractured or coordination has broken down. You may be working in isolation when partnership would serve you better, or experiencing miscommunication within a group that once functioned well. There's a sense of misalignment—different people pulling in different directions, or effort going unrecognized. Sometimes this card reversed points to a lack of skill or readiness; you're not yet prepared for the task at hand, or you're avoiding the learning curve required. Pride or ego may be blocking genuine teamwork. The reversal can also indicate that you're bearing too much responsibility alone when you should be delegating or asking for support.",
+    "inReading": "In the past, this card shows collaborative success or a formative learning period that shaped your skills. Present position indicates current teamwork is strong and productive, or that you need to engage more actively with your group. As a future outcome, it promises successful completion through collective effort and continued development of your abilities. The Three of Pentacles works well alongside cards of achievement (Tens) and other Threes, amplifying collaborative success. Paired with difficult cards, it suggests that cooperation could resolve current challenges. It answers questions about work environments, group projects, learning situations, and whether partnerships will succeed.",
+    "summary": "Collaborative effort builds mastery; your individual contribution matters within the group."
+  },
+  "four-of-pentacles": {
+    "id": 67,
+    "name": "Four of Pentacles",
+    "slug": "four-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 4,
+    "keywords": [
+      "saving money",
+      "security",
+      "conservatism",
+      "scarcity"
+    ],
+    "upright": "The Four of Pentacles depicts a figure clutching coins and pentacles with white-knuckled intensity, sitting rigidly atop a locked strongbox. This card reveals the impulse to hold tight—to money, possessions, control, or even relationships. It speaks to financial caution and the legitimate desire for stability, but also warns of scarcity mindset. When this card appears, you're being shown where fear is driving your decisions. You may be saving wisely, but you're also potentially blocking abundance by refusing to invest, share, or take calculated risks. The rigidity in the figure's posture mirrors emotional constriction. This card asks: Are you protecting yourself, or are you imprisoning yourself? Security is valid; stagnation is not.",
+    "reversed": "Reversed, the Four of Pentacles loosens its grip. The scarcity mindset begins to crack, revealing new possibilities for generosity, investment, and flow. This can mean releasing financial anxiety enough to take a necessary risk—starting a business, buying a home, or donating to a cause. It may also signal recklessness or loss of control if surrounding cards are cautionary. The reversal doesn't promise wealth; it promises movement. You're learning that security doesn't require paralysis, that sharing doesn't deplete you, and that some abundance requires letting go of what you've been white-knuckling.",
+    "inReading": "In the past, this card explains the roots of current financial habits or trust issues. In the present, it diagnoses stagnation—you're holding back where forward motion is possible. In the future, it warns of consequences if you don't loosen your grip, or confirms that caution will pay off if surrounding cards support abundance. This card sharpens readings about money, boundaries, and risk. Near Major Arcana like The Hermit, it suggests isolation through self-protection. Near The Fool or Wheel of Fortune, tension emerges between safety and necessary change.",
+    "summary": "Holding on so tightly that you forget why security matters in the first place."
+  },
+  "five-of-pentacles": {
+    "id": 68,
+    "name": "Five of Pentacles",
+    "slug": "five-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 5,
+    "keywords": [
+      "financial loss",
+      "poverty",
+      "lack mindset",
+      "isolation"
+    ],
+    "upright": "The Five of Pentacles shows two figures trudging through snow past a lit window—a powerful image of exclusion and hardship. This card appears when material loss or financial strain is present, but its deeper message centers on *feeling* abandoned by the system or community. You may be experiencing genuine lack, or simply a scarcity mindset that makes abundance feel impossible to access. The card often reveals how isolation intensifies struggle; when we believe no one will help, we stop asking. This is a card of hitting bottom, yes, but also of recognizing where support exists—whether through community resources, inner resilience, or a willingness to accept help you've previously rejected.",
+    "reversed": "When reversed, this card signals recovery in motion rather than instant relief. You're beginning to see that the hardship has boundaries—it won't last forever. The isolation lifts as you reconnect with others or discover resources you didn't know were available. Reversed, it often suggests that the worst has passed, though material recovery may still be gradual. Sometimes it points to releasing the shame or victim narrative that kept you stuck; you're moving from 'I have nothing' to 'I'm rebuilding.' It can also indicate that your perceived lack was partly mindset rather than reality.",
+    "inReading": "In the past, this card reveals where current scarcity thinking originated—often a real loss or family story about lack. Present position shows active struggle or isolation; pay attention to whether it's material or emotional. In future spreads, it warns of potential hardship unless patterns shift, or indicates you're moving through a necessary difficult phase. It works well with cards of support (The Hermit, community cards) to show help is available. Ask this card: Where am I isolating myself? What resources am I overlooking? What belief about lack controls me?",
+    "summary": "Financial hardship and isolation reveal where support and resilience are needed most."
+  },
+  "six-of-pentacles": {
+    "id": 69,
+    "name": "Six of Pentacles",
+    "slug": "six-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 6,
+    "keywords": [
+      "giving",
+      "receiving",
+      "sharing wealth",
+      "generosity"
+    ],
+    "upright": "The Six of Pentacles depicts a merchant or wealthy figure distributing coins to those in need, suspended in perfect balance. This card reveals a moment of genuine generosity—not performative charity, but authentic sharing of resources. When it appears upright, you're either actively giving from abundance or receiving support that arrives without strings attached. The scales in the card's imagery emphasize fairness: the exchange is equitable, the giver undiminished by their generosity. This card often points to a cycle of circulation rather than hoarding. Whether you're the giver or receiver, the message is one of trust in reciprocity. Financial stability allows for kindness, and kindness strengthens community bonds. The Six of Pentacles asks: are you sharing your gifts, or are you ready to accept help?",
+    "reversed": "When reversed, generosity becomes conditional or stalled. The scales tip out of balance—giving might feel obligatory, resentful, or calculated. You may be over-extending yourself financially while others take advantage, or conversely, withholding support out of fear or bitterness. This card can also signal receiving gifts with hidden expectations attached, or struggling to accept help due to pride. Sometimes it simply indicates resources aren't flowing freely right now; abundance feels blocked. The reversal asks you to examine the terms of exchange: Is generosity becoming manipulation? Are you giving to the wrong people?",
+    "inReading": "In the past, Six of Pentacles suggests a period when you gave generously or received crucial support. In the present, it indicates current giving/receiving dynamics or an opportunity to share resources. In the future, it points toward cycles of reciprocity unfolding. This card works well alongside The Hermit (sharing wisdom) or The Wheel of Fortune (abundance cycling). In financial readings, it clarifies that money is meant to move. When paired with challenging cards, it softens outcomes by introducing help from unexpected sources.",
+    "summary": "Generosity in balance, resources flowing freely between giver and receiver."
+  },
+  "seven-of-pentacles": {
+    "id": 70,
+    "name": "Seven of Pentacles",
+    "slug": "seven-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 7,
+    "keywords": [
+      "long-term view",
+      "sustainable results",
+      "perseverance",
+      "investment"
+    ],
+    "upright": "The Seven of Pentacles shows a figure pausing to assess their growing garden, tools resting nearby. This card reflects the reality of long-term effort—you're invested in something meaningful, and the work is paying off, but slowly. It's not about instant gratification; it's about trusting the process. When this card appears, you're at a checkpoint moment: evaluating whether your energy is going toward something worth sustaining. The card asks whether your current investment—time, money, emotional labor—aligns with your values and vision. There's patience here, but also intelligent discernment. You're learning that real growth requires tending, not abandoning projects when results don't arrive immediately. This is the card of the gardener, not the gambler.",
+    "reversed": "Reversed, the Seven of Pentacles suggests you may be losing faith in your efforts or abandoning something before it matures. This can indicate frustration with slow progress, burnout, or a sudden shift away from a project that deserves more time. Sometimes it signals poor planning—you're investing without clear strategy or ROI. Alternatively, this reversal can mean you're finally releasing something that wasn't worth the effort all along. The key difference from upright: you're making a decision (conscious or not) rather than thoughtfully pausing. Discernment becomes critical here. Are you quitting too soon, or finally recognizing a dead end?",
+    "inReading": "In the past, this card shows you've built something solid through patience. In the present, it asks: are you still committed? In the future, it suggests rewards are coming if you maintain focus. This card pairs well with Cups cards (emotional investment) and warns against rushed Wands energy. It answers questions about whether to keep going, if your efforts will pay off, and what needs tending in your life. Surrounding cards clarify whether patience is wisdom or procrastination.",
+    "summary": "Pause to assess what you've planted; the harvest requires continued attention."
+  },
+  "eight-of-pentacles": {
+    "id": 71,
+    "name": "Eight of Pentacles",
+    "slug": "eight-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 8,
+    "keywords": [
+      "apprenticeship",
+      "repetitive tasks",
+      "mastery",
+      "skill development"
+    ],
+    "upright": "The Eight of Pentacles shows a young apprentice focused intently on crafting pentacles, each one receiving careful attention. This card represents deliberate skill-building through repetition and dedication. When it appears, you're in a phase of active learning—whether formal training, deliberate practice, or mastering a craft. The Eight of Pentacles suggests progress isn't accidental; it comes from showing up consistently and refining your technique. This card often signals apprenticeship, vocational development, or the moment when raw talent transforms into genuine competence. The figure's solitary focus indicates this work requires concentration and patience. You're building something lasting through disciplined effort, and the results will reflect the quality of attention you're investing now.",
+    "reversed": "Reversed, the Eight of Pentacles suggests skill development has stalled or become unfocused. You might be going through the motions without real growth, practicing without purpose, or avoiding the deeper work mastery demands. This can also indicate frustration with slow progress, impatience with the learning curve, or spreading yourself too thin across multiple projects. Sometimes it points to abandoning training before competence develops, or dismissing mentorship when you most need it. The reversal doesn't mean you're incapable—rather, your current approach isn't serving your development.",
+    "inReading": "In the past, this card shows established skill or completed training that shaped you. In the present, it indicates active learning or a period requiring focused practice. In the future, it promises mastery or advancement through disciplined work. The Eight of Pentacles pairs well with mentorship cards (The Magician, The Hermit) and strengthens readings about career development. It answers questions about 'How do I improve?' or 'What does this learning require?' Near challenge cards, it suggests persistence will overcome obstacles.",
+    "summary": "Dedicated skill-building through focused practice and disciplined repetition."
+  },
+  "nine-of-pentacles": {
+    "id": 72,
+    "name": "Nine of Pentacles",
+    "slug": "nine-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 9,
+    "keywords": [
+      "abundance",
+      "luxury",
+      "self-sufficiency",
+      "financial independence"
+    ],
+    "upright": "The Nine of Pentacles depicts a woman in a luxurious garden, adorned in fine clothing, with a falcon perched on her hand. This card speaks to the rewards of disciplined effort—financial security earned through your own merit. You've moved beyond survival into genuine comfort. This isn't inherited wealth or luck; it's the result of careful planning, patience, and consistent work. The card suggests self-sufficiency, independence, and the freedom that comes from knowing your resources are stable. There's a quiet confidence here, an ability to enjoy life's finer things without anxiety. You're in a season of reaping what you've sown, where your choices create tangible abundance.",
+    "reversed": "When reversed, the Nine of Pentacles suggests a disconnect between effort and reward. You might be experiencing financial strain despite hard work, or struggling to build lasting security. There can be a sense of dependence—relying too heavily on others' resources or feeling unable to establish independence. Self-worth may be tangled with material status, creating anxiety around money. Alternatively, this reversal can point to overextending yourself, spending beyond your means, or chasing luxury as a way to fill internal emptiness. The invitation is to reassess your relationship with money and evaluate whether you're building genuine security or just accumulating surface appearances.",
+    "inReading": "In the past, this card indicates you've built solid foundations through discipline. In the present, it reflects current stability and the ability to invest in yourself. As a future card, it promises the culmination of your efforts into tangible freedom. Surrounded by cards of hardship, it suggests relief is coming. Next to the Hermit or Eight of Pentacles, it emphasizes the personal journey to independence. Next to relationship cards, it questions whether partnerships threaten your autonomy. Ask this card about long-term financial goals, self-sufficiency, or whether your current lifestyle truly reflects your values.",
+    "summary": "Financial independence and self-sufficiency earned through your own merit and sustained effort."
+  },
+  "ten-of-pentacles": {
+    "id": 73,
+    "name": "Ten of Pentacles",
+    "slug": "ten-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 10,
+    "keywords": [
+      "wealth",
+      "financial security",
+      "family",
+      "long-term success"
+    ],
+    "upright": "The Ten of Pentacles reveals the fruition of long-term effort and planning. In the Rider-Waite-Smith imagery, a prosperous family gathers beneath an archway laden with ten golden coins, representing generational wealth and security. This card speaks to inheritance—both material and intangible—legacy building, and the satisfaction of watching your foundations support those you love. It signals financial stability that extends beyond yourself, suggesting established systems, family businesses, or inherited resources. When this card appears, you're either entering a phase of lasting security or recognizing the value of what you've already built. It's less about sudden fortune and more about the quiet confidence that comes from knowing your future is secure.",
+    "reversed": "Reversed, the Ten of Pentacles suggests fractures in the family structure or inheritance disputes. Financial security may be threatened—perhaps through mismanagement, poor planning, or dependencies that drain resources. This card can indicate a refusal to accept generational patterns or patterns that need breaking. Alternatively, it warns against complacency: you may have wealth but lack the wisdom to preserve it. There's also a note of instability beneath an outward appearance of success, or pressure to maintain a status that no longer serves you. The reversal asks: what part of your inherited reality needs rethinking?",
+    "inReading": "In past positions, this card reflects established foundations or family patterns shaping your present. In present, it confirms you're living in alignment with security and legacy. In future, it promises earned stability. Alongside cards of challenge, it warns against taking security for granted. With the Fool or Magician, it suggests new ventures building toward lasting wealth. In clarification spreads, it answers questions about long-term financial planning, family dynamics, and inheritance. This card works best for questions about foundations, generational impact, and whether current efforts will yield lasting results.",
+    "summary": "Generational wealth, lasting security, and the legacy you're building or inheriting."
+  },
+  "page-of-pentacles": {
+    "id": 74,
+    "name": "Page of Pentacles",
+    "slug": "page-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 11,
+    "keywords": [
+      "manifestation",
+      "financial opportunity",
+      "skill development",
+      "ambition"
+    ],
+    "upright": "The Page of Pentacles depicts a young figure standing in a lush garden, holding a single pentacle coin with focused attention. This card signals the emergence of genuine opportunity—a chance to develop a skill, pursue financial growth, or commit to learning something valuable. The Page represents the studious, detail-oriented energy required to turn ambition into tangible results. When this card appears, you're being called to pay attention to what's developing around you. A job offer, educational opportunity, or investment possibility may be presenting itself. The key is your willingness to engage seriously with the work ahead, no matter how small the starting point feels. This is about planting seeds and tending them with care.",
+    "reversed": "Reversed, the Page of Pentacles suggests missed signals or reluctance to engage with opportunity. You might be overlooking practical steps needed for progress, or momentum has stalled due to distraction or lack of focus. This can indicate immaturity around financial decisions—spending without thought or avoiding necessary learning. Sometimes it points to external blockages: a promised opportunity falls through, funding doesn't materialize, or mentorship disappears. There's also the possibility of scattered energy—starting projects without finishing them. The reversal asks: Are you truly committed to the work, or are you hoping for shortcuts? Where have you lost focus?",
+    "inReading": "In the past, this card suggests you've recently encountered an opportunity or begun developing skills. In the present, it indicates active engagement with learning or a financial prospect requiring your attention now. In the future, it forecasts incoming opportunities tied to your current efforts. Alongside major arcana cards, the Page clarifies which area of life is unfolding. Near The Hermit, it emphasizes focused study; near The Wheel of Fortune, it suggests luck tied to preparation. This card answers questions about timing, skill-building, financial prospects, and whether to pursue emerging opportunities.",
+    "summary": "An emerging opportunity awaits those willing to engage with focused effort and serious attention."
+  },
+  "knight-of-pentacles": {
+    "id": 75,
+    "name": "Knight of Pentacles",
+    "slug": "knight-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 12,
+    "keywords": [
+      "hard work",
+      "productivity",
+      "routine",
+      "conservatism"
+    ],
+    "upright": "The Knight of Pentacles shows a young man on horseback, holding a single coin aloft—his focus unwavering. This is the card of deliberate progress through discipline and attention to detail. Where others chase quick wins, this knight studies the terrain, refines his craft, and builds wealth through consistent effort. He represents the power of showing up daily, mastering fundamentals, and treating work as a form of integrity rather than burden. In a reading, this card suggests you're in a phase where patience and methodology matter more than inspiration. Whether you're developing a skill, managing finances, or moving through a project methodically, the Knight of Pentacles affirms that your steady approach is working. He's the embodiment of the tortoise—reliable, grounded, and ultimately unstoppable through persistence alone.",
+    "reversed": "Reversed, this card reveals rigidity masquerading as responsibility. The same discipline that builds becomes stagnation; the methodical approach becomes procrastination disguised as planning. You may be stuck in repetitive cycles, perfectionism that prevents progress, or an inability to take the necessary risks that growth demands. This knight can also indicate neglecting the bigger picture while obsessing over minutiae, or becoming so risk-averse that opportunities pass by. Sometimes it suggests burnout from overwork without corresponding reward, or being trapped in uninspiring routines. The reversed card asks: Is your caution protecting you or imprisoning you?",
+    "inReading": "In the past, this card shows established habits or skills that shaped your current situation. In the present, it indicates you're in a phase requiring focus and steady work—the right time to build foundations. In the future, it promises results from diligent effort, though not sudden ones. Alongside Major Arcana cards, the Knight of Pentacles grounds abstract lessons into practical action. Near the Fool or Magician, it suggests channeling inspiration into concrete work. With difficult cards, it offers reassurance that methodical effort can navigate challenges. Best for questions about career development, financial planning, skill-building, and long-term projects.",
+    "summary": "Steady effort and disciplined focus create reliable progress and lasting results."
+  },
+  "queen-of-pentacles": {
+    "id": 76,
+    "name": "Queen of Pentacles",
+    "slug": "queen-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 13,
+    "keywords": [
+      "nurturing",
+      "practical",
+      "providing financially",
+      "working parent"
+    ],
+    "upright": "The Queen of Pentacles embodies grounded abundance and capable stewardship. In the Rider-Waite-Smith deck, she sits confidently on her throne, cradling a pentacle while surrounded by lush greenery and flourishing gardens—symbols of cultivation and tangible results. This card reveals a person (or energy) who transforms resources into real security through practical skill and generous management. She works steadily, whether in career or home, balancing provision with nurturing. This isn't abstract wealth; it's the material stability built through competence, investment in growth, and the willingness to both earn and share. When upright, this card suggests you're in or moving toward a season of sustainable abundance, where effort yields visible rewards and your capacity to care for others (or yourself) is at its peak.",
+    "reversed": "Reversed, the Queen of Pentacles loses her grounded stability. Neglect replaces nurturing—of finances, health, relationships, or self-care. This can manifest as financial strain despite effort, burnout from over-giving, or an inability to manage resources wisely. Sometimes it signals withdrawal of support or emotional unavailability masked by busyness. The card may also indicate overextension: trying to provide for everyone while depleting yourself, or investing in things that don't yield returns. Unlike a simple absence of care, reversal suggests an imbalance—the machinery of provision has jammed, creating frustration rather than abundance.",
+    "inReading": "In the past, this card shows established competence or a period when you successfully managed resources and responsibilities. In the present, it signals active engagement with provision—work, finances, or caregiving are central. In the future, it promises sustainable stability and the reward of practical effort. Alongside cards of creativity, it suggests turning ideas into marketable skill. Near challenging cards, it often indicates what's needed: grounded action instead of avoidance. This card answers questions about financial health, career sustainability, work-life balance, and your capacity to build security.",
+    "summary": "Capable, grounded abundance built through steady work and generous stewardship."
+  },
+  "king-of-pentacles": {
+    "id": 77,
+    "name": "King of Pentacles",
+    "slug": "king-of-pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 14,
+    "keywords": [
+      "wealth",
+      "business",
+      "leadership",
+      "security"
+    ],
+    "upright": "The King of Pentacles sits enthroned, crowned and robed, holding both scepter and coin—symbols of earned authority and material mastery. This is the card of the successful entrepreneur, the seasoned investor, the leader who builds empires through discipline and shrewd judgment. When it appears upright, you're being shown someone (or an aspect of yourself) who has transformed ambition into tangible wealth. This king doesn't inherit—he cultivates. He understands that security comes from knowledge, calculated risk, and the steady accumulation of resources. In readings, this card signals financial stability, business acumen, and the confidence that comes with genuine competence. It's the green light for ambitious ventures, mentorship, and trust in your own ability to manifest what you envision.",
+    "reversed": "Reversed, the King of Pentacles loses his sure footing. This might manifest as financial recklessness—spending without strategy, or conversely, hoarding so tightly that wealth becomes a prison. The reversed king can also indicate someone intoxicated by status, more concerned with appearing wealthy than being wise. There's a brittleness here: material success without genuine foundation, or leadership that's corrupted by greed. Sometimes it suggests being blocked from your own power—allowing others to control resources or doubting your own capability to build. The reversal asks: are you master of your wealth, or has it mastered you?",
+    "inReading": "In the past, this card shows established success or a mentor figure who shaped your financial reality. In the present, it confirms you're operating from a position of strength—trust your judgment. In the future, it promises security through continued wisdom and effort. The King of Pentacles strengthens cards about business and partnership, but can feel at odds with cards about spontaneity or spiritual surrender. It answers questions about financial viability, leadership potential, and whether someone (or a venture) is dependable. Nearby reversed cards might complicate its message—suggesting internal conflict between ambition and integrity.",
+    "summary": "Material mastery through discipline: the self-made leader who turns vision into lasting wealth."
+  },
+  "strength": {
+    "id": 8,
+    "name": "Strength",
+    "slug": "strength",
+    "arcana": "major",
+    "suit": null,
+    "number": 8,
+    "keywords": [
+      "strength",
+      "courage",
+      "persuasion",
+      "influence"
+    ],
+    "upright": "Strength reveals mastery through gentleness rather than force. The figure in the Rider-Waite deck calmly closes the lion's mouth with bare hands—a portrait of inner resolve channeled with grace. This card signals that your power lies not in aggression but in emotional intelligence and self-control. You're discovering reserves of courage you didn't know existed, often by facing fears directly and finding them less formidable than imagined. Whether you're negotiating a difficult conversation, persisting through a challenge, or standing firm in your values, Strength indicates you have what it takes. The card also suggests influence through authenticity: people respond to your calm confidence more than any forceful persuasion ever could.",
+    "reversed": "Reversed Strength points to power misapplied or absent when needed. You might be leaning on aggression, manipulation, or coercion when subtlety would serve better—or conversely, you're doubting your own capability and backing down from necessary confrontation. Self-doubt creeps in; inner resolve feels shaky. This card can also signal feeling overwhelmed, as though obstacles have grown too large. Rather than suggesting weakness, it often means your approach needs recalibration. You may be fighting the wrong battle, or using the wrong tools for it.",
+    "inReading": "In the past, Strength signals a challenge you overcame through persistence or emotional maturity. In the present, it asks how you're wielding your power—wisely or recklessly? In the future, it promises resilience ahead. Paired with struggle cards (The Eight of Pentacles, The Tower), it reassures that endurance will carry you through. Near Justice or The Hermit, it emphasizes inner alignment over external circumstances. This card answers questions about confidence, influence, and whether you have the stamina for what lies ahead.",
+    "summary": "Inner resolve and gentle power overcome obstacles through courage and self-control."
+  },
+  "king-of-cups": {
+    "id": 49,
+    "name": "King of Cups",
+    "slug": "king-of-cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 14,
+    "keywords": [
+      "emotional balance",
+      "compassion",
+      "diplomacy",
+      "wisdom"
+    ],
+    "upright": "The King of Cups sits upon his throne, holding a cup and a fish—symbols of emotional mastery and the unconscious made tangible. This card represents someone who has integrated their feelings into wisdom. You're encountering emotional maturity: the ability to feel deeply while remaining steady, to listen without drowning in others' pain, to lead with compassion without losing yourself. This king doesn't deny emotions or suppress them—he rules them. In a reading, this card signals it's time to trust your emotional intelligence, extend understanding to a difficult situation, or recognize when you've developed the inner stability to help others navigate their own waters. You've earned the right to speak from experience.",
+    "reversed": "Emotional suppression masquerades as control. The King of Cups reversed shows someone who's intellectualized their feelings away or uses emotional detachment as a weapon. This can manifest as cold diplomacy that lacks genuine care, mood swings hidden behind a composed mask, or an inability to connect authentically because vulnerability feels dangerous. Alternatively, this card warns of emotional overwhelm disguised as authority—someone making decisions from a place of inner turbulence while appearing calm. The reversal asks: Are you truly balanced, or are you performing balance? Where have you abandoned compassion, including for yourself?",
+    "inReading": "In the past, this card indicates you've developed emotional wisdom or learned hard lessons about feelings. Present placement suggests you're being called to embody this balanced energy now—or that someone influential is offering mature guidance. As a future card, emotional mastery or a significant person enters your situation. Surrounding cards matter greatly: paired with swords, emotional wisdom meets logic; with wands, it tempers impulsivity; with pentacles, it grounds material success in human connection. This card answers questions about relationships, decision-making under pressure, and whether you're ready for leadership or mentorship roles.",
+    "summary": "Emotional mastery grounded in compassion, not detachment."
+  }
+}
