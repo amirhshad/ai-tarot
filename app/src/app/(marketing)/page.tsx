@@ -446,6 +446,77 @@ export default function LandingPage() {
         </div>
       </RevealSection>
 
+      {/* ══════════════ EXPLORE BY TOPIC ══════════════ */}
+      <RevealSection className="relative px-4 py-24">
+        <hr className="section-divider mb-20" />
+        <div className="max-w-4xl mx-auto">
+          <h2 className="font-display text-3xl md:text-4xl font-semibold text-white text-center mb-2">
+            Explore by Topic
+          </h2>
+          <p className="font-body text-base font-medium text-stone-400 text-center mb-4">
+            Focused readings for the questions that matter most
+          </p>
+          <Ornament />
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-14">
+            {[
+              {
+                href: '/love-tarot',
+                title: 'Love & Relationships',
+                desc: 'Navigate romantic connections, compatibility, and emotional clarity.',
+                symbol: '\u2661',
+              },
+              {
+                href: '/career-tarot',
+                title: 'Career & Work',
+                desc: 'Job decisions, professional growth, and workplace dynamics.',
+                symbol: '\u2606',
+              },
+              {
+                href: '/yes-or-no',
+                title: 'Yes or No',
+                desc: 'One card, one clear answer — with the nuance that matters.',
+                symbol: '\u29D6',
+              },
+            ].map((topic, idx) => (
+              <motion.div
+                key={topic.href}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1, duration: 0.6 }}
+              >
+                <Link
+                  href={topic.href}
+                  className="group block p-8 rounded-sm border border-gold-400/[0.08] bg-gradient-to-b from-white/[0.02] to-transparent hover:border-gold-400/20 transition-all duration-500 text-center h-full relative overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-b from-gold-400/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <span className="relative text-3xl text-gold-400/50 group-hover:text-gold-400/80 transition-colors duration-500">
+                    {topic.symbol}
+                  </span>
+                  <h3 className="relative font-display text-lg font-medium text-white mt-4 mb-3 group-hover:text-gold-400 transition-colors">
+                    {topic.title}
+                  </h3>
+                  <p className="relative font-body text-sm font-medium text-stone-400 leading-relaxed">
+                    {topic.desc}
+                  </p>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Spreads link */}
+          <div className="text-center mt-10">
+            <Link
+              href="/spreads"
+              className="inline-block px-8 py-3 border border-gold-400/20 text-gold-400/80 font-display text-base tracking-wide rounded-sm hover:border-gold-400/40 hover:text-gold-400 transition-all duration-300"
+            >
+              View All Spread Guides
+            </Link>
+          </div>
+        </div>
+      </RevealSection>
+
       {/* ══════════════ PRICING ══════════════ */}
       <RevealSection id="pricing" className="relative px-4 py-24">
         <hr className="section-divider mb-20" />
