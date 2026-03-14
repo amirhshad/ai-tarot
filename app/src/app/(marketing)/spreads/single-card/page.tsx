@@ -260,7 +260,7 @@ export default function SingleCardSpreadPage() {
                 </p>
                 <p className="font-display text-lg font-semibold text-white">
                   <Link
-                    href="/cards/the-star"
+                    href="/tarot-card-meanings/the-star"
                     className="hover:text-gold-400 transition-colors"
                   >
                     The Star
@@ -346,7 +346,7 @@ export default function SingleCardSpreadPage() {
             Deepen your readings by understanding each card&apos;s meaning.
           </p>
           <Link
-            href="/cards"
+            href="/tarot-card-meanings"
             className="text-sm text-gold-400 hover:text-gold-300 transition-colors font-medium"
           >
             Explore all 78 card meanings →

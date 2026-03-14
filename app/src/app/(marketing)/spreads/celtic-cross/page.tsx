@@ -486,7 +486,7 @@ export default function CelticCrossSpreadPage() {
             card&apos;s meaning deepens your reading experience.
           </p>
           <Link
-            href="/cards"
+            href="/tarot-card-meanings"
             className="text-sm text-gold-400 hover:text-gold-300 transition-colors font-medium"
           >
             Explore all 78 card meanings →

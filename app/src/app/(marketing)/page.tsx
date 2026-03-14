@@ -504,7 +504,7 @@ export default function LandingPage() {
 
           {/* CTA to card meanings */}
           <Link
-            href="/cards"
+            href="/tarot-card-meanings"
             className="inline-block mt-10 px-8 py-3 border border-gold-400/20 text-gold-400/80 font-display text-base tracking-wide rounded-sm hover:border-gold-400/40 hover:text-gold-400 transition-all duration-300"
           >
             Explore All 78 Card Meanings

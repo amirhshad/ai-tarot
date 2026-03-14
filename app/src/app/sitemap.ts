@@ -17,12 +17,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+    // Master hub
     {
-      url: `${baseUrl}/cards`,
+      url: `${baseUrl}/tarot-card-meanings`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.9,
     },
+    // Sub-hubs
+    ...['major-arcana', 'suit-of-wands', 'suit-of-cups', 'suit-of-swords', 'suit-of-pentacles'].map(slug => ({
+      url: `${baseUrl}/tarot-card-meanings/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.85,
+    })),
     {
       url: `${baseUrl}/spreads`,
       lastModified: new Date(),
@@ -91,14 +99,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Generate entries for all 78 card pages
+  // Generate entries for all 78 card meaning pages
+  // TODO: Phase 3 — split into sitemap index with sub-sitemaps when page count exceeds 500
   const cardPages: MetadataRoute.Sitemap = Object.keys(
     cardContent as Record<string, unknown>
   ).map(slug => ({
-    url: `${baseUrl}/cards/${slug}`,
+    url: `${baseUrl}/tarot-card-meanings/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
-    priority: 0.7,
+    priority: 0.8,
   }));
 
   return [...staticPages, ...cardPages];

@@ -7,7 +7,7 @@ export default function Footer({ language = 'en' }: { language?: 'en' | 'fa' }) 
           {language === 'en' ? 'For entertainment purposes.' : 'برای سرگرمی.'}
         </p>
         <div className="flex gap-4">
-          <a href="/cards" className="hover:text-gray-300 transition-colors">
+          <a href="/tarot-card-meanings" className="hover:text-gray-300 transition-colors">
             {language === 'en' ? 'Card Meanings' : 'معانی کارت‌ها'}
           </a>
           <a href="/spreads" className="hover:text-gray-300 transition-colors">

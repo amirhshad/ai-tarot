@@ -340,7 +340,7 @@ export default function YesOrNoPage() {
                 </p>
                 <p className="font-display text-lg font-semibold text-white">
                   <Link
-                    href="/cards/justice"
+                    href="/tarot-card-meanings/justice"
                     className="hover:text-gold-400 transition-colors"
                   >
                     Justice
@@ -415,7 +415,7 @@ export default function YesOrNoPage() {
               </p>
             </Link>
             <Link
-              href="/cards"
+              href="/tarot-card-meanings"
               className="group p-4 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all"
             >
               <h3 className="font-display text-sm font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">

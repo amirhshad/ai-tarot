@@ -92,7 +92,7 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
                 {language === 'en' ? 'Daily Card' : 'کارت روز'}
               </Link>
               <Link
-                href="/cards"
+                href="/tarot-card-meanings"
                 className="text-sm text-gray-400 hover:text-white transition-colors"
               >
                 {language === 'en' ? 'Card Meanings' : 'معانی کارت‌ها'}
@@ -152,7 +152,7 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
               <Link href="/daily" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
                 {language === 'en' ? 'Daily Card' : 'کارت روز'}
               </Link>
-              <Link href="/cards" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
+              <Link href="/tarot-card-meanings" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
                 {language === 'en' ? 'Card Meanings' : 'معانی کارت‌ها'}
               </Link>
               <Link href="/spreads" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>

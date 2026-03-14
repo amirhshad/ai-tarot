@@ -108,5 +108,37 @@ export async function ensureSchema(): Promise<void> {
     try { await db.execute(sql); } catch { /* ignore if column missing */ }
   }
 
+  // SEO content tables for programmatic pages
+  await db.executeMultiple(`
+    CREATE TABLE IF NOT EXISTS card_content (
+      slug TEXT PRIMARY KEY,
+      card_id INTEGER NOT NULL,
+      name TEXT NOT NULL,
+      arcana TEXT NOT NULL,
+      suit TEXT,
+      number INTEGER NOT NULL,
+      element TEXT,
+      zodiac TEXT,
+      upright_keywords TEXT NOT NULL,
+      reversed_keywords TEXT NOT NULL,
+      featured_snippet TEXT NOT NULL,
+      upright_meaning TEXT NOT NULL,
+      reversed_meaning TEXT NOT NULL,
+      love_relationships TEXT NOT NULL,
+      career_finances TEXT NOT NULL,
+      yes_or_no TEXT NOT NULL,
+      yes_or_no_verdict TEXT NOT NULL,
+      combinations TEXT NOT NULL,
+      faq TEXT NOT NULL,
+      related_cards TEXT NOT NULL,
+      meta_title TEXT NOT NULL,
+      meta_description TEXT NOT NULL,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_card_content_arcana ON card_content(arcana);
+    CREATE INDEX IF NOT EXISTS idx_card_content_suit ON card_content(suit);
+  `);
+
   _initialized = true;
 }
