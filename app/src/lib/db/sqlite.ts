@@ -76,11 +76,24 @@ export async function ensureSchema(): Promise<void> {
     CREATE INDEX IF NOT EXISTS idx_usage_user_week ON usage(user_id, week_start);
   `);
 
+  // Reading feedback table (for both anonymous and authenticated readings)
+  await db.executeMultiple(`
+    CREATE TABLE IF NOT EXISTS reading_feedback (
+      id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+      reading_id TEXT REFERENCES readings(id) ON DELETE CASCADE,
+      helpful INTEGER NOT NULL CHECK (helpful IN (0, 1)),
+      source TEXT NOT NULL DEFAULT 'authenticated' CHECK (source IN ('anonymous', 'authenticated')),
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_reading_feedback_reading ON reading_feedback(reading_id);
+  `);
+
   // Migrations for new columns (try/catch since SQLite lacks ADD COLUMN IF NOT EXISTS)
   const migrations = [
     `ALTER TABLE readings ADD COLUMN share_token TEXT`,
     `ALTER TABLE profiles ADD COLUMN auth_provider TEXT DEFAULT 'email'`,
     `ALTER TABLE profiles ADD COLUMN google_id TEXT`,
+    `ALTER TABLE readings ADD COLUMN feedback INTEGER`,
   ];
   for (const sql of migrations) {
     try { await db.execute(sql); } catch { /* column already exists */ }

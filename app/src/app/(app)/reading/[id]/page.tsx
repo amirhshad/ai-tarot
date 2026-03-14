@@ -5,6 +5,7 @@ import { getSpread } from '@/lib/tarot/spreads';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
 import FollowUpChat from '@/components/reading/FollowUpChat';
 import ShareButton from '@/components/reading/ShareButton';
+import ReadingFeedback from '@/components/reading/ReadingFeedback';
 
 export default async function ReadingPage({
   params,
@@ -83,6 +84,12 @@ export default async function ReadingPage({
           </p>
         </div>
       </div>
+
+      {/* Feedback */}
+      <ReadingFeedback
+        readingId={id}
+        initialFeedback={reading.feedback === 1 ? true : reading.feedback === 0 ? false : null}
+      />
 
       {/* Share */}
       <div className="flex justify-end">

@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Deck from '@/components/tarot/Deck';
 import SpreadLayout from '@/components/tarot/SpreadLayout';
 import UpsellPanel from '@/components/reading/UpsellPanel';
+import ReadingFeedback from '@/components/reading/ReadingFeedback';
 import { DrawnCard } from '@/lib/tarot/types';
 import { drawCards, serializeDrawnCards } from '@/lib/tarot/shuffle';
 import { getSpread } from '@/lib/tarot/spreads';
@@ -267,8 +268,13 @@ function FreeReadingContent() {
             </div>
           </div>
 
-          {/* Upsell panel after reading is done */}
-          {!isInterpreting && <UpsellPanel />}
+          {/* Feedback + Upsell after reading is done */}
+          {!isInterpreting && (
+            <>
+              <ReadingFeedback />
+              <UpsellPanel />
+            </>
+          )}
         </>
       )}
 

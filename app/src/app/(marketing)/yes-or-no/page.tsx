@@ -212,7 +212,7 @@ export default function YesOrNoPage() {
               <p className="font-body text-xs text-stone-500 mb-4">
                 Positive energy, forward movement, alignment
               </p>
-              <div className="grid grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {yesCards.map((card) => (
                   <Link
                     key={card.slug}
@@ -244,7 +244,7 @@ export default function YesOrNoPage() {
               <p className="font-body text-xs text-stone-500 mb-4">
                 Caution, delay, reassessment needed
               </p>
-              <div className="grid grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {noCards.map((card) => (
                   <Link
                     key={card.slug}

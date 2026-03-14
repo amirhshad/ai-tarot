@@ -229,7 +229,7 @@ export default function CelticCrossSpreadPage() {
           </h2>
           <div className="p-6 rounded-sm border border-gold-400/[0.08] bg-gradient-to-b from-white/[0.02] to-transparent">
             {/* Simplified visual representation */}
-            <div className="grid grid-cols-6 gap-2 max-w-lg mx-auto mb-4">
+            <div className="grid grid-cols-6 gap-1.5 sm:gap-2 max-w-lg mx-auto mb-4 px-2 sm:px-0">
               {/* Row 1: Crown */}
               <div className="col-start-2 col-span-1 text-center">
                 <div className="w-10 h-14 mx-auto rounded bg-gold-400/10 border border-gold-400/20 flex items-center justify-center text-[10px] text-gold-400/70 font-display">
@@ -398,7 +398,7 @@ export default function CelticCrossSpreadPage() {
             Here&apos;s what a Celtic Cross reading might look like. Each card links
             to its full meaning page.
           </p>
-          <div className="grid grid-cols-5 sm:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {positions.map((pos) => (
               <Link
                 key={pos.num}

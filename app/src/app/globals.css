@@ -12,6 +12,10 @@
   --smoke: #111114;
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);

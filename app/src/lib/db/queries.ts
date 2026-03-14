@@ -51,6 +51,7 @@ export interface ReadingRow {
   language: string;
   tokens_used: number;
   share_token: string | null;
+  feedback: number | null;
   created_at: string;
 }
 
@@ -172,6 +173,32 @@ export async function upsertUsage(userId: string, weekStart: string, column: str
       args: [id, userId, weekStart],
     });
   }
+}
+
+// ── Reading Feedback ──
+
+export async function submitReadingFeedback(readingId: string, helpful: boolean): Promise<void> {
+  await ensureSchema();
+  const db = getDb();
+  const id = crypto.randomUUID();
+  await db.execute({
+    sql: `INSERT INTO reading_feedback (id, reading_id, helpful, source) VALUES (?, ?, ?, 'authenticated')`,
+    args: [id, readingId, helpful ? 1 : 0],
+  });
+  await db.execute({
+    sql: `UPDATE readings SET feedback = ? WHERE id = ?`,
+    args: [helpful ? 1 : 0, readingId],
+  });
+}
+
+export async function submitAnonymousFeedback(helpful: boolean): Promise<void> {
+  await ensureSchema();
+  const db = getDb();
+  const id = crypto.randomUUID();
+  await db.execute({
+    sql: `INSERT INTO reading_feedback (id, helpful, source) VALUES (?, ?, 'anonymous')`,
+    args: [id, helpful ? 1 : 0],
+  });
 }
 
 // ── Waitlist ──

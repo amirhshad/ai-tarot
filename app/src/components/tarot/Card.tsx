@@ -41,8 +41,8 @@ export default function Card({
 
   return (
     <div
-      className={`relative cursor-pointer ${className}`}
-      style={{ perspective: '1000px', width: '140px', height: '240px' }}
+      className={`relative cursor-pointer w-[100px] h-[172px] sm:w-[120px] sm:h-[206px] md:w-[140px] md:h-[240px] ${className}`}
+      style={{ perspective: '1000px' }}
       onClick={handleClick}
     >
       <motion.div

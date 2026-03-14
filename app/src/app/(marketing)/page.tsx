@@ -209,12 +209,11 @@ export default function LandingPage() {
           </motion.div>
 
           {/* ── Fanned Cards ── */}
-          <div className="relative mx-auto" style={{ height: '320px', width: '100%', maxWidth: '600px' }}>
+          <div className="relative mx-auto h-[220px] sm:h-[320px] w-full max-w-[600px]">
             {HERO_CARDS.map((card, i) => (
               <motion.div
                 key={card.name}
-                className="absolute left-1/2 bottom-0 origin-bottom cursor-default"
-                style={{ width: '140px', height: '240px' }}
+                className="absolute left-1/2 bottom-0 origin-bottom cursor-default w-[90px] h-[154px] sm:w-[140px] sm:h-[240px]"
                 initial={{ opacity: 0, y: 60, rotate: 0, x: '-50%' }}
                 animate={{
                   opacity: 1,
@@ -247,7 +246,7 @@ export default function LandingPage() {
                     src={card.src}
                     alt={card.name}
                     fill
-                    sizes="140px"
+                    sizes="(max-width: 640px) 90px, 140px"
                     className="object-cover"
                     priority={i < 3}
                   />
