@@ -95,8 +95,8 @@ export default function PricingTable({
             key={plan.id}
             className={`rounded-2xl p-6 border-2 flex flex-col ${
               plan.popular
-                ? 'border-amber-400 bg-purple-900/40 shadow-lg shadow-amber-400/10'
-                : 'border-purple-800/40 bg-purple-950/30'
+                ? 'border-amber-400 bg-white/[0.06] shadow-lg shadow-amber-400/10'
+                : 'border-white/10 bg-white/[0.03]'
             }`}
           >
             {plan.popular && (
@@ -110,7 +110,7 @@ export default function PricingTable({
 
             <ul className="mt-6 space-y-3 flex-1">
               {features.map((feature, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm font-medium text-purple-100">
+                <li key={i} className="flex items-start gap-2 text-sm font-medium text-gray-200">
                   <span className="text-amber-400 mt-0.5">&#10003;</span>
                   {feature}
                 </li>
@@ -118,7 +118,7 @@ export default function PricingTable({
             </ul>
 
             {plan.id === 'free' ? (
-              <div className="mt-6 py-2 text-center text-sm text-purple-400">
+              <div className="mt-6 py-2 text-center text-sm text-gray-500">
                 {isCurrent
                   ? (language === 'en' ? 'Current Plan' : 'اشتراک فعلی')
                   : (language === 'en' ? 'Free Forever' : 'همیشه رایگان')}
@@ -129,7 +129,7 @@ export default function PricingTable({
                 disabled={isCurrent}
                 className={`mt-6 w-full py-2.5 rounded-xl font-medium text-sm transition-colors ${
                   isCurrent
-                    ? 'bg-purple-800/50 text-purple-400 cursor-default'
+                    ? 'bg-white/10 text-gray-500 cursor-default'
                     : 'bg-amber-500 hover:bg-amber-400 text-black'
                 }`}
               >

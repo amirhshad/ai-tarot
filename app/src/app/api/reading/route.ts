@@ -4,9 +4,10 @@ import { getProfile, createReading, updateReadingInterpretation } from '@/lib/db
 import { getSpread } from '@/lib/tarot/spreads';
 import { SpreadType } from '@/lib/tarot/types';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
-import { buildInterpretationPrompt, buildQuestionMessage } from '@/lib/ai/prompts';
+import { buildInterpretationPrompt, buildQuestionMessage, ReadingTopic } from '@/lib/ai/prompts';
 import { streamInterpretation } from '@/lib/ai/client';
 import { checkQuota, incrementUsage } from '@/lib/utils/quota';
+import { sendReadingSummary } from '@/lib/email/client';
 
 export async function POST(request: NextRequest) {
   const user = await getSessionUser();
@@ -21,10 +22,11 @@ export async function POST(request: NextRequest) {
   const language = (profile?.language || 'en') as 'en' | 'fa';
 
   const body = await request.json();
-  const { spreadType, cards: cardData, question } = body as {
+  const { spreadType, cards: cardData, question, topic } = body as {
     spreadType: SpreadType;
     cards: { cardId: number; reversed: boolean; positionIndex: number }[];
     question?: string;
+    topic?: ReadingTopic;
   };
 
   // Validate spread
@@ -52,6 +54,7 @@ export async function POST(request: NextRequest) {
     cards: drawnCards,
     language,
     tier,
+    topic: topic || undefined,
   });
 
   const questionSuffix = buildQuestionMessage({ question, language });
@@ -96,6 +99,10 @@ export async function POST(request: NextRequest) {
 
         // Save interpretation to database
         await updateReadingInterpretation(readingId, fullText);
+
+        // Fire-and-forget reading summary email
+        const cardNames = drawnCards.map(dc => dc.card.name + (dc.reversed ? ' (Reversed)' : ''));
+        void sendReadingSummary(user.email, readingId, spreadType, cardNames, fullText);
 
         controller.enqueue(
           encoder.encode(

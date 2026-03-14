@@ -41,7 +41,7 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between" dir={isRTL ? 'rtl' : 'ltr'}>
         <Link href={user ? '/dashboard' : '/'} className="flex items-center gap-2">
           <span className="text-amber-400 text-xl">&#10022;</span>
-          <span className="font-semibold text-white tracking-wide">AI Tarot</span>
+          <span className="font-semibold text-white tracking-wide">TarotVeil</span>
         </Link>
 
         <nav className="flex items-center gap-4">
@@ -72,6 +72,12 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
             </>
           ) : (
             <>
+              <Link
+                href="/daily"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
+                {language === 'en' ? 'Daily Card' : 'کارت روز'}
+              </Link>
               <Link
                 href="/cards"
                 className="text-sm text-gray-400 hover:text-white transition-colors"

@@ -33,12 +33,12 @@ export default function Deck({ onDraw, isDrawing, cardsRemaining }: DeckProps) {
         </div>
       </motion.button>
 
-      <p className="text-sm text-purple-300 font-light">
+      <p className="text-sm text-gray-400 font-light">
         {isDrawing ? 'Drawing...' : 'Tap to draw'}
       </p>
 
       {cardsRemaining !== undefined && (
-        <p className="text-xs text-purple-400/60">
+        <p className="text-xs text-gray-500">
           {cardsRemaining} cards in spread
         </p>
       )}

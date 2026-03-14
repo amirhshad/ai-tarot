@@ -32,7 +32,7 @@ export const PLANS = {
       singlePerDay: Infinity,
       threeCardPerWeek: Infinity,
       celticCrossPerWeek: Infinity,
-      followUpsPerReading: 5,
+      followUpsPerReading: 10,
     },
   },
 } as const;

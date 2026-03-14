@@ -1,13 +1,12 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, Cinzel } from 'next/font/google';
+import { Inter, Cinzel } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
 
-const cormorant = Cormorant_Garamond({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-cormorant',
+  variable: '--font-inter',
 });
 
 const cinzel = Cinzel({
@@ -196,7 +195,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${cormorant.variable} ${cinzel.variable} antialiased min-h-screen flex flex-col`}>
+      <body className={`${inter.variable} ${cinzel.variable} antialiased min-h-screen flex flex-col`}>
         {children}
         <Analytics />
         <SpeedInsights />

@@ -76,5 +76,24 @@ export async function ensureSchema(): Promise<void> {
     CREATE INDEX IF NOT EXISTS idx_usage_user_week ON usage(user_id, week_start);
   `);
 
+  // Migrations for new columns (try/catch since SQLite lacks ADD COLUMN IF NOT EXISTS)
+  const migrations = [
+    `ALTER TABLE readings ADD COLUMN share_token TEXT`,
+    `ALTER TABLE profiles ADD COLUMN auth_provider TEXT DEFAULT 'email'`,
+    `ALTER TABLE profiles ADD COLUMN google_id TEXT`,
+  ];
+  for (const sql of migrations) {
+    try { await db.execute(sql); } catch { /* column already exists */ }
+  }
+
+  // Create indexes (also wrapped in try/catch in case columns don't exist yet)
+  const indexes = [
+    `CREATE INDEX IF NOT EXISTS idx_readings_share_token ON readings(share_token)`,
+    `CREATE UNIQUE INDEX IF NOT EXISTS idx_profiles_google_id ON profiles(google_id)`,
+  ];
+  for (const sql of indexes) {
+    try { await db.execute(sql); } catch { /* ignore if column missing */ }
+  }
+
   _initialized = true;
 }

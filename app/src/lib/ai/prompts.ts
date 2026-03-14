@@ -4,13 +4,58 @@ import { DrawnCard, SpreadDefinition, Tier, TarotCard } from '@/lib/tarot/types'
  * Build the system prompt for an initial tarot reading interpretation.
  * This is the core differentiator — narrative interpretation across all cards.
  */
+export type ReadingTopic = 'love' | 'yes-or-no' | 'career' | null;
+
+const TOPIC_INSTRUCTIONS: Record<string, { en: string; fa: string }> = {
+  love: {
+    en: `\n\nTOPIC FOCUS — LOVE & RELATIONSHIPS:
+This reading is specifically about love and relationships. Focus your entire interpretation on romantic dynamics, emotional connections, partnership patterns, and relationship growth. Frame every card through the lens of love — attraction, commitment, trust, vulnerability, and intimacy. If cards suggest career or finances, relate them back to how those areas affect the querent's love life.`,
+    fa: `\n\nتمرکز موضوعی — عشق و روابط:
+این خوانش به طور خاص درباره عشق و روابط است. تمام تفسیر خود را بر پویایی‌های عاشقانه، ارتباطات عاطفی، الگوهای مشارکت و رشد رابطه متمرکز کنید.`,
+  },
+  'yes-or-no': {
+    en: `\n\nTOPIC FOCUS — YES OR NO READING:
+This is a Yes or No reading. Tarot cards rarely give clean binary answers — they reveal the energy, conditions, and nuances surrounding a situation. Your job is to honor both the querent's desire for directness AND the cards' complexity.
+
+HOW TO ANSWER:
+1. Start your interpretation with ONE of these four answer formats on its own line:
+   - "YES" — only when the cards are overwhelmingly positive (strong upright cards with clearly favorable energy, no significant tension)
+   - "NO" — only when the cards are overwhelmingly negative (reversed cards, heavy challenging energy, clear warnings)
+   - "YES, BUT..." — when the overall energy leans positive but there are conditions, caveats, or timing considerations. Complete the sentence with the key condition.
+   - "NO, UNLESS..." — when the overall energy leans negative but the cards show a path or condition that could change the outcome. Complete the sentence with what would need to shift.
+
+2. Follow with a brief one-sentence summary of why.
+3. Then provide the full narrative explanation, weaving the cards together.
+
+Most readings will land in "Yes, but..." or "No, unless..." territory — that's honest and more useful than forcing a binary answer. Only give a clean YES or NO when the cards are unmistakably one-sided.`,
+    fa: `\n\nتمرکز موضوعی — خوانش بله یا خیر:
+این یک خوانش بله یا خیر است. کارت‌های تاروت به ندرت پاسخ‌های دودویی ساده می‌دهند — آن‌ها انرژی، شرایط و ظرافت‌های یک موقعیت را آشکار می‌کنند.
+
+نحوه پاسخ:
+۱. تفسیر خود را با یکی از این چهار فرمت شروع کنید:
+   - «بله» — فقط وقتی کارت‌ها به شدت مثبت هستند
+   - «خیر» — فقط وقتی کارت‌ها به شدت منفی هستند
+   - «بله، اما...» — وقتی انرژی کلی مثبت است اما شرایط یا هشدارهایی وجود دارد
+   - «خیر، مگر اینکه...» — وقتی انرژی کلی منفی است اما مسیری برای تغییر نشان داده می‌شود
+۲. سپس یک جمله کوتاه توضیحی بیاورید.
+۳. سپس توضیح روایی کامل را ارائه دهید.`,
+  },
+  career: {
+    en: `\n\nTOPIC FOCUS — CAREER & PROFESSIONAL LIFE:
+This reading is specifically about career and professional growth. Focus your entire interpretation on work dynamics, professional opportunities, leadership, ambition, financial growth, and career direction. Frame every card through the lens of professional life — skills, workplace relationships, career transitions, entrepreneurship, and purpose in work. If cards suggest romance, relate them back to how those emotional patterns affect the querent's professional life.`,
+    fa: `\n\nتمرکز موضوعی — شغل و زندگی حرفه‌ای:
+این خوانش به طور خاص درباره شغل و رشد حرفه‌ای است. تمام تفسیر خود را بر پویایی‌های کاری، فرصت‌های حرفه‌ای، رهبری، جاه‌طلبی و مسیر شغلی متمرکز کنید.`,
+  },
+};
+
 export function buildInterpretationPrompt(params: {
   spread: SpreadDefinition;
   cards: DrawnCard[];
   language: 'en' | 'fa';
   tier: Tier;
+  topic?: ReadingTopic;
 }): { systemPrompt: string; userMessage: string } {
-  const { spread, cards, language, tier } = params;
+  const { spread, cards, language, tier, topic } = params;
 
   const isEnglish = language === 'en';
   const wordRange = tier === 'free' ? '150-200' : '400-600';
@@ -27,7 +72,7 @@ export function buildInterpretationPrompt(params: {
     return `- Position: ${posName} (${posDesc})\n  Card: ${name} (${orientation})\n  Keywords: ${keywords}`;
   }).join('\n\n');
 
-  const systemPrompt = isEnglish
+  let systemPrompt = isEnglish
     ? `You are a master tarot reader who weaves ancient symbolism with modern psychological insight. Your interpretations are renowned for their narrative depth and emotional resonance.
 
 CRITICAL INSTRUCTION: Read ALL cards together as ONE cohesive story. Do NOT interpret cards one by one. Find the threads that connect them — recurring themes, tensions between cards, and the overall narrative arc. The reading should feel like a story being told, not a list of card meanings.
@@ -53,6 +98,14 @@ Guidelines:
 - با یک بینش عملی روشن پایان دهید
 - طول: ${wordRange} کلمه
 - خاص و زنده باشید، نه کلی`;
+
+  // Append topic-specific instructions
+  if (topic && TOPIC_INSTRUCTIONS[topic]) {
+    const topicInstructions = isEnglish
+      ? TOPIC_INSTRUCTIONS[topic].en
+      : TOPIC_INSTRUCTIONS[topic].fa;
+    systemPrompt += topicInstructions;
+  }
 
   const spreadName = isEnglish ? spread.name : spread.nameFA;
   const userMessage = isEnglish

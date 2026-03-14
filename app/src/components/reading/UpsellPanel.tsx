@@ -11,7 +11,7 @@ export default function UpsellPanel() {
       transition={{ delay: 0.5, duration: 0.6 }}
       className="max-w-2xl mx-auto mt-8"
     >
-      <div className="p-6 rounded-2xl bg-gradient-to-b from-purple-950/50 to-purple-950/20 border border-purple-800/30">
+      <div className="p-6 rounded-2xl bg-gradient-to-b from-white/[0.04] to-white/[0.02] border border-white/10">
         <h3 className="text-center font-display text-lg text-gold-400 mb-2">
           Want to go deeper?
         </h3>
@@ -64,7 +64,7 @@ function UpsellCard({
   highlight?: boolean;
 }) {
   return (
-    <div className={`p-4 rounded-xl border ${highlight ? 'border-gold-400/30 bg-gold-400/[0.04]' : 'border-purple-700/30 bg-purple-950/30'} flex flex-col`}>
+    <div className={`p-4 rounded-xl border ${highlight ? 'border-gold-400/30 bg-gold-400/[0.04]' : 'border-white/10 bg-white/[0.03]'} flex flex-col`}>
       <span className="text-xl text-gold-400/70 mb-2">{icon}</span>
       <h4 className="text-sm font-semibold text-white mb-1">{title}</h4>
       <p className="text-xs text-stone-400 mb-4 flex-1">{description}</p>
@@ -73,7 +73,7 @@ function UpsellCard({
         className={`text-center text-xs font-medium px-4 py-2 rounded-lg transition-colors ${
           highlight
             ? 'bg-gradient-to-b from-gold-400 to-gold-600 text-black hover:shadow-[0_0_20px_rgba(212,160,67,0.2)]'
-            : 'bg-purple-800/50 hover:bg-purple-700/50 text-purple-200'
+            : 'bg-white/10 hover:bg-white/15 text-gray-300'
         }`}
       >
         {cta}

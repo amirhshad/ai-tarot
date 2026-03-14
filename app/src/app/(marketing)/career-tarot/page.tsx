@@ -142,7 +142,7 @@ export default function CareerTarotPage() {
               inside.
             </p>
             <Link
-              href="/reading/free"
+              href="/reading/free?topic=career"
               className="inline-block px-8 py-3 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-sm tracking-wide rounded-sm hover:shadow-[0_0_25px_rgba(212,160,67,0.3)] transition-all"
             >
               Get a Free Career Reading
@@ -413,7 +413,7 @@ export default function CareerTarotPage() {
             path, a job decision, or what the cards see ahead for your work life.
           </p>
           <Link
-            href="/reading/free"
+            href="/reading/free?topic=career"
             className="inline-block px-10 py-3.5 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-base tracking-wide rounded-sm hover:shadow-[0_0_30px_rgba(212,160,67,0.3)] transition-all"
           >
             Get a Free Career Reading

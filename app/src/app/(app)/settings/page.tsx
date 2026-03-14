@@ -47,26 +47,26 @@ export default function SettingsPage() {
     <div className="max-w-md mx-auto space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-white">Settings</h1>
-        <p className="text-purple-300/60 text-sm mt-1">Manage your profile and preferences.</p>
+        <p className="text-gray-500 text-sm mt-1">Manage your profile and preferences.</p>
       </div>
 
       <form onSubmit={handleSave} className="space-y-6">
         <div>
-          <label className="block text-sm text-purple-300 mb-1.5">Display Name</label>
+          <label className="block text-sm text-gray-400 mb-1.5">Display Name</label>
           <input
             type="text"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            className="w-full bg-purple-950/50 border border-purple-700/50 rounded-xl px-4 py-3 text-white placeholder-purple-400/50 focus:outline-none focus:border-amber-400/50"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400/50"
           />
         </div>
 
         <div>
-          <label className="block text-sm text-purple-300 mb-1.5">Language</label>
+          <label className="block text-sm text-gray-400 mb-1.5">Language</label>
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            className="w-full bg-purple-950/50 border border-purple-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400/50"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400/50"
           >
             <option value="en">English</option>
             <option value="fa">فارسی (Farsi)</option>
@@ -85,7 +85,7 @@ export default function SettingsPage() {
         </div>
       </form>
 
-      <div className="pt-6 border-t border-purple-800/20">
+      <div className="pt-6 border-t border-white/10">
         <button
           onClick={handleSignOut}
           className="text-sm text-red-400 hover:text-red-300 transition-colors"

@@ -82,8 +82,8 @@ export default function InterpretationStream({
 
   return (
     <div ref={containerRef} className="max-h-96 overflow-y-auto">
-      <div className="prose prose-invert prose-purple max-w-none">
-        <p className="text-purple-100 leading-relaxed whitespace-pre-wrap">
+      <div className="prose prose-invert max-w-none">
+        <p className="text-amber-50/95 text-base sm:text-lg leading-7 sm:leading-8 whitespace-pre-wrap">
           {text}
           {isStreaming && (
             <span className="inline-block w-2 h-4 bg-amber-400 animate-pulse ml-0.5" />

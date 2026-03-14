@@ -50,6 +50,7 @@ export interface ReadingRow {
   model_used: string;
   language: string;
   tokens_used: number;
+  share_token: string | null;
   created_at: string;
 }
 
@@ -89,6 +90,19 @@ export async function getRecentReadings(userId: string, limit = 10): Promise<Rea
   const db = getDb();
   const result = await db.execute({ sql: 'SELECT * FROM readings WHERE user_id = ? ORDER BY created_at DESC LIMIT ?', args: [userId, limit] });
   return result.rows as unknown as ReadingRow[];
+}
+
+export async function getReadingByShareToken(token: string): Promise<ReadingRow | undefined> {
+  await ensureSchema();
+  const db = getDb();
+  const result = await db.execute({ sql: 'SELECT * FROM readings WHERE share_token = ?', args: [token] });
+  return result.rows[0] as unknown as ReadingRow | undefined;
+}
+
+export async function setShareToken(readingId: string, userId: string, token: string): Promise<void> {
+  await ensureSchema();
+  const db = getDb();
+  await db.execute({ sql: 'UPDATE readings SET share_token = ? WHERE id = ? AND user_id = ?', args: [token, readingId, userId] });
 }
 
 // ── Follow-ups ──

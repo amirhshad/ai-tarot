@@ -2,15 +2,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSpread } from '@/lib/tarot/spreads';
 import { SpreadType } from '@/lib/tarot/types';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
-import { buildInterpretationPrompt, buildQuestionMessage } from '@/lib/ai/prompts';
+import { buildInterpretationPrompt, buildQuestionMessage, ReadingTopic } from '@/lib/ai/prompts';
 import { streamInterpretation } from '@/lib/ai/client';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { cards: cardData, question } = body as {
+  const { cards: cardData, question, topic: rawTopic } = body as {
     cards: { cardId: number; reversed: boolean; positionIndex: number }[];
     question?: string;
+    topic?: string;
   };
+
+  const validTopics = ['love', 'yes-or-no', 'career'];
+  const topic: ReadingTopic = rawTopic && validTopics.includes(rawTopic) ? rawTopic as ReadingTopic : null;
 
   const spreadType: SpreadType = 'three-card';
   const spread = getSpread(spreadType);
@@ -29,6 +33,7 @@ export async function POST(request: NextRequest) {
     cards: drawnCards,
     language: 'en',
     tier: 'free',
+    topic,
   });
 
   const questionSuffix = buildQuestionMessage({ question, language: 'en' });

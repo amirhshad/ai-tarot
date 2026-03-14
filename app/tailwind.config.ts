@@ -26,7 +26,7 @@ const config: Config = {
       },
       fontFamily: {
         display: ['var(--font-cinzel)', 'serif'],
-        body: ['var(--font-cormorant)', 'serif'],
+        body: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       keyframes: {
         'float': {

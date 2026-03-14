@@ -169,8 +169,8 @@ export default function FollowUpChat({
             <div
               className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${
                 msg.role === 'user'
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-purple-900/50 text-purple-100 border border-purple-700/30'
+                  ? 'bg-amber-600 text-white'
+                  : 'bg-white/[0.06] text-gray-200 border border-white/10'
               }`}
             >
               {msg.extraCard && (
@@ -184,7 +184,7 @@ export default function FollowUpChat({
         {/* Streaming response */}
         {streamingText && (
           <div className="flex justify-start">
-            <div className="max-w-[80%] rounded-2xl px-4 py-2 text-sm bg-purple-900/50 text-purple-100 border border-purple-700/30">
+            <div className="max-w-[80%] rounded-2xl px-4 py-2 text-sm bg-white/[0.06] text-gray-200 border border-white/10">
               {streamingText}
               <span className="inline-block w-1.5 h-3 bg-amber-400 animate-pulse ml-0.5" />
             </div>
@@ -196,7 +196,7 @@ export default function FollowUpChat({
 
       {/* Extra Card Draw Area */}
       {drawnExtraCard && (
-        <div className="p-4 rounded-xl bg-purple-950/40 border border-amber-500/30 space-y-4">
+        <div className="p-4 rounded-xl bg-white/[0.04] border border-amber-500/30 space-y-4">
           <p className="text-sm text-amber-400 font-medium text-center">
             {en ? 'Your Extra Card' : 'کارت اضافی شما'}
           </p>
@@ -233,7 +233,7 @@ export default function FollowUpChat({
                   </span>
                 )}
               </p>
-              <p className="text-purple-400/60 text-xs mt-1">
+              <p className="text-gray-400 text-sm mt-1">
                 {(en ? drawnExtraCard.card.keywords : drawnExtraCard.card.keywordsFA).join(en ? ', ' : '، ')}
               </p>
             </div>
@@ -242,7 +242,7 @@ export default function FollowUpChat({
           <div className="flex gap-2 justify-center">
             <button
               onClick={handleCancelExtraCard}
-              className="px-4 py-2 border border-purple-700/50 text-purple-300 rounded-xl text-sm hover:border-purple-500/50 transition-colors"
+              className="px-4 py-2 border border-white/15 text-gray-400 rounded-xl text-sm hover:border-white/30 transition-colors"
             >
               {en ? 'Cancel' : 'لغو'}
             </button>
@@ -275,7 +275,7 @@ export default function FollowUpChat({
               value={input}
               onChange={e => setInput(e.target.value)}
               placeholder={en ? 'Ask a follow-up question...' : 'سؤال بعدی خود را بپرسید...'}
-              className="flex-1 bg-purple-950/50 border border-purple-700/50 rounded-xl px-4 py-2 text-sm text-white placeholder-purple-400/50 focus:outline-none focus:border-amber-400/50"
+              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-400/50"
               disabled={isLoading}
             />
             <button
@@ -297,8 +297,8 @@ export default function FollowUpChat({
           </button>
         </div>
       ) : !drawnExtraCard ? (
-        <div className="text-center py-3 bg-purple-900/20 rounded-xl border border-purple-700/30">
-          <p className="text-sm text-purple-300">
+        <div className="text-center py-5 px-4 bg-gradient-to-b from-amber-900/10 to-white/[0.02] rounded-xl border border-amber-500/20 space-y-4">
+          <p className="text-sm text-gray-300">
             {limit === 0
               ? (en
                   ? 'Follow-up questions are available with Pro. Upgrade to explore your reading deeper.'
@@ -307,12 +307,30 @@ export default function FollowUpChat({
                   ? 'You\'ve used all your follow-up questions for this reading.'
                   : 'تمام سؤالات بعدی این خوانش را استفاده کرده‌اید.')}
           </p>
+          {limit === 0 && (
+            <div className="flex flex-col sm:flex-row gap-2 justify-center">
+              <a
+                href="/billing"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-xl text-sm transition-colors"
+              >
+                <span>&#9733;</span>
+                {en ? 'Upgrade to Pro — $7.99/mo' : 'ارتقا به حرفه‌ای — ۷.۹۹$/ماه'}
+              </a>
+              <a
+                href="/billing"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-purple-500/30 text-purple-300 hover:bg-purple-500/10 rounded-xl text-sm transition-colors"
+              >
+                <span>&#10023;</span>
+                {en ? 'Go Premium — $14.99/mo' : 'ویژه — ۱۴.۹۹$/ماه'}
+              </a>
+            </div>
+          )}
         </div>
       ) : null}
 
       {/* Counter */}
       {limit > 0 && (
-        <p className="text-xs text-purple-400/60 text-center">
+        <p className="text-sm text-gray-400 text-center">
           {en
             ? `${remaining} of ${limit} questions remaining`
             : `${remaining} از ${limit} سؤال باقی‌مانده`}

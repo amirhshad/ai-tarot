@@ -142,7 +142,7 @@ export default function LoveTarotPage() {
               about your love story — not just isolated card meanings.
             </p>
             <Link
-              href="/reading/free"
+              href="/reading/free?topic=love"
               className="inline-block px-8 py-3 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-sm tracking-wide rounded-sm hover:shadow-[0_0_25px_rgba(212,160,67,0.3)] transition-all"
             >
               Get a Free Love Reading
@@ -375,7 +375,7 @@ export default function LoveTarotPage() {
             compatibility, or what the cards see ahead for your romantic life.
           </p>
           <Link
-            href="/reading/free"
+            href="/reading/free?topic=love"
             className="inline-block px-10 py-3.5 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-base tracking-wide rounded-sm hover:shadow-[0_0_30px_rgba(212,160,67,0.3)] transition-all"
           >
             Get a Free Love Reading

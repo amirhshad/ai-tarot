@@ -8,6 +8,7 @@ interface SpreadSelectorProps {
   selectedSpread: SpreadType | null;
   onSelect: (type: SpreadType) => void;
   language?: 'en' | 'fa';
+  allowedSpreads?: SpreadType[];
 }
 
 export default function SpreadSelector({
@@ -15,14 +16,20 @@ export default function SpreadSelector({
   selectedSpread,
   onSelect,
   language = 'en',
+  allowedSpreads,
 }: SpreadSelectorProps) {
   const allSpreads = Object.values(SPREADS);
   const available = getAvailableSpreads(tier);
   const availableTypes = new Set(available.map(s => s.type));
 
+  // Filter by allowed spreads if provided (e.g., yes/no only allows single + three-card)
+  const visibleSpreads = allowedSpreads
+    ? allSpreads.filter(s => allowedSpreads.includes(s.type))
+    : allSpreads;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-      {allSpreads.map((spread) => {
+    <div className={`grid grid-cols-1 ${visibleSpreads.length >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-4 max-w-2xl mx-auto`}>
+      {visibleSpreads.map((spread) => {
         const isAvailable = availableTypes.has(spread.type);
         const isSelected = selectedSpread === spread.type;
         const name = language === 'en' ? spread.name : spread.nameFA;
@@ -35,17 +42,17 @@ export default function SpreadSelector({
             disabled={!isAvailable}
             className={`p-4 rounded-xl border-2 text-left transition-all ${
               isSelected
-                ? 'border-amber-400 bg-purple-900/50 shadow-lg shadow-amber-400/10'
+                ? 'border-amber-400 bg-white/[0.06] shadow-lg shadow-amber-400/10'
                 : isAvailable
-                  ? 'border-purple-700/50 bg-purple-950/30 hover:border-purple-500/50'
-                  : 'border-purple-900/30 bg-purple-950/10 opacity-50 cursor-not-allowed'
+                  ? 'border-white/10 bg-white/[0.03] hover:border-white/20'
+                  : 'border-white/5 bg-white/[0.01] opacity-50 cursor-not-allowed'
             }`}
           >
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-medium text-white">{name}</h3>
-              <span className="text-xs text-purple-400">{spread.cardCount} cards</span>
+              <span className="text-xs text-gray-500">{spread.cardCount} cards</span>
             </div>
-            <p className="text-sm text-purple-300/70">{desc}</p>
+            <p className="text-sm text-gray-400">{desc}</p>
             {!isAvailable && (
               <p className="text-xs text-amber-400 mt-2">
                 {language === 'en' ? `Requires ${spread.minimumTier}` : `نیاز به ${spread.minimumTier}`}

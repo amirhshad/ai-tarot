@@ -168,7 +168,7 @@ function CardSlot({
         onReveal={() => onReveal(index)}
         language={language}
       />
-      <p className="text-xs text-purple-300 font-light text-center">{posName}</p>
+      <p className="text-xs text-gray-400 font-light text-center">{posName}</p>
     </motion.div>
   );
 }
@@ -205,7 +205,7 @@ function CelticCard({
         language={language}
       />
       {!hideLabel && (
-        <p className="text-[11px] text-purple-300/70 font-light text-center mt-1 whitespace-nowrap">
+        <p className="text-[11px] text-gray-400/70 font-light text-center mt-1 whitespace-nowrap">
           {posName}
         </p>
       )}

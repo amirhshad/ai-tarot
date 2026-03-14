@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { signUp, setSessionCookie } from '@/lib/db/auth';
+import { sendWelcomeEmail } from '@/lib/email/client';
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,6 +17,7 @@ export async function POST(request: NextRequest) {
     }
 
     await setSessionCookie(result.user);
+    void sendWelcomeEmail(result.user.email, name);
     return NextResponse.json({ user: result.user });
   } catch (err) {
     console.error('Signup error:', err);

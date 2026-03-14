@@ -3,7 +3,12 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { getDb, ensureSchema } from './sqlite';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error('JWT_SECRET environment variable is required');
+  return secret;
+}
+const JWT_SECRET = getJwtSecret();
 const COOKIE_NAME = 'tarot_session';
 const TOKEN_EXPIRY = '7d';
 
@@ -91,10 +96,10 @@ export async function findUserByEmail(email: string) {
   await ensureSchema();
   const db = getDb();
   const result = await db.execute({
-    sql: `SELECT id, email, password_hash FROM profiles WHERE email = ?`,
+    sql: `SELECT id, email, password_hash, auth_provider FROM profiles WHERE email = ?`,
     args: [email.toLowerCase().trim()],
   });
-  return result.rows[0] as unknown as { id: string; email: string; password_hash: string } | undefined;
+  return result.rows[0] as unknown as { id: string; email: string; password_hash: string; auth_provider: string | null } | undefined;
 }
 
 export async function findUserById(id: string) {
@@ -125,6 +130,10 @@ export async function signIn(email: string, password: string): Promise<{ user: A
   const found = await findUserByEmail(email);
   if (!found) {
     return { error: 'Invalid email or password' };
+  }
+  // OAuth-only accounts cannot sign in with password
+  if (found.auth_provider === 'google' && found.password_hash.startsWith('OAUTH:')) {
+    return { error: 'This account uses Google sign-in. Please sign in with Google.' };
   }
   if (!verifyPassword(password, found.password_hash)) {
     return { error: 'Invalid email or password' };
