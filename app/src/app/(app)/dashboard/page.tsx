@@ -2,6 +2,7 @@ import { getSessionUser } from '@/lib/db/auth';
 import { getProfile, getRecentReadings } from '@/lib/db/queries';
 import Link from 'next/link';
 import ClaimAnonymousReading from '@/components/reading/ClaimAnonymousReading';
+import DeleteReadingButton from '@/components/reading/DeleteReadingButton';
 
 export default async function DashboardPage() {
   const user = await getSessionUser();
@@ -84,19 +85,22 @@ export default async function DashboardPage() {
                 className="block p-4 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-white/15 transition-colors"
               >
                 <div className="flex items-center justify-between">
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <span className="text-sm font-medium text-white capitalize">
                       {reading.spread_type.replace('-', ' ')}
                     </span>
                     {reading.question && (
-                      <p className="text-xs text-gray-500 mt-0.5 truncate max-w-md">
+                      <p className="text-xs text-gray-500 mt-0.5 truncate">
                         {reading.question}
                       </p>
                     )}
                   </div>
-                  <span className="text-xs text-gray-600">
-                    {new Date(reading.created_at).toLocaleDateString()}
-                  </span>
+                  <div className="flex items-center gap-2 flex-shrink-0 ml-3">
+                    <span className="text-xs text-gray-600">
+                      {new Date(reading.created_at).toLocaleDateString()}
+                    </span>
+                    <DeleteReadingButton readingId={reading.id} />
+                  </div>
                 </div>
               </Link>
             ))}

@@ -93,6 +93,12 @@ export async function getRecentReadings(userId: string, limit = 10): Promise<Rea
   return result.rows as unknown as ReadingRow[];
 }
 
+export async function deleteReading(id: string, userId: string): Promise<void> {
+  await ensureSchema();
+  const db = getDb();
+  await db.execute({ sql: 'DELETE FROM readings WHERE id = ? AND user_id = ?', args: [id, userId] });
+}
+
 export async function getReadingByShareToken(token: string): Promise<ReadingRow | undefined> {
   await ensureSchema();
   const db = getDb();
