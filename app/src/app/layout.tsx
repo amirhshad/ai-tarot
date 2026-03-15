@@ -134,51 +134,6 @@ const jsonLd = {
         },
       ],
     },
-    {
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: 'How does AI tarot reading work?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'TarotVeil uses cryptographically random card draws (Fisher-Yates shuffle with crypto.getRandomValues) combined with advanced AI to read all your cards together as one cohesive narrative — not isolated per-card templates.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Are the tarot cards truly random?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Yes. We use the Web Crypto API with a Fisher-Yates shuffle algorithm, providing cryptographic-grade randomness that is verifiable, fair, and truly random.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Can I ask follow-up questions about my reading?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Yes. Pro users get 5 follow-up questions per reading, and Premium users get 10. The AI maintains full context of your reading for deeper exploration.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'What languages does TarotVeil support?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'TarotVeil currently supports English and Farsi, with Arabic coming soon. Readings are culturally native, not just translated.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Is there a free plan?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Yes. The free plan includes 1 single-card reading per day and 1 three-card reading per week with a short AI interpretation.',
-          },
-        },
-      ],
-    },
   ],
 };
 
