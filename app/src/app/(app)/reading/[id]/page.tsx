@@ -3,6 +3,7 @@ import { getProfile, getReading, getFollowUps } from '@/lib/db/queries';
 import { notFound } from 'next/navigation';
 import { getSpread } from '@/lib/tarot/spreads';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
+import Image from 'next/image';
 import FollowUpChat from '@/components/reading/FollowUpChat';
 import ShareButton from '@/components/reading/ShareButton';
 import ReadingFeedback from '@/components/reading/ReadingFeedback';
@@ -53,20 +54,31 @@ export default async function ReadingPage({
 
       {/* Cards */}
       <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08]">
-        <h2 className="text-sm font-medium text-gray-500 mb-3">Cards Drawn</h2>
-        <div className="space-y-2">
+        <h2 className="text-sm font-medium text-gray-500 mb-4">
+          {language === 'en' ? 'Cards Drawn' : 'کارت‌های کشیده شده'}
+        </h2>
+        <div className={`flex justify-center gap-4 ${cards.length > 3 ? 'flex-wrap' : ''}`}>
           {cards.map((dc, i) => {
             const name = language === 'en' ? dc.card.name : dc.card.nameFA;
             const posName = language === 'en' ? dc.position.name : dc.position.nameFA;
             return (
-              <div key={i} className="flex items-center justify-between text-sm">
-                <span className="text-gray-400">{posName}</span>
-                <span className="text-white">
-                  {name}
-                  {dc.reversed && (
-                    <span className="text-red-400 text-xs ml-1">(Reversed)</span>
-                  )}
-                </span>
+              <div key={i} className="flex flex-col items-center text-center w-[90px] sm:w-[110px]">
+                <div className={`relative w-[80px] h-[133px] sm:w-[100px] sm:h-[167px] rounded-md overflow-hidden border border-amber-400/20 ${dc.reversed ? 'rotate-180' : ''}`}>
+                  <Image
+                    src={dc.card.image}
+                    alt={dc.card.name}
+                    fill
+                    sizes="(max-width: 640px) 80px, 100px"
+                    className="object-cover"
+                  />
+                </div>
+                <p className="text-xs text-gray-500 mt-2">{posName}</p>
+                <p className="text-xs text-white font-medium mt-0.5">{name}</p>
+                {dc.reversed && (
+                  <span className="text-[10px] text-red-400 mt-0.5">
+                    {language === 'en' ? 'Reversed' : 'معکوس'}
+                  </span>
+                )}
               </div>
             );
           })}
