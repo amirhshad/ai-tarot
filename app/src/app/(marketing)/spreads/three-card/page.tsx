@@ -252,7 +252,7 @@ export default function ThreeCardSpreadPage() {
                     </p>
                     <p className="font-display text-sm font-semibold text-white">
                       <Link
-                        href={`/cards/${pos.cardSlug}`}
+                        href={`/tarot-card-meanings/${pos.cardSlug}`}
                         className="hover:text-gold-400 transition-colors"
                       >
                         {pos.card}

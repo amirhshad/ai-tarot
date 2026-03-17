@@ -224,7 +224,7 @@ export default function CareerTarotPage() {
             {careerCards.map((card) => (
               <Link
                 key={card.slug}
-                href={`/cards/${card.slug}`}
+                href={`/tarot-card-meanings/${card.slug}`}
                 className="group text-center"
               >
                 <div className="relative w-full aspect-[2/3] rounded overflow-hidden border border-gold-400/10 group-hover:border-gold-400/30 transition-all mb-2">

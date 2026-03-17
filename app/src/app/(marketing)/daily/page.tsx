@@ -118,7 +118,7 @@ export default async function DailyPage() {
       {/* Learn more link */}
       <div className="text-center mt-12">
         <Link
-          href={`/cards/${card.name.toLowerCase().replace(/\s+/g, '-')}`}
+          href={`/tarot-card-meanings/${card.name.toLowerCase().replace(/\s+/g, '-')}`}
           className="text-sm text-gray-500 hover:text-amber-400 transition-colors"
         >
           Learn more about {card.name} &rarr;

@@ -402,7 +402,7 @@ export default function CelticCrossSpreadPage() {
             {positions.map((pos) => (
               <Link
                 key={pos.num}
-                href={`/cards/${pos.cardSlug}`}
+                href={`/tarot-card-meanings/${pos.cardSlug}`}
                 className="group text-center"
               >
                 <div className="relative w-full aspect-[2/3] rounded overflow-hidden border border-gold-400/10 group-hover:border-gold-400/30 transition-all mb-1">
