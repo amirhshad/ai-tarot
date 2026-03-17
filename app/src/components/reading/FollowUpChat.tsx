@@ -41,6 +41,8 @@ export default function FollowUpChat({
   const [streamingText, setStreamingText] = useState('');
   const [drawnExtraCard, setDrawnExtraCard] = useState<{ card: TarotCard; reversed: boolean } | null>(null);
   const [isCardRevealed, setIsCardRevealed] = useState(false);
+  const [extraCardQuestion, setExtraCardQuestion] = useState('');
+  const [showExtraCardInput, setShowExtraCardInput] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const limit = getFollowUpLimit(tier);
@@ -122,9 +124,14 @@ export default function FollowUpChat({
 
   function handleDrawExtraCard() {
     if (!canAsk || isLoading) return;
+    setShowExtraCardInput(true);
+  }
+
+  function handleConfirmDrawExtraCard() {
     const drawn = drawOneCard();
     setDrawnExtraCard(drawn);
     setIsCardRevealed(false);
+    setShowExtraCardInput(false);
   }
 
   function handleRevealExtraCard() {
@@ -140,14 +147,20 @@ export default function FollowUpChat({
       ? (en ? 'Reversed' : 'معکوس')
       : (en ? 'Upright' : 'ایستاده');
 
-    const userContent = en
-      ? `I drew an extra card for deeper insight: ${cardName} (${orientation}). How does this card add to or change the reading?`
-      : `من یک کارت اضافی برای بینش عمیق‌تر کشیدم: ${cardName} (${orientation}). این کارت چگونه به خوانش اضافه می‌کند یا آن را تغییر می‌دهد؟`;
+    const question = extraCardQuestion.trim();
+    const userContent = question
+      ? (en
+          ? `I drew an extra card: ${cardName} (${orientation}). My question: ${question}`
+          : `من یک کارت اضافی کشیدم: ${cardName} (${orientation}). سؤال من: ${question}`)
+      : (en
+          ? `I drew an extra card for deeper insight: ${cardName} (${orientation}). How does this card add to or change the reading?`
+          : `من یک کارت اضافی برای بینش عمیق‌تر کشیدم: ${cardName} (${orientation}). این کارت چگونه به خوانش اضافه می‌کند یا آن را تغییر می‌دهد؟`);
 
     const extraCardData = { cardId: card.id, reversed: drawnExtraCard.reversed };
     setMessages(prev => [...prev, { role: 'user', content: userContent, extraCard: extraCardData }]);
     setDrawnExtraCard(null);
     setIsCardRevealed(false);
+    setExtraCardQuestion('');
 
     await sendFollowUp(userContent, extraCardData);
   }
@@ -155,6 +168,8 @@ export default function FollowUpChat({
   function handleCancelExtraCard() {
     setDrawnExtraCard(null);
     setIsCardRevealed(false);
+    setExtraCardQuestion('');
+    setShowExtraCardInput(false);
   }
 
   return (
@@ -193,6 +208,38 @@ export default function FollowUpChat({
 
         <div ref={messagesEndRef} />
       </div>
+
+      {/* Extra Card Question Input */}
+      {showExtraCardInput && !drawnExtraCard && (
+        <div className="p-4 rounded-xl bg-white/[0.04] border border-amber-500/30 space-y-3">
+          <p className="text-sm text-amber-400 font-medium text-center">
+            {en ? 'What would you like the extra card to answer?' : 'می‌خواهید کارت اضافی به چه سؤالی پاسخ دهد؟'}
+          </p>
+          <input
+            type="text"
+            value={extraCardQuestion}
+            onChange={e => setExtraCardQuestion(e.target.value)}
+            placeholder={en ? 'e.g. What should I focus on next? (optional)' : 'مثلاً: روی چه چیزی تمرکز کنم؟ (اختیاری)'}
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-400/50"
+            onKeyDown={e => { if (e.key === 'Enter') handleConfirmDrawExtraCard(); }}
+          />
+          <div className="flex gap-2 justify-center">
+            <button
+              onClick={handleCancelExtraCard}
+              className="px-4 py-2 border border-white/15 text-gray-400 rounded-xl text-sm hover:border-white/30 transition-colors"
+            >
+              {en ? 'Cancel' : 'لغو'}
+            </button>
+            <button
+              onClick={handleConfirmDrawExtraCard}
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-xl text-sm transition-colors flex items-center gap-2"
+            >
+              <span className="text-lg">&#9813;</span>
+              {en ? 'Draw Card' : 'کشیدن کارت'}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Extra Card Draw Area */}
       {drawnExtraCard && (
@@ -267,7 +314,7 @@ export default function FollowUpChat({
       )}
 
       {/* Input Area */}
-      {canAsk && !drawnExtraCard ? (
+      {canAsk && !drawnExtraCard && !showExtraCardInput ? (
         <div className="space-y-3">
           <form onSubmit={handleSubmit} className="flex gap-2">
             <input
