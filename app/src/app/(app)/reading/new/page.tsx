@@ -58,7 +58,9 @@ export default function NewReadingPage() {
   useEffect(() => {
     if (interpretation) {
       requestAnimationFrame(() => {
-        setShowInterpretation(true);
+        requestAnimationFrame(() => {
+          setShowInterpretation(true);
+        });
       });
     } else {
       setShowInterpretation(false);
@@ -121,6 +123,7 @@ export default function NewReadingPage() {
     if (!spreadType || drawnCards.length === 0) return;
     setIsInterpreting(true);
     setError('');
+    setInterpretation('');
 
     try {
       const response = await fetch('/api/reading', {
@@ -167,6 +170,7 @@ export default function NewReadingPage() {
               }
               setInterpretation(data.fullText);
               setReadingId(data.readingId);
+              break;
             }
             if (data.error) {
               throw new Error(data.error);
