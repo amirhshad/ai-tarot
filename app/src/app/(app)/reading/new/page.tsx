@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import SpreadSelector from '@/components/reading/SpreadSelector';
 import Deck from '@/components/tarot/Deck';
@@ -10,6 +10,7 @@ import { drawCards } from '@/lib/tarot/shuffle';
 import { getSpread } from '@/lib/tarot/spreads';
 import { serializeDrawnCards } from '@/lib/tarot/shuffle';
 import type { ReadingTopic } from '@/lib/ai/prompts';
+import ReadingLoadingAnimation from '@/components/reading/ReadingLoadingAnimation';
 
 type Step = 'topic' | 'select-spread' | 'question' | 'draw' | 'reveal' | 'interpret';
 
@@ -36,6 +37,8 @@ export default function NewReadingPage() {
   const [interpretation, setInterpretation] = useState('');
   const [readingId, setReadingId] = useState<string | null>(null);
   const [error, setError] = useState('');
+  const [showInterpretation, setShowInterpretation] = useState(false);
+  const loadingStartRef = useRef<number>(0);
 
   const [tier, setTier] = useState<string>('free');
   const [language, setLanguage] = useState<'en' | 'fa'>('en');
@@ -51,6 +54,16 @@ export default function NewReadingPage() {
       })
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (interpretation) {
+      requestAnimationFrame(() => {
+        setShowInterpretation(true);
+      });
+    } else {
+      setShowInterpretation(false);
+    }
+  }, [interpretation]);
 
   const questionPlaceholder = topic === 'love'
     ? 'What would you like to know about your love life?'
@@ -131,9 +144,9 @@ export default function NewReadingPage() {
 
       const decoder = new TextDecoder();
       let buffer = '';
-      let fullText = '';
 
       setStep('interpret');
+      loadingStartRef.current = Date.now();
 
       while (true) {
         const { done, value } = await reader.read();
@@ -146,11 +159,13 @@ export default function NewReadingPage() {
         for (const line of lines) {
           if (line.startsWith('data: ')) {
             const data = JSON.parse(line.slice(6));
-            if (data.text) {
-              fullText += data.text;
-              setInterpretation(fullText);
-            }
             if (data.done) {
+              const elapsed = Date.now() - loadingStartRef.current;
+              const minDisplayTime = 2000;
+              if (elapsed < minDisplayTime) {
+                await new Promise((r) => setTimeout(r, minDisplayTime - elapsed));
+              }
+              setInterpretation(data.fullText);
               setReadingId(data.readingId);
             }
             if (data.error) {
@@ -298,9 +313,17 @@ export default function NewReadingPage() {
         </div>
       )}
 
-      {/* Step: Interpret */}
+      {/* Step: Interpret — Loading Animation */}
+      {step === 'interpret' && !interpretation && (
+        <ReadingLoadingAnimation cardCount={drawnCards.length} language={language} />
+      )}
+
+      {/* Step: Interpret — Revealed Reading */}
       {step === 'interpret' && interpretation && (
-        <div className="max-w-2xl mx-auto space-y-6">
+        <div
+          className="max-w-2xl mx-auto space-y-6 transition-opacity duration-[600ms] ease-in"
+          style={{ opacity: showInterpretation ? 1 : 0 }}
+        >
           <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/[0.08]" dir={language === 'fa' ? 'rtl' : 'ltr'}>
             <h2 className="text-xl font-semibold text-amber-400 mb-4">
               {language === 'fa' ? 'خوانش شما' : 'Your Reading'}
@@ -308,14 +331,11 @@ export default function NewReadingPage() {
             <div className="prose prose-invert max-w-none">
               <p className="text-amber-50/95 text-base sm:text-lg leading-7 sm:leading-8 whitespace-pre-wrap">
                 {interpretation}
-                {isInterpreting && (
-                  <span className="inline-block w-2 h-4 bg-amber-400 animate-pulse ml-0.5" />
-                )}
               </p>
             </div>
           </div>
 
-          {readingId && !isInterpreting && (
+          {readingId && (
             <div className="text-center">
               <button
                 onClick={() => router.push(`/reading/${readingId}`)}
