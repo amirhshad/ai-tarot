@@ -29,7 +29,7 @@ export default function ReadingLoadingAnimation({ cardCount, language }: Reading
   const messages = language === 'fa' ? MESSAGES_FA : MESSAGES_EN;
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout>;
     const interval = setInterval(() => {
       setMessageFade(false);
       timeoutId = setTimeout(() => {
@@ -50,10 +50,9 @@ export default function ReadingLoadingAnimation({ cardCount, language }: Reading
         {Array.from({ length: cardCount }).map((_, i) => (
           <div
             key={i}
-            className="w-[52px] h-[78px] sm:w-[60px] sm:h-[90px] rounded-lg border-2 animate-card-glow"
+            className="w-[52px] h-[78px] sm:w-[60px] sm:h-[90px] rounded-lg border-2 border-amber-400/40 animate-card-glow motion-reduce:animate-none motion-reduce:border-amber-400/70 motion-reduce:shadow-[0_0_15px_rgba(251,191,36,0.3)]"
             style={{
               background: 'linear-gradient(145deg, #1a1a2e, #16213e)',
-              borderColor: 'rgba(212, 175, 55, 0.4)',
               animationDelay: `${i * 0.4}s`,
             }}
           />
@@ -62,38 +61,12 @@ export default function ReadingLoadingAnimation({ cardCount, language }: Reading
 
       {/* Rotating status message */}
       <p
-        className="text-sm sm:text-base tracking-wider transition-opacity duration-300"
-        style={{
-          color: '#d4af37',
-          opacity: messageFade ? 1 : 0,
-        }}
+        className="text-sm sm:text-base tracking-wider text-amber-400 transition-opacity duration-300"
+        style={{ opacity: messageFade ? 1 : 0 }}
         dir={language === 'fa' ? 'rtl' : 'ltr'}
       >
         {messages[messageIndex]}
       </p>
-
-      <style jsx>{`
-        @keyframes cardGlow {
-          0%, 100% {
-            box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
-            border-color: rgba(212, 175, 55, 0.4);
-          }
-          50% {
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
-            border-color: rgba(212, 175, 55, 1);
-          }
-        }
-        .animate-card-glow {
-          animation: cardGlow 2.5s ease-in-out infinite;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .animate-card-glow {
-            animation: none;
-            border-color: rgba(212, 175, 55, 0.7);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-          }
-        }
-      `}</style>
     </div>
   );
 }

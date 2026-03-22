@@ -45,6 +45,16 @@ const config: Config = {
           '0%, 100%': { opacity: '0.2', transform: 'scale(1)' },
           '50%': { opacity: '1', transform: 'scale(1.2)' },
         },
+        'card-glow': {
+          '0%, 100%': {
+            boxShadow: '0 0 8px rgba(251, 191, 36, 0.2)',
+            borderColor: 'rgba(251, 191, 36, 0.4)',
+          },
+          '50%': {
+            boxShadow: '0 0 25px rgba(251, 191, 36, 0.6)',
+            borderColor: 'rgba(251, 191, 36, 1)',
+          },
+        },
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',
@@ -53,6 +63,7 @@ const config: Config = {
         'glow-pulse': 'glow-pulse 4s ease-in-out infinite',
         'shimmer': 'shimmer 3s ease-in-out infinite',
         'star-twinkle': 'star-twinkle 3s ease-in-out infinite',
+        'card-glow': 'card-glow 2.5s ease-in-out infinite',
       },
     },
   },
