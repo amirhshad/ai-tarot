@@ -1,7 +1,7 @@
 export type Arcana = 'major' | 'minor';
 export type Suit = 'wands' | 'cups' | 'swords' | 'pentacles';
 export type Court = 'page' | 'knight' | 'queen' | 'king';
-export type SpreadType = 'single' | 'three-card' | 'celtic-cross';
+export type SpreadType = 'single' | 'three-card' | 'celtic-cross' | 'horseshoe';
 export type Tier = 'free' | 'pro' | 'premium';
 
 export interface TarotCard {

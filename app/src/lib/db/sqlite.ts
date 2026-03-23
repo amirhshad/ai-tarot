@@ -95,6 +95,7 @@ export async function ensureSchema(): Promise<void> {
     `ALTER TABLE profiles ADD COLUMN google_id TEXT`,
     `ALTER TABLE readings ADD COLUMN feedback INTEGER`,
     `ALTER TABLE readings ADD COLUMN topic TEXT`,
+    `ALTER TABLE usage ADD COLUMN horseshoe_count INTEGER DEFAULT 0`,
   ];
   for (const sql of migrations) {
     try { await db.execute(sql); } catch { /* column already exists */ }

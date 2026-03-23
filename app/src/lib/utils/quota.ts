@@ -31,6 +31,7 @@ export async function checkQuota(
     single_count: 0,
     three_card_count: 0,
     celtic_cross_count: 0,
+    horseshoe_count: 0,
   };
 
   switch (spreadType) {
@@ -49,6 +50,11 @@ export async function checkQuota(
         return { allowed: false, reason: 'Celtic Cross is available for Pro and Premium members.' };
       }
       break;
+    case 'horseshoe':
+      if (plan.limits.horseshoePerWeek === 0) {
+        return { allowed: false, reason: 'Horseshoe Spread is available for Pro and Premium members.' };
+      }
+      break;
   }
 
   return { allowed: true };
@@ -65,6 +71,7 @@ export async function incrementUsage(
     'single': 'single_count',
     'three-card': 'three_card_count',
     'celtic-cross': 'celtic_cross_count',
+    'horseshoe': 'horseshoe_count',
   };
 
   await upsertUsage(userId, weekStart, columnMap[spreadType]);

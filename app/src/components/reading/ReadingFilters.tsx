@@ -22,6 +22,7 @@ const SPREAD_OPTIONS = [
   { value: 'single', label: 'Single Card' },
   { value: 'three-card', label: 'Three Card' },
   { value: 'celtic-cross', label: 'Celtic Cross' },
+  { value: 'horseshoe', label: 'Horseshoe' },
 ];
 
 const TOPIC_OPTIONS = [

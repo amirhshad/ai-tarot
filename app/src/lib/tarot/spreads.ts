@@ -134,6 +134,24 @@ export const SPREADS: Record<string, SpreadDefinition> = {
       },
     ],
   },
+  horseshoe: {
+    type: 'horseshoe',
+    name: 'Horseshoe Spread',
+    nameFA: 'نعل اسب',
+    description: 'A 7-card arc for decision-making and path-forward questions.',
+    descriptionFA: 'یک گسترش ۷ کارتی برای تصمیم‌گیری و سؤالات مسیر پیش رو.',
+    cardCount: 7,
+    minimumTier: 'pro',
+    positions: [
+      { index: 0, name: 'Past Influences', nameFA: 'تأثیرات گذشته', description: 'What past events have shaped this situation.', descriptionFA: 'رویدادهای گذشته‌ای که این وضعیت را شکل داده‌اند.' },
+      { index: 1, name: 'Present Situation', nameFA: 'وضعیت فعلی', description: 'Where you stand right now.', descriptionFA: 'جایی که اکنون در آن قرار دارید.' },
+      { index: 2, name: 'Hidden Factors', nameFA: 'عوامل پنهان', description: 'Subconscious influences you may not be aware of.', descriptionFA: 'تأثیرات ناخودآگاهی که ممکن است از آن‌ها آگاه نباشید.' },
+      { index: 3, name: 'Your Approach', nameFA: 'رویکرد شما', description: 'Your attitude and how you are handling this.', descriptionFA: 'نگرش شما و نحوه برخوردتان با این موضوع.' },
+      { index: 4, name: 'Obstacles', nameFA: 'موانع', description: 'Challenges and blockages you face.', descriptionFA: 'چالش‌ها و موانعی که با آن‌ها روبرو هستید.' },
+      { index: 5, name: 'External Influences', nameFA: 'تأثیرات بیرونی', description: 'People and circumstances affecting the outcome.', descriptionFA: 'افراد و شرایطی که بر نتیجه تأثیر می‌گذارند.' },
+      { index: 6, name: 'Likely Outcome', nameFA: 'نتیجه محتمل', description: 'Where this path leads if you stay the course.', descriptionFA: 'این مسیر به کجا منتهی می‌شود اگر همین راه را ادامه دهید.' },
+    ],
+  },
 };
 
 export function getSpread(type: string): SpreadDefinition | undefined {

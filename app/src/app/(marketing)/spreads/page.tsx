@@ -16,6 +16,9 @@ export const metadata: Metadata = {
     'three card spread',
     'celtic cross spread',
     'single card tarot',
+    'horseshoe tarot spread',
+    'seven card spread',
+    'decision making tarot',
   ],
   alternates: {
     canonical: `${siteUrl}/spreads`,
@@ -60,6 +63,17 @@ const spreads = [
     description:
       'The most comprehensive tarot layout. Ten cards reveal your situation from every angle — past influences, hidden fears, external forces, and the likely outcome.',
     image: '/cards/major/m10.jpg',
+    tier: 'Pro',
+  },
+  {
+    slug: 'horseshoe',
+    name: 'Horseshoe Spread',
+    cardCount: 7,
+    difficulty: 'Intermediate',
+    timeEstimate: '8 minutes',
+    description:
+      'The #1 middle-ground spread for decision-making. Seven cards trace a clear arc from past influences to likely outcome — perfect for "What should I do?" questions.',
+    image: '/cards/major/m07.jpg',
     tier: 'Pro',
   },
 ];

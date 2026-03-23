@@ -50,6 +50,40 @@ export default function SpreadLayout({
     );
   }
 
+  if (spreadType === 'horseshoe') {
+    // Horseshoe arc layout (U-shape):
+    //   [0]                 [6]
+    //     [1]             [5]
+    //       [2]   [3]   [4]
+    return (
+      <div className="w-full overflow-x-auto px-4">
+        <div className="relative mx-auto origin-top scale-[0.5] sm:scale-[0.6] md:scale-[0.7] lg:scale-[0.85] xl:scale-100"
+          style={{ width: 660, height: 520 }}
+        >
+          {[
+            { idx: 0, top: 0,   left: 20  },  // top-left
+            { idx: 1, top: 140, left: 80  },  // mid-left
+            { idx: 2, top: 280, left: 140 },  // bottom-left
+            { idx: 3, top: 280, left: 280 },  // bottom-center
+            { idx: 4, top: 280, left: 420 },  // bottom-right
+            { idx: 5, top: 140, left: 480 },  // mid-right
+            { idx: 6, top: 0,   left: 540 },  // top-right
+          ].map(({ idx, top, left }) => (
+            <div key={idx} className="absolute" style={{ top, left, width: 100, height: 168 }}>
+              <CardSlot
+                drawnCard={cards[idx]}
+                index={idx}
+                revealed={revealedIndices.has(idx)}
+                onReveal={onRevealCard}
+                language={language}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   // Celtic Cross — matches traditional layout reference:
   //
   //  Cross (left):            Staff (right, bottom→top):
