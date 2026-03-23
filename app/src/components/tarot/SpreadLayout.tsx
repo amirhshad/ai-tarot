@@ -55,30 +55,24 @@ export default function SpreadLayout({
     //   [0]                 [6]
     //     [1]             [5]
     //       [2]   [3]   [4]
+    // Uses flex rows to avoid absolute positioning issues with labels
     return (
-      <div className="w-full overflow-x-auto px-4">
-        <div className="relative mx-auto origin-top scale-[0.5] sm:scale-[0.6] md:scale-[0.7] lg:scale-[0.85] xl:scale-100"
-          style={{ width: 660, height: 520 }}
-        >
-          {[
-            { idx: 0, top: 0,   left: 20  },  // top-left
-            { idx: 1, top: 140, left: 80  },  // mid-left
-            { idx: 2, top: 280, left: 140 },  // bottom-left
-            { idx: 3, top: 280, left: 280 },  // bottom-center
-            { idx: 4, top: 280, left: 420 },  // bottom-right
-            { idx: 5, top: 140, left: 480 },  // mid-right
-            { idx: 6, top: 0,   left: 540 },  // top-right
-          ].map(({ idx, top, left }) => (
-            <div key={idx} className="absolute" style={{ top, left, width: 100, height: 168 }}>
-              <CardSlot
-                drawnCard={cards[idx]}
-                index={idx}
-                revealed={revealedIndices.has(idx)}
-                onReveal={onRevealCard}
-                language={language}
-              />
-            </div>
-          ))}
+      <div className="flex flex-col items-center gap-1 sm:gap-2 px-2">
+        {/* Top row: positions 0 and 6 */}
+        <div className="flex justify-center gap-16 sm:gap-24 md:gap-40">
+          <CardSlot drawnCard={cards[0]} index={0} revealed={revealedIndices.has(0)} onReveal={onRevealCard} language={language} />
+          <CardSlot drawnCard={cards[6]} index={6} revealed={revealedIndices.has(6)} onReveal={onRevealCard} language={language} />
+        </div>
+        {/* Middle row: positions 1 and 5 */}
+        <div className="flex justify-center gap-8 sm:gap-16 md:gap-24">
+          <CardSlot drawnCard={cards[1]} index={1} revealed={revealedIndices.has(1)} onReveal={onRevealCard} language={language} />
+          <CardSlot drawnCard={cards[5]} index={5} revealed={revealedIndices.has(5)} onReveal={onRevealCard} language={language} />
+        </div>
+        {/* Bottom row: positions 2, 3, 4 */}
+        <div className="flex justify-center gap-1 sm:gap-2 md:gap-4">
+          <CardSlot drawnCard={cards[2]} index={2} revealed={revealedIndices.has(2)} onReveal={onRevealCard} language={language} />
+          <CardSlot drawnCard={cards[3]} index={3} revealed={revealedIndices.has(3)} onReveal={onRevealCard} language={language} />
+          <CardSlot drawnCard={cards[4]} index={4} revealed={revealedIndices.has(4)} onReveal={onRevealCard} language={language} />
         </div>
       </div>
     );
