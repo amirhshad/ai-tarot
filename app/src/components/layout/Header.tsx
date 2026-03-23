@@ -64,6 +64,7 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
               <NavLink href="/reading/new" current={pathname} label={language === 'en' ? 'New Reading' : 'خوانش جدید'} />
               <NavLink href="/tarot-card-meanings" current={pathname} label={language === 'en' ? 'Card Meanings' : 'معانی کارت‌ها'} />
               <NavLink href="/spreads" current={pathname} label={language === 'en' ? 'Spreads' : 'گسترش‌ها'} />
+              <NavLink href="/history" current={pathname} label={language === 'en' ? 'History' : 'تاریخچه'} />
               <NavLink href="/billing" current={pathname} label={language === 'en' ? 'Billing' : 'اشتراک'} />
               <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-amber-200/80 capitalize">
                 {user.tier}
@@ -131,6 +132,7 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
               <NavLink href="/reading/new" current={pathname} label={language === 'en' ? 'New Reading' : 'خوانش جدید'} onClick={() => setMenuOpen(false)} />
               <NavLink href="/tarot-card-meanings" current={pathname} label={language === 'en' ? 'Card Meanings' : 'معانی کارت‌ها'} onClick={() => setMenuOpen(false)} />
               <NavLink href="/spreads" current={pathname} label={language === 'en' ? 'Spreads' : 'گسترش‌ها'} onClick={() => setMenuOpen(false)} />
+              <NavLink href="/history" current={pathname} label={language === 'en' ? 'History' : 'تاریخچه'} onClick={() => setMenuOpen(false)} />
               <NavLink href="/billing" current={pathname} label={language === 'en' ? 'Billing' : 'اشتراک'} onClick={() => setMenuOpen(false)} />
               <div className="flex items-center gap-3 pt-1">
                 <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-amber-200/80 capitalize">

@@ -10,9 +10,20 @@ export default async function DashboardPage() {
   if (!user) return null;
 
   const profile = await getProfile(user.id);
-  const readings = await getRecentReadings(user.id, 10);
+  const readings = await getRecentReadings(user.id, 5);
 
   const displayName = profile?.display_name || user.email?.split('@')[0] || 'Reader';
+
+  function formatRelativeDate(dateStr: string): string {
+    const now = new Date();
+    const date = new Date(dateStr);
+    const diffMs = now.getTime() - date.getTime();
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    return date.toLocaleDateString();
+  }
 
   return (
     <div className="space-y-8">
@@ -75,7 +86,17 @@ export default async function DashboardPage() {
 
       {/* Recent Readings */}
       <div>
-        <h2 className="text-lg font-semibold text-white mb-4">Recent Readings</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-white">Recent Readings</h2>
+          {readings && readings.length > 0 && (
+            <Link
+              href="/history"
+              className="text-sm text-amber-400 hover:text-amber-300 transition-colors"
+            >
+              View All History →
+            </Link>
+          )}
+        </div>
         {readings && readings.length > 0 ? (
           <div className="space-y-2">
             {readings.map((reading) => (
@@ -86,18 +107,26 @@ export default async function DashboardPage() {
               >
                 <div className="flex items-center justify-between">
                   <div className="min-w-0 flex-1">
-                    <span className="text-sm font-medium text-white capitalize">
-                      {reading.spread_type.replace('-', ' ')}
-                    </span>
-                    {reading.question && (
-                      <p className="text-xs text-gray-500 mt-0.5 truncate">
-                        {reading.question}
-                      </p>
-                    )}
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-white capitalize">
+                        {reading.spread_type.split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+                      </span>
+                      {reading.topic && (
+                        <>
+                          <span className="text-gray-600">·</span>
+                          <span className="text-xs text-gray-400 capitalize">
+                            {reading.topic === 'yes-or-no' ? 'Yes/No' : reading.topic}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                    <p className="text-xs text-gray-500 mt-0.5 truncate">
+                      {reading.question || 'General reading'}
+                    </p>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0 ml-3">
                     <span className="text-xs text-gray-600">
-                      {new Date(reading.created_at).toLocaleDateString()}
+                      {formatRelativeDate(reading.created_at)}
                     </span>
                     <DeleteReadingButton readingId={reading.id} />
                   </div>
