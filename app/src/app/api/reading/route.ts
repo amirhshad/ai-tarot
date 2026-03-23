@@ -67,6 +67,7 @@ export async function POST(request: NextRequest) {
     cards: cardData,
     model_used: tier === 'free' ? 'haiku-4.5' : 'sonnet-4',
     language,
+    topic: topic || undefined,
   });
 
   // Increment usage

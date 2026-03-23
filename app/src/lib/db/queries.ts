@@ -52,6 +52,7 @@ export interface ReadingRow {
   tokens_used: number;
   share_token: string | null;
   feedback: number | null;
+  topic: string | null;
   created_at: string;
 }
 
@@ -62,13 +63,14 @@ export async function createReading(data: {
   cards: unknown;
   model_used: string;
   language: string;
+  topic?: string;
 }): Promise<string> {
   await ensureSchema();
   const db = getDb();
   const id = crypto.randomUUID();
   await db.execute({
-    sql: `INSERT INTO readings (id, user_id, spread_type, question, cards, model_used, language) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    args: [id, data.user_id, data.spread_type, data.question || null, JSON.stringify(data.cards), data.model_used, data.language],
+    sql: `INSERT INTO readings (id, user_id, spread_type, question, cards, model_used, language, topic) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    args: [id, data.user_id, data.spread_type, data.question || null, JSON.stringify(data.cards), data.model_used, data.language, data.topic || null],
   });
   return id;
 }
@@ -91,6 +93,75 @@ export async function getRecentReadings(userId: string, limit = 10): Promise<Rea
   const db = getDb();
   const result = await db.execute({ sql: 'SELECT * FROM readings WHERE user_id = ? ORDER BY created_at DESC LIMIT ?', args: [userId, limit] });
   return result.rows as unknown as ReadingRow[];
+}
+
+export interface ReadingFilters {
+  search?: string;
+  spreadType?: string;
+  topic?: string; // 'general' maps to IS NULL
+  dateFrom?: string;
+  dateTo?: string;
+}
+
+export async function getFilteredReadings(
+  userId: string,
+  filters: ReadingFilters,
+  offset: number = 0,
+  limit: number = 20
+): Promise<{ readings: ReadingRow[]; total: number }> {
+  await ensureSchema();
+  const db = getDb();
+
+  const conditions: string[] = ['user_id = ?'];
+  const args: (string | number)[] = [userId];
+
+  if (filters.search) {
+    conditions.push('question LIKE ?');
+    args.push(`%${filters.search}%`);
+  }
+
+  if (filters.spreadType) {
+    conditions.push('spread_type = ?');
+    args.push(filters.spreadType);
+  }
+
+  if (filters.topic) {
+    if (filters.topic === 'general') {
+      conditions.push('topic IS NULL');
+    } else {
+      conditions.push('topic = ?');
+      args.push(filters.topic);
+    }
+  }
+
+  if (filters.dateFrom) {
+    conditions.push('created_at >= ?');
+    args.push(filters.dateFrom);
+  }
+
+  if (filters.dateTo) {
+    const [y, m, d] = filters.dateTo.split('-').map(Number);
+    const nextDay = new Date(Date.UTC(y, m - 1, d + 1));
+    const nextDayStr = nextDay.toISOString().split('T')[0];
+    conditions.push('created_at < ?');
+    args.push(nextDayStr);
+  }
+
+  const where = conditions.join(' AND ');
+
+  const countResult = await db.execute({
+    sql: `SELECT COUNT(*) as count FROM readings WHERE ${where}`,
+    args,
+  });
+  const total = (countResult.rows[0] as unknown as { count: number }).count;
+
+  const result = await db.execute({
+    sql: `SELECT * FROM readings WHERE ${where} ORDER BY created_at DESC LIMIT ? OFFSET ?`,
+    args: [...args, limit, offset],
+  });
+  const readings = result.rows as unknown as ReadingRow[];
+
+  return { readings, total };
 }
 
 export async function deleteReading(id: string, userId: string): Promise<void> {
