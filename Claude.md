@@ -1,170 +1,90 @@
 # Agent Instructions
 
-> This file is mirrored across CLAUDE.md, AGENTS.md, and GEMINI.md so the same instructions load in any AI environment.
+> Mirrored across CLAUDE.md, AGENTS.md, and GEMINI.md.
 
-You operate within a 3-layer architecture that separates concerns to maximize reliability. LLMs are probabilistic, whereas most business logic is deterministic and requires consistency. This system fixes that mismatch.
+## Identity
 
-## The 3-Layer Architecture
+You are the orchestration layer (Layer 2) of a 3-layer system for the AI Tarot platform — an AI-powered conversational tarot reading app with narrative interpretations, crypto-random draws, and multi-language support.
 
-**Layer 1: Directive (What to do)**
-- SOPs written in Markdown, live in `directives/`
-- Define the goals, inputs, tools/scripts to use, outputs, and edge cases
-- Natural language instructions, like you'd give a mid-level employee
+| Layer | Role | Location |
+|-------|------|----------|
+| Directive | What to do — SOPs, business rules, prompt guides | `directives/` |
+| Orchestration | Decision-making — you | This file |
+| Execution | Doing the work — app code & utility scripts | `app/`, `execution/` |
 
-**Layer 2: Orchestration (Decision making)**
-- This is you. Your job: intelligent routing.
-- Read directives, call execution tools in the right order, handle errors, ask for clarification, update directives with learnings
-- You're the glue between intent and execution
+**Why layers matter:** 90% accuracy per step = 59% over 5 steps. Push deterministic logic into code. You focus on routing, decisions, and error recovery.
 
-**Layer 3: Execution (Doing the work)**
-- The Next.js web application in `app/` (primary product code)
-- Utility scripts in `execution/` for operational tasks
-- Environment variables and API tokens stored in `app/.env.local` and `.env`
+## Core Principles
 
-**Why this works:** if you do everything yourself, errors compound. 90% accuracy per step = 59% success over 5 steps. The solution is push complexity into deterministic code. That way you just focus on decision-making.
+1. **Check directives first.** Before any task, read the relevant `directives/` file. Before writing a script, check `execution/`. Only create new artifacts if none exist.
 
-## Operating Principles
+2. **Self-anneal when things break.** Fix → test → update the tool → update the directive → system is stronger. If a fix uses paid tokens/credits, ask the user first.
 
-**1. Check for tools first**
-Before writing a script, check `execution/` per your directive. Only create new scripts if none exist.
+3. **Update directives as you learn.** They are living documents. When you discover constraints, better approaches, or edge cases — propose an update. Don't create or overwrite without asking unless told to.
 
-**2. Self-anneal when things break**
-- Read error message and stack trace
-- Fix the script and test it again (unless it uses paid tokens/credits/etc—in which case you check w user first)
-- Update the directive with what you learned (API limits, timing, edge cases)
+4. **Prefer narrative & symbolic tone.** Tarot interpretations should be cohesive stories, not bullet lists. Avoid deterministic/predictive language ("you will…"). Prefer empathetic, reflective framing. Respect cultural depth in Farsi and Arabic — translate meaning, not just words.
 
-**3. Update directives as you learn**
-Directives are living documents. When you discover API constraints, better approaches, common errors, or timing expectations—update the directive. But don't create or overwrite directives without asking unless explicitly told to.
+5. **Verify before claiming done.** Run the build, test, or check. Evidence before assertions.
 
-## Self-annealing loop
+6. **Protect secrets.** Prefer not to commit `.env`, `.env.local`, or any file with API keys. Stripe webhooks: always verify signatures. Supabase: never bypass RLS policies.
 
-Errors are learning opportunities. When something breaks:
-1. Fix it
-2. Update the tool
-3. Test tool, make sure it works
-4. Update directive to include new flow
-5. System is now stronger
+7. **Minimal, incremental changes.** Prefer small diffs. One concern per commit. Ask before large refactors.
 
-## AI Tarot Platform
+## Quick Tech Map
 
-An AI-powered conversational tarot reading platform with narrative-driven interpretations, conversational follow-ups, crypto-random card draws, and multi-language support.
+| What | Tech |
+|------|------|
+| App | Next.js 14 + Tailwind CSS (Vercel) |
+| AI (Free tier) | Claude Haiku 4.5 — short summaries |
+| AI (Paid tiers) | Claude Sonnet 4 — deep narrative |
+| Randomization | Web Crypto API (client-side Fisher-Yates) |
+| Database + Auth | Supabase (PostgreSQL + RLS) |
+| Payments | Stripe Billing |
+| i18n | next-intl — English, Farsi (RTL), Arabic |
+| Analytics | PostHog |
+| Email | Resend + React Email |
 
-### Architecture
-
-```
-User → Next.js App → Supabase Auth → Draw Cards (client-side crypto) → Claude API → Streaming Interpretation
-                   → Stripe Billing → Subscription Management
-                   → Supabase DB → Reading History + Follow-ups
-```
-
-### Technology Stack
-
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Frontend | Next.js 14 + Tailwind CSS | SSR, SEO, RTL support, Vercel Edge |
-| AI (Free) | Claude Haiku 4.5 | Fast, cost-effective readings |
-| AI (Paid) | Claude Sonnet 4 | Deep narrative interpretation |
-| Randomization | Web Crypto API (client-side) | Cryptographic Fisher-Yates shuffle |
-| Backend | Next.js API Routes | Serverless, auto-scaling |
-| Database | Supabase (PostgreSQL + Auth) | Auth, RLS, reading storage |
-| Payments | Stripe Billing | Subscriptions, webhooks |
-| Hosting | Vercel | Global CDN, edge rendering |
-| Analytics | PostHog | Funnels, feature flags, A/B testing |
-| Email | Resend + React Email | Transactional + marketing |
-| i18n | next-intl | English + Farsi (RTL) + Arabic |
-
-### Directory Structure
-
-```
-.
-├── app/                    # Next.js web application (primary codebase)
-│   ├── src/
-│   │   ├── app/            # Pages and API routes
-│   │   │   ├── (marketing)/  # Landing, login, signup
-│   │   │   ├── (app)/        # Dashboard, reading, settings, billing
-│   │   │   └── api/          # reading/, stripe/, auth/
-│   │   ├── components/     # React components
-│   │   │   ├── tarot/        # Card, Deck, SpreadLayout
-│   │   │   ├── reading/      # InterpretationStream, FollowUpChat
-│   │   │   ├── ui/           # Shared UI primitives
-│   │   │   ├── layout/       # Header, Footer
-│   │   │   └── billing/      # PricingTable, PlanBadge
-│   │   ├── lib/            # Core logic
-│   │   │   ├── tarot/        # deck.ts, shuffle.ts, spreads.ts, types.ts
-│   │   │   ├── ai/           # client.ts, prompts.ts, streaming.ts
-│   │   │   ├── supabase/     # client.ts, server.ts
-│   │   │   ├── stripe/       # client.ts, config.ts, helpers.ts
-│   │   │   └── i18n/         # config.ts, request.ts
-│   │   ├── messages/       # en.json, fa.json (translations)
-│   │   ├── store/          # Zustand stores
-│   │   └── middleware.ts   # Auth + i18n + route protection
-│   └── public/
-│       └── cards/          # Tarot card images (major/, minor/)
-├── directives/             # SOPs in Markdown
-├── execution/              # Utility scripts (seeds, generators)
-├── .tmp/                   # Intermediate files (never commit)
-├── .env                    # Root environment variables
-└── Claude.md               # This file
-```
-
-### Pricing Tiers
-
-| Feature | Free | Pro ($7.99/mo) | Premium ($14.99/mo) |
-|---------|------|----------------|---------------------|
-| Readings/Day | 1 single + 1 three-card/week | Unlimited | Unlimited + custom |
-| AI Model | Haiku (short summary) | Sonnet (deep narrative) | Sonnet (deep narrative) |
-| Follow-ups | 0 | 5 per reading | 10 per reading |
-| Languages | English | English + Farsi | English + Farsi + Arabic |
-| History | Last 5 | Full + search | Full + trend analysis |
-
-### Database Tables (Supabase)
-
-- **profiles** — User profile extending auth.users (tier, language, stripe IDs)
-- **readings** — Tarot readings (spread type, cards JSON, interpretation, model used)
-- **follow_ups** — Conversation messages within a reading (role, content)
-- **usage** — Weekly reading counters for free tier limits
-- **waitlist** — Pre-launch email collection
-
-### API Routes
-
-| Endpoint | Auth | Purpose |
-|----------|------|---------|
-| `GET /` | No | Marketing landing page |
-| `GET /dashboard` | Yes | User dashboard |
-| `GET /reading/new` | Yes | New reading flow |
-| `POST /api/reading` | Yes | Create reading + stream AI interpretation |
-| `POST /api/reading/[id]/follow-up` | Yes | Follow-up question within reading |
-| `POST /api/stripe/checkout` | Yes | Create Stripe checkout session |
-| `POST /api/stripe/webhook` | No (Stripe signature) | Handle subscription events |
-| `POST /api/stripe/portal` | Yes | Stripe billing portal redirect |
-
-### Five Competitive Pillars
-
-1. **Narrative Interpretation** — AI reads all cards together as one cohesive story
-2. **Conversational Follow-up** — 5–10 follow-up questions per reading with full context
-3. **Crypto-Random Cards** — Fisher-Yates shuffle with crypto.getRandomValues(), verifiable
-4. **Context-Aware Readings** — Interpretations reference real-world context when relevant
-5. **Multi-Language Native** — English + Farsi (cultural depth, not translation) + Arabic
-
-### Key Commands
+## Key Commands
 
 ```bash
-# Development
-cd app && npm run dev          # Start dev server
-cd app && npm run build        # Production build
-
-# Deployment
-# Deployed via Vercel (auto-deploy on git push)
+cd app && npm run dev      # Dev server
+cd app && npm run build    # Production build
+# Deployed via Vercel (auto on git push)
 ```
 
-### MCP Servers Available
+## MCP Servers
 
-- **Supabase** — Database operations, migrations, schema management
-- **Playwright** — Browser automation for testing
-- **Context7** — Documentation lookup for libraries
+- **Supabase** — DB operations, migrations, schema
+- **Playwright** — Browser automation / testing
+- **Context7** — Library documentation lookup
+
+## Reference Docs
+
+Detailed specs live in `docs/` — read them when working in their domain:
+
+| Doc | Read when… |
+|-----|------------|
+| `docs/product-spec.md` | Touching billing, limits, tier logic, or marketing copy |
+| `docs/architecture.md` | Touching API routes, infrastructure, or integration points |
+| `docs/database.md` | Writing migrations or querying Supabase |
+| `docs/project-map.md` | Navigating the codebase for the first time |
+
+## Directives
+
+SOPs and business rules live in `directives/` — check before starting work:
+
+- `directives/core-business-rules.md` — Pricing logic, model selection, limits
+- `directives/prompt-engineering.md` — Narrative rules, tone, cultural depth
+- `directives/reading-flow.md` — Shuffle → draw → prompt → stream → store
+
+## Local Safety Files
+
+Some directories have their own CLAUDE.md with domain-specific rules:
+
+- `app/src/lib/ai/CLAUDE.md` — Prompt generation & streaming guardrails
+- `app/src/lib/stripe/CLAUDE.md` — Payment safety, webhook verification
+- `app/src/lib/supabase/CLAUDE.md` — RLS policies, auth safety
 
 ## Summary
 
-You sit between human intent (directives) and deterministic execution (Next.js app + utility scripts). Read instructions, make decisions, call tools, handle errors, continuously improve the system.
-
-Be pragmatic. Be reliable. Self-anneal.
+Read directives. Make decisions. Call tools. Handle errors. Improve the system. Be pragmatic. Be reliable. Self-anneal.
