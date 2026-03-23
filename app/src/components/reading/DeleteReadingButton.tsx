@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function DeleteReadingButton({ readingId }: { readingId: string }) {
+export default function DeleteReadingButton({ readingId, onDeleted }: { readingId: string; onDeleted?: () => void }) {
   const router = useRouter();
   const [confirming, setConfirming] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -11,7 +11,11 @@ export default function DeleteReadingButton({ readingId }: { readingId: string }
   async function handleDelete() {
     setDeleting(true);
     await fetch(`/api/reading/${readingId}`, { method: 'DELETE' });
-    router.refresh();
+    if (onDeleted) {
+      onDeleted();
+    } else {
+      router.refresh();
+    }
   }
 
   if (confirming) {

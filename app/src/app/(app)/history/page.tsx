@@ -143,7 +143,13 @@ function HistoryContent() {
       {/* Timeline */}
       {!loading && readings.length > 0 && (
         <>
-          <ReadingTimeline readings={readings} />
+          <ReadingTimeline
+            readings={readings}
+            onDelete={(id) => {
+              setReadings((prev) => prev.filter((r) => r.id !== id));
+              setTotal((prev) => prev - 1);
+            }}
+          />
 
           {hasMore && (
             <div className="text-center pt-4">

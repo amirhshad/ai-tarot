@@ -2,10 +2,12 @@
 
 import Link from 'next/link';
 import type { ReadingRow } from '@/lib/db/queries';
+import DeleteReadingButton from '@/components/reading/DeleteReadingButton';
 
 interface ReadingTimelineProps {
   readings: ReadingRow[];
   language?: 'en' | 'fa';
+  onDelete?: (readingId: string) => void;
 }
 
 function formatSpreadType(type: string): string {
@@ -37,7 +39,7 @@ function groupByDate(readings: ReadingRow[]): { date: string; readings: ReadingR
   return Array.from(groups.entries()).map(([date, readings]) => ({ date, readings }));
 }
 
-export default function ReadingTimeline({ readings, language = 'en' }: ReadingTimelineProps) {
+export default function ReadingTimeline({ readings, language = 'en', onDelete }: ReadingTimelineProps) {
   const groups = groupByDate(readings);
 
   if (readings.length === 0) return null;
@@ -73,15 +75,22 @@ export default function ReadingTimeline({ readings, language = 'en' }: ReadingTi
 
                     {/* Content */}
                     <div className="flex-1 p-4 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-amber-400/20 transition-colors">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm font-medium text-amber-400">
-                          {formatSpreadType(reading.spread_type)}
-                        </span>
-                        {topicLabel && (
-                          <>
-                            <span className="text-gray-600">·</span>
-                            <span className="text-xs text-gray-400">{topicLabel}</span>
-                          </>
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium text-amber-400">
+                            {formatSpreadType(reading.spread_type)}
+                          </span>
+                          {topicLabel && (
+                            <>
+                              <span className="text-gray-600">·</span>
+                              <span className="text-xs text-gray-400">{topicLabel}</span>
+                            </>
+                          )}
+                        </div>
+                        {onDelete && (
+                          <span onClick={(e) => e.preventDefault()}>
+                            <DeleteReadingButton readingId={reading.id} onDeleted={() => onDelete(reading.id)} />
+                          </span>
                         )}
                       </div>
                       <p className="text-sm text-gray-300 truncate">
