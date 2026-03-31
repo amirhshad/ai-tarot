@@ -75,6 +75,7 @@ export async function POST(
         card,
         reversed: extraCard.reversed,
         language,
+        originalCardIds: cards.map(c => c.card.id),
       });
     }
   }

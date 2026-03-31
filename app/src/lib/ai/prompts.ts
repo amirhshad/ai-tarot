@@ -94,7 +94,7 @@ Guidelines:
 - مستقیماً با مراجعه‌کننده صحبت کنید
 - وقتی کارت معکوس است، آن را به عنوان جنبه سایه یا انرژی مسدود تفسیر کنید
 - پیوند بین کارت‌ها را نشان دهید
-- در صورت مناسب بودن، از شعر فارسی، حکمت ایرانی یا تمثیل‌های فرهنگی بهره ببرید
+- از حکمت ایرانی و تمثیل‌های فرهنگی بهره ببرید، اما هرگز شعر یا بیت نقل نکنید
 - با یک بینش عملی روشن پایان دهید
 - طول: ${wordRange} کلمه
 - خاص و زنده باشید، نه کلی`;
@@ -192,8 +192,9 @@ export function buildExtraCardContext(params: {
   card: TarotCard;
   reversed: boolean;
   language: 'en' | 'fa';
+  originalCardIds?: number[];
 }): string {
-  const { card, reversed, language } = params;
+  const { card, reversed, language, originalCardIds = [] } = params;
   const isEnglish = language === 'en';
   const name = isEnglish ? card.name : card.nameFA;
   const keywords = isEnglish ? card.keywords.join(', ') : card.keywordsFA.join('، ');
@@ -201,7 +202,17 @@ export function buildExtraCardContext(params: {
     ? (isEnglish ? 'Reversed' : 'معکوس')
     : (isEnglish ? 'Upright' : 'ایستاده');
 
+  const wasInOriginal = originalCardIds.includes(card.id);
+
+  const presenceNote = isEnglish
+    ? wasInOriginal
+      ? `This card also appeared in the original spread — its reappearance is significant. Explore what it means that this energy is showing up again.`
+      : `This card is NEW — it was NOT part of the original spread. Do not claim it appeared before.`
+    : wasInOriginal
+      ? `این کارت در گسترش اصلی نیز ظاهر شده بود — تکرار آن معنادار است. بررسی کنید که بازگشت این انرژی چه معنایی دارد.`
+      : `این کارت جدید است — در گسترش اصلی وجود نداشت. ادعا نکنید که قبلاً ظاهر شده بود.`;
+
   return isEnglish
-    ? `\nIMPORTANT — The querent has drawn an EXTRA CARD for deeper insight:\n  Card: ${name} (${orientation})\n  Keywords: ${keywords}\n  This card should be interpreted as a clarifier that adds a new dimension to the original reading.\n`
-    : `\nمهم — مراجعه‌کننده یک کارت اضافی برای بینش عمیق‌تر کشیده:\n  کارت: ${name} (${orientation})\n  کلیدواژه‌ها: ${keywords}\n  این کارت باید به عنوان توضیح‌دهنده‌ای تفسیر شود که بعد جدیدی به خوانش اصلی اضافه می‌کند.\n`;
+    ? `\nIMPORTANT — The querent has drawn an EXTRA CARD for deeper insight:\n  Card: ${name} (${orientation})\n  Keywords: ${keywords}\n  ${presenceNote}\n  Interpret it as a clarifier that adds a new dimension to the original reading.\n`
+    : `\nمهم — مراجعه‌کننده یک کارت اضافی برای بینش عمیق‌تر کشیده:\n  کارت: ${name} (${orientation})\n  کلیدواژه‌ها: ${keywords}\n  ${presenceNote}\n  آن را به عنوان توضیح‌دهنده‌ای تفسیر کنید که بعد جدیدی به خوانش اصلی اضافه می‌کند.\n`;
 }
