@@ -56,8 +56,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   // Fallback to JSON
   const fb = fallbackContent[params.slug];
   if (!fb) return {};
-  const title = `${fb.name} Tarot Card Meaning — Upright & Reversed | TarotVeil`;
-  const description = `Discover the ${fb.name} tarot card meaning. Learn upright and reversed interpretations for love, career, and life. Free AI reading included.`;
+  const article = /^the /i.test(fb.name) ? '' : 'the ';
+  const title = `${fb.name} Tarot Meaning — Upright, Reversed & Yes or No | TarotVeil`;
+  const description = `What does ${article}${fb.name} mean? Upright & reversed meanings for love, career, feelings, and yes-or-no readings. Plus card combinations and free AI tarot reading.`;
   return {
     title,
     description,

@@ -14,3 +14,4 @@ app/.env*.local
 # SQLite database
 app/data/
 .vercel
+.mcp.json
