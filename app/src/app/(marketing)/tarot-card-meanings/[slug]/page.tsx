@@ -186,6 +186,9 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
               { id: 'reversed', label: 'Reversed Meaning' },
               { id: 'love', label: 'Love & Relationships' },
               { id: 'career', label: 'Career & Finances' },
+              ...(card.asFeelings ? [{ id: 'feelings', label: 'As Feelings' }] : []),
+              ...(card.howSomeoneSeesYou ? [{ id: 'how-seen', label: 'How Someone Sees You' }] : []),
+              ...(card.advice ? [{ id: 'advice', label: 'Advice' }] : []),
               { id: 'yes-or-no', label: 'Yes or No' },
               { id: 'combinations', label: 'Card Combinations' },
               { id: 'faq', label: 'FAQ' },
@@ -238,6 +241,42 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
             <Paragraphs text={card.careerFinances} />
           </div>
         </section>
+
+        {/* As Feelings */}
+        {card.asFeelings && (
+          <section id="feelings" className="mb-12">
+            <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
+              <span className="text-gold-400/50">✦</span> {card.name} as Feelings
+            </h2>
+            <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10">
+              <Paragraphs text={card.asFeelings} />
+            </div>
+          </section>
+        )}
+
+        {/* How Someone Sees You */}
+        {card.howSomeoneSeesYou && (
+          <section id="how-seen" className="mb-12">
+            <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
+              <span className="text-gold-400/50">◇</span> {card.name} as How Someone Sees You
+            </h2>
+            <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10">
+              <Paragraphs text={card.howSomeoneSeesYou} />
+            </div>
+          </section>
+        )}
+
+        {/* Advice */}
+        {card.advice && (
+          <section id="advice" className="mb-12">
+            <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
+              <span className="text-gold-400/50">→</span> {card.name} Advice
+            </h2>
+            <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10">
+              <Paragraphs text={card.advice} />
+            </div>
+          </section>
+        )}
 
         {/* Yes or No */}
         <section id="yes-or-no" className="mb-12">

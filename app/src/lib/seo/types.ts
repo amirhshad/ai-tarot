@@ -25,6 +25,9 @@ export interface RichCardContent {
   reversedMeaning: string;
   loveRelationships: string;
   careerFinances: string;
+  asFeelings: string | null;
+  howSomeoneSeesYou: string | null;
+  advice: string | null;
   yesOrNo: string;
   yesOrNoVerdict: 'yes' | 'no' | 'maybe';
   combinations: CardCombinationRef[];

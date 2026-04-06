@@ -3,7 +3,7 @@ import cardContent from '@/data/card-content.json';
 
 // Use stable dates so Google trusts lastModified signals.
 // Update these when actual content changes are deployed.
-const CONTENT_LAST_MODIFIED = '2026-03-14';
+const CONTENT_LAST_MODIFIED = '2026-04-06';
 const STATIC_LAST_MODIFIED = '2026-04-01';
 
 export default function sitemap(): MetadataRoute.Sitemap {
