@@ -360,6 +360,17 @@ export default function ThreeCardSpreadPage() {
                 10 cards for the most comprehensive reading.
               </p>
             </Link>
+            <Link
+              href="/tarot-card-meanings"
+              className="group p-5 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all"
+            >
+              <h3 className="font-display text-base font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
+                Tarot Card Meanings
+              </h3>
+              <p className="font-body text-sm font-medium text-stone-500">
+                Learn what every card means — upright, reversed, and in context.
+              </p>
+            </Link>
           </div>
         </section>
 

@@ -380,6 +380,12 @@ export default function LoveTarotPage() {
           >
             Get a Free Love Reading
           </Link>
+          <p className="mt-6 font-body text-sm text-stone-500">
+            Want to learn what each card means?{' '}
+            <Link href="/tarot-card-meanings" className="text-gold-400/70 hover:text-gold-400 transition-colors underline underline-offset-2">
+              Explore all 78 tarot card meanings
+            </Link>
+          </p>
         </section>
       </div>
     </>
