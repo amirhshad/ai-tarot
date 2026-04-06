@@ -18,7 +18,8 @@ const db = createClient({
 });
 
 function buildMetaTitle(name: string): string {
-  return `${name} Tarot Meaning — Upright, Reversed & Yes or No | TarotVeil`;
+  // Root layout appends " | TarotVeil" via title.template — don't include it here
+  return `${name} Tarot Meaning — Upright, Reversed & Yes or No`;
 }
 
 function buildMetaDescription(name: string): string {
