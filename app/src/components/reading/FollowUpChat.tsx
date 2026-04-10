@@ -51,7 +51,6 @@ export default function FollowUpChat({
   const canAsk = remaining > 0;
 
   const en = language === 'en';
-  const isRTL = language === 'fa';
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -173,7 +172,7 @@ export default function FollowUpChat({
   }
 
   return (
-    <div className="flex flex-col gap-4" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="flex flex-col gap-4">
       {/* Messages */}
       <div className="space-y-3 max-h-96 overflow-y-auto">
         {messages.map((msg, i) => (

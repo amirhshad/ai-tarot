@@ -39,13 +39,14 @@ function groupByDate(readings: ReadingRow[]): { date: string; readings: ReadingR
   return Array.from(groups.entries()).map(([date, readings]) => ({ date, readings }));
 }
 
-export default function ReadingTimeline({ readings, language = 'en', onDelete }: ReadingTimelineProps) {
+export default function ReadingTimeline({ readings, language: _language = 'en', onDelete }: ReadingTimelineProps) {
+  void _language; // Prop kept for future content localisation
   const groups = groupByDate(readings);
 
   if (readings.length === 0) return null;
 
   return (
-    <div className="relative" dir={language === 'fa' ? 'rtl' : 'ltr'}>
+    <div className="relative">
       {/* Vertical timeline line */}
       <div className="absolute top-0 bottom-0 left-[7px] w-[2px] bg-amber-400/20" />
 

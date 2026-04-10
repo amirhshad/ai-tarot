@@ -108,3 +108,14 @@ body::after {
     text-wrap: balance;
   }
 }
+
+/* Farsi (RTL) font override */
+[dir="rtl"] .font-body,
+[lang="fa"] .font-body {
+  font-family: var(--font-vazirmatn), var(--font-inter), system-ui, sans-serif;
+}
+
+[dir="rtl"] .font-display,
+[lang="fa"] .font-display {
+  font-family: var(--font-vazirmatn), var(--font-cinzel), serif;
+}

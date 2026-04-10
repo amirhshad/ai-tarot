@@ -80,10 +80,8 @@ export default function PricingTable({
   language = 'en',
   onSelectPlan,
 }: PricingTableProps) {
-  const isRTL = language === 'fa';
-
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
       {plans.map((plan) => {
         const isCurrent = currentTier === plan.id;
         const name = language === 'en' ? plan.name : plan.nameFA;

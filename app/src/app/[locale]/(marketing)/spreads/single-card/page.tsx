@@ -1,35 +1,43 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { buildAlternates } from '@/lib/seo/alternates';
 
 const siteUrl = 'https://www.tarotveil.com';
 
-export const metadata: Metadata = {
-  title: 'Single Card Tarot Reading — One Card Pull Guide | AI Tarot',
-  description:
-    'Learn how to do a single card tarot reading. Perfect for daily guidance, yes/no questions, and quick clarity. Try a free AI one-card reading at TarotVeil.',
-  keywords: [
-    'one card tarot reading',
-    'single card tarot',
-    'daily tarot card',
-    'one card pull',
-    'AI tarot reading',
-    'tarot card of the day',
-    'yes or no tarot',
-  ],
-  alternates: {
-    canonical: `${siteUrl}/spreads/single-card`,
-  },
-  openGraph: {
-    title: 'Single Card Tarot Reading — One Card Pull Guide | AI Tarot',
-    description:
-      'Master the single card tarot reading. Quick guidance, daily pulls, and yes/no answers with AI-powered interpretations.',
-    url: `${siteUrl}/spreads/single-card`,
-    type: 'article',
-  },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('spreadSingleCard');
 
-export default function SingleCardSpreadPage() {
+  return {
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+    keywords: [
+      'one card tarot reading',
+      'single card tarot',
+      'daily tarot card',
+      'one card pull',
+      'AI tarot reading',
+      'tarot card of the day',
+      'yes or no tarot',
+    ],
+    alternates: buildAlternates('/spreads/single-card'),
+    openGraph: {
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      url: `${siteUrl}/spreads/single-card`,
+      type: 'article',
+    },
+  };
+}
+
+export default async function SingleCardSpreadPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('spreadSingleCard');
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -82,6 +90,21 @@ export default function SingleCardSpreadPage() {
     ],
   };
 
+  const whenToUse = [
+    { title: t('useDailyTitle'), desc: t('useDailyDesc') },
+    { title: t('useClarityTitle'), desc: t('useClarityDesc') },
+    { title: t('useYesNoTitle'), desc: t('useYesNoDesc') },
+    { title: t('useLearningTitle'), desc: t('useLearningDesc') },
+  ];
+
+  const steps = [
+    { step: '1', title: t('step1Title'), desc: t('step1Desc') },
+    { step: '2', title: t('step2Title'), desc: t('step2Desc') },
+    { step: '3', title: t('step3Title'), desc: t('step3Desc') },
+  ];
+
+  const tips = [t('tip1'), t('tip2'), t('tip3'), t('tip4'), t('tip5')];
+
   return (
     <>
       <script
@@ -92,14 +115,14 @@ export default function SingleCardSpreadPage() {
         {/* Breadcrumbs */}
         <nav className="text-sm text-stone-500 mb-8 flex items-center gap-2">
           <Link href="/" className="hover:text-gold-400 transition-colors">
-            Home
+            {t('breadcrumbHome')}
           </Link>
           <span>/</span>
           <Link href="/spreads" className="hover:text-gold-400 transition-colors">
-            Spreads
+            {t('breadcrumbSpreads')}
           </Link>
           <span>/</span>
-          <span className="text-stone-300">Single Card</span>
+          <span className="text-stone-300">{t('breadcrumbSingleCard')}</span>
         </nav>
 
         {/* Header */}
@@ -119,22 +142,19 @@ export default function SingleCardSpreadPage() {
 
           <div className="flex-1">
             <p className="text-xs tracking-[0.2em] uppercase text-gold-400/60 mb-2">
-              Beginner · 1 Card · ~2 Minutes
+              {t('tagline')}
             </p>
             <h1 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
-              Single Card Tarot Reading
+              {t('pageTitle')}
             </h1>
             <p className="font-body text-lg font-medium text-stone-300 leading-relaxed mb-6">
-              The simplest and most direct way to consult the tarot. One card,
-              one message. Whether you&apos;re starting your morning, facing a
-              decision, or just checking in with yourself, a single card pull
-              cuts through noise and delivers focused insight.
+              {t('heroDescription')}
             </p>
             <Link
               href="/reading/free"
               className="inline-block px-8 py-3 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-sm tracking-wide rounded-sm hover:shadow-[0_0_25px_rgba(212,160,67,0.3)] transition-all"
             >
-              Try a Free Single Card Reading
+              {t('ctaButton')}
             </Link>
           </div>
         </div>
@@ -142,27 +162,10 @@ export default function SingleCardSpreadPage() {
         {/* When to use */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4">
-            When to Use a Single Card Reading
+            {t('whenToUseTitle')}
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
-            {[
-              {
-                title: 'Daily Guidance',
-                desc: 'Pull a card each morning to set your intention for the day. Many tarot practitioners make this a daily ritual.',
-              },
-              {
-                title: 'Quick Clarity',
-                desc: 'When you need immediate insight on a situation but don\'t have time for a full spread.',
-              },
-              {
-                title: 'Yes/No Questions',
-                desc: 'Frame a binary question. Upright cards tend toward "yes" and reversed cards toward "no" — but the nuance matters.',
-              },
-              {
-                title: 'Learning the Deck',
-                desc: 'The best way to learn tarot card meanings is to pull one card daily and sit with its message.',
-              },
-            ].map((item) => (
+            {whenToUse.map((item) => (
               <div
                 key={item.title}
                 className="p-5 rounded-sm border border-gold-400/[0.06] bg-white/[0.01]"
@@ -181,26 +184,10 @@ export default function SingleCardSpreadPage() {
         {/* How it works */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-6">
-            How It Works
+            {t('howItWorksTitle')}
           </h2>
           <div className="space-y-6 pl-8 border-l border-gold-400/10">
-            {[
-              {
-                step: '1',
-                title: 'Focus Your Question',
-                desc: 'Take a breath. Think about what you want to know — or simply ask "what do I need to know today?" The clearer your intention, the more resonant the reading.',
-              },
-              {
-                step: '2',
-                title: 'Draw Your Card',
-                desc: 'TarotVeil uses cryptographic randomization (the same technology that secures banking systems) to draw your card. No algorithms, no bias — just pure chance.',
-              },
-              {
-                step: '3',
-                title: 'Receive Your AI Interpretation',
-                desc: 'Our AI doesn\'t just give you a textbook definition. It reads the card in context — considering the position (upright or reversed), your question, and the card\'s narrative arc — to deliver a personal, meaningful interpretation.',
-              },
-            ].map((item) => (
+            {steps.map((item) => (
               <div key={item.step}>
                 <div className="flex items-center gap-3 mb-2">
                   <span className="flex-shrink-0 w-7 h-7 rounded-full bg-gold-400/10 text-gold-400 font-display text-sm font-semibold flex items-center justify-center">
@@ -221,27 +208,18 @@ export default function SingleCardSpreadPage() {
         {/* Position meaning */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4">
-            The Position: &ldquo;The Card&rdquo;
+            {t('positionTitle')}
           </h2>
           <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10 space-y-4">
-            <p>
-              In a single card reading, the card represents the core message for
-              your question. It&apos;s not filtered through multiple positions or
-              compared against other cards — it stands alone as the tarot&apos;s
-              direct answer.
-            </p>
-            <p>
-              This directness is what makes the single card pull so powerful.
-              There&apos;s nowhere for the meaning to hide. The card you draw is
-              the card you need.
-            </p>
+            <p>{t('positionP1')}</p>
+            <p>{t('positionP2')}</p>
           </div>
         </section>
 
         {/* Sample Reading */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-            <span className="text-gold-400/50">✦</span> Sample AI Interpretation
+            <span className="text-gold-400/50">✦</span> {t('sampleTitle')}
           </h2>
           <div className="p-6 rounded-sm border border-gold-400/[0.08] bg-gradient-to-b from-white/[0.02] to-transparent">
             <div className="flex items-center gap-4 mb-4">
@@ -256,31 +234,21 @@ export default function SingleCardSpreadPage() {
               </div>
               <div>
                 <p className="text-xs tracking-[0.15em] uppercase text-gold-400/50 mb-1">
-                  Card Drawn
+                  {t('sampleCardDrawn')}
                 </p>
                 <p className="font-display text-lg font-semibold text-white">
                   <Link
                     href="/tarot-card-meanings/the-star"
                     className="hover:text-gold-400 transition-colors"
                   >
-                    The Star
+                    {t('sampleCardName')}
                   </Link>{' '}
-                  <span className="text-stone-500 font-normal">· Upright</span>
+                  <span className="text-stone-500 font-normal">&middot; {t('sampleUpright')}</span>
                 </p>
               </div>
             </div>
             <div className="font-body text-sm font-medium text-stone-300 leading-relaxed italic">
-              <p>
-                &ldquo;After the upheaval of The Tower, The Star arrives as quiet
-                reassurance — you are exactly where you need to be. This card
-                speaks of renewed hope after a difficult period. Whatever
-                you&apos;ve been weathering, the worst has passed. The Star
-                invites you to trust the process, pour your energy into healing,
-                and believe that clarity is emerging. This isn&apos;t blind
-                optimism; it&apos;s the calm confidence that comes after
-                surviving something hard and realizing you&apos;re still
-                standing.&rdquo;
-              </p>
+              <p>&ldquo;{t('sampleText')}&rdquo;</p>
             </div>
           </div>
         </section>
@@ -288,18 +256,12 @@ export default function SingleCardSpreadPage() {
         {/* Tips */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4">
-            Tips for Better Single Card Readings
+            {t('tipsTitle')}
           </h2>
           <ul className="space-y-3 font-body text-sm font-medium text-stone-400 leading-relaxed">
-            {[
-              'Be specific with your question. "What should I focus on at work today?" is more powerful than "tell me about work."',
-              'Don\'t re-draw if you don\'t like the answer. The first card is the message — sit with it.',
-              'Journal your daily pulls. Patterns will emerge over time that reveal deeper insights.',
-              'Pay attention to reversed cards. They\'re not "bad" — they often indicate internal or blocked energy.',
-              'Use follow-up questions. On TarotVeil, you can ask the AI to elaborate on any part of your reading.',
-            ].map((tip, i) => (
+            {tips.map((tip, i) => (
               <li key={i} className="flex gap-3">
-                <span className="text-gold-400/40 flex-shrink-0">·</span>
+                <span className="text-gold-400/40 flex-shrink-0">&middot;</span>
                 <span>{tip}</span>
               </li>
             ))}
@@ -309,7 +271,7 @@ export default function SingleCardSpreadPage() {
         {/* Related Spreads */}
         <section className="mb-12">
           <h2 className="font-display text-xl font-semibold text-white mb-4">
-            Explore Other Spreads
+            {t('relatedTitle')}
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <Link
@@ -317,10 +279,10 @@ export default function SingleCardSpreadPage() {
               className="group p-5 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all"
             >
               <h3 className="font-display text-base font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
-                Three-Card Spread
+                {t('relatedThreeCard')}
               </h3>
               <p className="font-body text-sm font-medium text-stone-500">
-                Past, present, and future in one narrative arc.
+                {t('relatedThreeCardDesc')}
               </p>
             </Link>
             <Link
@@ -328,10 +290,10 @@ export default function SingleCardSpreadPage() {
               className="group p-5 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all"
             >
               <h3 className="font-display text-base font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
-                Celtic Cross Spread
+                {t('relatedCelticCross')}
               </h3>
               <p className="font-body text-sm font-medium text-stone-500">
-                10 cards for a comprehensive, deep reading.
+                {t('relatedCelticCrossDesc')}
               </p>
             </Link>
           </div>
@@ -340,33 +302,32 @@ export default function SingleCardSpreadPage() {
         {/* Explore cards CTA */}
         <section className="mb-12">
           <h2 className="font-display text-xl font-semibold text-white mb-4">
-            Learn the Cards
+            {t('learnTitle')}
           </h2>
           <p className="font-body text-sm font-medium text-stone-400 mb-4">
-            Deepen your readings by understanding each card&apos;s meaning.
+            {t('learnDesc')}
           </p>
           <Link
             href="/tarot-card-meanings"
             className="text-sm text-gold-400 hover:text-gold-300 transition-colors font-medium"
           >
-            Explore all 78 card meanings →
+            {t('learnLink')}
           </Link>
         </section>
 
         {/* Bottom CTA */}
         <section className="text-center py-12 border-t border-gold-400/[0.06]">
           <h2 className="font-display text-2xl font-semibold text-white mb-3">
-            Pull Your Card
+            {t('bottomCtaTitle')}
           </h2>
           <p className="font-body text-base font-medium text-stone-400 mb-6 max-w-md mx-auto">
-            Get a free AI tarot reading with a single card pull. No signup
-            required — just focus your question and draw.
+            {t('bottomCtaDesc')}
           </p>
           <Link
             href="/reading/free"
             className="inline-block px-10 py-3.5 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-base tracking-wide rounded-sm hover:shadow-[0_0_30px_rgba(212,160,67,0.3)] transition-all"
           >
-            Get a Free Reading
+            {t('bottomCtaButton')}
           </Link>
         </section>
       </div>

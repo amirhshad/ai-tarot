@@ -33,7 +33,7 @@ export default async function ReadingPage({
   const language = (profile?.language || 'en') as 'en' | 'fa';
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8" dir={language === 'fa' ? 'rtl' : 'ltr'}>
+    <div className="max-w-2xl mx-auto space-y-8">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-white capitalize">

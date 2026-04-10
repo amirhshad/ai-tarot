@@ -63,7 +63,7 @@ export default function ReadingLoadingAnimation({ cardCount, language }: Reading
       <p
         className="text-sm sm:text-base tracking-wider text-amber-400 transition-opacity duration-300"
         style={{ opacity: messageFade ? 1 : 0 }}
-        dir={language === 'fa' ? 'rtl' : 'ltr'}
+
       >
         {messages[messageIndex]}
       </p>

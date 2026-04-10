@@ -45,8 +45,9 @@ export default function ReadingFilters({
   onDateFromChange,
   onDateToChange,
   onClear,
-  language = 'en',
+  language: _language = 'en',
 }: ReadingFiltersProps) {
+  void _language; // Prop kept for future content localisation
   const searchRef = useRef<HTMLInputElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -76,7 +77,7 @@ export default function ReadingFilters({
   const inputClass = "bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-400/50";
 
   return (
-    <div className="sticky top-14 z-40 bg-black/90 backdrop-blur-sm py-3 -mx-4 px-4 flex flex-wrap items-center gap-3" dir={language === 'fa' ? 'rtl' : 'ltr'}>
+    <div className="sticky top-14 z-40 bg-black/90 backdrop-blur-sm py-3 -mx-4 px-4 flex flex-wrap items-center gap-3">
       {/* Search */}
       <input
         ref={searchRef}

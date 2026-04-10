@@ -328,7 +328,7 @@ export default function NewReadingPage() {
           className="max-w-2xl mx-auto space-y-6 transition-opacity duration-[600ms] ease-in"
           style={{ opacity: showInterpretation ? 1 : 0 }}
         >
-          <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/[0.08]" dir={language === 'fa' ? 'rtl' : 'ltr'}>
+          <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
             <h2 className="text-xl font-semibold text-amber-400 mb-4">
               {language === 'fa' ? 'خوانش شما' : 'Your Reading'}
             </h2>

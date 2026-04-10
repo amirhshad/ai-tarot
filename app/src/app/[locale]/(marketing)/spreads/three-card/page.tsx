@@ -1,35 +1,43 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { buildAlternates } from '@/lib/seo/alternates';
 
 const siteUrl = 'https://www.tarotveil.com';
 
-export const metadata: Metadata = {
-  title: 'Three-Card Tarot Spread — Past, Present, Future | AI Tarot',
-  description:
-    'Learn the three-card tarot spread: past, present, and future positions explained. Step-by-step guide with AI-powered sample reading. Try it free at TarotVeil.',
-  keywords: [
-    'three card tarot spread',
-    'three card reading',
-    'past present future tarot',
-    '3 card tarot spread',
-    'AI tarot reading',
-    'tarot spread guide',
-    'three card tarot layout',
-  ],
-  alternates: {
-    canonical: `${siteUrl}/spreads/three-card`,
-  },
-  openGraph: {
-    title: 'Three-Card Tarot Spread — Past, Present, Future | AI Tarot',
-    description:
-      'Master the three-card tarot spread. Past, present, and future positions with AI-powered narrative interpretations.',
-    url: `${siteUrl}/spreads/three-card`,
-    type: 'article',
-  },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('spreadThreeCard');
 
-export default function ThreeCardSpreadPage() {
+  return {
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+    keywords: [
+      'three card tarot spread',
+      'three card reading',
+      'past present future tarot',
+      '3 card tarot spread',
+      'AI tarot reading',
+      'tarot spread guide',
+      'three card tarot layout',
+    ],
+    alternates: buildAlternates('/spreads/three-card'),
+    openGraph: {
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      url: `${siteUrl}/spreads/three-card`,
+      type: 'article',
+    },
+  };
+}
+
+export default async function ThreeCardSpreadPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('spreadThreeCard');
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -84,35 +92,38 @@ export default function ThreeCardSpreadPage() {
 
   const positions = [
     {
-      name: 'Past',
+      name: t('positionPast'),
       card: 'Eight of Cups',
       cardSlug: 'eight-of-cups',
       cardImage: '/cards/minor/cups/c08.jpg',
-      meaning:
-        'What has led you to this moment. The past position reveals the foundation of your current situation — the choices, events, and energies that shaped where you are now.',
-      sample:
-        'The Eight of Cups in your past tells of a deliberate departure — something you walked away from, even though part of you wanted to stay. This wasn\'t impulsive; it was the quiet realization that what you had wasn\'t enough anymore.',
+      meaning: t('pastMeaning'),
+      sample: t('pastSample'),
     },
     {
-      name: 'Present',
+      name: t('positionPresent'),
       card: 'The Hermit',
       cardSlug: 'the-hermit',
       cardImage: '/cards/major/m09.jpg',
-      meaning:
-        'Where you stand right now. The present position shows your current state — your mindset, the energies surrounding you, and the central theme of this moment in your life.',
-      sample:
-        'The Hermit confirms you\'re in a period of intentional solitude and introspection. This isn\'t loneliness — it\'s withdrawal by choice. You\'re searching for answers that can only be found by going inward.',
+      meaning: t('presentMeaning'),
+      sample: t('presentSample'),
     },
     {
-      name: 'Future',
+      name: t('positionFuture'),
       card: 'Ace of Pentacles',
       cardSlug: 'ace-of-pentacles',
       cardImage: '/cards/minor/pentacles/p01.jpg',
-      meaning:
-        'What is unfolding ahead of you. The future position isn\'t fixed fate — it shows the most likely trajectory based on your current path and energies. It can be influenced by your choices.',
-      sample:
-        'The Ace of Pentacles ahead signals a tangible new beginning — a job offer, a creative project taking root, or a financial opportunity materializing. The introspection of The Hermit is leading you toward something real and grounded.',
+      meaning: t('futureMeaning'),
+      sample: t('futureSample'),
     },
+  ];
+
+  const whenTips = [t('whenTip1'), t('whenTip2'), t('whenTip3'), t('whenTip4'), t('whenTip5')];
+
+  const variations = [
+    { title: t('varMindBodySpirit'), desc: t('varMindBodySpiritDesc') },
+    { title: t('varSituationActionOutcome'), desc: t('varSituationActionOutcomeDesc') },
+    { title: t('varYouThemRelationship'), desc: t('varYouThemRelationshipDesc') },
+    { title: t('varOptionAOptionBAdvice'), desc: t('varOptionAOptionBAdviceDesc') },
   ];
 
   return (
@@ -125,36 +136,33 @@ export default function ThreeCardSpreadPage() {
         {/* Breadcrumbs */}
         <nav className="text-sm text-stone-500 mb-8 flex items-center gap-2">
           <Link href="/" className="hover:text-gold-400 transition-colors">
-            Home
+            {t('breadcrumbHome')}
           </Link>
           <span>/</span>
           <Link href="/spreads" className="hover:text-gold-400 transition-colors">
-            Spreads
+            {t('breadcrumbSpreads')}
           </Link>
           <span>/</span>
-          <span className="text-stone-300">Three-Card Spread</span>
+          <span className="text-stone-300">{t('breadcrumbThreeCard')}</span>
         </nav>
 
         {/* Header */}
         <div className="mb-16">
           <p className="text-xs tracking-[0.2em] uppercase text-gold-400/60 mb-2">
-            Beginner · 3 Cards · ~5 Minutes
+            {t('tagline')}
           </p>
           <h1 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
-            Three-Card Tarot Spread
+            {t('pageTitle')}
           </h1>
           <p className="font-body text-lg font-medium text-stone-300 leading-relaxed max-w-3xl">
-            The most popular tarot layout in the world — and for good reason.
-            Three cards create a complete story: where you&apos;ve been, where
-            you are, and where you&apos;re heading. Simple enough for
-            beginners, deep enough for experienced readers.
+            {t('heroDescription')}
           </p>
         </div>
 
         {/* Visual Layout */}
         <section className="mb-16">
           <h2 className="font-display text-2xl font-semibold text-white mb-6">
-            The Layout
+            {t('layoutTitle')}
           </h2>
           <div className="flex justify-center gap-6 md:gap-10 mb-4">
             {positions.map((pos) => (
@@ -175,14 +183,14 @@ export default function ThreeCardSpreadPage() {
             ))}
           </div>
           <p className="text-center text-xs text-stone-600">
-            Cards are laid left to right: Past → Present → Future
+            {t('layoutCaption')}
           </p>
         </section>
 
         {/* Position Deep Dives */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-8">
-            Position Meanings
+            {t('positionMeaningsTitle')}
           </h2>
           <div className="space-y-10">
             {positions.map((pos, i) => (
@@ -206,32 +214,19 @@ export default function ThreeCardSpreadPage() {
         {/* How it works */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-6">
-            How AI Reads This Spread
+            {t('howAIReadsTitle')}
           </h2>
           <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10 space-y-4">
-            <p>
-              Traditional tarot readers interpret each card separately, then try
-              to synthesize a story. TarotVeil&apos;s AI works differently — it
-              reads all three cards simultaneously, finding the narrative
-              thread that connects them.
-            </p>
-            <p>
-              The result is a cohesive story, not three disconnected meanings.
-              You&apos;ll see how your past influences your present, and how your
-              present choices are shaping the future the cards reveal.
-            </p>
-            <p>
-              After your initial reading, you can ask up to 5 follow-up
-              questions to explore specific cards or themes deeper — something no
-              traditional deck can offer.
-            </p>
+            <p>{t('howAIP1')}</p>
+            <p>{t('howAIP2')}</p>
+            <p>{t('howAIP3')}</p>
           </div>
         </section>
 
         {/* Sample Reading */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-            <span className="text-gold-400/50">✦</span> Sample AI Reading
+            <span className="text-gold-400/50">✦</span> {t('sampleTitle')}
           </h2>
           <div className="p-6 rounded-sm border border-gold-400/[0.08] bg-gradient-to-b from-white/[0.02] to-transparent space-y-6">
             {positions.map((pos) => (
@@ -271,18 +266,12 @@ export default function ThreeCardSpreadPage() {
         {/* When to use */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4">
-            When to Use This Spread
+            {t('whenToUseTitle')}
           </h2>
           <ul className="space-y-3 font-body text-sm font-medium text-stone-400 leading-relaxed">
-            {[
-              'You\'re in a period of transition and want to understand the trajectory.',
-              'You need more context than a single card but don\'t want a full Celtic Cross.',
-              'You\'re facing a decision and want to see how it connects to your past and future.',
-              'You\'re new to tarot and want a structured but accessible reading.',
-              'You want a reading that tells a story, not just lists meanings.',
-            ].map((tip, i) => (
+            {whenTips.map((tip, i) => (
               <li key={i} className="flex gap-3">
-                <span className="text-gold-400/40 flex-shrink-0">·</span>
+                <span className="text-gold-400/40 flex-shrink-0">&middot;</span>
                 <span>{tip}</span>
               </li>
             ))}
@@ -292,31 +281,13 @@ export default function ThreeCardSpreadPage() {
         {/* Alternative Three-Card Layouts */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4">
-            Other Three-Card Variations
+            {t('variationsTitle')}
           </h2>
           <p className="font-body text-sm font-medium text-stone-400 mb-4 leading-relaxed">
-            While Past–Present–Future is the classic, you can frame the same
-            three positions differently depending on your question:
+            {t('variationsIntro')}
           </p>
           <div className="grid sm:grid-cols-2 gap-4">
-            {[
-              {
-                title: 'Mind · Body · Spirit',
-                desc: 'Understand how an issue is affecting you on different levels.',
-              },
-              {
-                title: 'Situation · Action · Outcome',
-                desc: 'Get practical advice: what\'s happening, what to do, what to expect.',
-              },
-              {
-                title: 'You · Them · The Relationship',
-                desc: 'A focused lens for relationship questions and dynamics.',
-              },
-              {
-                title: 'Option A · Option B · Advice',
-                desc: 'Compare two choices side by side with guidance for deciding.',
-              },
-            ].map((variant) => (
+            {variations.map((variant) => (
               <div
                 key={variant.title}
                 className="p-4 rounded-sm border border-gold-400/[0.06] bg-white/[0.01]"
@@ -335,7 +306,7 @@ export default function ThreeCardSpreadPage() {
         {/* Related Spreads */}
         <section className="mb-12">
           <h2 className="font-display text-xl font-semibold text-white mb-4">
-            Explore Other Spreads
+            {t('relatedTitle')}
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <Link
@@ -343,10 +314,10 @@ export default function ThreeCardSpreadPage() {
               className="group p-5 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all"
             >
               <h3 className="font-display text-base font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
-                Single Card Reading
+                {t('relatedSingleCard')}
               </h3>
               <p className="font-body text-sm font-medium text-stone-500">
-                One card, one message. Quick daily guidance.
+                {t('relatedSingleCardDesc')}
               </p>
             </Link>
             <Link
@@ -354,10 +325,10 @@ export default function ThreeCardSpreadPage() {
               className="group p-5 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all"
             >
               <h3 className="font-display text-base font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
-                Celtic Cross Spread
+                {t('relatedCelticCross')}
               </h3>
               <p className="font-body text-sm font-medium text-stone-500">
-                10 cards for the most comprehensive reading.
+                {t('relatedCelticCrossDesc')}
               </p>
             </Link>
             <Link
@@ -365,10 +336,10 @@ export default function ThreeCardSpreadPage() {
               className="group p-5 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all"
             >
               <h3 className="font-display text-base font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
-                Tarot Card Meanings
+                {t('relatedCardMeanings')}
               </h3>
               <p className="font-body text-sm font-medium text-stone-500">
-                Learn what every card means — upright, reversed, and in context.
+                {t('relatedCardMeaningsDesc')}
               </p>
             </Link>
           </div>
@@ -377,17 +348,16 @@ export default function ThreeCardSpreadPage() {
         {/* Bottom CTA */}
         <section className="text-center py-12 border-t border-gold-400/[0.06]">
           <h2 className="font-display text-2xl font-semibold text-white mb-3">
-            Try the Three-Card Spread
+            {t('bottomCtaTitle')}
           </h2>
           <p className="font-body text-base font-medium text-stone-400 mb-6 max-w-md mx-auto">
-            Get a free AI tarot reading with the past–present–future spread. See
-            how three cards weave together into your unique story.
+            {t('bottomCtaDesc')}
           </p>
           <Link
             href="/reading/free"
             className="inline-block px-10 py-3.5 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-base tracking-wide rounded-sm hover:shadow-[0_0_30px_rgba(212,160,67,0.3)] transition-all"
           >
-            Get a Free Reading
+            {t('bottomCtaButton')}
           </Link>
         </section>
       </div>

@@ -1,36 +1,44 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { buildAlternates } from '@/lib/seo/alternates';
 
 const siteUrl = 'https://www.tarotveil.com';
 
-export const metadata: Metadata = {
-  title: 'Horseshoe Tarot Spread — 7-Card Decision Making Layout | AI Tarot',
-  description:
-    'Learn the horseshoe tarot spread: 7 cards tracing an arc from past influences to likely outcome. The best spread for decision-making and "What should I do?" questions. Try it at TarotVeil.',
-  keywords: [
-    'horseshoe tarot spread',
-    'seven card tarot spread',
-    '7 card spread',
-    'decision making tarot',
-    'horseshoe spread meaning',
-    'AI tarot reading',
-    'tarot spread guide',
-    'what should I do tarot',
-  ],
-  alternates: {
-    canonical: `${siteUrl}/spreads/horseshoe`,
-  },
-  openGraph: {
-    title: 'Horseshoe Tarot Spread — 7-Card Decision Making Layout | AI Tarot',
-    description:
-      'Master the horseshoe tarot spread. Seven cards form a narrative arc for decision-making with AI-powered interpretations.',
-    url: `${siteUrl}/spreads/horseshoe`,
-    type: 'article',
-  },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('spreadHorseshoe');
 
-export default function HorseshoeSpreadPage() {
+  return {
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+    keywords: [
+      'horseshoe tarot spread',
+      'seven card tarot spread',
+      '7 card spread',
+      'decision making tarot',
+      'horseshoe spread meaning',
+      'AI tarot reading',
+      'tarot spread guide',
+      'what should I do tarot',
+    ],
+    alternates: buildAlternates('/spreads/horseshoe'),
+    openGraph: {
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      url: `${siteUrl}/spreads/horseshoe`,
+      type: 'article',
+    },
+  };
+}
+
+export default async function HorseshoeSpreadPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('spreadHorseshoe');
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -84,77 +92,16 @@ export default function HorseshoeSpreadPage() {
   };
 
   const positions = [
-    {
-      name: 'Past Influences',
-      card: 'Six of Swords',
-      cardSlug: 'six-of-swords',
-      cardImage: '/cards/minor/swords/s06.jpg',
-      meaning:
-        'What past events have shaped this situation. This position reveals the foundation — the experiences, choices, and transitions that brought you to this crossroads.',
-      sample:
-        'The Six of Swords shows you\'ve already been through a difficult transition. You left troubled waters behind, carrying lessons from that journey. This wasn\'t easy, but it was necessary — and it\'s given you a clarity you didn\'t have before.',
-    },
-    {
-      name: 'Present Situation',
-      card: 'Two of Wands',
-      cardSlug: 'two-of-wands',
-      cardImage: '/cards/minor/wands/w02.jpg',
-      meaning:
-        'Where you stand right now. Your current state of mind, the energies surrounding you, and the central theme of this moment.',
-      sample:
-        'The Two of Wands confirms you\'re standing at a decision point, literally holding the world in your hands. You have options, and you know it. The restlessness you feel isn\'t anxiety — it\'s ambition wanting a direction.',
-    },
-    {
-      name: 'Hidden Factors',
-      card: 'The Moon',
-      cardSlug: 'the-moon',
-      cardImage: '/cards/major/m18.jpg',
-      meaning:
-        'Subconscious influences you may not be aware of. What\'s happening beneath the surface — fears, intuitions, or patterns that are quietly shaping your choices.',
-      sample:
-        'The Moon reveals that your subconscious is stirring with unresolved fears. Something from a past experience is casting shadows over this decision — not facts, but feelings. Trust your intuition here, but verify it against reality.',
-    },
-    {
-      name: 'Your Approach',
-      card: 'Knight of Pentacles',
-      cardSlug: 'knight-of-pentacles',
-      cardImage: '/cards/minor/pentacles/p12.jpg',
-      meaning:
-        'Your attitude and how you\'re handling this situation. The energy you\'re bringing to the decision — whether it\'s serving you or holding you back.',
-      sample:
-        'The Knight of Pentacles says you\'re approaching this methodically and carefully. You\'re not rushing — you\'re building a plan. This patience is a strength, but be careful it doesn\'t become paralysis disguised as preparation.',
-    },
-    {
-      name: 'Obstacles',
-      card: 'Five of Cups',
-      cardSlug: 'five-of-cups',
-      cardImage: '/cards/minor/cups/c05.jpg',
-      meaning:
-        'Challenges and blockages you face. What\'s standing between you and clarity — whether internal resistance or external circumstances.',
-      sample:
-        'The Five of Cups points to grief over what you might lose by choosing. You\'re focused on the cups that have spilled — the opportunities you\'d leave behind. But behind you stand two full cups you haven\'t turned to see yet.',
-    },
-    {
-      name: 'External Influences',
-      card: 'The Emperor',
-      cardSlug: 'the-emperor',
-      cardImage: '/cards/major/m04.jpg',
-      meaning:
-        'People and circumstances affecting the outcome. The environment, other people\'s expectations, and forces beyond your direct control.',
-      sample:
-        'The Emperor suggests an authority figure — a mentor, boss, or institution — whose structure and expectations are influencing your decision. Their stability could be supportive scaffolding or a rigid constraint, depending on how you engage with it.',
-    },
-    {
-      name: 'Likely Outcome',
-      card: 'The Chariot',
-      cardSlug: 'the-chariot',
-      cardImage: '/cards/major/m07.jpg',
-      meaning:
-        'Where this path leads if you stay the course. The most probable outcome based on the current trajectory and energies.',
-      sample:
-        'The Chariot is a powerful outcome — victory through willpower and determination. If you channel the methodical energy of the Knight of Pentacles and confront the fears The Moon revealed, you\'ll move forward with unstoppable momentum. The decision resolves in your favor, but only if you actually make it.',
-    },
+    { name: t('pos1Name'), card: 'Six of Swords', cardSlug: 'six-of-swords', cardImage: '/cards/minor/swords/s06.jpg', meaning: t('pos1Meaning'), sample: t('pos1Sample') },
+    { name: t('pos2Name'), card: 'Two of Wands', cardSlug: 'two-of-wands', cardImage: '/cards/minor/wands/w02.jpg', meaning: t('pos2Meaning'), sample: t('pos2Sample') },
+    { name: t('pos3Name'), card: 'The Moon', cardSlug: 'the-moon', cardImage: '/cards/major/m18.jpg', meaning: t('pos3Meaning'), sample: t('pos3Sample') },
+    { name: t('pos4Name'), card: 'Knight of Pentacles', cardSlug: 'knight-of-pentacles', cardImage: '/cards/minor/pentacles/p12.jpg', meaning: t('pos4Meaning'), sample: t('pos4Sample') },
+    { name: t('pos5Name'), card: 'Five of Cups', cardSlug: 'five-of-cups', cardImage: '/cards/minor/cups/c05.jpg', meaning: t('pos5Meaning'), sample: t('pos5Sample') },
+    { name: t('pos6Name'), card: 'The Emperor', cardSlug: 'the-emperor', cardImage: '/cards/major/m04.jpg', meaning: t('pos6Meaning'), sample: t('pos6Sample') },
+    { name: t('pos7Name'), card: 'The Chariot', cardSlug: 'the-chariot', cardImage: '/cards/major/m07.jpg', meaning: t('pos7Meaning'), sample: t('pos7Sample') },
   ];
+
+  const whenTips = [t('whenTip1'), t('whenTip2'), t('whenTip3'), t('whenTip4'), t('whenTip5'), t('whenTip6')];
 
   return (
     <>
@@ -166,36 +113,33 @@ export default function HorseshoeSpreadPage() {
         {/* Breadcrumbs */}
         <nav className="text-sm text-stone-500 mb-8 flex items-center gap-2">
           <Link href="/" className="hover:text-gold-400 transition-colors">
-            Home
+            {t('breadcrumbHome')}
           </Link>
           <span>/</span>
           <Link href="/spreads" className="hover:text-gold-400 transition-colors">
-            Spreads
+            {t('breadcrumbSpreads')}
           </Link>
           <span>/</span>
-          <span className="text-stone-300">Horseshoe Spread</span>
+          <span className="text-stone-300">{t('breadcrumbHorseshoe')}</span>
         </nav>
 
         {/* Header */}
         <div className="mb-16">
           <p className="text-xs tracking-[0.2em] uppercase text-gold-400/60 mb-2">
-            Intermediate · 7 Cards · ~8 Minutes
+            {t('tagline')}
           </p>
           <h1 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
-            Horseshoe Tarot Spread
+            {t('pageTitle')}
           </h1>
           <p className="font-body text-lg font-medium text-stone-300 leading-relaxed max-w-3xl">
-            The #1 middle-ground spread for decision-making. Seven cards trace
-            a clear arc from past influences through hidden factors and obstacles
-            to the likely outcome — reading like a mini-story that&apos;s
-            perfect for &quot;What should I do?&quot; questions.
+            {t('heroDescription')}
           </p>
         </div>
 
         {/* Visual Layout */}
         <section className="mb-16">
           <h2 className="font-display text-2xl font-semibold text-white mb-6">
-            The Layout
+            {t('layoutTitle')}
           </h2>
           <div className="relative mx-auto mb-4" style={{ maxWidth: 600 }}>
             {/* Horseshoe arc */}
@@ -260,14 +204,14 @@ export default function HorseshoeSpreadPage() {
             </div>
           </div>
           <p className="text-center text-xs text-stone-600">
-            Cards form a horseshoe arc: past on the left, future on the right, with hidden factors and obstacles at the base
+            {t('layoutCaption')}
           </p>
         </section>
 
         {/* Position Deep Dives */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-8">
-            Position Meanings
+            {t('positionMeaningsTitle')}
           </h2>
           <div className="space-y-10">
             {positions.map((pos, i) => (
@@ -291,34 +235,19 @@ export default function HorseshoeSpreadPage() {
         {/* How it works */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-6">
-            How AI Reads This Spread
+            {t('howAITitle')}
           </h2>
           <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10 space-y-4">
-            <p>
-              The horseshoe&apos;s strength is its narrative progression. Seven
-              positions tell a complete story: what shaped this moment, where you
-              stand, what&apos;s hidden, how you&apos;re approaching it, what&apos;s
-              blocking you, who&apos;s influencing the outcome, and where it all leads.
-            </p>
-            <p>
-              TarotVeil&apos;s AI reads all seven cards as one cohesive
-              narrative — weaving connections between the hidden factors
-              (position 3) and the obstacles (position 5), showing how your
-              approach (position 4) either overcomes or reinforces the
-              challenges ahead.
-            </p>
-            <p>
-              After your initial reading, Pro members can ask up to 5
-              follow-up questions to explore specific cards, dive deeper into
-              the obstacles, or ask &quot;What if I change my approach?&quot;
-            </p>
+            <p>{t('howAIP1')}</p>
+            <p>{t('howAIP2')}</p>
+            <p>{t('howAIP3')}</p>
           </div>
         </section>
 
         {/* Sample Reading */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-            <span className="text-gold-400/50">✦</span> Sample AI Reading
+            <span className="text-gold-400/50">✦</span> {t('sampleTitle')}
           </h2>
           <div className="p-6 rounded-sm border border-gold-400/[0.08] bg-gradient-to-b from-white/[0.02] to-transparent space-y-6">
             {positions.map((pos) => (
@@ -358,19 +287,12 @@ export default function HorseshoeSpreadPage() {
         {/* When to use */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4">
-            When to Use This Spread
+            {t('whenToUseTitle')}
           </h2>
           <ul className="space-y-3 font-body text-sm font-medium text-stone-400 leading-relaxed">
-            {[
-              'You\'re facing a decision and want to understand all the factors before choosing.',
-              'You want more depth than a three-card spread but less complexity than the Celtic Cross.',
-              'You\'re asking "What should I do?" or "Which path should I take?"',
-              'You suspect hidden influences or subconscious patterns are affecting your choices.',
-              'You want to understand both internal obstacles and external forces at play.',
-              'You need a reading that tells a clear progression story from cause to outcome.',
-            ].map((tip, i) => (
+            {whenTips.map((tip, i) => (
               <li key={i} className="flex gap-3">
-                <span className="text-gold-400/40 flex-shrink-0">·</span>
+                <span className="text-gold-400/40 flex-shrink-0">&middot;</span>
                 <span>{tip}</span>
               </li>
             ))}
@@ -380,7 +302,7 @@ export default function HorseshoeSpreadPage() {
         {/* Related Spreads */}
         <section className="mb-12">
           <h2 className="font-display text-xl font-semibold text-white mb-4">
-            Explore Other Spreads
+            {t('relatedTitle')}
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <Link
@@ -388,10 +310,10 @@ export default function HorseshoeSpreadPage() {
               className="group p-5 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all"
             >
               <h3 className="font-display text-base font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
-                Three-Card Spread
+                {t('relatedThreeCard')}
               </h3>
               <p className="font-body text-sm font-medium text-stone-500">
-                Past, present, future — the classic narrative arc.
+                {t('relatedThreeCardDesc')}
               </p>
             </Link>
             <Link
@@ -399,10 +321,10 @@ export default function HorseshoeSpreadPage() {
               className="group p-5 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all"
             >
               <h3 className="font-display text-base font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
-                Celtic Cross Spread
+                {t('relatedCelticCross')}
               </h3>
               <p className="font-body text-sm font-medium text-stone-500">
-                10 cards for the most comprehensive reading.
+                {t('relatedCelticCrossDesc')}
               </p>
             </Link>
           </div>
@@ -411,17 +333,16 @@ export default function HorseshoeSpreadPage() {
         {/* Bottom CTA */}
         <section className="text-center py-12 border-t border-gold-400/[0.06]">
           <h2 className="font-display text-2xl font-semibold text-white mb-3">
-            Try the Horseshoe Spread
+            {t('bottomCtaTitle')}
           </h2>
           <p className="font-body text-base font-medium text-stone-400 mb-6 max-w-md mx-auto">
-            Get an AI tarot reading with the 7-card horseshoe spread. See
-            how seven cards weave together into your decision-making story.
+            {t('bottomCtaDesc')}
           </p>
           <Link
             href="/reading/new"
             className="inline-block px-10 py-3.5 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-base tracking-wide rounded-sm hover:shadow-[0_0_30px_rgba(212,160,67,0.3)] transition-all"
           >
-            Start a Reading
+            {t('bottomCtaButton')}
           </Link>
         </section>
       </div>

@@ -1,84 +1,94 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { buildAlternates } from '@/lib/seo/alternates';
 
 const siteUrl = 'https://www.tarotveil.com';
 
-export const metadata: Metadata = {
-  title: 'Tarot Spreads Guide — AI Tarot Spread Layouts | TarotVeil',
-  description:
-    'Learn the most popular tarot spreads: Single Card, Three-Card, and Celtic Cross. Step-by-step guides with position meanings and AI-powered sample readings.',
-  keywords: [
-    'tarot spreads',
-    'tarot spread guide',
-    'AI tarot spread',
-    'tarot layouts',
-    'three card spread',
-    'celtic cross spread',
-    'single card tarot',
-    'horseshoe tarot spread',
-    'seven card spread',
-    'decision making tarot',
-  ],
-  alternates: {
-    canonical: `${siteUrl}/spreads`,
-  },
-  openGraph: {
-    title: 'Tarot Spreads Guide — AI Tarot Spread Layouts | TarotVeil',
-    description:
-      'Master the most popular tarot spreads with step-by-step guides, position meanings, and AI-powered interpretations.',
-    url: `${siteUrl}/spreads`,
-  },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('spreadsHub');
 
-const spreads = [
-  {
-    slug: 'single-card',
-    name: 'Single Card Reading',
-    cardCount: 1,
-    difficulty: 'Beginner',
-    timeEstimate: '2 minutes',
-    description:
-      'A focused pull for quick clarity. Perfect for daily guidance, yes/no questions, or when you need a single clear message.',
-    image: '/cards/major/m17.jpg',
-    tier: 'Free',
-  },
-  {
-    slug: 'three-card',
-    name: 'Three-Card Spread',
-    cardCount: 3,
-    difficulty: 'Beginner',
-    timeEstimate: '5 minutes',
-    description:
-      'The classic Past\u2013Present\u2013Future arc. See where you\u2019ve been, where you stand, and what lies ahead in one cohesive narrative.',
-    image: '/cards/major/m01.jpg',
-    tier: 'Free',
-  },
-  {
-    slug: 'celtic-cross',
-    name: 'Celtic Cross Spread',
-    cardCount: 10,
-    difficulty: 'Intermediate',
-    timeEstimate: '10 minutes',
-    description:
-      'The most comprehensive tarot layout. Ten cards reveal your situation from every angle — past influences, hidden fears, external forces, and the likely outcome.',
-    image: '/cards/major/m10.jpg',
-    tier: 'Pro',
-  },
-  {
-    slug: 'horseshoe',
-    name: 'Horseshoe Spread',
-    cardCount: 7,
-    difficulty: 'Intermediate',
-    timeEstimate: '8 minutes',
-    description:
-      'The #1 middle-ground spread for decision-making. Seven cards trace a clear arc from past influences to likely outcome — perfect for "What should I do?" questions.',
-    image: '/cards/major/m07.jpg',
-    tier: 'Pro',
-  },
-];
+  return {
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+    keywords: [
+      'tarot spreads',
+      'tarot spread guide',
+      'AI tarot spread',
+      'tarot layouts',
+      'three card spread',
+      'celtic cross spread',
+      'single card tarot',
+      'horseshoe tarot spread',
+      'seven card spread',
+      'decision making tarot',
+    ],
+    alternates: buildAlternates('/spreads'),
+    openGraph: {
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      url: `${siteUrl}/spreads`,
+    },
+  };
+}
 
-export default function SpreadsIndexPage() {
+export default async function SpreadsIndexPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('spreadsHub');
+
+  const spreads = [
+    {
+      slug: 'single-card',
+      name: t('spreadSingleCard'),
+      cardCount: 1,
+      difficulty: t('difficultyBeginner'),
+      timeEstimate: '2 minutes',
+      description: t('spreadSingleCardDesc'),
+      image: '/cards/major/m17.jpg',
+      tier: 'Free',
+    },
+    {
+      slug: 'three-card',
+      name: t('spreadThreeCard'),
+      cardCount: 3,
+      difficulty: t('difficultyBeginner'),
+      timeEstimate: '5 minutes',
+      description: t('spreadThreeCardDesc'),
+      image: '/cards/major/m01.jpg',
+      tier: 'Free',
+    },
+    {
+      slug: 'celtic-cross',
+      name: t('spreadCelticCross'),
+      cardCount: 10,
+      difficulty: t('difficultyIntermediate'),
+      timeEstimate: '10 minutes',
+      description: t('spreadCelticCrossDesc'),
+      image: '/cards/major/m10.jpg',
+      tier: 'Pro',
+    },
+    {
+      slug: 'horseshoe',
+      name: t('spreadHorseshoe'),
+      cardCount: 7,
+      difficulty: t('difficultyIntermediate'),
+      timeEstimate: '8 minutes',
+      description: t('spreadHorseshoeDesc'),
+      image: '/cards/major/m07.jpg',
+      tier: 'Pro',
+    },
+  ];
+
+  const faqs = [
+    { q: t('faqQ1'), a: t('faqA1') },
+    { q: t('faqQ2'), a: t('faqA2') },
+    { q: t('faqQ3'), a: t('faqA3') },
+  ];
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -111,21 +121,19 @@ export default function SpreadsIndexPage() {
         {/* Breadcrumbs */}
         <nav className="text-sm text-stone-500 mb-8 flex items-center gap-2">
           <Link href="/" className="hover:text-gold-400 transition-colors">
-            Home
+            {t('breadcrumbHome')}
           </Link>
           <span>/</span>
-          <span className="text-stone-300">Spreads</span>
+          <span className="text-stone-300">{t('breadcrumbSpreads')}</span>
         </nav>
 
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="font-display text-3xl md:text-5xl font-semibold text-white mb-4">
-            Tarot Spread Guides
+            {t('pageTitle')}
           </h1>
           <p className="font-body text-lg font-medium text-stone-400 max-w-2xl mx-auto">
-            Choose the right spread for your question. From quick daily pulls to
-            deep 10-card readings, each layout reveals a different dimension of
-            your story.
+            {t('pageSubtitle')}
           </p>
         </div>
 
@@ -168,11 +176,11 @@ export default function SpreadsIndexPage() {
                 <div className="flex flex-wrap gap-4 text-xs text-stone-500">
                   <span>
                     <span className="text-stone-400">{spread.cardCount}</span>{' '}
-                    {spread.cardCount === 1 ? 'card' : 'cards'}
+                    {spread.cardCount === 1 ? t('card') : t('cards')}
                   </span>
                   <span>
                     <span className="text-stone-400">{spread.difficulty}</span>{' '}
-                    level
+                    {t('level')}
                   </span>
                   <span>
                     ~<span className="text-stone-400">{spread.timeEstimate}</span>
@@ -203,23 +211,10 @@ export default function SpreadsIndexPage() {
         {/* FAQ Section */}
         <section className="mt-20">
           <h2 className="font-display text-2xl font-semibold text-white mb-8 text-center">
-            Frequently Asked Questions
+            {t('faqTitle')}
           </h2>
           <div className="space-y-6 max-w-3xl mx-auto">
-            {[
-              {
-                q: 'Which tarot spread should I use?',
-                a: 'Start with a Single Card for quick daily guidance or yes/no questions. Use the Three-Card Spread for past-present-future narratives. Choose the Celtic Cross when you need a comprehensive, multi-angle analysis of a complex situation.',
-              },
-              {
-                q: 'Do I need experience to use these spreads?',
-                a: 'Not at all. TarotVeil\'s AI interprets every spread for you, weaving the cards into a cohesive narrative. The Single Card and Three-Card spreads are perfect for beginners, while the Celtic Cross offers deeper insights as you grow.',
-              },
-              {
-                q: 'How does AI tarot interpretation differ from traditional reading?',
-                a: 'Our AI reads all your cards together as one story — not isolated meanings. It considers card positions, relationships between cards, and the overall narrative arc to give you a reading that feels personal and cohesive.',
-              },
-            ].map((faq) => (
+            {faqs.map((faq) => (
               <div
                 key={faq.q}
                 className="p-5 rounded-sm border border-gold-400/[0.06] bg-white/[0.01]"
@@ -238,17 +233,16 @@ export default function SpreadsIndexPage() {
         {/* Bottom CTA */}
         <section className="text-center py-12 mt-12 border-t border-gold-400/[0.06]">
           <h2 className="font-display text-2xl font-semibold text-white mb-3">
-            Ready to Try a Spread?
+            {t('ctaTitle')}
           </h2>
           <p className="font-body text-base font-medium text-stone-400 mb-6 max-w-md mx-auto">
-            Get a free AI tarot reading and see how the cards weave together into
-            your unique story.
+            {t('ctaDescription')}
           </p>
           <Link
             href="/reading/free"
             className="inline-block px-10 py-3.5 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-base tracking-wide rounded-sm hover:shadow-[0_0_30px_rgba(212,160,67,0.3)] transition-all"
           >
-            Get a Free Reading
+            {t('ctaButton')}
           </Link>
         </section>
       </div>

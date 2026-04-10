@@ -1,34 +1,38 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { buildAlternates } from '@/lib/seo/alternates';
 
 const siteUrl = 'https://www.tarotveil.com';
 
-export const metadata: Metadata = {
-  title: 'Love Tarot Reading — AI Relationship & Love Guidance',
-  description:
-    'Get a free AI love tarot reading for relationship guidance. Explore romantic connections, compatibility, and emotional clarity with narrative tarot interpretations.',
-  keywords: [
-    'love tarot reading',
-    'relationship tarot',
-    'love tarot',
-    'AI love reading',
-    'tarot love spread',
-    'romance tarot',
-    'soulmate tarot',
-    'relationship guidance tarot',
-  ],
-  alternates: {
-    canonical: `${siteUrl}/love-tarot`,
-  },
-  openGraph: {
-    title: 'Love Tarot Reading — AI Relationship & Love Guidance | TarotVeil',
-    description:
-      'AI-powered love tarot readings that explore your romantic life with narrative depth. Free readings available.',
-    url: `${siteUrl}/love-tarot`,
-    type: 'article',
-  },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('loveTarot');
+
+  return {
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+    keywords: [
+      'love tarot reading',
+      'relationship tarot',
+      'love tarot',
+      'AI love reading',
+      'tarot love spread',
+      'romance tarot',
+      'soulmate tarot',
+      'relationship guidance tarot',
+    ],
+    alternates: buildAlternates('/love-tarot'),
+    openGraph: {
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      url: `${siteUrl}/love-tarot`,
+      type: 'article',
+    },
+  };
+}
 
 const loveCards = [
   { name: 'The Lovers', slug: 'the-lovers', image: '/cards/major/m06.jpg' },
@@ -39,7 +43,11 @@ const loveCards = [
   { name: 'Knight of Cups', slug: 'knight-of-cups', image: '/cards/minor/cups/c12.jpg' },
 ];
 
-export default function LoveTarotPage() {
+export default async function LoveTarotPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('loveTarot');
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -96,6 +104,21 @@ export default function LoveTarotPage() {
     ],
   };
 
+  const reveals = [
+    { title: t('revealDynamicsTitle'), desc: t('revealDynamicsDesc') },
+    { title: t('revealBlocksTitle'), desc: t('revealBlocksDesc') },
+    { title: t('revealCompatibilityTitle'), desc: t('revealCompatibilityDesc') },
+    { title: t('revealTrajectoryTitle'), desc: t('revealTrajectoryDesc') },
+  ];
+
+  const questions = [t('q1'), t('q2'), t('q3'), t('q4'), t('q5'), t('q6')];
+
+  const faqs = [
+    { q: t('faqQ1'), a: t('faqA1') },
+    { q: t('faqQ2'), a: t('faqA2') },
+    { q: t('faqQ3'), a: t('faqA3') },
+  ];
+
   return (
     <>
       <script
@@ -106,10 +129,10 @@ export default function LoveTarotPage() {
         {/* Breadcrumbs */}
         <nav className="text-sm text-stone-500 mb-8 flex items-center gap-2">
           <Link href="/" className="hover:text-gold-400 transition-colors">
-            Home
+            {t('breadcrumbHome')}
           </Link>
           <span>/</span>
-          <span className="text-stone-300">Love Tarot</span>
+          <span className="text-stone-300">{t('breadcrumbLoveTarot')}</span>
         </nav>
 
         {/* Header */}
@@ -129,23 +152,19 @@ export default function LoveTarotPage() {
 
           <div className="flex-1">
             <p className="text-xs tracking-[0.2em] uppercase text-gold-400/60 mb-2">
-              Relationships &middot; Romance &middot; Emotional Clarity
+              {t('tagline')}
             </p>
             <h1 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
-              Love Tarot Reading
+              {t('pageTitle')}
             </h1>
             <p className="font-body text-lg font-medium text-stone-300 leading-relaxed mb-6">
-              Whether you are navigating a new connection, deepening an existing
-              relationship, or healing from heartbreak, a love tarot reading
-              illuminates the emotional currents shaping your romantic life. Our
-              AI reads all your cards together, weaving them into a narrative
-              about your love story — not just isolated card meanings.
+              {t('heroDescription')}
             </p>
             <Link
               href="/reading/free?topic=love"
               className="inline-block px-8 py-3 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-sm tracking-wide rounded-sm hover:shadow-[0_0_25px_rgba(212,160,67,0.3)] transition-all"
             >
-              Get a Free Love Reading
+              {t('ctaButton')}
             </Link>
           </div>
         </div>
@@ -153,27 +172,10 @@ export default function LoveTarotPage() {
         {/* What Love Tarot Reveals */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-6">
-            What a Love Tarot Reading Reveals
+            {t('revealsTitle')}
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
-            {[
-              {
-                title: 'Relationship Dynamics',
-                desc: 'Understand the energy between you and your partner. Are you aligned or pulling in different directions? What unspoken patterns are at play?',
-              },
-              {
-                title: 'Emotional Blocks',
-                desc: 'Identify fears, past wounds, or self-sabotaging patterns that may be preventing you from fully opening up to love.',
-              },
-              {
-                title: 'Compatibility Insights',
-                desc: 'Explore how your energies interact with a potential or current partner. The cards reveal shared strengths and areas of friction.',
-              },
-              {
-                title: 'Future Trajectory',
-                desc: 'See where your relationship is heading based on current patterns. Not fixed fate — but the path you are on if nothing changes.',
-              },
-            ].map((item) => (
+            {reveals.map((item) => (
               <div
                 key={item.title}
                 className="p-5 rounded-sm border border-gold-400/[0.06] bg-white/[0.01]"
@@ -192,21 +194,13 @@ export default function LoveTarotPage() {
         {/* Questions to Ask */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4">
-            Questions to Ask in a Love Reading
+            {t('questionsTitle')}
           </h2>
           <p className="font-body text-sm font-medium text-stone-400 mb-4 leading-relaxed">
-            The most powerful love readings come from open-ended questions that
-            invite insight rather than demanding a yes/no answer:
+            {t('questionsIntro')}
           </p>
           <ul className="space-y-3 font-body text-sm font-medium text-stone-300 leading-relaxed">
-            {[
-              'What energy is shaping my love life right now?',
-              'What do I need to understand about my current relationship?',
-              'What is blocking me from finding the connection I want?',
-              'How can I strengthen the bond with my partner?',
-              'What should I know before entering this new relationship?',
-              'What lesson is this heartbreak trying to teach me?',
-            ].map((q, i) => (
+            {questions.map((q, i) => (
               <li key={i} className="flex gap-3">
                 <span className="text-gold-400/40 flex-shrink-0">&#10022;</span>
                 <span className="italic">&ldquo;{q}&rdquo;</span>
@@ -218,11 +212,10 @@ export default function LoveTarotPage() {
         {/* Key Love Cards */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4">
-            Key Cards in Love Readings
+            {t('keyCardsTitle')}
           </h2>
           <p className="font-body text-sm font-medium text-stone-400 mb-6 leading-relaxed">
-            While every card can appear in a love reading, these cards carry
-            particularly strong romantic significance:
+            {t('keyCardsDesc')}
           </p>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
             {loveCards.map((card) => (
@@ -251,7 +244,7 @@ export default function LoveTarotPage() {
         {/* Best Spreads for Love */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4">
-            Best Spreads for Love Questions
+            {t('bestSpreadsTitle')}
           </h2>
           <div className="space-y-4">
             <Link
@@ -259,11 +252,10 @@ export default function LoveTarotPage() {
               className="group block p-5 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all"
             >
               <h3 className="font-display text-base font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
-                Three-Card Spread
+                {t('bestSpreadThreeCard')}
               </h3>
               <p className="font-body text-sm font-medium text-stone-500">
-                Frame it as You / Them / The Relationship — or Past / Present /
-                Future of your love life. Simple and powerful.
+                {t('bestSpreadThreeCardDesc')}
               </p>
             </Link>
             <Link
@@ -271,12 +263,10 @@ export default function LoveTarotPage() {
               className="group block p-5 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all"
             >
               <h3 className="font-display text-base font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
-                Celtic Cross Spread
+                {t('bestSpreadCelticCross')}
               </h3>
               <p className="font-body text-sm font-medium text-stone-500">
-                For complex relationship situations. Ten cards reveal hidden
-                fears, external influences, and the likely trajectory of your
-                love life.
+                {t('bestSpreadCelticCrossDesc')}
               </p>
             </Link>
           </div>
@@ -285,13 +275,11 @@ export default function LoveTarotPage() {
         {/* Sample Reading */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-            <span className="text-gold-400/50">&#10022;</span> Sample Love
-            Reading
+            <span className="text-gold-400/50">&#10022;</span> {t('sampleTitle')}
           </h2>
           <div className="p-6 rounded-sm border border-gold-400/[0.08] bg-gradient-to-b from-white/[0.02] to-transparent">
             <p className="text-xs text-stone-500 mb-4">
-              Question: &ldquo;What do I need to understand about my current
-              relationship?&rdquo;
+              {t('sampleQuestion')}
             </p>
             <div className="flex gap-4 mb-4">
               {[
@@ -314,18 +302,7 @@ export default function LoveTarotPage() {
               ))}
             </div>
             <div className="font-body text-sm font-medium text-stone-300 leading-relaxed italic">
-              <p>
-                &ldquo;The Two of Cups at the foundation confirms a genuine,
-                reciprocal connection — this relationship started from a place of
-                mutual recognition. But The Moon in the present reveals that
-                something important remains unspoken. There are feelings,
-                fears, or truths that neither of you has surfaced yet. This
-                is not deception — it is the natural fog that settles when
-                vulnerability feels risky. The Ten of Pentacles ahead suggests
-                that if you can navigate through this uncertainty with honesty,
-                the relationship has the foundation for something lasting and
-                deeply secure.&rdquo;
-              </p>
+              <p>&ldquo;{t('sampleText')}&rdquo;</p>
             </div>
           </div>
         </section>
@@ -333,23 +310,10 @@ export default function LoveTarotPage() {
         {/* FAQ */}
         <section className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-6">
-            Love Tarot FAQ
+            {t('faqTitle')}
           </h2>
           <div className="space-y-4">
-            {[
-              {
-                q: 'Can tarot predict my love life?',
-                a: 'Tarot does not predict a fixed future. It reveals patterns, energies, and dynamics in your romantic life — helping you understand what influences your relationships and what you might consider going forward. Think of it as a mirror, not a crystal ball.',
-              },
-              {
-                q: 'What is the best tarot spread for love questions?',
-                a: 'The Three-Card Spread works well for relationship trajectory (past/present/future or you/them/the relationship). For deeper analysis, the Celtic Cross reveals hidden influences, fears, and likely outcomes.',
-              },
-              {
-                q: 'How does AI love tarot differ from traditional?',
-                a: 'Our AI reads all your cards together as one relationship narrative rather than giving isolated meanings. It finds patterns between cards and weaves them into a cohesive story about your romantic situation — then you can ask follow-up questions to explore specific aspects.',
-              },
-            ].map((faq) => (
+            {faqs.map((faq) => (
               <div
                 key={faq.q}
                 className="p-5 rounded-sm border border-gold-400/[0.06] bg-white/[0.01]"
@@ -368,22 +332,21 @@ export default function LoveTarotPage() {
         {/* Bottom CTA */}
         <section className="text-center py-12 border-t border-gold-400/[0.06]">
           <h2 className="font-display text-2xl font-semibold text-white mb-3">
-            Explore Your Love Story
+            {t('bottomCtaTitle')}
           </h2>
           <p className="font-body text-base font-medium text-stone-400 mb-6 max-w-md mx-auto">
-            Get a free AI love tarot reading. Ask about your relationship,
-            compatibility, or what the cards see ahead for your romantic life.
+            {t('bottomCtaDesc')}
           </p>
           <Link
             href="/reading/free?topic=love"
             className="inline-block px-10 py-3.5 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-base tracking-wide rounded-sm hover:shadow-[0_0_30px_rgba(212,160,67,0.3)] transition-all"
           >
-            Get a Free Love Reading
+            {t('bottomCtaButton')}
           </Link>
           <p className="mt-6 font-body text-sm text-stone-500">
-            Want to learn what each card means?{' '}
+            {t('exploreLink')}{' '}
             <Link href="/tarot-card-meanings" className="text-gold-400/70 hover:text-gold-400 transition-colors underline underline-offset-2">
-              Explore all 78 tarot card meanings
+              {t('exploreLinkText')}
             </Link>
           </p>
         </section>
