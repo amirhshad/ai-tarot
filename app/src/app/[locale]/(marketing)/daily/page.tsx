@@ -3,6 +3,7 @@ import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import { getDailyCard, getTodayDateStr } from '@/lib/tarot/daily';
 import { generateCompletion } from '@/lib/ai/client';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 export const revalidate = 86400; // ISR: regenerate once per day
 
@@ -19,7 +20,9 @@ async function getDailyInterpretation(cardName: string, keywords: string[]): Pro
   return generateCompletion(DAILY_SYSTEM_PROMPT, userMessage, 300);
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const dateStr = getTodayDateStr();
   const card = getDailyCard(dateStr);
   const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
@@ -35,7 +38,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function DailyPage() {
+export default async function DailyPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('daily');
+  const tc = await getTranslations('common');
+
   const dateStr = getTodayDateStr();
   const card = getDailyCard(dateStr);
   const today = new Date().toLocaleDateString('en-US', {
@@ -52,7 +60,7 @@ export default async function DailyPage() {
       {/* Header */}
       <div className="text-center mb-10">
         <p className="text-amber-400/80 text-sm font-medium uppercase tracking-wider mb-2">
-          Daily Tarot Card
+          {t('label')}
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
           {card.name}
@@ -89,7 +97,7 @@ export default async function DailyPage() {
       {/* Interpretation */}
       <div className="p-6 sm:p-8 rounded-2xl bg-white/[0.04] border border-white/[0.08] mb-10">
         <h2 className="text-lg font-semibold text-amber-400 mb-4">
-          Today&apos;s Message
+          {t('todaysMessage')}
         </h2>
         <p className="text-amber-50/90 text-base sm:text-lg leading-7 sm:leading-8 whitespace-pre-wrap">
           {interpretation}
@@ -99,20 +107,20 @@ export default async function DailyPage() {
       {/* CTA */}
       <div className="text-center space-y-4">
         <p className="text-gray-400 text-sm">
-          Want a deeper, personalized reading?
+          {t('deeperReading')}
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/reading/free"
             className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors text-center"
           >
-            Get a Free Reading
+            {tc('getFreeReading')}
           </Link>
           <Link
             href="/signup"
             className="px-6 py-3 border border-white/15 text-white hover:border-amber-400/50 hover:text-amber-400 rounded-xl transition-colors text-center"
           >
-            Sign Up for Full Access
+            {t('signUpAccess')}
           </Link>
         </div>
       </div>
@@ -123,7 +131,7 @@ export default async function DailyPage() {
           href={`/tarot-card-meanings/${card.name.toLowerCase().replace(/\s+/g, '-')}`}
           className="text-sm text-gray-500 hover:text-amber-400 transition-colors"
         >
-          Learn more about {card.name} &rarr;
+          {tc('learnMore')} {card.name} &rarr;
         </Link>
       </div>
     </div>

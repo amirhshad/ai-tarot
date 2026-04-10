@@ -4,6 +4,7 @@ import { Link } from '@/i18n/navigation';
 import { DECK } from '@/lib/tarot/deck';
 import { cardToSlug } from '@/lib/tarot/slugs';
 import { buildHubJsonLd } from '@/lib/seo/json-ld';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 const siteUrl = 'https://www.tarotveil.com';
 
@@ -73,7 +74,12 @@ export function generateSubHubMetadata(configKey: string): Metadata {
   };
 }
 
-export default function SubHubPage({ configKey }: { configKey: string }) {
+export default async function SubHubPage({ configKey, locale }: { configKey: string; locale: string }) {
+  setRequestLocale(locale);
+
+  const t = await getTranslations('subHub');
+  const tCommon = await getTranslations('common');
+
   const config = SUB_HUB_CONFIGS[configKey];
   const cards = DECK.filter(config.filter)
     .sort((a, b) => a.number - b.number)
@@ -85,8 +91,8 @@ export default function SubHubPage({ configKey }: { configKey: string }) {
 
   const pageUrl = `${siteUrl}/tarot-card-meanings/${config.slug}`;
   const jsonLd = buildHubJsonLd(config.heading, pageUrl, [
-    { name: 'Home', url: siteUrl },
-    { name: 'Tarot Card Meanings', url: `${siteUrl}/tarot-card-meanings` },
+    { name: tCommon('home'), url: siteUrl },
+    { name: t('tarotCardMeanings'), url: `${siteUrl}/tarot-card-meanings` },
     { name: config.heading.replace(' Tarot Card Meanings', ''), url: pageUrl },
   ]);
 
@@ -99,9 +105,9 @@ export default function SubHubPage({ configKey }: { configKey: string }) {
       <div className="max-w-6xl mx-auto px-4 py-16">
         {/* Breadcrumbs */}
         <nav className="text-sm text-stone-500 mb-8 flex items-center gap-2">
-          <Link href="/" className="hover:text-gold-400 transition-colors">Home</Link>
+          <Link href="/" className="hover:text-gold-400 transition-colors">{tCommon('home')}</Link>
           <span>/</span>
-          <Link href="/tarot-card-meanings" className="hover:text-gold-400 transition-colors">Tarot Card Meanings</Link>
+          <Link href="/tarot-card-meanings" className="hover:text-gold-400 transition-colors">{t('tarotCardMeanings')}</Link>
           <span>/</span>
           <span className="text-stone-300">{config.heading.replace(' Tarot Card Meanings', '')}</span>
         </nav>
@@ -143,16 +149,16 @@ export default function SubHubPage({ configKey }: { configKey: string }) {
         {/* CTA */}
         <section className="text-center py-12 border-t border-gold-400/[0.06]">
           <h2 className="font-display text-2xl font-semibold text-white mb-3">
-            Experience These Cards in a Reading
+            {t('ctaTitle')}
           </h2>
           <p className="font-body text-base font-medium text-stone-400 mb-6 max-w-md mx-auto">
-            Get a free AI tarot reading and see how these cards weave together into your unique story.
+            {t('ctaDescription')}
           </p>
           <Link
             href="/reading/free"
             className="inline-block px-10 py-3.5 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-base tracking-wide rounded-sm hover:shadow-[0_0_30px_rgba(212,160,67,0.3)] transition-all"
           >
-            Get a Free Reading
+            {t('ctaButton')}
           </Link>
         </section>
       </div>

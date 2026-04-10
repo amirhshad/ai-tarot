@@ -6,6 +6,7 @@ import { getAllCardContent, getCardContent } from '@/lib/db/card-queries';
 import { DECK } from '@/lib/tarot/deck';
 import { cardToSlug } from '@/lib/tarot/slugs';
 import { buildCardJsonLd } from '@/lib/seo/json-ld';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import cardContentJson from '@/data/card-content.json';
 
 const siteUrl = 'https://www.tarotveil.com';
@@ -30,8 +31,10 @@ async function getAllCardSlugsFromDb() {
   return cards.map(c => c.slug);
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const card = await getCardContent(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }): Promise<Metadata> {
+  const { slug, locale } = await params;
+  setRequestLocale(locale);
+  const card = await getCardContent(slug);
   if (card) {
     return {
       title: card.metaTitle,
@@ -54,7 +57,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 
   // Fallback to JSON
-  const fb = fallbackContent[params.slug];
+  const fb = fallbackContent[slug];
   if (!fb) return {};
   const article = /^the /i.test(fb.name) ? '' : 'the ';
   const title = `${fb.name} Tarot Meaning — Upright & Reversed`;
@@ -84,15 +87,20 @@ function Paragraphs({ text }: { text: string }) {
   );
 }
 
-export default async function CardMeaningPage({ params }: { params: { slug: string } }) {
-  const card = await getCardContent(params.slug);
-  const deckCard = DECK.find(c => cardToSlug(c) === params.slug);
+export default async function CardMeaningPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+  const { slug, locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('cardDetail');
+  const tc = await getTranslations('common');
+
+  const card = await getCardContent(slug);
+  const deckCard = DECK.find(c => cardToSlug(c) === slug);
 
   // If no DB content, render fallback from JSON
   if (!card) {
-    const fb = fallbackContent[params.slug];
+    const fb = fallbackContent[slug];
     if (!fb || !deckCard) notFound();
-    return <FallbackCardPage card={fb} deckCard={deckCard} />;
+    return <FallbackCardPage card={fb} deckCard={deckCard} t={t} tc={tc} />;
   }
 
   if (!deckCard) notFound();
@@ -109,9 +117,9 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
       <div className="max-w-4xl mx-auto px-4 py-16">
         {/* Breadcrumbs */}
         <nav className="text-sm text-stone-500 mb-8 flex items-center gap-2 flex-wrap">
-          <Link href="/" className="hover:text-gold-400 transition-colors">Home</Link>
+          <Link href="/" className="hover:text-gold-400 transition-colors">{tc('home')}</Link>
           <span>/</span>
-          <Link href="/tarot-card-meanings" className="hover:text-gold-400 transition-colors">Tarot Card Meanings</Link>
+          <Link href="/tarot-card-meanings" className="hover:text-gold-400 transition-colors">{t('tarotCardMeanings')}</Link>
           {subHub && (
             <>
               <span>/</span>
@@ -128,7 +136,7 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
             <div className="relative w-[220px] h-[370px] rounded-md overflow-hidden border border-gold-400/20">
               <Image
                 src={deckCard.image}
-                alt={`${card.name} tarot card`}
+                alt={t('cardImageAlt', { cardName: card.name })}
                 fill
                 sizes="220px"
                 className="object-cover"
@@ -139,10 +147,10 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
 
           <div className="flex-1">
             <p className="text-xs tracking-[0.2em] uppercase text-gold-400/60 mb-2">
-              {card.arcana === 'major' ? `Major Arcana · ${card.number}` : `Minor Arcana · ${subHub?.name}`}
+              {card.arcana === 'major' ? `${t('majorArcana')} · ${card.number}` : `${t('minorArcana')} · ${subHub?.name}`}
             </p>
             <h1 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
-              {card.name} Tarot Card Meaning
+              {t('h2Meaning', { cardName: card.name })}
             </h1>
             <p className="font-body text-lg font-medium text-stone-300 leading-relaxed mb-6">
               {card.featuredSnippet}
@@ -150,7 +158,7 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
 
             {/* Keywords */}
             <div className="mb-4">
-              <p className="text-xs uppercase tracking-wider text-stone-500 mb-2">Upright</p>
+              <p className="text-xs uppercase tracking-wider text-stone-500 mb-2">{t('upright')}</p>
               <div className="flex flex-wrap gap-2 mb-3">
                 {card.uprightKeywords.map(kw => (
                   <span key={kw} className="px-3 py-1 text-xs font-medium text-gold-400/70 border border-gold-400/15 rounded-full bg-gold-400/[0.03]">
@@ -158,7 +166,7 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
                   </span>
                 ))}
               </div>
-              <p className="text-xs uppercase tracking-wider text-stone-500 mb-2">Reversed</p>
+              <p className="text-xs uppercase tracking-wider text-stone-500 mb-2">{t('reversed')}</p>
               <div className="flex flex-wrap gap-2">
                 {card.reversedKeywords.map(kw => (
                   <span key={kw} className="px-3 py-1 text-xs font-medium text-stone-500 border border-stone-700 rounded-full">
@@ -172,26 +180,26 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
               href="/reading/free"
               className="inline-block px-8 py-3 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-sm tracking-wide rounded-sm hover:shadow-[0_0_25px_rgba(212,160,67,0.3)] transition-all"
             >
-              Get a Free AI Reading
+              {t('getFreeAiReading')}
             </Link>
           </div>
         </div>
 
         {/* Table of Contents */}
         <nav className="mb-12 p-4 border border-gold-400/[0.06] rounded-sm">
-          <p className="font-display text-xs uppercase tracking-wider text-stone-500 mb-3">On this page</p>
+          <p className="font-display text-xs uppercase tracking-wider text-stone-500 mb-3">{t('onThisPage')}</p>
           <ul className="grid grid-cols-2 gap-1.5 text-sm">
             {[
-              { id: 'upright', label: 'Upright Meaning' },
-              { id: 'reversed', label: 'Reversed Meaning' },
-              { id: 'love', label: 'Love & Relationships' },
-              { id: 'career', label: 'Career & Finances' },
-              ...(card.asFeelings ? [{ id: 'feelings', label: 'As Feelings' }] : []),
-              ...(card.howSomeoneSeesYou ? [{ id: 'how-seen', label: 'How Someone Sees You' }] : []),
-              ...(card.advice ? [{ id: 'advice', label: 'Advice' }] : []),
-              { id: 'yes-or-no', label: 'Yes or No' },
-              { id: 'combinations', label: 'Card Combinations' },
-              { id: 'faq', label: 'FAQ' },
+              { id: 'upright', label: t('tocUpright') },
+              { id: 'reversed', label: t('tocReversed') },
+              { id: 'love', label: t('tocLove') },
+              { id: 'career', label: t('tocCareer') },
+              ...(card.asFeelings ? [{ id: 'feelings', label: t('tocFeelings') }] : []),
+              ...(card.howSomeoneSeesYou ? [{ id: 'how-seen', label: t('tocHowSeen') }] : []),
+              ...(card.advice ? [{ id: 'advice', label: t('tocAdvice') }] : []),
+              { id: 'yes-or-no', label: t('tocYesOrNo') },
+              { id: 'combinations', label: t('tocCombinations') },
+              { id: 'faq', label: t('tocFaq') },
             ].map(item => (
               <li key={item.id}>
                 <a href={`#${item.id}`} className="text-stone-400 hover:text-gold-400 transition-colors">
@@ -205,7 +213,7 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
         {/* Upright Meaning */}
         <section id="upright" className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-            <span className="text-gold-400/50">↑</span> {card.name} Upright Meaning
+            <span className="text-gold-400/50">↑</span> {t('h2Upright', { cardName: card.name })}
           </h2>
           <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10">
             <Paragraphs text={card.uprightMeaning} />
@@ -215,7 +223,7 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
         {/* Reversed Meaning */}
         <section id="reversed" className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-            <span className="text-gold-400/50">↓</span> {card.name} Reversed Meaning
+            <span className="text-gold-400/50">↓</span> {t('h2Reversed', { cardName: card.name })}
           </h2>
           <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10">
             <Paragraphs text={card.reversedMeaning} />
@@ -225,7 +233,7 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
         {/* Love & Relationships */}
         <section id="love" className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-            <span className="text-gold-400/50">♥</span> {card.name} in Love &amp; Relationships
+            <span className="text-gold-400/50">♥</span> {t('h2Love', { cardName: card.name })}
           </h2>
           <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10">
             <Paragraphs text={card.loveRelationships} />
@@ -235,7 +243,7 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
         {/* Career & Finances */}
         <section id="career" className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-            <span className="text-gold-400/50">◆</span> {card.name} in Career &amp; Finances
+            <span className="text-gold-400/50">◆</span> {t('h2Career', { cardName: card.name })}
           </h2>
           <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10">
             <Paragraphs text={card.careerFinances} />
@@ -246,7 +254,7 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
         {card.asFeelings && (
           <section id="feelings" className="mb-12">
             <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-              <span className="text-gold-400/50">✦</span> {card.name} as Feelings
+              <span className="text-gold-400/50">✦</span> {t('h2Feelings', { cardName: card.name })}
             </h2>
             <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10">
               <Paragraphs text={card.asFeelings} />
@@ -258,7 +266,7 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
         {card.howSomeoneSeesYou && (
           <section id="how-seen" className="mb-12">
             <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-              <span className="text-gold-400/50">◇</span> {card.name} as How Someone Sees You
+              <span className="text-gold-400/50">◇</span> {t('h2HowSeen', { cardName: card.name })}
             </h2>
             <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10">
               <Paragraphs text={card.howSomeoneSeesYou} />
@@ -270,7 +278,7 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
         {card.advice && (
           <section id="advice" className="mb-12">
             <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-              <span className="text-gold-400/50">→</span> {card.name} Advice
+              <span className="text-gold-400/50">→</span> {t('h2Advice', { cardName: card.name })}
             </h2>
             <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10">
               <Paragraphs text={card.advice} />
@@ -281,7 +289,7 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
         {/* Yes or No */}
         <section id="yes-or-no" className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-            <span className="text-gold-400/50">?</span> {card.name}: Yes or No?
+            <span className="text-gold-400/50">?</span> {t('h2YesOrNo', { cardName: card.name })}
           </h2>
           <div className="pl-8 border-l border-gold-400/10">
             <span className={`inline-block px-4 py-1.5 rounded-full text-sm font-display font-semibold mb-3 ${
@@ -300,7 +308,7 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
         {/* Combinations */}
         <section id="combinations" className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4">
-            Common Card Combinations
+            {t('h2Combinations')}
           </h2>
           <div className="space-y-3">
             {card.combinations.map(combo => (
@@ -320,7 +328,7 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
         {/* FAQ */}
         <section id="faq" className="mb-12">
           <h2 className="font-display text-2xl font-semibold text-white mb-4">
-            Frequently Asked Questions
+            {t('h2Faq')}
           </h2>
           <div className="space-y-3">
             {card.faq.map(item => (
@@ -339,23 +347,23 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
         {/* CTA */}
         <section className="mb-12 p-8 rounded-sm border border-gold-400/[0.08] bg-gradient-to-b from-white/[0.02] to-transparent text-center">
           <h2 className="font-display text-xl font-semibold text-white mb-3">
-            Ask the AI About {card.name}
+            {t('ctaTitle', { cardName: card.name })}
           </h2>
           <p className="font-body text-base font-medium text-stone-400 mb-6 max-w-md mx-auto">
-            Get a personalized AI reading and discover how {card.name} connects with your unique spread.
+            {t('ctaDescription', { cardName: card.name })}
           </p>
           <Link
             href="/reading/free"
             className="inline-block px-10 py-3.5 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-base tracking-wide rounded-sm hover:shadow-[0_0_30px_rgba(212,160,67,0.3)] transition-all"
           >
-            Get a Free Reading
+            {t('ctaButton')}
           </Link>
         </section>
 
         {/* Related Cards */}
         {card.relatedCards.length > 0 && (
           <section>
-            <h2 className="font-display text-xl font-semibold text-white mb-6">Related Cards</h2>
+            <h2 className="font-display text-xl font-semibold text-white mb-6">{t('relatedCards')}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {card.relatedCards.map(relSlug => {
                 const relDeck = DECK.find(c => cardToSlug(c) === relSlug);
@@ -390,14 +398,14 @@ export default async function CardMeaningPage({ params }: { params: { slug: stri
 }
 
 // Fallback component using existing JSON data when DB content isn't available yet
-function FallbackCardPage({ card, deckCard }: { card: FallbackCard; deckCard: (typeof DECK)[0] }) {
+function FallbackCardPage({ card, deckCard, t, tc }: { card: FallbackCard; deckCard: (typeof DECK)[0]; t: Awaited<ReturnType<typeof getTranslations<'cardDetail'>>>; tc: Awaited<ReturnType<typeof getTranslations<'common'>>> }) {
   const subHub = suitSubHub(card.arcana, card.suit);
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
       <nav className="text-sm text-stone-500 mb-8 flex items-center gap-2 flex-wrap">
-        <Link href="/" className="hover:text-gold-400 transition-colors">Home</Link>
+        <Link href="/" className="hover:text-gold-400 transition-colors">{tc('home')}</Link>
         <span>/</span>
-        <Link href="/tarot-card-meanings" className="hover:text-gold-400 transition-colors">Tarot Card Meanings</Link>
+        <Link href="/tarot-card-meanings" className="hover:text-gold-400 transition-colors">{t('tarotCardMeanings')}</Link>
         {subHub && (
           <>
             <span>/</span>
@@ -411,12 +419,12 @@ function FallbackCardPage({ card, deckCard }: { card: FallbackCard; deckCard: (t
       <div className="flex flex-col md:flex-row gap-10 mb-16">
         <div className="flex-shrink-0 mx-auto md:mx-0">
           <div className="relative w-[220px] h-[370px] rounded-md overflow-hidden border border-gold-400/20">
-            <Image src={deckCard.image} alt={`${card.name} tarot card`} fill sizes="220px" className="object-cover" priority />
+            <Image src={deckCard.image} alt={t('cardImageAlt', { cardName: card.name })} fill sizes="220px" className="object-cover" priority />
           </div>
         </div>
         <div className="flex-1">
           <h1 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
-            {card.name} Tarot Card Meaning
+            {t('h2Meaning', { cardName: card.name })}
           </h1>
           <p className="font-body text-lg font-medium text-stone-300 leading-relaxed mb-6">{card.summary}</p>
           <div className="flex flex-wrap gap-2 mb-6">
@@ -425,32 +433,32 @@ function FallbackCardPage({ card, deckCard }: { card: FallbackCard; deckCard: (t
             ))}
           </div>
           <Link href="/reading/free" className="inline-block px-8 py-3 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-sm tracking-wide rounded-sm hover:shadow-[0_0_25px_rgba(212,160,67,0.3)] transition-all">
-            Get a Free AI Reading
+            {t('getFreeAiReading')}
           </Link>
         </div>
       </div>
 
       <section className="mb-12">
         <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-          <span className="text-gold-400/50">↑</span> Upright Meaning
+          <span className="text-gold-400/50">↑</span> {t('tocUpright')}
         </h2>
         <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10">{card.upright}</div>
       </section>
 
       <section className="mb-12">
         <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-          <span className="text-gold-400/50">↓</span> Reversed Meaning
+          <span className="text-gold-400/50">↓</span> {t('tocReversed')}
         </h2>
         <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10">{card.reversed}</div>
       </section>
 
       <section className="mb-16 p-8 rounded-sm border border-gold-400/[0.08] bg-gradient-to-b from-white/[0.02] to-transparent text-center">
-        <h2 className="font-display text-xl font-semibold text-white mb-3">See {card.name} in Your Reading</h2>
+        <h2 className="font-display text-xl font-semibold text-white mb-3">{t('fallbackCtaTitle', { cardName: card.name })}</h2>
         <p className="font-body text-base font-medium text-stone-400 mb-6 max-w-md mx-auto">
-          Get a free AI tarot reading and discover how {card.name} connects with your unique spread.
+          {t('fallbackCtaDescription', { cardName: card.name })}
         </p>
         <Link href="/reading/free" className="inline-block px-10 py-3.5 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-base tracking-wide rounded-sm hover:shadow-[0_0_30px_rgba(212,160,67,0.3)] transition-all">
-          Get a Free Reading
+          {t('ctaButton')}
         </Link>
       </section>
     </div>

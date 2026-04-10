@@ -1,13 +1,38 @@
+import { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import FreeReadingClient from '@/components/reading/FreeReadingClient';
 
+const siteUrl = 'https://www.tarotveil.com';
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('freeReading');
+
+  return {
+    title: `${t('pageTitle')} | TarotVeil`,
+    description: t('pageSubtitle'),
+    alternates: { canonical: `${siteUrl}/reading/free` },
+    openGraph: {
+      title: `${t('pageTitle')} | TarotVeil`,
+      description: t('pageSubtitle'),
+      url: `${siteUrl}/reading/free`,
+    },
+  };
+}
+
 interface PageProps {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{ topic?: string }>;
 }
 
 const VALID_TOPICS = ['general', 'love', 'yes-or-no', 'career'];
 
-export default async function FreeReadingPage({ searchParams }: PageProps) {
+export default async function FreeReadingPage({ params, searchParams }: PageProps) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const { topic } = await searchParams;
   const hasTopic = topic && VALID_TOPICS.includes(topic);
 
@@ -16,19 +41,21 @@ export default async function FreeReadingPage({ searchParams }: PageProps) {
     return <FreeReadingClient />;
   }
 
+  const t = await getTranslations('freeReading');
+
   // Otherwise, render the topic selection as static server HTML (SEO-friendly)
   return (
     <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
       {/* Header — server-rendered for crawlers */}
       <div className="text-center">
         <h1 className="font-display text-3xl md:text-4xl font-semibold text-white">
-          Free AI Tarot Reading
+          {t('pageTitle')}
         </h1>
         <p className="text-stone-400 text-sm mt-2">
-          Choose a topic for your three-card past, present, and future spread
+          {t('pageSubtitle')}
         </p>
         <p className="text-xs text-gray-600 mt-1">
-          Crypto-random card draws &middot; Narrative AI interpretation &middot; No signup required
+          {t('pageNote')}
         </p>
       </div>
 
@@ -43,9 +70,9 @@ export default async function FreeReadingPage({ searchParams }: PageProps) {
           </span>
           <div className="min-w-0">
             <h3 className="font-display text-base font-medium text-white group-hover:text-gold-400 transition-colors">
-              General Reading
+              {t('topicGeneral')}
             </h3>
-            <p className="text-xs text-stone-400 mt-0.5">Open-ended — explore whatever comes up</p>
+            <p className="text-xs text-stone-400 mt-0.5">{t('topicGeneralDesc')}</p>
           </div>
         </Link>
 
@@ -58,9 +85,9 @@ export default async function FreeReadingPage({ searchParams }: PageProps) {
           </span>
           <div className="min-w-0">
             <h3 className="font-display text-base font-medium text-white group-hover:text-gold-400 transition-colors">
-              Love &amp; Relationships
+              {t('topicLove')}
             </h3>
-            <p className="text-xs text-stone-400 mt-0.5">Romantic connections, compatibility, emotional clarity</p>
+            <p className="text-xs text-stone-400 mt-0.5">{t('topicLoveDesc')}</p>
           </div>
         </Link>
 
@@ -73,9 +100,9 @@ export default async function FreeReadingPage({ searchParams }: PageProps) {
           </span>
           <div className="min-w-0">
             <h3 className="font-display text-base font-medium text-white group-hover:text-gold-400 transition-colors">
-              Career &amp; Work
+              {t('topicCareer')}
             </h3>
-            <p className="text-xs text-stone-400 mt-0.5">Professional path, growth, and direction</p>
+            <p className="text-xs text-stone-400 mt-0.5">{t('topicCareerDesc')}</p>
           </div>
         </Link>
 
@@ -88,31 +115,31 @@ export default async function FreeReadingPage({ searchParams }: PageProps) {
           </span>
           <div className="min-w-0">
             <h3 className="font-display text-base font-medium text-white group-hover:text-gold-400 transition-colors">
-              Yes or No
+              {t('topicYesOrNo')}
             </h3>
-            <p className="text-xs text-stone-400 mt-0.5">A direct answer to your question</p>
+            <p className="text-xs text-stone-400 mt-0.5">{t('topicYesOrNoDesc')}</p>
           </div>
         </Link>
       </div>
 
       {/* SEO content — visible to crawlers, provides context */}
       <div className="max-w-2xl mx-auto pt-8 border-t border-white/[0.06]">
-        <h2 className="font-display text-lg font-medium text-white mb-3">How It Works</h2>
+        <h2 className="font-display text-lg font-medium text-white mb-3">{t('howItWorksTitle')}</h2>
         <div className="grid gap-4 sm:grid-cols-3 text-center">
           <div>
             <div className="text-2xl text-gold-400/60 mb-1">1</div>
-            <h3 className="text-sm font-medium text-white">Choose Your Topic</h3>
-            <p className="text-xs text-stone-500 mt-1">Pick a focus area or go with a general reading</p>
+            <h3 className="text-sm font-medium text-white">{t('step1Title')}</h3>
+            <p className="text-xs text-stone-500 mt-1">{t('step1Desc')}</p>
           </div>
           <div>
             <div className="text-2xl text-gold-400/60 mb-1">2</div>
-            <h3 className="text-sm font-medium text-white">Draw Three Cards</h3>
-            <p className="text-xs text-stone-500 mt-1">Cryptographically random shuffle — no predetermined outcomes</p>
+            <h3 className="text-sm font-medium text-white">{t('step2Title')}</h3>
+            <p className="text-xs text-stone-500 mt-1">{t('step2Desc')}</p>
           </div>
           <div>
             <div className="text-2xl text-gold-400/60 mb-1">3</div>
-            <h3 className="text-sm font-medium text-white">Get Your Narrative</h3>
-            <p className="text-xs text-stone-500 mt-1">AI weaves all three cards into one cohesive story</p>
+            <h3 className="text-sm font-medium text-white">{t('step3Title')}</h3>
+            <p className="text-xs text-stone-500 mt-1">{t('step3Desc')}</p>
           </div>
         </div>
       </div>
