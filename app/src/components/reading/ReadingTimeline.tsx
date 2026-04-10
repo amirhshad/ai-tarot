@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import type { ReadingRow } from '@/lib/db/queries';
 import DeleteReadingButton from '@/components/reading/DeleteReadingButton';
 

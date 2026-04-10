@@ -14,6 +14,11 @@
   "nav": {
     "dashboard": "داشبورد",
     "newReading": "خوانش جدید",
+    "cardMeanings": "معانی کارت‌ها",
+    "spreads": "گسترش‌ها",
+    "history": "تاریخچه",
+    "dailyCard": "کارت روز",
+    "about": "درباره",
     "billing": "اشتراک",
     "settings": "تنظیمات"
   },

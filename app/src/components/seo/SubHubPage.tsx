@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { DECK } from '@/lib/tarot/deck';
 import { cardToSlug } from '@/lib/tarot/slugs';
 import { buildHubJsonLd } from '@/lib/seo/json-ld';

@@ -1,18 +1,19 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { Link, usePathname, useRouter } from '@/i18n/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 interface HeaderProps {
   user?: { email: string; tier: string } | null;
-  language?: 'en' | 'fa';
 }
 
-export default function Header({ user, language = 'en' }: HeaderProps) {
+export default function Header({ user }: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const isRTL = language === 'fa';
+  const locale = useLocale();
+  const t = useTranslations('nav');
+  const tc = useTranslations('common');
   const [loggingOut, setLoggingOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -27,19 +28,14 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
     }
   }
 
-  async function toggleLanguage() {
-    const newLang = language === 'en' ? 'fa' : 'en';
-    await fetch('/api/auth/profile', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ language: newLang }),
-    });
-    router.refresh();
+  function toggleLanguage() {
+    const newLocale = locale === 'en' ? 'fa' : 'en';
+    router.replace(pathname, { locale: newLocale });
   }
 
   return (
     <header className="border-b border-white/10 bg-black/80 backdrop-blur-sm sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between" dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link href={user ? '/dashboard' : '/'} className="flex items-center gap-2">
           <span className="text-amber-400 text-xl">&#10022;</span>
           <span className="font-semibold text-white tracking-wide">TarotVeil</span>
@@ -60,63 +56,53 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
         <nav className="hidden md:flex items-center gap-4">
           {user ? (
             <>
-              <NavLink href="/dashboard" current={pathname} label={language === 'en' ? 'Dashboard' : 'داشبورد'} />
-              <NavLink href="/reading/new" current={pathname} label={language === 'en' ? 'New Reading' : 'خوانش جدید'} />
-              <NavLink href="/tarot-card-meanings" current={pathname} label={language === 'en' ? 'Card Meanings' : 'معانی کارت‌ها'} />
-              <NavLink href="/spreads" current={pathname} label={language === 'en' ? 'Spreads' : 'گسترش‌ها'} />
-              <NavLink href="/history" current={pathname} label={language === 'en' ? 'History' : 'تاریخچه'} />
-              <NavLink href="/billing" current={pathname} label={language === 'en' ? 'Billing' : 'اشتراک'} />
+              <NavLink href="/dashboard" current={pathname} label={t('dashboard')} />
+              <NavLink href="/reading/new" current={pathname} label={t('newReading')} />
+              <NavLink href="/tarot-card-meanings" current={pathname} label={t('cardMeanings')} />
+              <NavLink href="/spreads" current={pathname} label={t('spreads')} />
+              <NavLink href="/history" current={pathname} label={t('history')} />
+              <NavLink href="/billing" current={pathname} label={t('billing')} />
               <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-amber-200/80 capitalize">
                 {user.tier}
               </span>
               <button
                 onClick={toggleLanguage}
                 className="text-xs px-2 py-1 rounded-full border border-white/15 text-gray-400 hover:border-amber-400/50 hover:text-amber-400 transition-colors"
-                title={language === 'en' ? 'Switch to Farsi' : 'تغییر به انگلیسی'}
+                title={locale === 'en' ? 'فارسی' : 'English'}
               >
-                {language === 'en' ? 'فا' : 'EN'}
+                {locale === 'en' ? 'فا' : 'EN'}
               </button>
               <button
                 onClick={handleLogout}
                 disabled={loggingOut}
                 className="text-sm text-gray-500 hover:text-red-400 transition-colors disabled:opacity-50"
               >
-                {loggingOut
-                  ? '...'
-                  : language === 'en' ? 'Sign Out' : 'خروج'}
+                {loggingOut ? '...' : tc('signOut')}
               </button>
             </>
           ) : (
             <>
-              <Link
-                href="/daily"
-                className="text-sm text-gray-400 hover:text-white transition-colors"
-              >
-                {language === 'en' ? 'Daily Card' : 'کارت روز'}
+              <Link href="/daily" className="text-sm text-gray-400 hover:text-white transition-colors">
+                {t('dailyCard')}
               </Link>
-              <Link
-                href="/tarot-card-meanings"
-                className="text-sm text-gray-400 hover:text-white transition-colors"
-              >
-                {language === 'en' ? 'Card Meanings' : 'معانی کارت‌ها'}
+              <Link href="/tarot-card-meanings" className="text-sm text-gray-400 hover:text-white transition-colors">
+                {t('cardMeanings')}
               </Link>
-              <Link
-                href="/spreads"
-                className="text-sm text-gray-400 hover:text-white transition-colors"
-              >
-                {language === 'en' ? 'Spreads' : 'گسترش‌ها'}
+              <Link href="/spreads" className="text-sm text-gray-400 hover:text-white transition-colors">
+                {t('spreads')}
               </Link>
-              <Link
-                href="/login"
-                className="text-sm text-gray-400 hover:text-white transition-colors"
+              <button
+                onClick={toggleLanguage}
+                className="text-xs px-2 py-1 rounded-full border border-white/15 text-gray-400 hover:border-amber-400/50 hover:text-amber-400 transition-colors"
+                title={locale === 'en' ? 'فارسی' : 'English'}
               >
-                {language === 'en' ? 'Sign In' : 'ورود'}
+                {locale === 'en' ? 'فا' : 'EN'}
+              </button>
+              <Link href="/login" className="text-sm text-gray-400 hover:text-white transition-colors">
+                {tc('signIn')}
               </Link>
-              <Link
-                href="/signup"
-                className="text-sm px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-lg transition-colors"
-              >
-                {language === 'en' ? 'Get Started' : 'شروع'}
+              <Link href="/signup" className="text-sm px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-lg transition-colors">
+                {tc('getStarted')}
               </Link>
             </>
           )}
@@ -125,15 +111,15 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
 
       {/* Mobile nav dropdown */}
       {menuOpen && (
-        <nav className="md:hidden border-t border-white/10 bg-black/95 backdrop-blur-sm px-4 py-3 flex flex-col gap-3" dir={isRTL ? 'rtl' : 'ltr'}>
+        <nav className="md:hidden border-t border-white/10 bg-black/95 backdrop-blur-sm px-4 py-3 flex flex-col gap-3">
           {user ? (
             <>
-              <NavLink href="/dashboard" current={pathname} label={language === 'en' ? 'Dashboard' : 'داشبورد'} onClick={() => setMenuOpen(false)} />
-              <NavLink href="/reading/new" current={pathname} label={language === 'en' ? 'New Reading' : 'خوانش جدید'} onClick={() => setMenuOpen(false)} />
-              <NavLink href="/tarot-card-meanings" current={pathname} label={language === 'en' ? 'Card Meanings' : 'معانی کارت‌ها'} onClick={() => setMenuOpen(false)} />
-              <NavLink href="/spreads" current={pathname} label={language === 'en' ? 'Spreads' : 'گسترش‌ها'} onClick={() => setMenuOpen(false)} />
-              <NavLink href="/history" current={pathname} label={language === 'en' ? 'History' : 'تاریخچه'} onClick={() => setMenuOpen(false)} />
-              <NavLink href="/billing" current={pathname} label={language === 'en' ? 'Billing' : 'اشتراک'} onClick={() => setMenuOpen(false)} />
+              <NavLink href="/dashboard" current={pathname} label={t('dashboard')} onClick={() => setMenuOpen(false)} />
+              <NavLink href="/reading/new" current={pathname} label={t('newReading')} onClick={() => setMenuOpen(false)} />
+              <NavLink href="/tarot-card-meanings" current={pathname} label={t('cardMeanings')} onClick={() => setMenuOpen(false)} />
+              <NavLink href="/spreads" current={pathname} label={t('spreads')} onClick={() => setMenuOpen(false)} />
+              <NavLink href="/history" current={pathname} label={t('history')} onClick={() => setMenuOpen(false)} />
+              <NavLink href="/billing" current={pathname} label={t('billing')} onClick={() => setMenuOpen(false)} />
               <div className="flex items-center gap-3 pt-1">
                 <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-amber-200/80 capitalize">
                   {user.tier}
@@ -142,33 +128,33 @@ export default function Header({ user, language = 'en' }: HeaderProps) {
                   onClick={toggleLanguage}
                   className="text-xs px-2 py-1 rounded-full border border-white/15 text-gray-400 hover:border-amber-400/50 hover:text-amber-400 transition-colors"
                 >
-                  {language === 'en' ? 'فا' : 'EN'}
+                  {locale === 'en' ? 'فا' : 'EN'}
                 </button>
                 <button
                   onClick={handleLogout}
                   disabled={loggingOut}
                   className="text-sm text-gray-500 hover:text-red-400 transition-colors disabled:opacity-50"
                 >
-                  {loggingOut ? '...' : language === 'en' ? 'Sign Out' : 'خروج'}
+                  {loggingOut ? '...' : tc('signOut')}
                 </button>
               </div>
             </>
           ) : (
             <>
               <Link href="/daily" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
-                {language === 'en' ? 'Daily Card' : 'کارت روز'}
+                {t('dailyCard')}
               </Link>
               <Link href="/tarot-card-meanings" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
-                {language === 'en' ? 'Card Meanings' : 'معانی کارت‌ها'}
+                {t('cardMeanings')}
               </Link>
               <Link href="/spreads" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
-                {language === 'en' ? 'Spreads' : 'گسترش‌ها'}
+                {t('spreads')}
               </Link>
               <Link href="/login" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
-                {language === 'en' ? 'Sign In' : 'ورود'}
+                {tc('signIn')}
               </Link>
               <Link href="/signup" className="text-sm px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-lg transition-colors text-center" onClick={() => setMenuOpen(false)}>
-                {language === 'en' ? 'Get Started' : 'شروع'}
+                {tc('getStarted')}
               </Link>
             </>
           )}
