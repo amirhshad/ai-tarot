@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getDailyCard, getTodayDateStr } from '@/lib/tarot/daily';
 import { generateCompletion } from '@/lib/ai/client';
 
@@ -61,13 +62,14 @@ export default async function DailyPage() {
 
       {/* Card Image */}
       <div className="flex justify-center mb-10">
-        <div className="w-48 sm:w-56 rounded-xl overflow-hidden border border-white/10 shadow-2xl shadow-amber-900/20">
-          <img
+        <div className="relative w-48 sm:w-56 aspect-[224/384] rounded-xl overflow-hidden border border-white/10 shadow-2xl shadow-amber-900/20">
+          <Image
             src={card.image}
             alt={card.name}
-            className="w-full h-auto"
-            width={224}
-            height={384}
+            fill
+            sizes="(min-width: 640px) 224px, 192px"
+            className="object-cover"
+            priority
           />
         </div>
       </div>

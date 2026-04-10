@@ -19,13 +19,13 @@ const db = createClient({
 
 function buildMetaTitle(name: string): string {
   // Root layout appends " | TarotVeil" via title.template — don't include it here
-  return `${name} Tarot Meaning — Upright, Reversed & Yes or No`;
+  return `${name} Tarot Meaning — Upright & Reversed`;
 }
 
 function buildMetaDescription(name: string): string {
   // Avoid "What does the The Fool mean?" — drop article when name already has one
   const article = /^the /i.test(name) ? '' : 'the ';
-  return `What does ${article}${name} mean? Upright & reversed meanings for love, career, feelings, and yes-or-no readings. Plus card combinations and free AI tarot reading.`;
+  return `What does ${article}${name} mean? Upright & reversed meanings for love, career, feelings, and yes-or-no readings. Free AI tarot reading included.`;
 }
 
 async function main() {

@@ -13,6 +13,9 @@ export default function Footer({ language = 'en' }: { language?: 'en' | 'fa' }) 
           <a href="/spreads" className="hover:text-gray-300 transition-colors">
             {language === 'en' ? 'Spreads' : 'گسترش‌ها'}
           </a>
+          <a href="/about" className="hover:text-gray-300 transition-colors">
+            {language === 'en' ? 'About' : 'درباره'}
+          </a>
           <a href="/privacy" className="hover:text-gray-300 transition-colors">
             {language === 'en' ? 'Privacy' : 'حریم خصوصی'}
           </a>

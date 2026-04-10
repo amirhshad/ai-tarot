@@ -57,8 +57,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const fb = fallbackContent[params.slug];
   if (!fb) return {};
   const article = /^the /i.test(fb.name) ? '' : 'the ';
-  const title = `${fb.name} Tarot Meaning — Upright, Reversed & Yes or No`;
-  const description = `What does ${article}${fb.name} mean? Upright & reversed meanings for love, career, feelings, and yes-or-no readings. Plus card combinations and free AI tarot reading.`;
+  const title = `${fb.name} Tarot Meaning — Upright & Reversed`;
+  const description = `What does ${article}${fb.name} mean? Upright & reversed meanings for love, career, feelings, and yes-or-no readings. Free AI tarot reading included.`;
   return {
     title,
     description,
