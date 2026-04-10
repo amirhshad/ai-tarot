@@ -8,7 +8,7 @@ import { buildAlternates } from '@/lib/seo/alternates';
 
 export const revalidate = 86400; // ISR: regenerate once per day
 
-const DAILY_SYSTEM_PROMPT = `You are a wise and warm tarot reader. Provide today's daily card interpretation.
+const DAILY_SYSTEM_PROMPT_EN = `You are a wise and warm tarot reader. Provide today's daily card interpretation.
 Write 100-150 words covering:
 1. The card's core energy for today
 2. Practical guidance for the reader
@@ -16,25 +16,45 @@ Write 100-150 words covering:
 
 Be warm, specific, and conversational. Avoid generic platitudes. Write as if speaking directly to someone starting their day.`;
 
-async function getDailyInterpretation(cardName: string, keywords: string[]): Promise<string> {
-  const userMessage = `Today's daily card is: ${cardName}\nKeywords: ${keywords.join(', ')}\n\nProvide today's daily tarot card interpretation.`;
-  return generateCompletion(DAILY_SYSTEM_PROMPT, userMessage, 300);
+const DAILY_SYSTEM_PROMPT_FA = `شما یک فالگیر خردمند و مهربان تاروت هستید. تفسیر کارت روز را ارائه دهید.
+۱۰۰ تا ۱۵۰ کلمه بنویسید که شامل:
+۱. انرژی اصلی کارت برای امروز
+۲. راهنمایی عملی برای خواننده
+۳. یک فکر امیدبخش در پایان
+
+به فارسی روان بنویسید. گرم، خاص و مکالمه‌ای باشید. از کلیشه‌ها پرهیز کنید. طوری بنویسید که انگار مستقیماً با کسی صحبت می‌کنید که روز خود را آغاز می‌کند.`;
+
+async function getDailyInterpretation(cardName: string, keywords: string[], locale: string): Promise<string> {
+  const isFA = locale === 'fa';
+  const systemPrompt = isFA ? DAILY_SYSTEM_PROMPT_FA : DAILY_SYSTEM_PROMPT_EN;
+  const userMessage = isFA
+    ? `کارت تاروت امروز: ${cardName}\nکلمات کلیدی: ${keywords.join('، ')}\n\nتفسیر کارت تاروت امروز را ارائه دهید.`
+    : `Today's daily card is: ${cardName}\nKeywords: ${keywords.join(', ')}\n\nProvide today's daily tarot card interpretation.`;
+  return generateCompletion(systemPrompt, userMessage, 300);
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   setRequestLocale(locale);
+  const isFA = locale === 'fa';
   const dateStr = getTodayDateStr();
   const card = getDailyCard(dateStr);
-  const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const cardName = isFA ? card.nameFA : card.name;
+  const today = new Date().toLocaleDateString(isFA ? 'fa-IR' : 'en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
   return {
-    title: `Daily Tarot Card — ${today} — ${card.name}`,
-    description: `Today's tarot card is ${card.name}. Discover what this card means for your day with our free daily tarot reading. Keywords: ${card.keywords.slice(0, 3).join(', ')}.`,
+    title: isFA
+      ? `کارت تاروت روز — ${today} — ${cardName}`
+      : `Daily Tarot Card — ${today} — ${card.name}`,
+    description: isFA
+      ? `کارت تاروت امروز ${cardName} است. ببینید این کارت چه پیامی برای روز شما دارد.`
+      : `Today's tarot card is ${card.name}. Discover what this card means for your day with our free daily tarot reading. Keywords: ${card.keywords.slice(0, 3).join(', ')}.`,
     alternates: buildAlternates('/daily'),
     openGraph: {
-      title: `Daily Tarot: ${card.name} — ${today}`,
-      description: `Today's card is ${card.name}. See what the tarot has in store for you today.`,
+      title: isFA ? `تاروت روز: ${cardName} — ${today}` : `Daily Tarot: ${card.name} — ${today}`,
+      description: isFA
+        ? `کارت امروز ${cardName} است. ببینید تاروت چه چیزی برای امروز شما دارد.`
+        : `Today's card is ${card.name}. See what the tarot has in store for you today.`,
       type: 'article',
     },
   };
@@ -46,16 +66,19 @@ export default async function DailyPage({ params }: { params: Promise<{ locale: 
   const t = await getTranslations('daily');
   const tc = await getTranslations('common');
 
+  const isFA = locale === 'fa';
   const dateStr = getTodayDateStr();
   const card = getDailyCard(dateStr);
-  const today = new Date().toLocaleDateString('en-US', {
+  const cardName = isFA ? card.nameFA : card.name;
+  const cardKeywords = isFA ? card.keywordsFA : card.keywords;
+  const today = new Date().toLocaleDateString(isFA ? 'fa-IR' : 'en-US', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 
-  const interpretation = await getDailyInterpretation(card.name, card.keywords);
+  const interpretation = await getDailyInterpretation(cardName, cardKeywords, locale);
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-16">
@@ -65,7 +88,7 @@ export default async function DailyPage({ params }: { params: Promise<{ locale: 
           {t('label')}
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
-          {card.name}
+          {cardName}
         </h1>
         <p className="text-gray-500 text-sm">{today}</p>
       </div>
@@ -75,7 +98,7 @@ export default async function DailyPage({ params }: { params: Promise<{ locale: 
         <div className="relative w-48 sm:w-56 aspect-[224/384] rounded-xl overflow-hidden border border-white/10 shadow-2xl shadow-amber-900/20">
           <Image
             src={card.image}
-            alt={card.name}
+            alt={cardName}
             fill
             sizes="(min-width: 640px) 224px, 192px"
             className="object-cover"
@@ -86,7 +109,7 @@ export default async function DailyPage({ params }: { params: Promise<{ locale: 
 
       {/* Keywords */}
       <div className="flex flex-wrap justify-center gap-2 mb-8">
-        {card.keywords.map((kw) => (
+        {cardKeywords.map((kw) => (
           <span
             key={kw}
             className="text-xs px-3 py-1.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20"
@@ -133,7 +156,7 @@ export default async function DailyPage({ params }: { params: Promise<{ locale: 
           href={`/tarot-card-meanings/${card.name.toLowerCase().replace(/\s+/g, '-')}`}
           className="text-sm text-gray-500 hover:text-amber-400 transition-colors"
         >
-          {tc('learnMore')} {card.name} &rarr;
+          {tc('learnMore')} {cardName} &rarr;
         </Link>
       </div>
     </div>
