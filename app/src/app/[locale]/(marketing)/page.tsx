@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import PricingTable from '@/components/billing/PricingTable';
 
 /* ─── Fanned card data: iconic Major Arcana picks ─── */
@@ -115,6 +116,7 @@ function RevealSection({ children, className = '', id }: { children: React.React
 
 /* ─── Main Landing Page ─── */
 export default function LandingPage() {
+  const t = useTranslations('landing');
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const heroRef = useRef(null);
@@ -171,9 +173,9 @@ export default function LandingPage() {
             transition={{ duration: 1, delay: 0.2, ease: 'easeOut' }}
             className="font-display text-4xl sm:text-5xl md:text-7xl font-semibold text-white leading-[1.1] mt-4 mb-4 text-balance"
           >
-            Reveal What the
+            {t('heroLine1')}
             <br />
-            <span className="text-shimmer">Cards Hold for You</span>
+            <span className="text-shimmer">{t('heroLine2')}</span>
           </motion.h1>
 
           <motion.p
@@ -182,8 +184,7 @@ export default function LandingPage() {
             transition={{ duration: 1, delay: 0.5 }}
             className="font-body text-lg md:text-xl font-medium text-stone-300 max-w-xl mx-auto mb-10 leading-relaxed"
           >
-            Not generic meanings — a narrative woven from your entire spread.
-            AI-powered readings with true conversational depth.
+            {t('heroDesc')}
           </motion.p>
 
           {/* CTA */}
@@ -197,14 +198,14 @@ export default function LandingPage() {
               href="/reading/free"
               className="group relative px-10 py-3.5 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-base tracking-wide rounded-sm overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,160,67,0.3)]"
             >
-              <span className="relative z-10">Get a Free Reading</span>
+              <span className="relative z-10">{t('ctaPrimary')}</span>
               <div className="absolute inset-0 bg-gradient-to-b from-gold-300 to-gold-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Link>
             <a
               href="#features"
               className="px-10 py-3.5 border border-gold-400/20 text-gold-400/80 font-display text-base tracking-wide rounded-sm hover:border-gold-400/40 hover:text-gold-400 transition-all duration-300"
             >
-              Discover More
+              {t('ctaSecondary')}
             </a>
           </motion.div>
 
@@ -265,7 +266,7 @@ export default function LandingPage() {
             transition={{ delay: 1.5, duration: 1 }}
             className="text-[11px] tracking-[0.2em] text-gold-400/25 font-display mt-6 uppercase"
           >
-            The High Priestess &middot; Wheel of Fortune &middot; The Star &middot; The Moon &middot; The Sun
+            {t('cardNamesWhisper')}
           </motion.p>
         </motion.div>
 
@@ -291,10 +292,10 @@ export default function LandingPage() {
         <hr className="section-divider mb-20" />
         <div className="max-w-4xl mx-auto">
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-white text-center mb-2">
-            Free Reading
+            {t('freeReadingTitle')}
           </h2>
           <p className="font-body text-base font-medium text-stone-400 text-center mb-4">
-            Choose a topic for a personalized reading, or start a general one
+            {t('freeReadingDesc')}
           </p>
           <Ornament />
 
@@ -302,26 +303,26 @@ export default function LandingPage() {
             {[
               {
                 href: '/reading/free',
-                title: 'General',
-                desc: 'Open-ended three-card reading',
+                title: t('topicGeneral'),
+                desc: t('topicGeneralDesc'),
                 symbol: '\u2728',
               },
               {
                 href: '/reading/free?topic=love',
-                title: 'Love',
-                desc: 'Romantic connections & clarity',
+                title: t('topicLove'),
+                desc: t('topicLoveDesc'),
                 symbol: '\u2661',
               },
               {
                 href: '/reading/free?topic=career',
-                title: 'Career',
-                desc: 'Professional path & growth',
+                title: t('topicCareer'),
+                desc: t('topicCareerDesc'),
                 symbol: '\u2606',
               },
               {
                 href: '/reading/free?topic=yes-or-no',
-                title: 'Yes or No',
-                desc: 'A direct answer to your question',
+                title: t('topicYesOrNo'),
+                desc: t('topicYesOrNoDesc'),
                 symbol: '\u29D6',
               },
             ].map((topic, idx) => (
@@ -358,25 +359,25 @@ export default function LandingPage() {
         <hr className="section-divider mb-20" />
         <div className="max-w-4xl mx-auto">
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-white text-center mb-2">
-            How It Works
+            {t('howItWorks')}
           </h2>
           <Ornament />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-16">
             {[
               {
                 step: 'I',
-                title: 'Choose Your Spread',
-                desc: 'Single card for quick insight, three-card for past-present-future, or Celtic Cross for deep exploration.',
+                title: t('step1Title'),
+                desc: t('step1Desc'),
               },
               {
                 step: 'II',
-                title: 'Draw Your Cards',
-                desc: 'Cards are shuffled using cryptographic randomness — verifiable, fair, and truly random.',
+                title: t('step2Title'),
+                desc: t('step2Desc'),
               },
               {
                 step: 'III',
-                title: 'Receive Your Story',
-                desc: 'AI reads all cards together as one narrative. Ask follow-up questions to go deeper.',
+                title: t('step3Title'),
+                desc: t('step3Desc'),
               },
             ].map((item, idx) => (
               <motion.div
@@ -407,33 +408,33 @@ export default function LandingPage() {
         <hr className="section-divider mb-20" />
         <div className="max-w-4xl mx-auto">
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-white text-center mb-2">
-            What Sets Us Apart
+            {t('featuresTitle')}
           </h2>
           <p className="font-body text-base font-medium text-stone-400 text-center mb-4 max-w-xl mx-auto">
-            We studied 25+ tarot platforms. Users want depth, narrative, and genuine conversation.
+            {t('featuresSubtitle')}
           </p>
           <Ornament />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-14">
             {[
               {
-                title: 'Narrative Interpretation',
-                desc: 'AI reads all cards together, building a cohesive story arc — not isolated per-card templates.',
+                title: t('feature1Title'),
+                desc: t('feature1Desc'),
                 symbol: '\u2727',
               },
               {
-                title: 'Conversational Follow-up',
-                desc: 'Up to 10 follow-up questions per reading. Go deeper, explore specific cards, ask for clarity.',
+                title: t('feature2Title'),
+                desc: t('feature2Desc'),
                 symbol: '\u2726',
               },
               {
-                title: 'Crypto-Random Cards',
-                desc: 'Fisher-Yates shuffle with cryptographic randomness. Transparent, verifiable, trustworthy.',
+                title: t('feature3Title'),
+                desc: t('feature3Desc'),
                 symbol: '\u2736',
               },
               {
-                title: 'Context-Aware Readings',
-                desc: 'Interpretations reference your real situation. Readings feel alive and specific, never generic.',
+                title: t('feature4Title'),
+                desc: t('feature4Desc'),
                 symbol: '\u2735',
               },
             ].map((feature, idx) => (
@@ -464,10 +465,10 @@ export default function LandingPage() {
         <hr className="section-divider mb-20" />
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-2">
-            78 Cards, Infinite Stories
+            {t('showcaseTitle')}
           </h2>
           <p className="font-body text-base font-medium text-stone-400 mb-4">
-            Every reading draws from the complete Rider-Waite-Smith deck
+            {t('showcaseDesc')}
           </p>
           <Ornament />
 
@@ -507,7 +508,7 @@ export default function LandingPage() {
             href="/tarot-card-meanings"
             className="inline-block mt-10 px-8 py-3 border border-gold-400/20 text-gold-400/80 font-display text-base tracking-wide rounded-sm hover:border-gold-400/40 hover:text-gold-400 transition-all duration-300"
           >
-            Explore All 78 Card Meanings
+            {t('showcaseCta')}
           </Link>
         </div>
       </RevealSection>
@@ -517,10 +518,10 @@ export default function LandingPage() {
         <hr className="section-divider mb-20" />
         <div className="max-w-5xl mx-auto">
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-white text-center mb-2">
-            Choose Your Path
+            {t('pricingTitle')}
           </h2>
           <p className="font-body text-base font-medium text-stone-400 text-center mb-4">
-            Start free. Ascend when you seek deeper wisdom.
+            {t('pricingDesc')}
           </p>
           <Ornament />
           <div className="mt-14">
@@ -536,31 +537,16 @@ export default function LandingPage() {
         <hr className="section-divider mb-20" />
         <div className="max-w-3xl mx-auto">
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-white text-center mb-2">
-            Common Questions
+            {t('faqTitle')}
           </h2>
           <Ornament />
           <div className="mt-14 space-y-6">
             {[
-              {
-                q: 'How does AI tarot reading work?',
-                a: 'TarotVeil uses cryptographically random card draws combined with advanced AI to read all your cards together as one cohesive narrative — not isolated per-card templates. The AI considers every card, its position, and your question to weave a personalized story.',
-              },
-              {
-                q: 'Are the tarot cards truly random?',
-                a: 'Yes. We use the Web Crypto API with a Fisher-Yates shuffle algorithm, providing cryptographic-grade randomness that is verifiable, fair, and truly random — the same standard used in security applications.',
-              },
-              {
-                q: 'Can I ask follow-up questions about my reading?',
-                a: 'Yes. Pro users get 5 follow-up questions per reading, and Premium users get 10. The AI maintains full context of your spread, cards, and narrative for deeper exploration.',
-              },
-              {
-                q: 'What languages does TarotVeil support?',
-                a: 'TarotVeil currently supports English and Farsi, with Arabic coming soon. Our readings are culturally native — not just translated — offering depth that resonates with each language\'s traditions.',
-              },
-              {
-                q: 'Is there a free plan?',
-                a: 'Yes! You can try a free three-card reading right now — no signup required. Create a free account to save readings, ask follow-up questions, and access your reading history. No credit card required.',
-              },
+              { q: t('faqQ1'), a: t('faqA1') },
+              { q: t('faqQ2'), a: t('faqA2') },
+              { q: t('faqQ3'), a: t('faqA3') },
+              { q: t('faqQ4'), a: t('faqA4') },
+              { q: t('faqQ5'), a: t('faqA5') },
             ].map((faq, idx) => (
               <motion.details
                 key={idx}
@@ -598,16 +584,16 @@ export default function LandingPage() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-gold-400/[0.03] blur-[60px] pointer-events-none" />
 
             <h2 className="relative font-display text-2xl md:text-3xl font-semibold text-white mb-3">
-              Join the Inner Circle
+              {t('waitlistTitle')}
             </h2>
             <p className="relative font-body text-base font-medium text-stone-300 mb-8">
-              Be first to know when new features arrive. Early access and special offerings await.
+              {t('waitlistDesc')}
             </p>
 
             {submitted ? (
               <div className="relative p-4 rounded-sm border border-gold-400/20 bg-gold-400/[0.05]">
                 <p className="font-body text-gold-400 text-base">
-                  The cards have noted your presence. We&apos;ll be in touch.
+                  {t('waitlistConfirm')}
                 </p>
               </div>
             ) : (
@@ -616,7 +602,7 @@ export default function LandingPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
+                  placeholder={t('waitlistPlaceholder')}
                   required
                   className="flex-1 bg-white/[0.03] border border-gold-400/15 rounded-sm px-4 py-3 text-white font-body placeholder-stone-600 focus:outline-none focus:border-gold-400/40 transition-colors duration-300"
                 />
@@ -624,7 +610,7 @@ export default function LandingPage() {
                   type="submit"
                   className="px-7 py-3 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-sm tracking-wide rounded-sm hover:shadow-[0_0_20px_rgba(212,160,67,0.2)] transition-all duration-300"
                 >
-                  Join
+                  {t('join')}
                 </button>
               </form>
             )}
@@ -638,7 +624,7 @@ export default function LandingPage() {
           TarotVeil
         </p>
         <p className="font-body text-sm font-medium text-stone-400 mt-2">
-          Where the cards speak and the stories unfold
+          {t('footerTagline')}
         </p>
       </footer>
     </div>
