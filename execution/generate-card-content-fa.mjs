@@ -159,7 +159,7 @@ ${comboList}
 
   const response = await anthropic.messages.create({
     model: 'claude-haiku-4-5-20251001',
-    max_tokens: 6000,
+    max_tokens: 8000,
     system: SYSTEM_PROMPT,
     messages: [{ role: 'user', content: prompt }],
   });
@@ -223,22 +223,21 @@ async function main() {
   console.log(dryRun ? '=== DRY RUN ===' : '=== GENERATING FARSI CONTENT ===');
   console.log(`Processing ${cards.length} card(s)\n`);
 
+  const CONCURRENCY = 3;
   let processed = 0;
 
-  for (const cardRow of cards) {
+  async function processCard(cardRow, index) {
     const slug = cardRow.slug;
-    console.log(`[${processed + 1}/${cards.length}] ${cardRow.name} (${getFarsiName(slug, cardRow.name)})...`);
+    console.log(`[${index + 1}/${cards.length}] ${cardRow.name} (${getFarsiName(slug, cardRow.name)})...`);
 
     if (dryRun) {
       console.log(`  Would generate all Farsi content fields`);
-      processed++;
-      continue;
+      return true;
     }
 
     try {
       const data = await generateFarsiContent(anthropic, cardRow);
 
-      // Log word count
       const wordCount = [
         data.upright_meaning_fa, data.reversed_meaning_fa, data.love_relationships_fa,
         data.career_finances_fa, data.as_feelings_fa || '', data.how_someone_sees_you_fa || '',
@@ -246,7 +245,6 @@ async function main() {
       ].join(' ').split(/\s+/).length;
       console.log(`  → ${wordCount} words, ${data.faq_fa.length} FAQs, ${data.combinations_fa.length} combos`);
 
-      // Non-destructive UPDATE — only touches _fa columns
       await db.execute({
         sql: `UPDATE card_content SET
           name_fa = ?, upright_keywords_fa = ?, reversed_keywords_fa = ?,
@@ -278,10 +276,20 @@ async function main() {
         ],
       });
 
-      processed++;
+      return true;
     } catch (err) {
       console.error(`  Error: ${err.message}`);
+      return false;
     }
+  }
+
+  // Process in batches of CONCURRENCY
+  for (let i = 0; i < cards.length; i += CONCURRENCY) {
+    const batch = cards.slice(i, i + CONCURRENCY);
+    const results = await Promise.all(
+      batch.map((card, j) => processCard(card, i + j))
+    );
+    processed += results.filter(Boolean).length;
   }
 
   console.log(`\nDone! Generated Farsi content for ${processed} card(s).`);
