@@ -36,11 +36,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 const loveCards = [
   { name: 'The Lovers', slug: 'the-lovers', image: '/cards/major/m06.jpg' },
-  { name: 'Two of Cups', slug: 'two-of-cups', image: '/cards/minor/cups/c02.jpg' },
+  { name: 'Two of Cups', slug: 'two-of-cups', image: '/cards/minor/c02.jpg' },
   { name: 'The Empress', slug: 'the-empress', image: '/cards/major/m03.jpg' },
-  { name: 'Ace of Cups', slug: 'ace-of-cups', image: '/cards/minor/cups/c01.jpg' },
-  { name: 'Ten of Cups', slug: 'ten-of-cups', image: '/cards/minor/cups/c10.jpg' },
-  { name: 'Knight of Cups', slug: 'knight-of-cups', image: '/cards/minor/cups/c12.jpg' },
+  { name: 'Ace of Cups', slug: 'ace-of-cups', image: '/cards/minor/c01.jpg' },
+  { name: 'Ten of Cups', slug: 'ten-of-cups', image: '/cards/minor/c10.jpg' },
+  { name: 'Knight of Cups', slug: 'knight-of-cups', image: '/cards/minor/c12.jpg' },
 ];
 
 export default async function LoveTarotPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -283,9 +283,9 @@ export default async function LoveTarotPage({ params }: { params: Promise<{ loca
             </p>
             <div className="flex gap-4 mb-4">
               {[
-                { name: 'Two of Cups', image: '/cards/minor/cups/c02.jpg' },
+                { name: 'Two of Cups', image: '/cards/minor/c02.jpg' },
                 { name: 'The Moon', image: '/cards/major/m18.jpg' },
-                { name: 'Ten of Pentacles', image: '/cards/minor/pentacles/p10.jpg' },
+                { name: 'Ten of Pentacles', image: '/cards/minor/p10.jpg' },
               ].map((card) => (
                 <div key={card.name} className="text-center">
                   <div className="relative w-[55px] h-[90px] rounded overflow-hidden mx-auto mb-1">

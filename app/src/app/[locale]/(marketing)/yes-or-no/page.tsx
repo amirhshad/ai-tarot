@@ -36,14 +36,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 const yesCards = [
   { name: 'The Sun', slug: 'the-sun', image: '/cards/major/m19.jpg' },
   { name: 'The World', slug: 'the-world', image: '/cards/major/m21.jpg' },
-  { name: 'Ace of Cups', slug: 'ace-of-cups', image: '/cards/minor/cups/c01.jpg' },
+  { name: 'Ace of Cups', slug: 'ace-of-cups', image: '/cards/minor/c01.jpg' },
   { name: 'The Star', slug: 'the-star', image: '/cards/major/m17.jpg' },
 ];
 
 const noCards = [
   { name: 'The Tower', slug: 'the-tower', image: '/cards/major/m16.jpg' },
-  { name: 'Five of Cups', slug: 'five-of-cups', image: '/cards/minor/cups/c05.jpg' },
-  { name: 'Ten of Swords', slug: 'ten-of-swords', image: '/cards/minor/swords/s10.jpg' },
+  { name: 'Five of Cups', slug: 'five-of-cups', image: '/cards/minor/c05.jpg' },
+  { name: 'Ten of Swords', slug: 'ten-of-swords', image: '/cards/minor/s10.jpg' },
   { name: 'The Devil', slug: 'the-devil', image: '/cards/major/m15.jpg' },
 ];
 

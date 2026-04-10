@@ -36,10 +36,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 const careerCards = [
   { name: 'The Emperor', slug: 'the-emperor', image: '/cards/major/m04.jpg' },
   { name: 'The Chariot', slug: 'the-chariot', image: '/cards/major/m07.jpg' },
-  { name: 'Ace of Pentacles', slug: 'ace-of-pentacles', image: '/cards/minor/pentacles/p01.jpg' },
-  { name: 'Three of Pentacles', slug: 'three-of-pentacles', image: '/cards/minor/pentacles/p03.jpg' },
-  { name: 'Eight of Pentacles', slug: 'eight-of-pentacles', image: '/cards/minor/pentacles/p08.jpg' },
-  { name: 'King of Wands', slug: 'king-of-wands', image: '/cards/minor/wands/w14.jpg' },
+  { name: 'Ace of Pentacles', slug: 'ace-of-pentacles', image: '/cards/minor/p01.jpg' },
+  { name: 'Three of Pentacles', slug: 'three-of-pentacles', image: '/cards/minor/p03.jpg' },
+  { name: 'Eight of Pentacles', slug: 'eight-of-pentacles', image: '/cards/minor/p08.jpg' },
+  { name: 'King of Wands', slug: 'king-of-wands', image: '/cards/minor/w14.jpg' },
 ];
 
 export default async function CareerTarotPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -279,9 +279,9 @@ export default async function CareerTarotPage({ params }: { params: Promise<{ lo
             </p>
             <div className="flex gap-4 mb-4">
               {[
-                { name: 'Eight of Pentacles', image: '/cards/minor/pentacles/p08.jpg' },
+                { name: 'Eight of Pentacles', image: '/cards/minor/p08.jpg' },
                 { name: 'The Hanged Man', image: '/cards/major/m12.jpg' },
-                { name: 'Ace of Wands', image: '/cards/minor/wands/w01.jpg' },
+                { name: 'Ace of Wands', image: '/cards/minor/w01.jpg' },
               ].map((card) => (
                 <div key={card.name} className="text-center">
                   <div className="relative w-[55px] h-[90px] rounded overflow-hidden mx-auto mb-1">

@@ -92,11 +92,11 @@ export default async function HorseshoeSpreadPage({ params }: { params: Promise<
   };
 
   const positions = [
-    { name: t('pos1Name'), card: 'Six of Swords', cardSlug: 'six-of-swords', cardImage: '/cards/minor/swords/s06.jpg', meaning: t('pos1Meaning'), sample: t('pos1Sample') },
-    { name: t('pos2Name'), card: 'Two of Wands', cardSlug: 'two-of-wands', cardImage: '/cards/minor/wands/w02.jpg', meaning: t('pos2Meaning'), sample: t('pos2Sample') },
+    { name: t('pos1Name'), card: 'Six of Swords', cardSlug: 'six-of-swords', cardImage: '/cards/minor/s06.jpg', meaning: t('pos1Meaning'), sample: t('pos1Sample') },
+    { name: t('pos2Name'), card: 'Two of Wands', cardSlug: 'two-of-wands', cardImage: '/cards/minor/w02.jpg', meaning: t('pos2Meaning'), sample: t('pos2Sample') },
     { name: t('pos3Name'), card: 'The Moon', cardSlug: 'the-moon', cardImage: '/cards/major/m18.jpg', meaning: t('pos3Meaning'), sample: t('pos3Sample') },
-    { name: t('pos4Name'), card: 'Knight of Pentacles', cardSlug: 'knight-of-pentacles', cardImage: '/cards/minor/pentacles/p12.jpg', meaning: t('pos4Meaning'), sample: t('pos4Sample') },
-    { name: t('pos5Name'), card: 'Five of Cups', cardSlug: 'five-of-cups', cardImage: '/cards/minor/cups/c05.jpg', meaning: t('pos5Meaning'), sample: t('pos5Sample') },
+    { name: t('pos4Name'), card: 'Knight of Pentacles', cardSlug: 'knight-of-pentacles', cardImage: '/cards/minor/p12.jpg', meaning: t('pos4Meaning'), sample: t('pos4Sample') },
+    { name: t('pos5Name'), card: 'Five of Cups', cardSlug: 'five-of-cups', cardImage: '/cards/minor/c05.jpg', meaning: t('pos5Meaning'), sample: t('pos5Sample') },
     { name: t('pos6Name'), card: 'The Emperor', cardSlug: 'the-emperor', cardImage: '/cards/major/m04.jpg', meaning: t('pos6Meaning'), sample: t('pos6Sample') },
     { name: t('pos7Name'), card: 'The Chariot', cardSlug: 'the-chariot', cardImage: '/cards/major/m07.jpg', meaning: t('pos7Meaning'), sample: t('pos7Sample') },
   ];

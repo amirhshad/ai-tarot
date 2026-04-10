@@ -98,14 +98,14 @@ export default async function CelticCrossSpreadPage({ params }: { params: Promis
 
   const positions = [
     { num: 1, name: t('pos1Name'), desc: t('pos1Desc'), card: 'The Empress', cardSlug: 'the-empress', image: '/cards/major/m03.jpg' },
-    { num: 2, name: t('pos2Name'), desc: t('pos2Desc'), card: 'Five of Wands', cardSlug: 'five-of-wands', image: '/cards/minor/wands/w05.jpg' },
+    { num: 2, name: t('pos2Name'), desc: t('pos2Desc'), card: 'Five of Wands', cardSlug: 'five-of-wands', image: '/cards/minor/w05.jpg' },
     { num: 3, name: t('pos3Name'), desc: t('pos3Desc'), card: 'The High Priestess', cardSlug: 'the-high-priestess', image: '/cards/major/m02.jpg' },
-    { num: 4, name: t('pos4Name'), desc: t('pos4Desc'), card: 'Six of Swords', cardSlug: 'six-of-swords', image: '/cards/minor/swords/s06.jpg' },
+    { num: 4, name: t('pos4Name'), desc: t('pos4Desc'), card: 'Six of Swords', cardSlug: 'six-of-swords', image: '/cards/minor/s06.jpg' },
     { num: 5, name: t('pos5Name'), desc: t('pos5Desc'), card: 'The Sun', cardSlug: 'the-sun', image: '/cards/major/m19.jpg' },
-    { num: 6, name: t('pos6Name'), desc: t('pos6Desc'), card: 'Page of Pentacles', cardSlug: 'page-of-pentacles', image: '/cards/minor/pentacles/p11.jpg' },
-    { num: 7, name: t('pos7Name'), desc: t('pos7Desc'), card: 'Knight of Cups', cardSlug: 'knight-of-cups', image: '/cards/minor/cups/c12.jpg' },
-    { num: 8, name: t('pos8Name'), desc: t('pos8Desc'), card: 'Three of Pentacles', cardSlug: 'three-of-pentacles', image: '/cards/minor/pentacles/p03.jpg' },
-    { num: 9, name: t('pos9Name'), desc: t('pos9Desc'), card: 'Nine of Cups', cardSlug: 'nine-of-cups', image: '/cards/minor/cups/c09.jpg' },
+    { num: 6, name: t('pos6Name'), desc: t('pos6Desc'), card: 'Page of Pentacles', cardSlug: 'page-of-pentacles', image: '/cards/minor/p11.jpg' },
+    { num: 7, name: t('pos7Name'), desc: t('pos7Desc'), card: 'Knight of Cups', cardSlug: 'knight-of-cups', image: '/cards/minor/c12.jpg' },
+    { num: 8, name: t('pos8Name'), desc: t('pos8Desc'), card: 'Three of Pentacles', cardSlug: 'three-of-pentacles', image: '/cards/minor/p03.jpg' },
+    { num: 9, name: t('pos9Name'), desc: t('pos9Desc'), card: 'Nine of Cups', cardSlug: 'nine-of-cups', image: '/cards/minor/c09.jpg' },
     { num: 10, name: t('pos10Name'), desc: t('pos10Desc'), card: 'The World', cardSlug: 'the-world', image: '/cards/major/m21.jpg' },
   ];
 
