@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { buildAlternates } from '@/lib/seo/alternates';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -9,9 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t('privacyTitle'),
     description: 'TarotVeil privacy policy. Learn how we handle your data, readings, and personal information.',
-    alternates: {
-      canonical: 'https://www.tarotveil.com/privacy',
-    },
+    alternates: buildAlternates('/privacy'),
   };
 }
 

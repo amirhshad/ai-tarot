@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { buildAlternates } from '@/lib/seo/alternates';
 
 const siteUrl = 'https://www.tarotveil.com';
 
@@ -13,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: `${t('pageTitle')} — AI-Powered Narrative Tarot`,
     description:
       'TarotVeil uses AI to weave tarot card readings into cohesive narrative stories. Crypto-random draws, multi-language support, and conversational depth.',
-    alternates: { canonical: `${siteUrl}/about` },
+    alternates: buildAlternates('/about'),
     openGraph: {
       title: t('pageTitle'),
       description:

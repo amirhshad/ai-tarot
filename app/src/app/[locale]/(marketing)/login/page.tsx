@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import LoginForm from '@/components/auth/LoginForm';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { buildAlternates } from '@/lib/seo/alternates';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -9,6 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   return {
     title: t('loginTitle'),
+    alternates: buildAlternates('/login'),
   };
 }
 

@@ -7,6 +7,7 @@ import { DECK } from '@/lib/tarot/deck';
 import { cardToSlug } from '@/lib/tarot/slugs';
 import { buildCardJsonLd } from '@/lib/seo/json-ld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { buildAlternates } from '@/lib/seo/alternates';
 import cardContentJson from '@/data/card-content.json';
 
 const siteUrl = 'https://www.tarotveil.com';
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return {
       title: card.metaTitle,
       description: card.metaDescription,
-      alternates: { canonical: `${siteUrl}/tarot-card-meanings/${card.slug}` },
+      alternates: buildAlternates(`/tarot-card-meanings/${card.slug}`),
       openGraph: {
         title: card.metaTitle,
         description: card.metaDescription,
@@ -65,7 +66,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title,
     description,
-    alternates: { canonical: `${siteUrl}/tarot-card-meanings/${fb.slug}` },
+    alternates: buildAlternates(`/tarot-card-meanings/${fb.slug}`),
     openGraph: { title, description, url: `${siteUrl}/tarot-card-meanings/${fb.slug}`, type: 'article' },
   };
 }

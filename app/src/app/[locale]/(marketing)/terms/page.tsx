@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { buildAlternates } from '@/lib/seo/alternates';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -9,9 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t('termsTitle'),
     description: 'TarotVeil terms of service. Usage terms for our AI-powered tarot reading platform.',
-    alternates: {
-      canonical: 'https://www.tarotveil.com/terms',
-    },
+    alternates: buildAlternates('/terms'),
   };
 }
 

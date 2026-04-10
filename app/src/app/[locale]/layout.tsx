@@ -80,61 +80,66 @@ export const metadata: Metadata = {
   category: 'entertainment',
 };
 
-// JSON-LD structured data
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'WebSite',
-      '@id': `${siteUrl}/#website`,
-      url: siteUrl,
-      name: 'TarotVeil',
-      description: 'AI-powered narrative tarot readings with conversational depth.',
-      publisher: { '@id': `${siteUrl}/#organization` },
-      inLanguage: ['en', 'fa'],
-    },
-    {
-      '@type': 'Organization',
-      '@id': `${siteUrl}/#organization`,
-      name: 'TarotVeil',
-      url: siteUrl,
-      description:
-        'TarotVeil offers AI-powered tarot readings that weave all your cards into one cohesive narrative story.',
-    },
-    {
-      '@type': 'SoftwareApplication',
-      name: 'TarotVeil',
-      applicationCategory: 'LifestyleApplication',
-      operatingSystem: 'Web',
-      url: siteUrl,
-      description:
-        'AI-powered tarot reading platform with narrative interpretations, crypto-random card draws, and conversational follow-ups.',
-      offers: [
-        {
-          '@type': 'Offer',
-          price: '0',
-          priceCurrency: 'USD',
-          name: 'Free',
-          description: 'Single and three-card readings with AI interpretation',
-        },
-        {
-          '@type': 'Offer',
-          price: '7.99',
-          priceCurrency: 'USD',
-          name: 'Pro',
-          description: 'Unlimited readings, deep narrative interpretation, 5 follow-up questions',
-        },
-        {
-          '@type': 'Offer',
-          price: '14.99',
-          priceCurrency: 'USD',
-          name: 'Premium',
-          description: 'Everything in Pro plus custom spreads, 10 follow-ups, and trend analysis',
-        },
-      ],
-    },
-  ],
-};
+/** JSON-LD structured data — locale-aware */
+function buildJsonLd(locale: string) {
+  const pageUrl = locale === 'fa' ? `${siteUrl}/fa` : siteUrl;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': `${siteUrl}/#website`,
+        url: pageUrl,
+        name: 'TarotVeil',
+        description: locale === 'fa'
+          ? 'خوانش‌های روایی تاروت مبتنی بر هوش مصنوعی با عمق مکالمه‌ای.'
+          : 'AI-powered narrative tarot readings with conversational depth.',
+        publisher: { '@id': `${siteUrl}/#organization` },
+        inLanguage: locale,
+      },
+      {
+        '@type': 'Organization',
+        '@id': `${siteUrl}/#organization`,
+        name: 'TarotVeil',
+        url: siteUrl,
+        description:
+          'TarotVeil offers AI-powered tarot readings that weave all your cards into one cohesive narrative story.',
+      },
+      {
+        '@type': 'SoftwareApplication',
+        name: 'TarotVeil',
+        applicationCategory: 'LifestyleApplication',
+        operatingSystem: 'Web',
+        url: siteUrl,
+        description:
+          'AI-powered tarot reading platform with narrative interpretations, crypto-random card draws, and conversational follow-ups.',
+        offers: [
+          {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD',
+            name: 'Free',
+            description: 'Single and three-card readings with AI interpretation',
+          },
+          {
+            '@type': 'Offer',
+            price: '7.99',
+            priceCurrency: 'USD',
+            name: 'Pro',
+            description: 'Unlimited readings, deep narrative interpretation, 5 follow-up questions',
+          },
+          {
+            '@type': 'Offer',
+            price: '14.99',
+            priceCurrency: 'USD',
+            name: 'Premium',
+            description: 'Everything in Pro plus custom spreads, 10 follow-ups, and trend analysis',
+          },
+        ],
+      },
+    ],
+  };
+}
 
 export default async function LocaleLayout({
   children,
@@ -160,7 +165,7 @@ export default async function LocaleLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(locale)) }}
         />
       </head>
       <body className={`${fontClasses} antialiased min-h-screen flex flex-col`}>

@@ -5,8 +5,15 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: ['/', '/reading/free'],
-        disallow: ['/api/', '/auth/', '/dashboard', '/reading/new', '/settings', '/billing'],
+        allow: ['/', '/fa/', '/reading/free', '/fa/reading/free'],
+        disallow: [
+          '/api/',
+          '/auth/',
+          '/dashboard', '/fa/dashboard',
+          '/reading/new', '/fa/reading/new',
+          '/settings', '/fa/settings',
+          '/billing', '/fa/billing',
+        ],
       },
     ],
     sitemap: 'https://www.tarotveil.com/sitemap.xml',

@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import FreeReadingClient from '@/components/reading/FreeReadingClient';
+import { buildAlternates } from '@/lib/seo/alternates';
 
 const siteUrl = 'https://www.tarotveil.com';
 
@@ -13,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: `${t('pageTitle')} | TarotVeil`,
     description: t('pageSubtitle'),
-    alternates: { canonical: `${siteUrl}/reading/free` },
+    alternates: buildAlternates('/reading/free'),
     openGraph: {
       title: `${t('pageTitle')} | TarotVeil`,
       description: t('pageSubtitle'),

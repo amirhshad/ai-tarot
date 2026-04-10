@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { getDailyCard, getTodayDateStr } from '@/lib/tarot/daily';
 import { generateCompletion } from '@/lib/ai/client';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { buildAlternates } from '@/lib/seo/alternates';
 
 export const revalidate = 86400; // ISR: regenerate once per day
 
@@ -30,6 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: `Daily Tarot Card — ${today} — ${card.name}`,
     description: `Today's tarot card is ${card.name}. Discover what this card means for your day with our free daily tarot reading. Keywords: ${card.keywords.slice(0, 3).join(', ')}.`,
+    alternates: buildAlternates('/daily'),
     openGraph: {
       title: `Daily Tarot: ${card.name} — ${today}`,
       description: `Today's card is ${card.name}. See what the tarot has in store for you today.`,
