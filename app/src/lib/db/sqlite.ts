@@ -99,6 +99,23 @@ export async function ensureSchema(): Promise<void> {
     `ALTER TABLE card_content ADD COLUMN as_feelings TEXT`,
     `ALTER TABLE card_content ADD COLUMN how_someone_sees_you TEXT`,
     `ALTER TABLE card_content ADD COLUMN advice TEXT`,
+    // Farsi content columns
+    `ALTER TABLE card_content ADD COLUMN name_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN upright_keywords_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN reversed_keywords_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN featured_snippet_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN upright_meaning_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN reversed_meaning_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN love_relationships_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN career_finances_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN as_feelings_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN how_someone_sees_you_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN advice_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN yes_or_no_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN combinations_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN faq_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN meta_title_fa TEXT`,
+    `ALTER TABLE card_content ADD COLUMN meta_description_fa TEXT`,
   ];
   for (const sql of migrations) {
     try { await db.execute(sql); } catch { /* column already exists */ }

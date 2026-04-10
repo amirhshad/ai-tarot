@@ -34,7 +34,7 @@ async function getAllCardSlugsFromDb() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }): Promise<Metadata> {
   const { slug, locale } = await params;
   setRequestLocale(locale);
-  const card = await getCardContent(slug);
+  const card = await getCardContent(slug, locale);
   if (card) {
     return {
       title: card.metaTitle,
@@ -93,7 +93,7 @@ export default async function CardMeaningPage({ params }: { params: Promise<{ sl
   const t = await getTranslations('cardDetail');
   const tc = await getTranslations('common');
 
-  const card = await getCardContent(slug);
+  const card = await getCardContent(slug, locale);
   const deckCard = DECK.find(c => cardToSlug(c) === slug);
 
   // If no DB content, render fallback from JSON
