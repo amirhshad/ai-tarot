@@ -150,12 +150,20 @@ export default function Header({ user }: HeaderProps) {
               <Link href="/spreads" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
                 {t('spreads')}
               </Link>
-              <Link href="/login" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
-                {tc('signIn')}
-              </Link>
-              <Link href="/signup" className="text-sm px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-lg transition-colors text-center" onClick={() => setMenuOpen(false)}>
-                {tc('getStarted')}
-              </Link>
+              <div className="flex items-center gap-3 pt-1">
+                <button
+                  onClick={toggleLanguage}
+                  className="text-xs px-2 py-1 rounded-full border border-white/15 text-gray-400 hover:border-amber-400/50 hover:text-amber-400 transition-colors"
+                >
+                  {locale === 'en' ? 'فارسی' : 'English'}
+                </button>
+                <Link href="/login" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
+                  {tc('signIn')}
+                </Link>
+                <Link href="/signup" className="text-sm px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-lg transition-colors text-center" onClick={() => setMenuOpen(false)}>
+                  {tc('getStarted')}
+                </Link>
+              </div>
             </>
           )}
         </nav>
