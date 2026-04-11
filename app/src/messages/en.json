@@ -304,6 +304,11 @@
     "upgradePro": "Upgrade to Pro",
     "upgradeDesc": "Unlimited readings, deeper interpretation, follow-up questions.",
     "recentReadings": "Recent Readings",
+    "viewAllHistory": "View All History →",
+    "upgradePremium": "Upgrade to Premium",
+    "goPremium": "Go Premium",
+    "premiumDesc": "10 follow-ups, custom spreads, trend analysis, English + Farsi + Arabic.",
+    "generalReading": "General reading",
     "noReadings": "No readings yet. Start your first one!"
   },
   "billing": {
