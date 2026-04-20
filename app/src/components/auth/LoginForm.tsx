@@ -3,6 +3,7 @@
 import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
+import { trackLogin, identifyUser } from '@/lib/analytics/events';
 
 async function claimAnonymousReading(fallback: string): Promise<string> {
   try {
@@ -83,6 +84,10 @@ function LoginForm() {
         setLoading(false);
         return;
       }
+
+      // Track login + identify user
+      if (data.user?.id) identifyUser(data.user.id, { email });
+      trackLogin('email');
 
       // Check for anonymous reading to claim
       const destination = await claimAnonymousReading(redirect);

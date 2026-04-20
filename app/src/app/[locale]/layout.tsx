@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
+import PostHogProvider from '@/components/analytics/PostHogProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -170,7 +171,9 @@ export default async function LocaleLayout({
       </head>
       <body className={`${fontClasses} antialiased min-h-screen flex flex-col`}>
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <PostHogProvider>
+            {children}
+          </PostHogProvider>
         </NextIntlClientProvider>
       </body>
     </html>

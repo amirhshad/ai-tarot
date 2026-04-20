@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
+import { trackSignup, identifyUser } from '@/lib/analytics/events';
 
 async function claimAnonymousReading(fallback: string): Promise<string> {
   try {
@@ -60,6 +61,10 @@ export default function SignUpForm() {
         setLoading(false);
         return;
       }
+
+      // Track signup + identify user
+      if (data.user?.id) identifyUser(data.user.id, { email, name });
+      trackSignup('email');
 
       // Auto-logged in via cookie — claim any anonymous reading, then redirect
       const destination = await claimAnonymousReading('/dashboard');

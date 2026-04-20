@@ -3,6 +3,7 @@
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { trackLanguageSwitch, resetUser } from '@/lib/analytics/events';
 
 interface HeaderProps {
   user?: { email: string; tier: string } | null;
@@ -21,6 +22,7 @@ export default function Header({ user }: HeaderProps) {
     setLoggingOut(true);
     try {
       await fetch('/api/auth/signout', { method: 'POST' });
+      resetUser();
       router.push('/login');
       router.refresh();
     } catch {
@@ -30,6 +32,7 @@ export default function Header({ user }: HeaderProps) {
 
   function toggleLanguage() {
     const newLocale = locale === 'en' ? 'fa' : 'en';
+    trackLanguageSwitch(locale, newLocale);
     router.replace(pathname, { locale: newLocale });
   }
 
