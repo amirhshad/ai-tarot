@@ -9,6 +9,7 @@ interface AnalyticsData {
     thisMonth: number;
     byTier: { tier: string; count: number }[];
     byLanguage: { language: string; count: number }[];
+    byAuth: { method: string; count: number }[];
   };
   readings: {
     total: number;
@@ -133,7 +134,7 @@ export default function AdminPage() {
               <StatCard label="This month" value={data.users.thisMonth} />
               <StatCard label="Waitlist" value={data.waitlist} />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
               <div className="p-4 rounded-xl bg-white/[0.04] border border-white/[0.08]">
                 <p className="text-xs text-gray-500 uppercase tracking-wider mb-3">By Tier</p>
                 <BreakdownList items={data.users.byTier} labelKey="tier" valueKey="count" />
@@ -141,6 +142,10 @@ export default function AdminPage() {
               <div className="p-4 rounded-xl bg-white/[0.04] border border-white/[0.08]">
                 <p className="text-xs text-gray-500 uppercase tracking-wider mb-3">By Language</p>
                 <BreakdownList items={data.users.byLanguage} labelKey="language" valueKey="count" />
+              </div>
+              <div className="p-4 rounded-xl bg-white/[0.04] border border-white/[0.08]">
+                <p className="text-xs text-gray-500 uppercase tracking-wider mb-3">By Auth Method</p>
+                <BreakdownList items={data.users.byAuth} labelKey="method" valueKey="count" />
               </div>
             </div>
           </section>

@@ -24,6 +24,7 @@ export async function GET() {
     usersThisMonth,
     usersByTier,
     usersByLang,
+    usersByAuth,
     readingsTotal,
     readingsThisWeek,
     readingsThisMonth,
@@ -46,6 +47,7 @@ export async function GET() {
     db.execute("SELECT COUNT(*) as c FROM profiles WHERE created_at > datetime('now', '-30 days')"),
     db.execute('SELECT tier, COUNT(*) as c FROM profiles GROUP BY tier ORDER BY c DESC'),
     db.execute('SELECT language, COUNT(*) as c FROM profiles GROUP BY language ORDER BY c DESC'),
+    db.execute("SELECT COALESCE(auth_provider, 'email') as method, COUNT(*) as c FROM profiles GROUP BY auth_provider ORDER BY c DESC"),
     db.execute('SELECT COUNT(*) as c FROM readings'),
     db.execute("SELECT COUNT(*) as c FROM readings WHERE created_at > datetime('now', '-7 days')"),
     db.execute("SELECT COUNT(*) as c FROM readings WHERE created_at > datetime('now', '-30 days')"),
@@ -79,6 +81,7 @@ export async function GET() {
       thisMonth: usersThisMonth.rows[0].c,
       byTier: usersByTier.rows.map(r => ({ tier: r.tier, count: r.c })),
       byLanguage: usersByLang.rows.map(r => ({ language: r.language, count: r.c })),
+      byAuth: usersByAuth.rows.map(r => ({ method: r.method, count: r.c })),
     },
     readings: {
       total: readingsTotal.rows[0].c,
