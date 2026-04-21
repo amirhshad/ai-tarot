@@ -314,12 +314,9 @@ export default async function CardMeaningPage({ params }: { params: Promise<{ sl
           <div className="space-y-3">
             {card.combinations.map(combo => (
               <div key={combo.slug} className="p-4 border border-gold-400/[0.06] rounded-sm">
-                <Link
-                  href={`/tarot-card-meanings/${combo.slug}`}
-                  className="font-display text-sm font-medium text-gold-400 hover:text-gold-300 transition-colors"
-                >
+                <p className="font-display text-sm font-medium text-gold-400">
                   {combo.name}
-                </Link>
+                </p>
                 <p className="font-body text-sm font-medium text-stone-400 mt-1">{combo.description}</p>
               </div>
             ))}
