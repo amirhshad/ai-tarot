@@ -8,6 +8,8 @@ import { cardToSlug } from '@/lib/tarot/slugs';
 import { buildCardJsonLd } from '@/lib/seo/json-ld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buildAlternates } from '@/lib/seo/alternates';
+import Disclaimer from '@/components/seo/Disclaimer';
+import { getPinglishVariants } from '@/lib/seo/pinglish';
 import cardContentJson from '@/data/card-content.json';
 
 const siteUrl = 'https://www.tarotveil.com';
@@ -107,7 +109,7 @@ export default async function CardMeaningPage({ params }: { params: Promise<{ sl
   if (!deckCard) notFound();
 
   const subHub = suitSubHub(card.arcana, card.suit);
-  const jsonLd = buildCardJsonLd(card, `${siteUrl}${deckCard.image}`);
+  const jsonLd = buildCardJsonLd(card, `${siteUrl}${deckCard.image}`, locale);
 
   return (
     <>
@@ -356,6 +358,7 @@ export default async function CardMeaningPage({ params }: { params: Promise<{ sl
           >
             {t('ctaButton')}
           </Link>
+          <Disclaimer />
         </section>
 
         {/* Related Cards */}
@@ -389,6 +392,13 @@ export default async function CardMeaningPage({ params }: { params: Promise<{ sl
               })}
             </div>
           </section>
+        )}
+
+        {/* Pinglish keywords for Farsi locale — helps diaspora search */}
+        {locale === 'fa' && (
+          <p className="text-xs text-stone-600 mt-12">
+            Also searched as: {getPinglishVariants(slug)}
+          </p>
         )}
       </div>
     </>
@@ -458,6 +468,7 @@ function FallbackCardPage({ card, deckCard, t, tc }: { card: FallbackCard; deckC
         <Link href="/reading/free" className="inline-block px-10 py-3.5 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-base tracking-wide rounded-sm hover:shadow-[0_0_30px_rgba(212,160,67,0.3)] transition-all">
           {t('ctaButton')}
         </Link>
+        <Disclaimer />
       </section>
     </div>
   );

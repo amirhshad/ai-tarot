@@ -14,7 +14,8 @@
     "home": "Home",
     "or": "or",
     "viewAll": "View all →",
-    "learnMore": "Learn more about"
+    "learnMore": "Learn more about",
+    "tarotDisclaimer": "Tarot readings are for entertainment and self-reflection only. Not a substitute for professional medical, financial, or psychological advice."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -99,6 +100,38 @@
     "ctaTitle": "Experience These Cards in a Reading",
     "ctaDescription": "Get a free AI tarot reading and see how these cards weave together into your unique story.",
     "ctaButton": "Get a Free Reading"
+  },
+  "subHubConfigs": {
+    "major-arcana": {
+      "title": "Major Arcana Tarot Meanings — All 22 Cards | TarotVeil",
+      "heading": "Major Arcana Tarot Card Meanings",
+      "description": "Explore all 22 Major Arcana tarot card meanings. Deep interpretations of The Fool through The World with upright, reversed, and love meanings.",
+      "intro": "The Major Arcana consists of 22 trump cards numbered 0 through 21, representing life's profound spiritual lessons and archetypal experiences. These cards carry the heaviest weight in a reading — when a Major Arcana card appears, it signals a significant life theme at play. From The Fool's leap of faith to The World's sense of completion, each card marks a milestone on the soul's journey through the human experience."
+    },
+    "suit-of-wands": {
+      "title": "Suit of Wands Tarot Meanings — All 14 Cards | TarotVeil",
+      "heading": "Suit of Wands Tarot Card Meanings",
+      "description": "Explore all 14 Wands tarot card meanings. Fire element cards covering creativity, passion, ambition, and willpower.",
+      "intro": "The Suit of Wands is the fire element of the tarot deck, governing creativity, passion, ambition, and spiritual energy. Wands cards often appear when you are pursuing goals, starting new ventures, or channeling your inner drive. They speak to your sense of purpose, your creative spark, and your willpower to bring ideas into reality. From the raw potential of the Ace to the accomplished leadership of the King, this suit traces the arc of inspiration becoming action."
+    },
+    "suit-of-cups": {
+      "title": "Suit of Cups Tarot Meanings — All 14 Cards | TarotVeil",
+      "heading": "Suit of Cups Tarot Card Meanings",
+      "description": "Explore all 14 Cups tarot card meanings. Water element cards covering emotions, relationships, intuition, and love.",
+      "intro": "The Suit of Cups represents the water element — emotions, relationships, intuition, and the inner world of feeling. These cards surface when matters of the heart are in focus: love, friendship, creative flow, and emotional healing. Cups reveal how you connect with others and with yourself on the deepest level. From the emotional awakening of the Ace to the diplomatic wisdom of the King, this suit maps the full spectrum of human feeling."
+    },
+    "suit-of-swords": {
+      "title": "Suit of Swords Tarot Meanings — All 14 Cards | TarotVeil",
+      "heading": "Suit of Swords Tarot Card Meanings",
+      "description": "Explore all 14 Swords tarot card meanings. Air element cards covering intellect, conflict, truth, and communication.",
+      "intro": "The Suit of Swords corresponds to the air element — thought, intellect, communication, and conflict. These cards appear when mental clarity, difficult decisions, or truth-seeking are at the forefront. Swords cut through illusion but can also wound. They challenge you to think clearly, communicate honestly, and face uncomfortable realities. From the breakthrough clarity of the Ace to the commanding authority of the King, this suit tracks the power and peril of the mind."
+    },
+    "suit-of-pentacles": {
+      "title": "Suit of Pentacles Tarot Meanings — All 14 Cards | TarotVeil",
+      "heading": "Suit of Pentacles Tarot Card Meanings",
+      "description": "Explore all 14 Pentacles tarot card meanings. Earth element cards covering wealth, career, health, and material stability.",
+      "intro": "The Suit of Pentacles represents the earth element — material wealth, career, physical health, and practical stability. These cards show up when your focus is on work, money, property, or building something tangible in the world. Pentacles ground your aspirations in reality and remind you that lasting success requires patience and steady effort. From the seed of opportunity in the Ace to the established security of the King, this suit maps your relationship with the material world."
+    }
   },
   "about": {
     "pageTitle": "About TarotVeil",

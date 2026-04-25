@@ -15,7 +15,7 @@ function suitToSubHub(arcana: string, suit: string | null): { name: string; slug
   return { name: suitMap[suit] || suit, slug: `suit-of-${suit}` };
 }
 
-export function buildCardJsonLd(card: RichCardContent, imageUrl: string) {
+export function buildCardJsonLd(card: RichCardContent, imageUrl: string, locale: string = 'en') {
   const pageUrl = `${SITE_URL}/tarot-card-meanings/${card.slug}`;
   const subHub = suitToSubHub(card.arcana, card.suit);
 
@@ -61,6 +61,7 @@ export function buildCardJsonLd(card: RichCardContent, imageUrl: string) {
           logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` },
         },
         mainEntityOfPage: pageUrl,
+        inLanguage: locale,
         datePublished: '2026-03-14',
         dateModified: '2026-03-14',
       },
@@ -87,6 +88,7 @@ export function buildHubJsonLd(
   title: string,
   url: string,
   breadcrumbs: { name: string; url: string }[],
+  locale: string = 'en',
 ) {
   return {
     '@context': 'https://schema.org',
@@ -95,6 +97,7 @@ export function buildHubJsonLd(
         '@type': 'CollectionPage',
         name: title,
         url,
+        inLanguage: locale,
         publisher: { '@type': 'Organization', name: BRAND, url: SITE_URL },
       },
       {

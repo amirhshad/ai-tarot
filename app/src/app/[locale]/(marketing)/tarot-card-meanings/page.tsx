@@ -108,6 +108,7 @@ export default async function TarotCardMeaningsHub({ params }: { params: Promise
       { name: tCommon('home'), url: siteUrl },
       { name: t('pageTitle'), url: `${siteUrl}/tarot-card-meanings` },
     ],
+    locale,
   );
 
   const faqItems = [

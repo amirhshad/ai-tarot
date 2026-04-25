@@ -57,16 +57,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   return {
     title: isFA
-      ? `کارت تاروت روز — ${today} — ${cardName}`
+      ? `فال تاروت روزانه — ${cardName} — ${today}`
       : `Daily Tarot Card — ${today} — ${card.name}`,
     description: isFA
-      ? `کارت تاروت امروز ${cardName} است. ببینید این کارت چه پیامی برای روز شما دارد.`
+      ? `فال تاروت روزانه: کارت امروز ${cardName} است. ببینید فال تاروت چه پیامی برای روز شما دارد.`
       : `Today's tarot card is ${card.name}. Discover what this card means for your day with our free daily tarot reading. Keywords: ${card.keywords.slice(0, 3).join(', ')}.`,
     alternates: buildAlternates('/daily'),
     openGraph: {
-      title: isFA ? `تاروت روز: ${cardName} — ${today}` : `Daily Tarot: ${card.name} — ${today}`,
+      title: isFA ? `فال تاروت روزانه: ${cardName} — ${today}` : `Daily Tarot: ${card.name} — ${today}`,
       description: isFA
-        ? `کارت امروز ${cardName} است. ببینید تاروت چه چیزی برای امروز شما دارد.`
+        ? `فال تاروت روزانه: کارت امروز ${cardName} است. ببینید تاروت چه پیامی برای شما دارد.`
         : `Today's card is ${card.name}. See what the tarot has in store for you today.`,
       type: 'article',
     },
