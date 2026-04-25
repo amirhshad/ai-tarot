@@ -10,6 +10,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buildAlternates } from '@/lib/seo/alternates';
 import Disclaimer from '@/components/seo/Disclaimer';
 import { getPinglishVariants } from '@/lib/seo/pinglish';
+import { getFarsiVariants } from '@/lib/tarot/farsi-names';
 import cardContentJson from '@/data/card-content.json';
 
 const siteUrl = 'https://www.tarotveil.com';
@@ -155,6 +156,11 @@ export default async function CardMeaningPage({ params }: { params: Promise<{ sl
             <h1 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
               {t('h2Meaning', { cardName: card.name })}
             </h1>
+            {locale === 'fa' && getFarsiVariants(slug).length > 0 && (
+              <p className="text-sm text-stone-500 -mt-2 mb-4">
+                {getFarsiVariants(slug).join(' · ')}
+              </p>
+            )}
             <p className="font-body text-lg font-medium text-stone-300 leading-relaxed mb-6">
               {card.featuredSnippet}
             </p>
