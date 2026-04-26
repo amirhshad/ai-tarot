@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { motion } from 'framer-motion';
 import { DrawnCard, SpreadType } from '@/lib/tarot/types';
 import Card from './Card';
@@ -85,32 +86,25 @@ export default function SpreadLayout({
   //   [3]  [0+1]  [5]              [8]
   //          [2]                    [7]
   //                                [6]
-  //
-  // Card = 140×240. We use scale(0.55) on mobile → 77×132
-  // and scale(0.7) on md+ → 98×168.
-  // Positions calculated from center of cross.
 
-  const cw = 98;   // card width at md scale
-  const ch = 168;  // card height at md scale
-  const gapX = 16; // horizontal gap between cards
-  const gapY = 16; // vertical gap between cards
-  const staffGap = 40; // gap between cross and staff
+  const cw = 90;   // card width
+  const ch = 154;  // card height
+  const gapX = 10;
+  const gapY = 10;
+  const staffGap = 30;
 
-  // Cross center point
-  const cx = cw * 1.5 + gapX; // center X of cross
-  const cy = ch * 1.5 + gapY; // center Y of cross
+  const cx = cw * 1.5 + gapX;
+  const cy = ch * 1.5 + gapY;
 
-  // Cross positions (center of each card)
   const crossPositions = [
-    { idx: 0, top: cy - ch / 2,              left: cx - cw / 2 },                          // Present (center)
-    { idx: 1, top: cy - ch / 2,              left: cx - cw / 2, crossing: true },           // Crossing (rotated)
-    { idx: 2, top: cy + ch / 2 + gapY,       left: cx - cw / 2 },                          // Foundation (below)
-    { idx: 3, top: cy - ch / 2,              left: cx - cw * 1.5 - gapX },                 // Past (left)
-    { idx: 4, top: cy - ch * 1.5 - gapY,     left: cx - cw / 2 },                          // Crown (above)
-    { idx: 5, top: cy - ch / 2,              left: cx + cw / 2 + gapX },                   // Future (right)
+    { idx: 0, top: cy - ch / 2,              left: cx - cw / 2 },
+    { idx: 1, top: cy - ch / 2,              left: cx - cw / 2, crossing: true },
+    { idx: 2, top: cy + ch / 2 + gapY,       left: cx - cw / 2 },
+    { idx: 3, top: cy - ch / 2,              left: cx - cw * 1.5 - gapX },
+    { idx: 4, top: cy - ch * 1.5 - gapY,     left: cx - cw / 2 },
+    { idx: 5, top: cy - ch / 2,              left: cx + cw / 2 + gapX },
   ];
 
-  // Staff column — right side, bottom to top: 6, 7, 8, 9
   const staffLeft = cx + cw * 1.5 + gapX + staffGap;
   const staffPositions = [9, 8, 7, 6].map((idx, row) => ({
     idx,
@@ -122,11 +116,7 @@ export default function SpreadLayout({
   const totalH = ch * 3 + gapY * 2;
 
   return (
-    <div className="w-full overflow-x-auto px-4">
-      <div
-        className="relative mx-auto origin-top scale-[0.55] sm:scale-[0.65] md:scale-[0.7] lg:scale-[0.85] xl:scale-100"
-        style={{ width: totalW, height: totalH }}
-      >
+    <CelticCrossWrapper naturalWidth={totalW} naturalHeight={totalH}>
         {/* ── Cross ── */}
         {crossPositions.map(({ idx, top, left, crossing }) => (
           <div
@@ -159,6 +149,60 @@ export default function SpreadLayout({
             <CelticCard dc={cards[idx]} idx={idx} revealed={revealedIndices.has(idx)} onReveal={onRevealCard} language={language} />
           </div>
         ))}
+    </CelticCrossWrapper>
+  );
+}
+
+/**
+ * Wrapper that scales the Celtic Cross layout to fit the viewport
+ * and collapses the container height to match the scaled size,
+ * preventing unnecessary page scroll.
+ */
+function CelticCrossWrapper({
+  naturalWidth,
+  naturalHeight,
+  children,
+}: {
+  naturalWidth: number;
+  naturalHeight: number;
+  children: React.ReactNode;
+}) {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [scale, setScale] = React.useState(1);
+
+  React.useEffect(() => {
+    function updateScale() {
+      if (!containerRef.current) return;
+      const availableWidth = containerRef.current.offsetWidth - 32; // px-4 padding
+      const s = Math.min(1, availableWidth / naturalWidth);
+      setScale(s);
+    }
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, [naturalWidth]);
+
+  return (
+    <div ref={containerRef} className="w-full px-4">
+      <div
+        style={{
+          height: naturalHeight * scale,
+          position: 'relative',
+        }}
+      >
+        <div
+          style={{
+            width: naturalWidth,
+            height: naturalHeight,
+            transform: `scale(${scale})`,
+            transformOrigin: 'top center',
+            position: 'absolute',
+            left: '50%',
+            marginLeft: -(naturalWidth / 2),
+          }}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );
