@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import SpreadSelector from '@/components/reading/SpreadSelector';
 import Deck from '@/components/tarot/Deck';
 import SpreadLayout from '@/components/tarot/SpreadLayout';
@@ -40,8 +41,9 @@ export default function NewReadingPage() {
   const [showInterpretation, setShowInterpretation] = useState(false);
   const loadingStartRef = useRef<number>(0);
 
+  const locale = useLocale();
+  const language = (locale === 'fa' ? 'fa' : 'en') as 'en' | 'fa';
   const [tier, setTier] = useState<string>('free');
-  const [language, setLanguage] = useState<'en' | 'fa'>('en');
 
   useEffect(() => {
     fetch('/api/auth/me')
@@ -49,7 +51,6 @@ export default function NewReadingPage() {
       .then(data => {
         if (data.profile) {
           setTier(data.profile.tier || 'free');
-          setLanguage(data.profile.language || 'en');
         }
       })
       .catch(() => {});
