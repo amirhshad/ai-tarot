@@ -15,11 +15,11 @@ import ReadingLoadingAnimation from '@/components/reading/ReadingLoadingAnimatio
 
 type Step = 'topic' | 'select-spread' | 'question' | 'draw' | 'reveal' | 'interpret';
 
-const TOPICS: { key: ReadingTopic; title: string; desc: string; symbol: string }[] = [
-  { key: null, title: 'General Reading', desc: 'Open-ended — explore whatever comes up', symbol: '✨' },
-  { key: 'love', title: 'Love & Relationships', desc: 'Romantic connections, compatibility, emotional clarity', symbol: '♡' },
-  { key: 'career', title: 'Career & Work', desc: 'Professional path, growth, and direction', symbol: '☆' },
-  { key: 'yes-or-no', title: 'Yes or No', desc: 'A direct answer to your question', symbol: '⧖' },
+const TOPICS: { key: ReadingTopic; title: string; titleFA: string; desc: string; descFA: string; symbol: string }[] = [
+  { key: null, title: 'General Reading', titleFA: 'فال عمومی', desc: 'Open-ended — explore whatever comes up', descFA: 'آزاد — هر آنچه پیش آید کاوش کنید', symbol: '✨' },
+  { key: 'love', title: 'Love & Relationships', titleFA: 'عشق و روابط', desc: 'Romantic connections, compatibility, emotional clarity', descFA: 'ارتباطات عاشقانه، سازگاری، وضوح عاطفی', symbol: '♡' },
+  { key: 'career', title: 'Career & Work', titleFA: 'شغل و کار', desc: 'Professional path, growth, and direction', descFA: 'مسیر حرفه‌ای، رشد و جهت‌گیری', symbol: '☆' },
+  { key: 'yes-or-no', title: 'Yes or No', titleFA: 'بله یا خیر', desc: 'A direct answer to your question', descFA: 'پاسخی مستقیم به سؤال شما', symbol: '⧖' },
 ];
 
 // Yes/No topic only supports simple spreads
@@ -68,13 +68,15 @@ export default function NewReadingPage() {
     }
   }, [interpretation]);
 
+  const en = language === 'en';
+
   const questionPlaceholder = topic === 'love'
-    ? 'What would you like to know about your love life?'
+    ? (en ? 'What would you like to know about your love life?' : 'درباره زندگی عاشقانه‌تان چه می‌خواهید بدانید؟')
     : topic === 'career'
-      ? 'What would you like to know about your career?'
+      ? (en ? 'What would you like to know about your career?' : 'درباره مسیر شغلی‌تان چه می‌خواهید بدانید؟')
       : topic === 'yes-or-no'
-        ? 'Ask a yes or no question…'
-        : "What's on your mind? (optional — leave blank for a general reading)";
+        ? (en ? 'Ask a yes or no question…' : 'یک سؤال بله یا خیر بپرسید…')
+        : (en ? "What's on your mind? (optional — leave blank for a general reading)" : 'چه چیزی در ذهنتان است؟ (اختیاری — برای فال عمومی خالی بگذارید)');
 
   function handleSelectTopic(t: ReadingTopic) {
     setTopic(t);
@@ -189,14 +191,14 @@ export default function NewReadingPage() {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-white">New Reading</h1>
+        <h1 className="text-2xl font-bold text-white">{en ? 'New Reading' : 'فال جدید'}</h1>
         <p className="text-gray-500 text-sm mt-1">
-          {step === 'topic' && 'What would you like guidance on?'}
-          {step === 'select-spread' && 'Choose your spread type'}
-          {step === 'question' && (topic === 'yes-or-no' ? 'Ask a clear question for a direct answer' : 'What would you like to explore? (optional)')}
-          {step === 'draw' && 'Focus your energy and draw your cards'}
-          {step === 'reveal' && 'Tap each card to reveal it'}
-          {step === 'interpret' && 'Your reading is unfolding...'}
+          {step === 'topic' && (en ? 'What would you like guidance on?' : 'در چه موضوعی راهنمایی می‌خواهید؟')}
+          {step === 'select-spread' && (en ? 'Choose your spread type' : 'نوع گسترش را انتخاب کنید')}
+          {step === 'question' && (topic === 'yes-or-no' ? (en ? 'Ask a clear question for a direct answer' : 'یک سؤال روشن برای پاسخ مستقیم بپرسید') : (en ? 'What would you like to explore? (optional)' : 'چه چیزی را می‌خواهید کاوش کنید؟ (اختیاری)'))}
+          {step === 'draw' && (en ? 'Focus your energy and draw your cards' : 'انرژی خود را متمرکز کنید و کارت‌ها را بکشید')}
+          {step === 'reveal' && (en ? 'Tap each card to reveal it' : 'روی هر کارت بزنید تا آشکار شود')}
+          {step === 'interpret' && (en ? 'Your reading is unfolding...' : 'فال شما در حال آشکار شدن است...')}
         </p>
       </div>
 
@@ -214,9 +216,9 @@ export default function NewReadingPage() {
               </span>
               <div className="min-w-0">
                 <h3 className="text-base font-medium text-white group-hover:text-amber-400 transition-colors">
-                  {t.title}
+                  {en ? t.title : t.titleFA}
                 </h3>
-                <p className="text-xs text-gray-500 mt-0.5">{t.desc}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{en ? t.desc : t.descFA}</p>
               </div>
             </button>
           ))}
@@ -238,7 +240,7 @@ export default function NewReadingPage() {
               onClick={() => setStep('topic')}
               className="px-6 py-2.5 border border-white/15 text-gray-400 rounded-xl text-sm hover:border-white/30 transition-colors"
             >
-              Back
+              {en ? 'Back' : 'بازگشت'}
             </button>
           </div>
         </div>
@@ -259,13 +261,13 @@ export default function NewReadingPage() {
               onClick={() => setStep('select-spread')}
               className="px-6 py-2.5 border border-white/15 text-gray-400 rounded-xl text-sm hover:border-white/30 transition-colors"
             >
-              Back
+              {en ? 'Back' : 'بازگشت'}
             </button>
             <button
               onClick={handleQuestion}
               className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-xl text-sm transition-colors"
             >
-              Continue
+              {en ? 'Continue' : 'ادامه'}
             </button>
           </div>
         </div>
@@ -299,7 +301,7 @@ export default function NewReadingPage() {
                 onClick={handleRevealAll}
                 className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
               >
-                Reveal all cards
+                {en ? 'Reveal all cards' : 'نمایش همه کارت‌ها'}
               </button>
             </div>
           )}
@@ -311,7 +313,7 @@ export default function NewReadingPage() {
                 disabled={isInterpreting}
                 className="px-8 py-3 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-black font-semibold rounded-xl text-lg transition-colors"
               >
-                {isInterpreting ? 'Reading the cards...' : 'Get Your Reading'}
+                {isInterpreting ? (en ? 'Reading the cards...' : 'در حال خواندن کارت‌ها...') : (en ? 'Get Your Reading' : 'دریافت فال')}
               </button>
             </div>
           )}
@@ -346,7 +348,7 @@ export default function NewReadingPage() {
                 onClick={() => router.push(`/reading/${readingId}`)}
                 className="px-6 py-2.5 bg-white/10 hover:bg-white/15 text-gray-200 font-medium rounded-xl text-sm transition-colors"
               >
-                View Full Reading & Follow-up
+                {en ? 'View Full Reading & Follow-up' : 'مشاهده فال کامل و سؤالات بعدی'}
               </button>
             </div>
           )}
