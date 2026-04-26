@@ -2,11 +2,11 @@
 
 import posthog from 'posthog-js';
 import { PostHogProvider as PHProvider } from 'posthog-js/react';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-const POSTHOG_HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com';
+const POSTHOG_HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com';
 
 // Only initialize if key is provided
 if (typeof window !== 'undefined' && POSTHOG_KEY) {
@@ -18,7 +18,7 @@ if (typeof window !== 'undefined' && POSTHOG_KEY) {
   });
 }
 
-/** Track SPA page views */
+/** Track SPA page views — must be inside Suspense because of useSearchParams */
 function PostHogPageView() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -39,7 +39,9 @@ export default function PostHogProviderWrapper({ children }: { children: React.R
 
   return (
     <PHProvider client={posthog}>
-      <PostHogPageView />
+      <Suspense fallback={null}>
+        <PostHogPageView />
+      </Suspense>
       {children}
     </PHProvider>
   );
