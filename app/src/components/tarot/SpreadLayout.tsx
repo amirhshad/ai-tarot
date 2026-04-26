@@ -121,14 +121,11 @@ export default function SpreadLayout({
   const totalW = staffLeft + cw;
   const totalH = ch * 3 + gapY * 2;
 
-  // CSS scale() shrinks visually but doesn't reduce the layout box.
-  // We set a matching height per breakpoint so the page doesn't scroll.
-  // Heights: 536 * 0.55=295, *0.65=349, *0.7=376, *0.85=456, *1.0=536
   return (
-    <div className="w-full relative px-4 h-[295px] sm:h-[349px] md:h-[376px] lg:h-[456px] xl:h-[536px]">
+    <div className="w-full overflow-x-auto px-4">
       <div
-        className="absolute left-1/2 origin-top scale-[0.55] sm:scale-[0.65] md:scale-[0.7] lg:scale-[0.85] xl:scale-100"
-        style={{ width: totalW, height: totalH, marginLeft: -(totalW / 2) }}
+        className="relative mx-auto origin-top scale-[0.55] sm:scale-[0.65] md:scale-[0.7] lg:scale-[0.85] xl:scale-100"
+        style={{ width: totalW, height: totalH }}
       >
         {/* ── Cross ── */}
         {crossPositions.map(({ idx, top, left, crossing }) => (
