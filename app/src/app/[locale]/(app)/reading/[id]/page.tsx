@@ -11,9 +11,9 @@ import ReadingFeedback from '@/components/reading/ReadingFeedback';
 export default async function ReadingPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: string }>;
 }) {
-  const { id } = await params;
+  const { id, locale } = await params;
   const user = await getSessionUser();
 
   if (!user) return notFound();
@@ -30,7 +30,7 @@ export default async function ReadingPage({
     ? deserializeDrawnCards(cardsData as { cardId: number; reversed: boolean; positionIndex: number }[], spread.positions)
     : [];
 
-  const language = (profile?.language || 'en') as 'en' | 'fa';
+  const language = (locale === 'fa' ? 'fa' : 'en') as 'en' | 'fa';
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">

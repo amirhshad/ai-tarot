@@ -137,6 +137,7 @@ export default function NewReadingPage() {
           cards: serializeDrawnCards(drawnCards),
           question: question || undefined,
           topic: topic || undefined,
+          language,
         }),
       });
 

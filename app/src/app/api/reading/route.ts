@@ -19,15 +19,17 @@ export async function POST(request: NextRequest) {
   const profile = await getProfile(user.id);
 
   const tier = (profile?.tier || 'free') as 'free' | 'pro' | 'premium';
-  const language = (profile?.language || 'en') as 'en' | 'fa';
 
   const body = await request.json();
-  const { spreadType, cards: cardData, question, topic } = body as {
+  const { spreadType, cards: cardData, question, topic, language: requestLanguage } = body as {
     spreadType: SpreadType;
     cards: { cardId: number; reversed: boolean; positionIndex: number }[];
     question?: string;
     topic?: ReadingTopic;
+    language?: 'en' | 'fa';
   };
+
+  const language = (requestLanguage || profile?.language || 'en') as 'en' | 'fa';
 
   // Validate spread
   const spread = getSpread(spreadType);

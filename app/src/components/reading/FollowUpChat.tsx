@@ -64,7 +64,7 @@ export default function FollowUpChat({
       const response = await fetch(`/api/reading/${readingId}/follow-up`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, extraCard }),
+        body: JSON.stringify({ question, extraCard, language }),
       });
 
       if (!response.ok) {

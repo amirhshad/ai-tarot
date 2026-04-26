@@ -30,7 +30,6 @@ export async function POST(
   const profile = await getProfile(user.id);
 
   const tier = profile?.tier || 'free';
-  const language = (profile?.language || 'en') as 'en' | 'fa';
 
   // Check follow-up limit
   const userMessageCount = await countUserFollowUps(id);
@@ -44,10 +43,13 @@ export async function POST(
   }
 
   const body = await request.json();
-  const { question, extraCard } = body as {
+  const { question, extraCard, language: requestLanguage } = body as {
     question: string;
     extraCard?: { cardId: number; reversed: boolean };
+    language?: 'en' | 'fa';
   };
+
+  const language = (requestLanguage || profile?.language || 'en') as 'en' | 'fa';
 
   if (!question?.trim()) {
     return NextResponse.json({ error: 'Question is required' }, { status: 400 });
