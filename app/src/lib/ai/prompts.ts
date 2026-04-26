@@ -1,10 +1,52 @@
-import { DrawnCard, SpreadDefinition, Tier, TarotCard } from '@/lib/tarot/types';
+import { DrawnCard, SpreadDefinition, SpreadType, Tier, TarotCard } from '@/lib/tarot/types';
 
 /**
  * Build the system prompt for an initial tarot reading interpretation.
  * This is the core differentiator — narrative interpretation across all cards.
  */
 export type ReadingTopic = 'love' | 'yes-or-no' | 'career' | null;
+
+/**
+ * Spread-specific narrative shape instructions.
+ * Each spread has a distinct architecture that the model must honor.
+ */
+const SPREAD_SHAPES_EN: Record<SpreadType, string> = {
+  'single': `
+This is a single-card reading. You have one card. Do not invoke "the cards" plural. Give this one card weight: open with its central energy as it relates to the question, treat orientation seriously (a reversed card is the same energy turned inward, blocked, or expressed shadow-side), anchor the interpretation in something concrete the querent can recognize in their life, and end with one specific thing to notice, ask, or do — not a platitude.`,
+
+  'three-card': `
+This is a three-card Past / Present / Future spread. The interesting reading is not chronological narration ("X led to Y led to Z") — it is the tension between the three positions. Look for: how the past is still operating in the present; where the future contradicts the present and demands a choice; what thread connects all three despite their different timeframes. Resist the easy chronological story. Reversed cards represent the shadow or blocked aspect of their energy.`,
+
+  'celtic-cross': `
+This is a Celtic Cross spread, which has a specific architecture you must honor:
+- The cross (Present + Challenge) is the heart of the situation. Open here.
+- The vertical axis (Foundation, Crown) shows what underlies the situation and what is consciously sought above it.
+- The horizontal axis (Recent Past, Near Future) shows the temporal flow through the present.
+- The staff (Self, Environment, Hopes & Fears, Outcome) shows the querent's relationship to the situation, escalating outward toward resolution.
+Build the reading in this order: cross first, then axes, then staff. Do not summarize Hopes & Fears as a separate paragraph — let it illuminate the Outcome. The Self vs Environment contrast is often where the real tension lives. Reversed cards represent the shadow or blocked aspect of their energy.`,
+
+  'horseshoe': `
+This is a Horseshoe spread, which is diagnostic rather than narrative. Its job is to surface where the querent's agency actually lies. The interesting reading triangulates: Hidden Factors against Your Approach (what are you not seeing about how you're showing up?); Your Approach against External Influences (where is the friction coming from — you or the world?); Obstacles against Likely Outcome (what specifically must shift?). Build the reading as a diagnosis with a clear pivot point, not a story arc. End with the specific shift the querent can make. Reversed cards represent the shadow or blocked aspect of their energy.`,
+};
+
+const SPREAD_SHAPES_FA: Record<SpreadType, string> = {
+  'single': `
+این یک خوانش تک‌کارتی است. شما یک کارت دارید. از واژه «کارت‌ها» به صورت جمع استفاده نکنید. به این یک کارت وزن بدهید: با انرژی اصلی آن در ارتباط با سؤال مراجعه‌کننده شروع کنید، جهت کارت را جدی بگیرید (کارت معکوس همان انرژی است که به درون چرخیده، مسدود شده، یا از سویه سایه‌اش بیان می‌شود)، تفسیر را در چیزی ملموس که مراجعه‌کننده در زندگی‌اش بازشناسد لنگر بیندازید، و با یک چیز مشخص پایان دهید که مراجعه‌کننده می‌تواند به آن توجه کند، بپرسد، یا انجام دهد — نه یک کلیشه.`,
+
+  'three-card': `
+این یک گسترش سه‌کارتی گذشته / حال / آینده است. خوانش جذاب، روایت زمانی («الف به ب رسید و ب به ج») نیست — تنش میان این سه جایگاه است. به دنبال اینها باشید: چگونه گذشته هنوز در حال عمل می‌کند؛ کجا آینده با حال در تضاد است و خواستار یک انتخاب می‌شود؛ چه رشته‌ای هر سه را با وجود تفاوت زمانی‌شان به هم پیوند می‌دهد. در برابر روایت زمانی آسان مقاومت کنید. کارت‌های معکوس جنبه سایه یا مسدود انرژی خود را نشان می‌دهند.`,
+
+  'celtic-cross': `
+این گسترش صلیب سلتیک است که معماری مشخصی دارد و باید آن را رعایت کنید:
+- صلیب (حال + چالش) قلب موقعیت است. از اینجا شروع کنید.
+- محور عمودی (پایه، تاج) آنچه را که زیر موقعیت قرار دارد و آنچه را که آگاهانه بالای آن جستجو می‌شود نشان می‌دهد.
+- محور افقی (گذشته نزدیک، آینده نزدیک) جریان زمانی از میان حال را نشان می‌دهد.
+- ستون (خود، محیط، امیدها و ترس‌ها، نتیجه) رابطه مراجعه‌کننده با موقعیت را نشان می‌دهد که به سوی فرجام گسترش می‌یابد.
+خوانش را به این ترتیب بسازید: ابتدا صلیب، سپس محورها، سپس ستون. امیدها و ترس‌ها را به عنوان پاراگراف جداگانه خلاصه نکنید — بگذارید نتیجه را روشن کند. تضاد خود در برابر محیط اغلب جایی است که تنش واقعی در آن زندگی می‌کند. کارت‌های معکوس جنبه سایه یا مسدود انرژی خود را نشان می‌دهند.`,
+
+  'horseshoe': `
+این گسترش نعل اسبی است که ماهیتی تشخیصی دارد، نه روایی. کار آن آشکار کردن این است که کنشگری مراجعه‌کننده واقعاً کجاست. خوانش جذاب این مثلث‌ها را می‌سازد: عوامل پنهان در برابر رویکرد شما (چه چیزی را درباره نحوه حضورتان نمی‌بینید؟)؛ رویکرد شما در برابر تأثیرات بیرونی (اصطکاک از کجا می‌آید — از شما یا از جهان؟)؛ موانع در برابر نتیجه محتمل (مشخصاً چه چیزی باید تغییر کند؟). خوانش را به عنوان یک تشخیص با یک نقطه چرخش روشن بسازید، نه یک کمان داستانی. با تغییر مشخصی که مراجعه‌کننده می‌تواند ایجاد کند پایان دهید. کارت‌های معکوس جنبه سایه یا مسدود انرژی خود را نشان می‌دهند.`,
+};
 
 const TOPIC_INSTRUCTIONS: Record<string, { en: string; fa: string }> = {
   love: {
@@ -72,32 +114,30 @@ export function buildInterpretationPrompt(params: {
     return `- Position: ${posName} (${posDesc})\n  Card: ${name} (${orientation})\n  Keywords: ${keywords}`;
   }).join('\n\n');
 
+  const spreadShape = isEnglish
+    ? SPREAD_SHAPES_EN[spread.type]
+    : SPREAD_SHAPES_FA[spread.type];
+
   let systemPrompt = isEnglish
     ? `You are a master tarot reader who weaves ancient symbolism with modern psychological insight. Your interpretations are renowned for their narrative depth and emotional resonance.
-
-CRITICAL INSTRUCTION: Read ALL cards together as ONE cohesive story. Do NOT interpret cards one by one. Find the threads that connect them — recurring themes, tensions between cards, and the overall narrative arc. The reading should feel like a story being told, not a list of card meanings.
+${spreadShape}
 
 Guidelines:
 - Write in flowing, evocative prose — not bullet points or lists
 - Address the querent directly using "you"
-- When a card is reversed, interpret it as the shadow or blocked aspect of its energy
-- Draw connections between cards: how does the Past inform the Present? How does the Challenge relate to the Outcome?
+- Be specific and vivid, not generic. Avoid clichés like "trust the journey" without grounding them in the specific cards drawn
 - End with a clear, actionable insight the querent can take with them
-- Length: ${wordRange} words
-- Be specific and vivid, not generic. Avoid clichés like "trust the journey" without grounding them in the specific cards drawn`
+- Length: ${wordRange} words`
     : `شما یک فالگیر استاد تاروت هستید که نمادگرایی کهن را با بینش روان‌شناختی مدرن پیوند می‌زنید. تفسیرهای شما به خاطر عمق روایی و طنین عاطفی‌شان مشهورند.
-
-دستور مهم: تمام کارت‌ها را با هم به عنوان یک داستان منسجم بخوانید. کارت‌ها را یکی یکی تفسیر نکنید. رشته‌هایی که آن‌ها را به هم متصل می‌کند بیابید — مضامین تکراری، تنش‌ها بین کارت‌ها، و کمان روایی کلی.
+${spreadShape}
 
 راهنما:
 - به نثر روان و تصویری بنویسید، نه فهرست یا نقطه‌ای
 - مستقیماً با مراجعه‌کننده صحبت کنید
-- وقتی کارت معکوس است، آن را به عنوان جنبه سایه یا انرژی مسدود تفسیر کنید
-- پیوند بین کارت‌ها را نشان دهید
+- خاص و زنده باشید، نه کلی
 - از حکمت ایرانی و تمثیل‌های فرهنگی بهره ببرید، اما هرگز شعر یا بیت نقل نکنید
 - با یک بینش عملی روشن پایان دهید
-- طول: ${wordRange} کلمه
-- خاص و زنده باشید، نه کلی`;
+- طول: ${wordRange} کلمه`;
 
   // Append topic-specific instructions
   if (topic && TOPIC_INSTRUCTIONS[topic]) {
@@ -108,9 +148,14 @@ Guidelines:
   }
 
   const spreadName = isEnglish ? spread.name : spread.nameFA;
+  const isSingle = spread.type === 'single';
   const userMessage = isEnglish
-    ? `I've drawn the following cards in a ${spreadName} spread:\n\n${cardDescriptions}\n\nPlease give me a narrative reading that weaves all these cards into one cohesive story.`
-    : `من کارت‌های زیر را در گسترش ${spreadName} کشیده‌ام:\n\n${cardDescriptions}\n\nلطفاً یک خوانش روایی به من بدهید که تمام این کارت‌ها را در یک داستان منسجم ببافد.`;
+    ? isSingle
+      ? `I've drawn the following card in a ${spreadName} reading:\n\n${cardDescriptions}\n\nPlease interpret this card for me with depth and specificity.`
+      : `I've drawn the following cards in a ${spreadName} spread:\n\n${cardDescriptions}\n\nPlease give me a narrative reading that weaves all these cards into one cohesive story.`
+    : isSingle
+      ? `من کارت زیر را در یک خوانش ${spreadName} کشیده‌ام:\n\n${cardDescriptions}\n\nلطفاً این کارت را با عمق و دقت برایم تفسیر کنید.`
+      : `من کارت‌های زیر را در گسترش ${spreadName} کشیده‌ام:\n\n${cardDescriptions}\n\nلطفاً یک خوانش روایی به من بدهید که تمام این کارت‌ها را در یک داستان منسجم ببافد.`;
 
   return { systemPrompt, userMessage };
 }
