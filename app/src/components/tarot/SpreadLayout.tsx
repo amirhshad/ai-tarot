@@ -78,7 +78,8 @@ export default function SpreadLayout({
     );
   }
 
-  // Celtic Cross — matches traditional layout reference:
+  // Celtic Cross — traditional layout, no CSS scale.
+  // Uses sm-sized cards so everything fits without scrolling.
   //
   //  Cross (left):            Staff (right, bottom→top):
   //          [4]                    [9]
@@ -86,79 +87,49 @@ export default function SpreadLayout({
   //          [2]                    [7]
   //                                [6]
   //
-  // Card = 140×240. We use scale(0.55) on mobile → 77×132
-  // and scale(0.7) on md+ → 98×168.
-  // Positions calculated from center of cross.
-
-  const cw = 98;   // card width at md scale
-  const ch = 168;  // card height at md scale
-  const gapX = 16; // horizontal gap between cards
-  const gapY = 16; // vertical gap between cards
-  const staffGap = 40; // gap between cross and staff
-
-  // Cross center point
-  const cx = cw * 1.5 + gapX; // center X of cross
-  const cy = ch * 1.5 + gapY; // center Y of cross
-
-  // Cross positions (center of each card)
-  const crossPositions = [
-    { idx: 0, top: cy - ch / 2,              left: cx - cw / 2 },                          // Present (center)
-    { idx: 1, top: cy - ch / 2,              left: cx - cw / 2, crossing: true },           // Crossing (rotated)
-    { idx: 2, top: cy + ch / 2 + gapY,       left: cx - cw / 2 },                          // Foundation (below)
-    { idx: 3, top: cy - ch / 2,              left: cx - cw * 1.5 - gapX },                 // Past (left)
-    { idx: 4, top: cy - ch * 1.5 - gapY,     left: cx - cw / 2 },                          // Crown (above)
-    { idx: 5, top: cy - ch / 2,              left: cx + cw / 2 + gapX },                   // Future (right)
-  ];
-
-  // Staff column — right side, bottom to top: 6, 7, 8, 9
-  const staffLeft = cx + cw * 1.5 + gapX + staffGap;
-  const staffPositions = [9, 8, 7, 6].map((idx, row) => ({
-    idx,
-    top: row * (ch + gapY / 2),
-    left: staffLeft,
-  }));
-
-  const totalW = staffLeft + cw;
-  const totalH = ch * 3 + gapY * 2;
+  // Card sizes match the 'sm' Card variant:
+  //   mobile: 70×120, sm: 80×137, md: 90×154, lg: 100×172
 
   return (
-    <div className="w-full overflow-x-auto px-4">
-      <div
-        className="relative mx-auto origin-top scale-[0.55] sm:scale-[0.65] md:scale-[0.7] lg:scale-[0.85] xl:scale-100"
-        style={{ width: totalW, height: totalH }}
-      >
-        {/* ── Cross ── */}
-        {crossPositions.map(({ idx, top, left, crossing }) => (
-          <div
-            key={idx}
-            className="absolute"
-            style={{
-              top,
-              left,
-              width: cw,
-              height: ch,
-              zIndex: crossing ? (revealedIndices.has(idx) ? 0 : 2) : 1,
-              pointerEvents: crossing && revealedIndices.has(idx) ? 'none' : 'auto',
-            }}
+    <div className="w-full px-2 sm:px-4">
+      <div className="flex justify-center gap-2 sm:gap-4 md:gap-6">
+        {/* Cross section */}
+        <div className="relative w-[220px] h-[380px] sm:w-[256px] sm:h-[435px] md:w-[286px] md:h-[486px] lg:w-[316px] lg:h-[540px] flex-shrink-0">
+          {/* Crown — top center */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2">
+            <CelticCard dc={cards[4]} idx={4} revealed={revealedIndices.has(4)} onReveal={onRevealCard} language={language} size="sm" />
+          </div>
+          {/* Past — middle left */}
+          <div className="absolute top-1/2 -translate-y-1/2 left-0">
+            <CelticCard dc={cards[3]} idx={3} revealed={revealedIndices.has(3)} onReveal={onRevealCard} language={language} size="sm" />
+          </div>
+          {/* Present — center */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1]">
+            <CelticCard dc={cards[0]} idx={0} revealed={revealedIndices.has(0)} onReveal={onRevealCard} language={language} size="sm" />
+          </div>
+          {/* Challenge — center, rotated */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[2] rotate-90"
+            style={{ pointerEvents: revealedIndices.has(1) ? 'none' : 'auto', zIndex: revealedIndices.has(1) ? 0 : 2 }}
           >
-            {crossing ? (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="rotate-90">
-                  <CelticCard dc={cards[idx]} idx={idx} revealed={revealedIndices.has(idx)} onReveal={onRevealCard} language={language} hideLabel />
-                </div>
-              </div>
-            ) : (
-              <CelticCard dc={cards[idx]} idx={idx} revealed={revealedIndices.has(idx)} onReveal={onRevealCard} language={language} />
-            )}
+            <CelticCard dc={cards[1]} idx={1} revealed={revealedIndices.has(1)} onReveal={onRevealCard} language={language} size="sm" hideLabel />
           </div>
-        ))}
+          {/* Future — middle right */}
+          <div className="absolute top-1/2 -translate-y-1/2 right-0">
+            <CelticCard dc={cards[5]} idx={5} revealed={revealedIndices.has(5)} onReveal={onRevealCard} language={language} size="sm" />
+          </div>
+          {/* Foundation — bottom center */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
+            <CelticCard dc={cards[2]} idx={2} revealed={revealedIndices.has(2)} onReveal={onRevealCard} language={language} size="sm" />
+          </div>
+        </div>
 
-        {/* ── Staff ── */}
-        {staffPositions.map(({ idx, top, left }) => (
-          <div key={idx} className="absolute" style={{ top, left, width: cw, height: ch }}>
-            <CelticCard dc={cards[idx]} idx={idx} revealed={revealedIndices.has(idx)} onReveal={onRevealCard} language={language} />
-          </div>
-        ))}
+        {/* Staff column — bottom to top: 6, 7, 8, 9 */}
+        <div className="flex flex-col justify-between flex-shrink-0">
+          <CelticCard dc={cards[9]} idx={9} revealed={revealedIndices.has(9)} onReveal={onRevealCard} language={language} size="sm" />
+          <CelticCard dc={cards[8]} idx={8} revealed={revealedIndices.has(8)} onReveal={onRevealCard} language={language} size="sm" />
+          <CelticCard dc={cards[7]} idx={7} revealed={revealedIndices.has(7)} onReveal={onRevealCard} language={language} size="sm" />
+          <CelticCard dc={cards[6]} idx={6} revealed={revealedIndices.has(6)} onReveal={onRevealCard} language={language} size="sm" />
+        </div>
       </div>
     </div>
   );
@@ -205,6 +176,7 @@ function CelticCard({
   onReveal,
   language,
   hideLabel = false,
+  size,
 }: {
   dc: DrawnCard;
   idx: number;
@@ -212,6 +184,7 @@ function CelticCard({
   onReveal: (i: number) => void;
   language: 'en' | 'fa';
   hideLabel?: boolean;
+  size?: 'default' | 'sm';
 }) {
   const posName = language === 'en' ? dc.position.name : dc.position.nameFA;
 
@@ -228,9 +201,10 @@ function CelticCard({
         isRevealed={revealed}
         onReveal={() => onReveal(idx)}
         language={language}
+        size={size}
       />
       {!hideLabel && (
-        <p className="text-[11px] text-gray-400/70 font-light text-center mt-1 whitespace-nowrap">
+        <p className="text-[10px] sm:text-[11px] text-gray-400/70 font-light text-center mt-1 whitespace-nowrap">
           {posName}
         </p>
       )}

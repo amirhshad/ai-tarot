@@ -6,12 +6,20 @@ import { TarotCard } from '@/lib/tarot/types';
 import CardBack from './CardBack';
 import CardFace from './CardFace';
 
+type CardSize = 'default' | 'sm';
+
+const SIZE_CLASSES: Record<CardSize, string> = {
+  default: 'w-[100px] h-[172px] sm:w-[120px] sm:h-[206px] md:w-[140px] md:h-[240px]',
+  sm: 'w-[70px] h-[120px] sm:w-[80px] sm:h-[137px] md:w-[90px] md:h-[154px] lg:w-[100px] lg:h-[172px]',
+};
+
 interface CardProps {
   card: TarotCard;
   reversed: boolean;
   isRevealed?: boolean;
   onReveal?: () => void;
   language?: 'en' | 'fa';
+  size?: CardSize;
   className?: string;
 }
 
@@ -21,6 +29,7 @@ export default function Card({
   isRevealed = false,
   onReveal,
   language = 'en',
+  size = 'default',
   className = '',
 }: CardProps) {
   const [flipped, setFlipped] = useState(isRevealed);
@@ -41,7 +50,7 @@ export default function Card({
 
   return (
     <div
-      className={`relative cursor-pointer w-[100px] h-[172px] sm:w-[120px] sm:h-[206px] md:w-[140px] md:h-[240px] ${className}`}
+      className={`relative cursor-pointer ${SIZE_CLASSES[size]} ${className}`}
       style={{ perspective: '1000px' }}
       onClick={handleClick}
     >
