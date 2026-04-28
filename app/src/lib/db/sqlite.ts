@@ -88,6 +88,15 @@ export async function ensureSchema(): Promise<void> {
     CREATE INDEX IF NOT EXISTS idx_reading_feedback_reading ON reading_feedback(reading_id);
   `);
 
+  // Rate limiting for anonymous free readings
+  await db.executeMultiple(`
+    CREATE TABLE IF NOT EXISTS free_reading_rate_limits (
+      ip TEXT NOT NULL,
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_free_rate_ip_time ON free_reading_rate_limits(ip, created_at);
+  `);
+
   // Migrations for new columns (try/catch since SQLite lacks ADD COLUMN IF NOT EXISTS)
   const migrations = [
     `ALTER TABLE readings ADD COLUMN share_token TEXT`,
