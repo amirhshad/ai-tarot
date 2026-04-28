@@ -31,6 +31,11 @@ export async function POST(request: NextRequest) {
 
   const language = (requestLanguage || profile?.language || 'en') as 'en' | 'fa';
 
+  // Validate question length
+  if (question && question.length > 500) {
+    return NextResponse.json({ error: 'Question is too long (max 500 characters)' }, { status: 400 });
+  }
+
   // Validate spread
   const spread = getSpread(spreadType);
   if (!spread) {

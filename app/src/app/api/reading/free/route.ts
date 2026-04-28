@@ -16,6 +16,11 @@ export async function POST(request: NextRequest) {
   const validTopics = ['love', 'yes-or-no', 'career'];
   const topic: ReadingTopic = rawTopic && validTopics.includes(rawTopic) ? rawTopic as ReadingTopic : null;
 
+  // Validate question length
+  if (question && question.length > 500) {
+    return NextResponse.json({ error: 'Question is too long (max 500 characters)' }, { status: 400 });
+  }
+
   const spreadType: SpreadType = 'three-card';
   const spread = getSpread(spreadType);
   if (!spread) {

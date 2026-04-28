@@ -55,6 +55,10 @@ export async function POST(
     return NextResponse.json({ error: 'Question is required' }, { status: 400 });
   }
 
+  if (question.length > 500) {
+    return NextResponse.json({ error: 'Question is too long (max 500 characters)' }, { status: 400 });
+  }
+
   // Save user message
   await createFollowUp({ reading_id: id, role: 'user', content: question });
 
