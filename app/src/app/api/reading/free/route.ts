@@ -4,6 +4,7 @@ import { SpreadType } from '@/lib/tarot/types';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
 import { buildInterpretationPrompt, buildQuestionMessage, ReadingTopic } from '@/lib/ai/prompts';
 import { streamInterpretation } from '@/lib/ai/client';
+import { getClientIp, checkFreeReadingLimit, recordFreeReading } from '@/lib/utils/rate-limit';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -19,6 +20,16 @@ export async function POST(request: NextRequest) {
   // Validate question length
   if (question && question.length > 500) {
     return NextResponse.json({ error: 'Question is too long (max 500 characters)' }, { status: 400 });
+  }
+
+  // Rate limit by IP
+  const ip = getClientIp(request);
+  const rateLimit = await checkFreeReadingLimit(ip);
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: `You've reached the free reading limit. Try again in ${rateLimit.retryAfterMinutes} minutes, or sign up for unlimited readings.` },
+      { status: 429 },
+    );
   }
 
   const spreadType: SpreadType = 'three-card';
@@ -48,6 +59,9 @@ export async function POST(request: NextRequest) {
     userMessage: userMessage + questionSuffix,
     tier: 'free',
   });
+
+  // Record rate limit entry after successful stream start
+  await recordFreeReading(ip);
 
   const encoder = new TextEncoder();
 
