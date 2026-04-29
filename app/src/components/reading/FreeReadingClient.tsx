@@ -15,36 +15,37 @@ type Step = 'question' | 'draw' | 'reveal' | 'interpret';
 
 const FREE_READING_KEY = 'tarotveil_anonymous_reading';
 
-const TOPIC_CONFIG: Record<string, { title: string; subtitle: string; placeholder: string; label: string }> = {
+const TOPIC_CONFIG: Record<string, { title: string; titleFA: string; subtitle: string; subtitleFA: string; placeholder: string; placeholderFA: string; label: string; labelFA: string }> = {
   love: {
-    title: 'Your Love Reading',
-    subtitle: 'Focus on your heart\u2019s question',
-    placeholder: 'What would you like to know about your love life?',
-    label: 'Love Reading',
+    title: 'Your Love Reading', titleFA: 'فال عشق شما',
+    subtitle: 'Focus on your heart\u2019s question', subtitleFA: 'روی سؤال قلبی‌تان تمرکز کنید',
+    placeholder: 'What would you like to know about your love life?', placeholderFA: 'درباره زندگی عاشقانه‌تان چه می‌خواهید بدانید؟',
+    label: 'Love Reading', labelFA: 'فال عشق',
   },
   'yes-or-no': {
-    title: 'Your Yes or No Reading',
-    subtitle: 'Ask a clear question for a direct answer',
-    placeholder: 'Ask a yes or no question\u2026',
-    label: 'Yes or No Reading',
+    title: 'Your Yes or No Reading', titleFA: 'فال بله یا خیر شما',
+    subtitle: 'Ask a clear question for a direct answer', subtitleFA: 'یک سؤال روشن برای پاسخ مستقیم بپرسید',
+    placeholder: 'Ask a yes or no question\u2026', placeholderFA: 'یک سؤال بله یا خیر بپرسید…',
+    label: 'Yes or No Reading', labelFA: 'فال بله یا خیر',
   },
   career: {
-    title: 'Your Career Reading',
-    subtitle: 'Explore your professional path',
-    placeholder: 'What would you like to know about your career?',
-    label: 'Career Reading',
+    title: 'Your Career Reading', titleFA: 'فال شغلی شما',
+    subtitle: 'Explore your professional path', subtitleFA: 'مسیر حرفه‌ای خود را کاوش کنید',
+    placeholder: 'What would you like to know about your career?', placeholderFA: 'درباره مسیر شغلی‌تان چه می‌خواهید بدانید؟',
+    label: 'Career Reading', labelFA: 'فال شغلی',
   },
 };
 
-export default function FreeReadingClient() {
+export default function FreeReadingClient({ language = 'en' }: { language?: 'en' | 'fa' }) {
   return (
-    <Suspense fallback={<div className="max-w-4xl mx-auto px-4 py-12 text-center text-stone-400">Loading your reading...</div>}>
-      <FreeReadingContent />
+    <Suspense fallback={<div className="max-w-4xl mx-auto px-4 py-12 text-center text-stone-400">{language === 'fa' ? 'در حال بارگذاری...' : 'Loading your reading...'}</div>}>
+      <FreeReadingContent language={language} />
     </Suspense>
   );
 }
 
-function FreeReadingContent() {
+function FreeReadingContent({ language }: { language: 'en' | 'fa' }) {
+  const en = language === 'en';
   const searchParams = useSearchParams();
   const rawTopic = searchParams.get('topic');
   const selectedTopic: ReadingTopic = rawTopic && rawTopic in TOPIC_CONFIG ? rawTopic as ReadingTopic : null;
@@ -102,6 +103,7 @@ function FreeReadingContent() {
           cards: serializeDrawnCards(drawnCards),
           question: question || undefined,
           topic: selectedTopic || undefined,
+          language,
         }),
       });
 
@@ -170,16 +172,16 @@ function FreeReadingContent() {
       {/* Header */}
       <div className="text-center">
         <h1 className="font-display text-3xl md:text-4xl font-semibold text-white">
-          {topicConfig?.title || 'Your Free Reading'}
+          {topicConfig ? (en ? topicConfig.title : topicConfig.titleFA) : (en ? 'Your Free Reading' : 'فال رایگان شما')}
         </h1>
         <p className="text-stone-400 text-sm mt-2">
-          {step === 'question' && (topicConfig?.subtitle || 'What would you like to explore? (optional)')}
-          {step === 'draw' && 'Focus your energy and draw your cards'}
-          {step === 'reveal' && 'Tap each card to reveal it'}
-          {step === 'interpret' && 'Your reading is unfolding...'}
+          {step === 'question' && (topicConfig ? (en ? topicConfig.subtitle : topicConfig.subtitleFA) : (en ? 'What would you like to explore? (optional)' : 'چه چیزی را می‌خواهید کاوش کنید؟ (اختیاری)'))}
+          {step === 'draw' && (en ? 'Focus your energy and draw your cards' : 'انرژی خود را متمرکز کنید و کارت‌ها را بکشید')}
+          {step === 'reveal' && (en ? 'Tap each card to reveal it' : 'روی هر کارت بزنید تا آشکار شود')}
+          {step === 'interpret' && (en ? '...Your reading is unfolding' : 'فال شما در حال آشکار شدن است...')}
         </p>
         <p className="text-xs text-gray-600 mt-1">
-          {topicConfig?.label || 'Three-Card Spread'} &middot; Past &middot; Present &middot; Future
+          {topicConfig ? (en ? topicConfig.label : topicConfig.labelFA) : (en ? 'Three-Card Spread' : 'سه کارت')} &middot; {en ? 'Past' : 'گذشته'} &middot; {en ? 'Present' : 'حال'} &middot; {en ? 'Future' : 'آینده'}
         </p>
       </div>
 
@@ -189,7 +191,7 @@ function FreeReadingContent() {
           <textarea
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
-            placeholder={topicConfig?.placeholder || "What's on your mind? (optional \u2014 leave blank for a general reading)"}
+            placeholder={topicConfig ? (en ? topicConfig.placeholder : topicConfig.placeholderFA) : (en ? "What's on your mind? (optional \u2014 leave blank for a general reading)" : 'چه چیزی در ذهنتان است؟ (اختیاری — برای فال عمومی خالی بگذارید)')}
             rows={3}
             className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-400/50 resize-none"
           />
@@ -198,7 +200,7 @@ function FreeReadingContent() {
               onClick={handleQuestion}
               className="px-8 py-3 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold rounded-sm text-base transition-all hover:shadow-[0_0_30px_rgba(212,160,67,0.3)]"
             >
-              Continue
+              {en ? 'Continue' : 'ادامه'}
             </button>
           </div>
         </div>
@@ -223,7 +225,7 @@ function FreeReadingContent() {
             spreadType="three-card"
             revealedIndices={revealedIndices}
             onRevealCard={handleRevealCard}
-            language="en"
+            language={language}
           />
 
           {step === 'reveal' && !allRevealed && (
@@ -232,7 +234,7 @@ function FreeReadingContent() {
                 onClick={handleRevealAll}
                 className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
               >
-                Reveal all cards
+                {en ? 'Reveal all cards' : 'نمایش همه کارت‌ها'}
               </button>
             </div>
           )}
@@ -244,7 +246,7 @@ function FreeReadingContent() {
                 disabled={isInterpreting}
                 className="px-8 py-3 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold rounded-sm text-lg transition-all hover:shadow-[0_0_30px_rgba(212,160,67,0.3)] disabled:opacity-50"
               >
-                {isInterpreting ? 'Reading the cards...' : 'Get Your Reading'}
+                {isInterpreting ? (en ? 'Reading the cards...' : 'در حال خواندن کارت‌ها...') : (en ? 'Get Your Reading' : 'دریافت فال')}
               </button>
             </div>
           )}
@@ -256,7 +258,7 @@ function FreeReadingContent() {
         <>
           <div className="max-w-2xl mx-auto">
             <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
-              <h2 className="text-xl font-display font-semibold text-gold-400 mb-4">Your Reading</h2>
+              <h2 className="text-xl font-display font-semibold text-gold-400 mb-4">{en ? 'Your Reading' : 'فال شما'}</h2>
               <div className="prose prose-invert max-w-none">
                 <p className="text-amber-50/95 text-base sm:text-lg leading-7 sm:leading-8 whitespace-pre-wrap">
                   {interpretation}

@@ -8,11 +8,14 @@ import { getClientIp, checkFreeReadingLimit, recordFreeReading } from '@/lib/uti
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { cards: cardData, question, topic: rawTopic } = body as {
+  const { cards: cardData, question, topic: rawTopic, language: requestLanguage } = body as {
     cards: { cardId: number; reversed: boolean; positionIndex: number }[];
     question?: string;
     topic?: string;
+    language?: 'en' | 'fa';
   };
+
+  const language = (requestLanguage === 'fa' ? 'fa' : 'en') as 'en' | 'fa';
 
   const validTopics = ['love', 'yes-or-no', 'career'];
   const topic: ReadingTopic = rawTopic && validTopics.includes(rawTopic) ? rawTopic as ReadingTopic : null;
@@ -47,12 +50,12 @@ export async function POST(request: NextRequest) {
   const { systemPrompt, userMessage } = buildInterpretationPrompt({
     spread,
     cards: drawnCards,
-    language: 'en',
+    language,
     tier: 'free',
     topic,
   });
 
-  const questionSuffix = buildQuestionMessage({ question, language: 'en' });
+  const questionSuffix = buildQuestionMessage({ question, language });
 
   const stream = await streamInterpretation({
     systemPrompt,

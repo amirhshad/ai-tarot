@@ -39,7 +39,7 @@ export default async function FreeReadingPage({ params, searchParams }: PageProp
 
   // If a topic is selected (via URL), render the interactive client component
   if (hasTopic) {
-    return <FreeReadingClient />;
+    return <FreeReadingClient language={locale === 'fa' ? 'fa' : 'en'} />;
   }
 
   const t = await getTranslations('freeReading');
