@@ -1,6 +1,7 @@
 import { Resend } from 'resend';
 import { welcomeEmail } from './templates/welcome';
 import { readingSummaryEmail } from './templates/reading-summary';
+import { verificationEmail } from './templates/verification';
 
 let _resend: Resend | null = null;
 
@@ -27,6 +28,17 @@ export async function sendWelcomeEmail(email: string, displayName?: string): Pro
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:3000';
   const html = welcomeEmail({ displayName, baseUrl });
   await sendEmail(email, 'Welcome to TarotVeil — Your first reading awaits ✴', html);
+}
+
+export async function sendVerificationEmail(
+  email: string,
+  token: string,
+  displayName?: string,
+): Promise<void> {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:3000';
+  const verifyUrl = `${baseUrl}/api/auth/verify?token=${token}`;
+  const html = verificationEmail({ verifyUrl, displayName });
+  await sendEmail(email, 'Confirm your email — your reading awaits', html);
 }
 
 export async function sendReadingSummary(
