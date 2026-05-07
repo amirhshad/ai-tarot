@@ -18,7 +18,7 @@ export async function saveVerificationToken(userId: string, token: string, expir
 
 export async function findProfileByVerificationToken(
   token: string,
-): Promise<{ id: string; email: string; verification_token_expires_at: string } | undefined> {
+): Promise<{ id: string; email: string; verification_token_expires_at: string | null } | undefined> {
   await ensureSchema();
   const db = getDb();
   const result = await db.execute({
@@ -26,7 +26,7 @@ export async function findProfileByVerificationToken(
     args: [token],
   });
   return result.rows[0] as unknown as
-    | { id: string; email: string; verification_token_expires_at: string }
+    | { id: string; email: string; verification_token_expires_at: string | null }
     | undefined;
 }
 
@@ -39,7 +39,7 @@ export async function markEmailVerified(userId: string): Promise<void> {
   });
 }
 
-export async function getLastTokenIssuedAt(userId: string): Promise<string | null> {
+export async function getVerificationTokenExpiresAt(userId: string): Promise<string | null> {
   await ensureSchema();
   const db = getDb();
   const result = await db.execute({
