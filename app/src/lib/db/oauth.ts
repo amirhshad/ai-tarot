@@ -34,7 +34,12 @@ export async function findOrCreateGoogleUser(
   if (byEmail.rows[0]) {
     const existing = byEmail.rows[0] as unknown as { id: string; email: string };
     await db.execute({
-      sql: "UPDATE profiles SET google_id = ?, auth_provider = CASE WHEN auth_provider = 'email' THEN 'email+google' ELSE auth_provider END, updated_at = datetime('now') WHERE id = ?",
+      sql: `UPDATE profiles
+            SET google_id = ?,
+                auth_provider = CASE WHEN auth_provider = 'email' THEN 'email+google' ELSE auth_provider END,
+                email_verified = 1,
+                updated_at = datetime('now')
+            WHERE id = ?`,
       args: [googleId, existing.id],
     });
     return { id: existing.id, email: existing.email };
@@ -45,7 +50,8 @@ export async function findOrCreateGoogleUser(
   const sentinelHash = `OAUTH:${crypto.randomUUID()}`;
 
   await db.execute({
-    sql: `INSERT INTO profiles (id, email, password_hash, display_name, auth_provider, google_id) VALUES (?, ?, ?, ?, 'google', ?)`,
+    sql: `INSERT INTO profiles (id, email, password_hash, display_name, auth_provider, google_id, email_verified)
+          VALUES (?, ?, ?, ?, 'google', ?, 1)`,
     args: [id, email.toLowerCase().trim(), sentinelHash, displayName || null, googleId],
   });
 
