@@ -4,8 +4,17 @@ import { Link } from '@/i18n/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import ClaimAnonymousReading from '@/components/reading/ClaimAnonymousReading';
 import DeleteReadingButton from '@/components/reading/DeleteReadingButton';
+import VerificationGate from '@/components/auth/VerificationGate';
+import VerifiedToast from '@/components/auth/VerifiedToast';
+import { getReadingCount } from '@/lib/db/queries';
 
-export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function DashboardPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams?: Promise<{ verified?: string }>;
+}) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('dashboard');
@@ -15,6 +24,10 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
 
   const profile = await getProfile(user.id);
   const readings = await getRecentReadings(user.id, 5);
+  const readingCount = await getReadingCount(user.id);
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const justVerified = resolvedSearchParams?.verified === 'true';
+  const showGate = profile?.email_verified === 0 && readingCount >= 1;
   const displayName = profile?.display_name || user.email?.split('@')[0] || 'Reader';
   const isFA = locale === 'fa';
 
@@ -46,6 +59,8 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   return (
     <div className="space-y-8">
       <ClaimAnonymousReading />
+      {showGate && <VerificationGate email={user.email} />}
+      {justVerified && <VerifiedToast />}
       {/* Welcome */}
       <div>
         <h1 className="text-2xl font-bold text-white">

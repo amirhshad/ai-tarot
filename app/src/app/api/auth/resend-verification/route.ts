@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getSessionUser } from '@/lib/db/auth';
 import { getProfile } from '@/lib/db/queries';
 import {
@@ -8,7 +8,7 @@ import {
 } from '@/lib/db/verification';
 import { sendVerificationEmail } from '@/lib/email/client';
 
-export async function POST(_request: NextRequest) {
+export async function POST() {
   const user = await getSessionUser();
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
