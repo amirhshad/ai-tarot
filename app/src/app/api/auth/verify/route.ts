@@ -20,7 +20,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${baseUrl}/dashboard?verified=invalid`);
   }
 
-  const expired = new Date(profile.verification_token_expires_at ?? '').getTime() < Date.now();
+  const expiresAtMs = profile.verification_token_expires_at
+    ? new Date(profile.verification_token_expires_at).getTime()
+    : NaN;
+  const expired = Number.isNaN(expiresAtMs) || expiresAtMs < Date.now();
   if (expired) {
     return NextResponse.redirect(`${baseUrl}/dashboard?verified=expired`);
   }

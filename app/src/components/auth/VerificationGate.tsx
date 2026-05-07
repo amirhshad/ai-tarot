@@ -49,7 +49,12 @@ export default function VerificationGate({ email }: Props) {
         {status === 'sent' ? (
           <p className="text-amber-400 text-sm">Email sent — check your inbox.</p>
         ) : status === 'error' ? (
-          <p className="text-red-400 text-sm">Something went wrong. Try again.</p>
+          <div>
+            <p className="text-red-400 text-sm mb-2">Something went wrong.</p>
+            <button onClick={() => setStatus('idle')} className="text-amber-400 text-sm underline underline-offset-2">
+              Try again
+            </button>
+          </div>
         ) : countdown > 0 ? (
           <p className="text-gray-500 text-sm">Resend available in {countdown}s</p>
         ) : (

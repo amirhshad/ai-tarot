@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSessionUser } from '@/lib/db/auth';
-import { getProfile, createReading, updateReadingInterpretation } from '@/lib/db/queries';
+import { getProfile, createReading, updateReadingInterpretation, getReadingCount } from '@/lib/db/queries';
 import { getSpread } from '@/lib/tarot/spreads';
 import { SpreadType } from '@/lib/tarot/types';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
 
   // Block second reading if email not verified
   if (profile?.email_verified === 0) {
-    const { getReadingCount } = await import('@/lib/db/queries');
     const count = await getReadingCount(user.id);
     if (count >= 1) {
       return NextResponse.json({ error: 'Please verify your email to continue reading', code: 'EMAIL_UNVERIFIED' }, { status: 403 });
