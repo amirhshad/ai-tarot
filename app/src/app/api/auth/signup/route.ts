@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { signUp, setSessionCookie } from '@/lib/db/auth';
-import { sendWelcomeEmail } from '@/lib/email/client';
+import { sendWelcomeEmail, sendVerificationEmail } from '@/lib/email/client';
+import { generateVerificationToken, saveVerificationToken } from '@/lib/db/verification';
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,8 +17,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: result.error }, { status: 400 });
     }
 
-    await setSessionCookie(result.user);
+    // Generate and store verification token
+    const { token, expiresAt } = generateVerificationToken();
+    await saveVerificationToken(result.user.id, token, expiresAt);
+
+    // Fire-and-forget emails
     void sendWelcomeEmail(result.user.email, name);
+    void sendVerificationEmail(result.user.email, token, name);
+
+    await setSessionCookie(result.user);
     return NextResponse.json({ user: result.user });
   } catch (err) {
     console.error('Signup error:', err);
