@@ -26,7 +26,7 @@ export default async function DashboardPage({
   const readings = await getRecentReadings(user.id, 5);
   const readingCount = await getReadingCount(user.id);
   const resolvedSearchParams = searchParams ? await searchParams : {};
-  const justVerified = resolvedSearchParams?.verified === 'true';
+  const justVerified = resolvedSearchParams.verified === 'true';
   const showGate = profile?.email_verified === 0 && readingCount >= 1;
   const displayName = profile?.display_name || user.email?.split('@')[0] || 'Reader';
   const isFA = locale === 'fa';

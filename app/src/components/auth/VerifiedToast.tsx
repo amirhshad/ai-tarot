@@ -17,7 +17,7 @@ export default function VerifiedToast() {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-amber-500 text-black font-medium text-sm px-5 py-3 rounded-xl shadow-lg">
+    <div role="status" className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-amber-500 text-black font-medium text-sm px-5 py-3 rounded-xl shadow-lg">
       ✓ Email verified — welcome to Tarot Veil
     </div>
   );
