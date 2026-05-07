@@ -130,6 +130,32 @@ export async function ensureSchema(): Promise<void> {
     try { await db.execute(sql); } catch { /* column already exists */ }
   }
 
+  await db.executeMultiple(`
+    ALTER TABLE profiles ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 0;
+    ALTER TABLE profiles ADD COLUMN verification_token TEXT DEFAULT NULL;
+    ALTER TABLE profiles ADD COLUMN verification_token_expires_at TEXT DEFAULT NULL;
+  `).catch(() => {
+    // Columns already exist — safe to ignore in SQLite
+  });
+
+  // Migration: grandfather real users, freeze bot accounts
+  // Bots: Gmail addresses with 3+ dots in local part (dot-trick pattern)
+  await db.executeMultiple(`
+    UPDATE profiles
+    SET email_verified = 1
+    WHERE auth_provider IN ('google', 'email+google');
+
+    UPDATE profiles
+    SET email_verified = 1
+    WHERE auth_provider = 'email'
+      AND email NOT GLOB '*.*.*.*@gmail.com';
+
+    UPDATE profiles
+    SET email_verified = 1
+    WHERE auth_provider = 'email'
+      AND email NOT LIKE '%gmail.com';
+  `).catch(() => {});
+
   // Create indexes (also wrapped in try/catch in case columns don't exist yet)
   const indexes = [
     `CREATE INDEX IF NOT EXISTS idx_readings_share_token ON readings(share_token)`,
