@@ -125,18 +125,13 @@ export async function ensureSchema(): Promise<void> {
     `ALTER TABLE card_content ADD COLUMN faq_fa TEXT`,
     `ALTER TABLE card_content ADD COLUMN meta_title_fa TEXT`,
     `ALTER TABLE card_content ADD COLUMN meta_description_fa TEXT`,
+    `ALTER TABLE profiles ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 0`,
+    `ALTER TABLE profiles ADD COLUMN verification_token TEXT DEFAULT NULL`,
+    `ALTER TABLE profiles ADD COLUMN verification_token_expires_at TEXT DEFAULT NULL`,
   ];
   for (const sql of migrations) {
     try { await db.execute(sql); } catch { /* column already exists */ }
   }
-
-  await db.executeMultiple(`
-    ALTER TABLE profiles ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 0;
-    ALTER TABLE profiles ADD COLUMN verification_token TEXT DEFAULT NULL;
-    ALTER TABLE profiles ADD COLUMN verification_token_expires_at TEXT DEFAULT NULL;
-  `).catch(() => {
-    // Columns already exist — safe to ignore in SQLite
-  });
 
   // Migration: grandfather real users, freeze bot accounts
   // Bots: Gmail addresses with 3+ dots in local part (dot-trick pattern)
