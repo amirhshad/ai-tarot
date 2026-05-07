@@ -20,6 +20,15 @@ export async function POST(request: NextRequest) {
 
   const tier = (profile?.tier || 'free') as 'free' | 'pro' | 'premium';
 
+  // Block second reading if email not verified
+  if (profile?.email_verified === 0) {
+    const { getReadingCount } = await import('@/lib/db/queries');
+    const count = await getReadingCount(user.id);
+    if (count >= 1) {
+      return NextResponse.json({ error: 'Please verify your email to continue reading', code: 'EMAIL_UNVERIFIED' }, { status: 403 });
+    }
+  }
+
   const body = await request.json();
   const { spreadType, cards: cardData, question, topic, language: requestLanguage } = body as {
     spreadType: SpreadType;
