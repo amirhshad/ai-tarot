@@ -25,7 +25,7 @@ async function sendEmail(to: string, subject: string, html: string): Promise<voi
 }
 
 export async function sendWelcomeEmail(email: string, displayName?: string): Promise<void> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:3000';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   const html = welcomeEmail({ displayName, baseUrl });
   await sendEmail(email, 'Welcome to TarotVeil — Your first reading awaits ✴', html);
 }
@@ -35,8 +35,8 @@ export async function sendVerificationEmail(
   token: string,
   displayName?: string,
 ): Promise<void> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:3000';
-  const verifyUrl = `${baseUrl}/api/auth/verify?token=${token}`;
+  const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000').replace(/\/$/, '');
+  const verifyUrl = `${baseUrl}/api/auth/verify?token=${encodeURIComponent(token)}`;
   const html = verificationEmail({ verifyUrl, displayName });
   await sendEmail(email, 'Confirm your email — your reading awaits', html);
 }
@@ -48,7 +48,7 @@ export async function sendReadingSummary(
   cardNames: string[],
   interpretationSnippet: string,
 ): Promise<void> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:3000';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   const html = readingSummaryEmail({ readingId, spreadType, cardNames, interpretationSnippet, baseUrl });
   const subject = `Your ${spreadType.replace('-', ' ')} reading is ready`;
   await sendEmail(email, subject, html);

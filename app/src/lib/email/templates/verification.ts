@@ -1,10 +1,14 @@
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 interface VerificationEmailProps {
   verifyUrl: string;
   displayName?: string;
 }
 
 export function verificationEmail({ verifyUrl, displayName }: VerificationEmailProps): string {
-  const greeting = displayName ? `Hi ${displayName}` : 'Hello';
+  const greeting = displayName ? `Hi ${escapeHtml(displayName)}` : 'Hello';
 
   return `
 <!DOCTYPE html>

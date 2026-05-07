@@ -6,6 +6,7 @@ import { generateVerificationToken, saveVerificationToken } from '@/lib/db/verif
 export async function POST(request: NextRequest) {
   try {
     const { email, password, name } = await request.json();
+    const displayName = typeof name === 'string' ? name.trim() || undefined : undefined;
 
     if (!email || !password) {
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
@@ -22,8 +23,8 @@ export async function POST(request: NextRequest) {
     await saveVerificationToken(result.user.id, token, expiresAt);
 
     // Fire-and-forget emails
-    void sendWelcomeEmail(result.user.email, name);
-    void sendVerificationEmail(result.user.email, token, name);
+    void sendWelcomeEmail(result.user.email, displayName);
+    void sendVerificationEmail(result.user.email, token, displayName);
 
     await setSessionCookie(result.user);
     return NextResponse.json({ user: result.user });
