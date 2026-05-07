@@ -12,6 +12,7 @@ export interface Profile {
   stripe_subscription_id: string | null;
   created_at: string;
   updated_at: string;
+  email_verified: number; // 0 = unverified, 1 = verified
 }
 
 export async function getProfile(userId: string): Promise<Profile | undefined> {
@@ -93,6 +94,17 @@ export async function getRecentReadings(userId: string, limit = 10): Promise<Rea
   const db = getDb();
   const result = await db.execute({ sql: 'SELECT * FROM readings WHERE user_id = ? ORDER BY created_at DESC LIMIT ?', args: [userId, limit] });
   return result.rows as unknown as ReadingRow[];
+}
+
+export async function getReadingCount(userId: string): Promise<number> {
+  await ensureSchema();
+  const db = getDb();
+  const result = await db.execute({
+    sql: 'SELECT COUNT(*) as count FROM readings WHERE user_id = ?',
+    args: [userId],
+  });
+  const row = result.rows[0] as unknown as { count: number };
+  return row?.count ?? 0;
 }
 
 export interface ReadingFilters {
