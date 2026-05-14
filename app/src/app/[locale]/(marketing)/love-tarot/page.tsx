@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       'soulmate tarot',
       'relationship guidance tarot',
     ],
-    alternates: buildAlternates('/love-tarot'),
+    alternates: buildAlternates('/love-tarot', locale),
     openGraph: {
       title: t('ogTitle'),
       description: t('ogDescription'),

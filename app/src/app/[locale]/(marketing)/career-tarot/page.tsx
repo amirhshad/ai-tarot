@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       'professional guidance tarot',
       'career change tarot',
     ],
-    alternates: buildAlternates('/career-tarot'),
+    alternates: buildAlternates('/career-tarot', locale),
     openGraph: {
       title: t('ogTitle'),
       description: t('ogDescription'),

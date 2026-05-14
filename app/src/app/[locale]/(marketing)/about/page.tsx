@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: `${t('pageTitle')} — AI-Powered Narrative Tarot`,
     description:
       'TarotVeil uses AI to weave tarot card readings into cohesive narrative stories. Crypto-random draws, multi-language support, and conversational depth.',
-    alternates: buildAlternates('/about'),
+    alternates: buildAlternates('/about', locale),
     openGraph: {
       title: t('pageTitle'),
       description:

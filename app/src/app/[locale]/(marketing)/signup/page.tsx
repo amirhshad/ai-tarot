@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   return {
     title: t('signupTitle'),
-    alternates: buildAlternates('/signup'),
+    alternates: buildAlternates('/signup', locale),
   };
 }
 

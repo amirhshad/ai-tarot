@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       'one card yes no',
       'tarot answer',
     ],
-    alternates: buildAlternates('/yes-or-no'),
+    alternates: buildAlternates('/yes-or-no', locale),
     openGraph: {
       title: t('ogTitle'),
       description: t('ogDescription'),

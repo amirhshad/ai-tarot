@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: `${t('pageTitle')} | TarotVeil`,
     description: t('pageSubtitle'),
-    alternates: buildAlternates('/reading/free'),
+    alternates: buildAlternates('/reading/free', locale),
     openGraph: {
       title: `${t('pageTitle')} | TarotVeil`,
       description: t('pageSubtitle'),

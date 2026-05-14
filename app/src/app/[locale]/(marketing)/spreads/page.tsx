@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       'seven card spread',
       'decision making tarot',
     ],
-    alternates: buildAlternates('/spreads'),
+    alternates: buildAlternates('/spreads', locale),
     openGraph: {
       title: t('ogTitle'),
       description: t('ogDescription'),

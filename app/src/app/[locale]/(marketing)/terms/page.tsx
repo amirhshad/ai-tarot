@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t('termsTitle'),
     description: 'TarotVeil terms of service. Usage terms for our AI-powered tarot reading platform.',
-    alternates: buildAlternates('/terms'),
+    alternates: buildAlternates('/terms', locale),
   };
 }
 

@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: isFA
       ? `فال تاروت روزانه: کارت امروز ${cardName} است. ببینید فال تاروت چه پیامی برای روز شما دارد.`
       : `Today's tarot card is ${card.name}. Discover what this card means for your day with our free daily tarot reading. Keywords: ${card.keywords.slice(0, 3).join(', ')}.`,
-    alternates: buildAlternates('/daily'),
+    alternates: buildAlternates('/daily', locale),
     openGraph: {
       title: isFA ? `فال تاروت روزانه: ${cardName} — ${today}` : `Daily Tarot: ${card.name} — ${today}`,
       description: isFA

@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return {
       title: card.metaTitle,
       description: card.metaDescription,
-      alternates: buildAlternates(`/tarot-card-meanings/${card.slug}`),
+      alternates: buildAlternates(`/tarot-card-meanings/${card.slug}`, locale),
       openGraph: {
         title: card.metaTitle,
         description: card.metaDescription,

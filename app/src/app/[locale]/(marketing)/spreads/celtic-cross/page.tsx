@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       'celtic cross positions',
       'celtic cross meaning',
     ],
-    alternates: buildAlternates('/spreads/celtic-cross'),
+    alternates: buildAlternates('/spreads/celtic-cross', locale),
     openGraph: {
       title: t('ogTitle'),
       description: t('ogDescription'),

@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t('privacyTitle'),
     description: 'TarotVeil privacy policy. Learn how we handle your data, readings, and personal information.',
-    alternates: buildAlternates('/privacy'),
+    alternates: buildAlternates('/privacy', locale),
   };
 }
 

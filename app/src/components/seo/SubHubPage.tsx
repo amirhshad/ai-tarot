@@ -48,7 +48,7 @@ export async function generateSubHubMetadata(configKey: string, locale: string):
   return {
     title,
     description,
-    alternates: buildAlternates(`/tarot-card-meanings/${config.slug}`),
+    alternates: buildAlternates(`/tarot-card-meanings/${config.slug}`, locale),
     openGraph: {
       title,
       description,
