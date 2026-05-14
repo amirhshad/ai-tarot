@@ -3,8 +3,8 @@ import cardContent from '@/data/card-content.json';
 
 // Use stable dates so Google trusts lastModified signals.
 // Update these when actual content changes are deployed.
-const CONTENT_LAST_MODIFIED = '2026-04-10';
-const STATIC_LAST_MODIFIED = '2026-04-10';
+const CONTENT_LAST_MODIFIED = '2026-05-14';
+const STATIC_LAST_MODIFIED = '2026-05-14';
 
 const baseUrl = 'https://www.tarotveil.com';
 
@@ -17,6 +17,7 @@ function withAlternates(path: string, entry: Omit<MetadataRoute.Sitemap[0], 'url
       languages: {
         en: `${baseUrl}${path}`,
         fa: `${baseUrl}/fa${path}`,
+        'x-default': `${baseUrl}${path}`,
       },
     },
   };
@@ -68,6 +69,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     }),
+    withAlternates('/spreads/horseshoe', {
+      lastModified: STATIC_LAST_MODIFIED,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    }),
     withAlternates('/love-tarot', {
       lastModified: STATIC_LAST_MODIFIED,
       changeFrequency: 'monthly',
@@ -82,6 +88,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: STATIC_LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.8,
+    }),
+    withAlternates('/daily', {
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'daily',
+      priority: 0.85,
     }),
     withAlternates('/about', {
       lastModified: STATIC_LAST_MODIFIED,
