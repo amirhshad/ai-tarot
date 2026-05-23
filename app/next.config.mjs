@@ -10,12 +10,12 @@ const nextConfig = {
       {
         source: '/cards',
         destination: '/tarot-card-meanings',
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: '/cards/:slug',
         destination: '/tarot-card-meanings/:slug',
-        permanent: true,
+        statusCode: 301,
       },
     ];
   },
