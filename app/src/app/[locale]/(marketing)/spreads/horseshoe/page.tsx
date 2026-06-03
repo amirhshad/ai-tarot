@@ -339,7 +339,7 @@ export default async function HorseshoeSpreadPage({ params }: { params: Promise<
             {t('bottomCtaDesc')}
           </p>
           <Link
-            href="/reading/new"
+            href="/reading/free"
             className="inline-block px-10 py-3.5 bg-gradient-to-b from-gold-400 to-gold-600 text-black font-display font-semibold text-base tracking-wide rounded-sm hover:shadow-[0_0_30px_rgba(212,160,67,0.3)] transition-all"
           >
             {t('bottomCtaButton')}

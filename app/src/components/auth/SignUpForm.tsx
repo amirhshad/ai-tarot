@@ -80,6 +80,7 @@ export default function SignUpForm() {
       {/* Google Sign-Up */}
       <a
         href="/api/auth/google?redirect=/dashboard"
+        rel="nofollow"
         className="w-full py-3 bg-white hover:bg-gray-100 text-black font-medium rounded-xl flex items-center justify-center gap-3 transition-colors mb-4"
       >
         <GoogleIcon />
