@@ -121,7 +121,7 @@ export function buildInterpretationPrompt(params: {
   const wordRange = tier === 'free'
     ? '150-200'
     : spread.type === 'celtic-cross'
-      ? '700-900'
+      ? '1000-1100'
       : spread.type === 'horseshoe'
         ? '550-750'
         : '400-600';
