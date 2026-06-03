@@ -1,11 +1,12 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Deck from '@/components/tarot/Deck';
 import SpreadLayout from '@/components/tarot/SpreadLayout';
 import UpsellPanel from '@/components/reading/UpsellPanel';
 import ReadingFeedback from '@/components/reading/ReadingFeedback';
+import ReadingLoadingAnimation from '@/components/reading/ReadingLoadingAnimation';
 import { DrawnCard } from '@/lib/tarot/types';
 import { drawCards, serializeDrawnCards } from '@/lib/tarot/shuffle';
 import { getSpread } from '@/lib/tarot/spreads';
@@ -59,6 +60,7 @@ function FreeReadingContent({ language }: { language: 'en' | 'fa' }) {
   const [isInterpreting, setIsInterpreting] = useState(false);
   const [interpretation, setInterpretation] = useState('');
   const [error, setError] = useState('');
+  const loadingStartRef = useRef<number>(0);
 
   const spread = getSpread('three-card')!;
 
@@ -120,6 +122,7 @@ function FreeReadingContent({ language }: { language: 'en' | 'fa' }) {
       let fullText = '';
 
       setStep('interpret');
+      loadingStartRef.current = Date.now();
 
       while (true) {
         const { done, value } = await reader.read();
@@ -134,10 +137,15 @@ function FreeReadingContent({ language }: { language: 'en' | 'fa' }) {
             const data = JSON.parse(line.slice(6));
             if (data.text) {
               fullText += data.text;
-              setInterpretation(fullText);
             }
             if (data.done) {
               saveToLocalStorage(fullText);
+              const elapsed = Date.now() - loadingStartRef.current;
+              const minDisplayTime = 2000;
+              if (elapsed < minDisplayTime) {
+                await new Promise((r) => setTimeout(r, minDisplayTime - elapsed));
+              }
+              setInterpretation(fullText);
             }
             if (data.error) {
               throw new Error(data.error);
@@ -253,6 +261,11 @@ function FreeReadingContent({ language }: { language: 'en' | 'fa' }) {
         </div>
       )}
 
+      {/* Step: Interpret — Loading Animation */}
+      {step === 'interpret' && !interpretation && (
+        <ReadingLoadingAnimation cardCount={drawnCards.length} language={language} />
+      )}
+
       {/* Step: Interpretation */}
       {step === 'interpret' && interpretation && (
         <>
@@ -262,21 +275,14 @@ function FreeReadingContent({ language }: { language: 'en' | 'fa' }) {
               <div className="prose prose-invert max-w-none">
                 <p className="text-amber-50/95 text-base sm:text-lg leading-7 sm:leading-8 whitespace-pre-wrap">
                   {interpretation}
-                  {isInterpreting && (
-                    <span className="inline-block w-2 h-4 bg-gold-400 animate-pulse ml-0.5" />
-                  )}
                 </p>
               </div>
             </div>
           </div>
 
           {/* Feedback + Upsell after reading is done */}
-          {!isInterpreting && (
-            <>
-              <ReadingFeedback />
-              <UpsellPanel />
-            </>
-          )}
+          <ReadingFeedback />
+          <UpsellPanel />
         </>
       )}
 
