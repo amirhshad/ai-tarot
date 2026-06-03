@@ -15,7 +15,7 @@ function getModel(tier: Tier): string {
 
 /** Get max tokens based on tier and spread type */
 function getMaxTokens(tier: Tier, spreadType?: SpreadType): number {
-  if (tier === 'free') return 512;
+  if (tier === 'free') return 800;
   // Celtic Cross (10 cards) needs extra room — Farsi text uses 2-2.5x more tokens than English
   if (spreadType === 'celtic-cross') return 3000;
   return 1500;
