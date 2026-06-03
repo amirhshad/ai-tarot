@@ -118,7 +118,13 @@ export function buildInterpretationPrompt(params: {
   const { spread, cards, language, tier, topic } = params;
 
   const isEnglish = language === 'en';
-  const wordRange = tier === 'free' ? '150-200' : '400-600';
+  const wordRange = tier === 'free'
+    ? '150-200'
+    : spread.type === 'celtic-cross'
+      ? '700-900'
+      : spread.type === 'horseshoe'
+        ? '550-750'
+        : '400-600';
 
   const cardDescriptions = cards.map(dc => {
     const name = isEnglish ? dc.card.name : dc.card.nameFA;

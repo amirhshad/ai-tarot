@@ -93,6 +93,7 @@ export async function POST(request: NextRequest) {
     systemPrompt,
     userMessage: userMessage + questionSuffix,
     tier,
+    spreadType: spread.type,
   });
 
   const encoder = new TextEncoder();

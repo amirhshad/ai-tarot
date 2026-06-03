@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { Tier } from '@/lib/tarot/types';
+import { Tier, SpreadType } from '@/lib/tarot/types';
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
@@ -13,9 +13,11 @@ function getModel(tier: Tier): string {
   return 'claude-sonnet-4-20250514';
 }
 
-/** Get max tokens based on tier */
-function getMaxTokens(tier: Tier): number {
+/** Get max tokens based on tier and spread type */
+function getMaxTokens(tier: Tier, spreadType?: SpreadType): number {
   if (tier === 'free') return 512;
+  // Celtic Cross (10 cards) needs more room to complete the full narrative
+  if (spreadType === 'celtic-cross') return 2000;
   return 1500;
 }
 
@@ -23,6 +25,7 @@ export interface InterpretationRequest {
   systemPrompt: string;
   userMessage: string;
   tier: Tier;
+  spreadType?: SpreadType;
 }
 
 export interface FollowUpRequest {
@@ -37,7 +40,7 @@ export interface FollowUpRequest {
  */
 export async function streamInterpretation(req: InterpretationRequest) {
   const model = getModel(req.tier);
-  const maxTokens = getMaxTokens(req.tier);
+  const maxTokens = getMaxTokens(req.tier, req.spreadType);
 
   return anthropic.messages.stream({
     model,
