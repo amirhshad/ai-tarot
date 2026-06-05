@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { getAllCardContent, getCardContent } from '@/lib/db/card-queries';
@@ -103,7 +103,7 @@ export default async function CardMeaningPage({ params }: { params: Promise<{ sl
   // If no DB content, render fallback from JSON
   if (!card) {
     const fb = fallbackContent[slug];
-    if (!fb || !deckCard) notFound();
+    if (!fb || !deckCard) redirect(locale === 'fa' ? '/fa/tarot-card-meanings' : '/tarot-card-meanings');
     return <FallbackCardPage card={fb} deckCard={deckCard} t={t} tc={tc} />;
   }
 
