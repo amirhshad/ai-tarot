@@ -32,7 +32,7 @@ export function middleware(request: NextRequest) {
   const pathWithoutLocale = pathname.replace(/^\/(en|fa)/, '') || '/';
 
   // Protected routes — redirect to login if not authenticated
-  const protectedPaths = ['/dashboard', '/reading', '/settings', '/billing'];
+  const protectedPaths = ['/dashboard', '/reading', '/settings', '/billing', '/admin'];
   const publicPaths = ['/reading/free', '/s/', '/api/auth/google', '/daily'];
   const isPublic = publicPaths.some((path) => pathWithoutLocale.startsWith(path));
   const isProtected =

@@ -4,7 +4,7 @@ import { SpreadType } from '@/lib/tarot/types';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
 import { buildInterpretationPrompt, buildQuestionMessage, ReadingTopic } from '@/lib/ai/prompts';
 import { streamInterpretation } from '@/lib/ai/client';
-import { getClientIp, checkFreeReadingLimit, recordFreeReading } from '@/lib/utils/rate-limit';
+import { getClientIp, checkFreeReadingLimit, checkGlobalFreeReadingLimit, recordFreeReading } from '@/lib/utils/rate-limit';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -23,6 +23,15 @@ export async function POST(request: NextRequest) {
   // Validate question length
   if (question && question.length > 500) {
     return NextResponse.json({ error: 'Question is too long (max 500 characters)' }, { status: 400 });
+  }
+
+  // Global backstop: bound total LLM spend across all anonymous traffic.
+  const globalLimit = await checkGlobalFreeReadingLimit();
+  if (!globalLimit.allowed) {
+    return NextResponse.json(
+      { error: 'Free readings are temporarily at capacity. Please try again later, or sign up for unlimited readings.' },
+      { status: 429 },
+    );
   }
 
   // Rate limit by IP
@@ -57,14 +66,15 @@ export async function POST(request: NextRequest) {
 
   const questionSuffix = buildQuestionMessage({ question, language });
 
+  // Record the attempt before incurring LLM cost so it counts toward both the
+  // per-IP and global limits even under concurrency or stream failure.
+  await recordFreeReading(ip);
+
   const stream = await streamInterpretation({
     systemPrompt,
     userMessage: userMessage + questionSuffix,
     tier: 'free',
   });
-
-  // Record rate limit entry after successful stream start
-  await recordFreeReading(ip);
 
   const encoder = new TextEncoder();
 
