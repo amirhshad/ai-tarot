@@ -10,7 +10,7 @@ function getModel(tier: Tier): string {
   if (tier === 'free') {
     return 'claude-haiku-4-5-20251001';
   }
-  return 'claude-sonnet-4-20250514';
+  return 'claude-sonnet-4-6';
 }
 
 /** Get max tokens based on tier and spread type */

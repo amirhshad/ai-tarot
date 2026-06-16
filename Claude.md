@@ -26,7 +26,7 @@ You are the orchestration layer (Layer 2) of a 3-layer system for the AI Tarot p
 
 5. **Verify before claiming done.** Run the build, test, or check. Evidence before assertions.
 
-6. **Protect secrets.** Prefer not to commit `.env`, `.env.local`, or any file with API keys. Stripe webhooks: always verify signatures. Supabase: never bypass RLS policies.
+6. **Protect secrets.** Prefer not to commit `.env`, `.env.local`, or any file with API keys. Stripe webhooks: always verify signatures. Never expose the Turso auth token.
 
 7. **Minimal, incremental changes.** Prefer small diffs. One concern per commit. Ask before large refactors.
 
@@ -36,9 +36,10 @@ You are the orchestration layer (Layer 2) of a 3-layer system for the AI Tarot p
 |------|------|
 | App | Next.js 14 + Tailwind CSS (Vercel) |
 | AI (Free tier) | Claude Haiku 4.5 — short summaries |
-| AI (Paid tiers) | Claude Sonnet 4 — deep narrative |
+| AI (Paid tiers) | Claude Sonnet 4.6 — deep narrative |
 | Randomization | Web Crypto API (client-side Fisher-Yates) |
-| Database + Auth | Supabase (PostgreSQL + RLS) |
+| Database | Turso (libSQL / SQLite at the edge) |
+| Auth | Google OAuth (custom JWT session) |
 | Payments | Stripe Billing |
 | i18n | next-intl — English, Farsi (RTL), Arabic |
 | Analytics | PostHog |
@@ -54,9 +55,9 @@ cd app && npm run build    # Production build
 
 ## MCP Servers
 
-- **Supabase** — DB operations, migrations, schema
 - **Playwright** — Browser automation / testing
 - **Context7** — Library documentation lookup
+- **Google Search Console** — SEO analytics and indexing
 
 ## Reference Docs
 
@@ -66,7 +67,7 @@ Detailed specs live in `docs/` — read them when working in their domain:
 |-----|------------|
 | `docs/product-spec.md` | Touching billing, limits, tier logic, or marketing copy |
 | `docs/architecture.md` | Touching API routes, infrastructure, or integration points |
-| `docs/database.md` | Writing migrations or querying Supabase |
+| `docs/database.md` | Writing migrations or querying Turso |
 | `docs/project-map.md` | Navigating the codebase for the first time |
 
 ## Directives
@@ -83,7 +84,7 @@ Some directories have their own CLAUDE.md with domain-specific rules:
 
 - `app/src/lib/ai/CLAUDE.md` — Prompt generation & streaming guardrails
 - `app/src/lib/stripe/CLAUDE.md` — Payment safety, webhook verification
-- `app/src/lib/supabase/CLAUDE.md` — RLS policies, auth safety
+- `app/src/lib/db/CLAUDE.md` — Turso/libSQL safety rules (if exists)
 
 ## Summary
 

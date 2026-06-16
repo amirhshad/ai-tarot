@@ -14,7 +14,7 @@ User → Next.js App → Supabase Auth → Draw Cards (client-side crypto) → C
 |-------|-----------|---------|
 | Frontend | Next.js 14 + Tailwind CSS | SSR, SEO, RTL support, Vercel Edge |
 | AI (Free) | Claude Haiku 4.5 | Fast, cost-effective readings |
-| AI (Paid) | Claude Sonnet 4 | Deep narrative interpretation |
+| AI (Paid) | Claude Sonnet 4.6 | Deep narrative interpretation |
 | Randomization | Web Crypto API (client-side) | Cryptographic Fisher-Yates shuffle |
 | Backend | Next.js API Routes | Serverless, auto-scaling |
 | Database | Supabase (PostgreSQL + Auth) | Auth, RLS, reading storage |

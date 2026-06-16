@@ -17,7 +17,7 @@ An AI-powered conversational tarot reading platform with narrative-driven interp
 | Feature | Free | Pro ($7.99/mo) | Premium ($14.99/mo) |
 |---------|------|----------------|---------------------|
 | Readings/Day | 1 single + 1 three-card/week | Unlimited | Unlimited + custom spreads |
-| AI Model | Haiku 4.5 (short summary) | Sonnet 4 (deep narrative) | Sonnet 4 (deep narrative) |
+| AI Model | Haiku 4.5 (short summary) | Sonnet 4.6 (deep narrative) | Sonnet 4.6 (deep narrative) |
 | Follow-ups | 0 | 5 per reading | 10 per reading |
 | Languages | English only | English + Farsi | English + Farsi + Arabic |
 | History | Last 5 readings | Full + search | Full + trend analysis |
@@ -25,7 +25,7 @@ An AI-powered conversational tarot reading platform with narrative-driven interp
 ## Model Selection Logic
 
 - **Free tier** → Claude Haiku 4.5: fast, cost-effective, shorter interpretations
-- **Pro / Premium** → Claude Sonnet 4: deep narrative, longer interpretations, cultural nuance
+- **Pro / Premium** → Claude Sonnet 4.6: deep narrative, longer interpretations, cultural nuance
 
 The model choice is determined by the user's subscription tier at the time of the reading. Prefer to check this server-side, never trust the client to select the model.
 
