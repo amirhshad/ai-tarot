@@ -6,7 +6,7 @@
 
 ## Rules
 
-1. **Model selection is server-side only.** Check user tier from `profiles` table. Free → Haiku 4.5, Paid → Sonnet 4. Never accept model choice from the client.
+1. **Model selection is server-side only.** Check user tier from `profiles` table. Free → Haiku 4.5, Paid → Sonnet 4.6. Never accept model choice from the client.
 
 2. **No deterministic language in prompts.** System prompts must instruct the AI to avoid "you will…", "expect…", "this predicts…". Use reflective framing.
 

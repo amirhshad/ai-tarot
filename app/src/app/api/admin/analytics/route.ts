@@ -1,18 +1,17 @@
 import { NextResponse } from 'next/server';
 import { getSessionUser } from '@/lib/db/auth';
-import { getProfile } from '@/lib/db/queries';
 import { getDb, ensureSchema } from '@/lib/db/sqlite';
+import { isAdminEmail } from '@/lib/utils/admin';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  // Auth check — only premium users can access
+  // Auth check — restricted to the admin email allowlist (NOT billing tier).
   const user = await getSessionUser();
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const profile = await getProfile(user.id);
-  if (profile?.tier !== 'premium') {
-    return NextResponse.json({ error: 'Forbidden — premium only' }, { status: 403 });
+  if (!isAdminEmail(user.email)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   await ensureSchema();
