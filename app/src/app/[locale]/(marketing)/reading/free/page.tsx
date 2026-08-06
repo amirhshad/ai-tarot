@@ -12,7 +12,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const t = await getTranslations('freeReading');
 
   return {
-    title: `${t('pageTitle')} | TarotVeil`,
+    // No brand suffix — the root layout's title template appends '| TarotVeil'.
+    title: t('pageTitle'),
     description: t('pageSubtitle'),
     alternates: buildAlternates('/reading/free', locale),
     openGraph: {

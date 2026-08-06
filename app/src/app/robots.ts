@@ -13,6 +13,9 @@ export default function robots(): MetadataRoute.Robots {
           '/reading/new', '/fa/reading/new',
           '/settings', '/fa/settings',
           '/billing', '/fa/billing',
+          // Auth-gated; middleware redirects these to /login, which shows up in
+          // Search Console as "Page with redirect" / "Redirect error".
+          '/admin', '/fa/admin',
         ],
       },
     ],

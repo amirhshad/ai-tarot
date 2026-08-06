@@ -40,14 +40,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   setRequestLocale(locale);
   const card = await getCardContent(slug, locale);
   if (card) {
+    const alternates = buildAlternates(`/tarot-card-meanings/${card.slug}`, locale);
     return {
       title: card.metaTitle,
       description: card.metaDescription,
-      alternates: buildAlternates(`/tarot-card-meanings/${card.slug}`, locale),
+      alternates,
       openGraph: {
         title: card.metaTitle,
         description: card.metaDescription,
-        url: `${siteUrl}/tarot-card-meanings/${card.slug}`,
+        url: alternates.canonical,
         type: 'article',
         images: [`${siteUrl}/api/og/card/${card.slug}`],
       },
@@ -60,17 +61,21 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
   }
 
-  // Fallback to JSON
+  // Fallback to JSON. The copy here is English-only, but the canonical and OG
+  // URL must still point at the locale actually being served — omitting the
+  // locale made every Farsi card page declare the English page as its
+  // canonical, which asks Google to drop the Farsi URL from the index.
   const fb = fallbackContent[slug];
   if (!fb) return {};
   const article = /^the /i.test(fb.name) ? '' : 'the ';
   const title = `${fb.name} Tarot Meaning — Upright & Reversed`;
   const description = `What does ${article}${fb.name} mean? Upright & reversed meanings for love, career, feelings, and yes-or-no readings. Free AI tarot reading included.`;
+  const alternates = buildAlternates(`/tarot-card-meanings/${fb.slug}`, locale);
   return {
     title,
     description,
-    alternates: buildAlternates(`/tarot-card-meanings/${fb.slug}`),
-    openGraph: { title, description, url: `${siteUrl}/tarot-card-meanings/${fb.slug}`, type: 'article' },
+    alternates,
+    openGraph: { title, description, url: alternates.canonical, type: 'article' },
   };
 }
 

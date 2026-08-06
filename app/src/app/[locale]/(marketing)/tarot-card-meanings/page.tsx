@@ -14,7 +14,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   setRequestLocale(locale);
   const t = await getTranslations('cardHub');
 
-  const title = `${t('pageTitle')} — Complete Guide to All 78 Cards | TarotVeil`;
+  // No brand suffix here — the root layout's title template appends '| TarotVeil'.
+  const title = `${t('pageTitle')} — Complete Guide to All 78 Cards`;
   const description = t('pageDescription');
 
   return {
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description,
     alternates: buildAlternates('/tarot-card-meanings', locale),
     openGraph: {
-      title,
+      title: `${title} | TarotVeil`,
       description,
       url: `${siteUrl}/tarot-card-meanings`,
     },

@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Free AI Tarot Reading — 3-Card Spread | TarotVeil',
+  // No brand suffix — the root layout's title template appends '| TarotVeil'.
+  title: 'Free AI Tarot Reading — 3-Card Spread',
   description:
     'Get a free AI-powered tarot reading. Choose from general, love, career, or yes/no spreads. Narrative interpretation that reads all cards as one story. No signup required.',
   openGraph: {
