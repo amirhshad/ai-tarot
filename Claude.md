@@ -36,7 +36,7 @@ You are the orchestration layer (Layer 2) of a 3-layer system for the AI Tarot p
 |------|------|
 | App | Next.js 14 + Tailwind CSS (Vercel) |
 | AI (Free tier) | Claude Haiku 4.5 — short summaries |
-| AI (Paid tiers) | Claude Sonnet 4.6 — deep narrative |
+| AI (Paid tiers) | Claude Sonnet 5 — deep narrative |
 | Randomization | Web Crypto API (client-side Fisher-Yates) |
 | Database | Turso (libSQL / SQLite at the edge) |
 | Auth | Google OAuth (custom JWT session) |

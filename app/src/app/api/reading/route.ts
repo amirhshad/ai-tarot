@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
     spread_type: spreadType,
     question,
     cards: cardData,
-    model_used: tier === 'free' ? 'haiku-4.5' : 'sonnet-4',
+    model_used: tier === 'free' ? 'haiku-4.5' : 'sonnet-5',
     language,
     topic: topic || undefined,
   });
