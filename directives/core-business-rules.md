@@ -5,8 +5,8 @@
 | Tier | Price | AI Model | Interpretation Style |
 |------|-------|----------|---------------------|
 | Free | $0 | Claude Haiku 4.5 | Short summary (~150-300 words) |
-| Pro | $7.99/mo | Claude Sonnet 4.6 | Deep narrative (~400-700 words) |
-| Premium | $14.99/mo | Claude Sonnet 4.6 | Deep narrative + custom spreads |
+| Pro | $7.99/mo | Claude Sonnet 5 | Deep narrative (~400-700 words) |
+| Premium | $14.99/mo | Claude Sonnet 5 | Deep narrative + custom spreads |
 
 **Model selection is server-side only.** The client sends the reading request; the server checks the user's tier from the `profiles` table and selects the model. Never trust client-provided model preferences.
 
