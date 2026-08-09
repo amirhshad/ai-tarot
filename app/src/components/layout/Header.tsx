@@ -4,6 +4,7 @@ import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { trackLanguageSwitch, resetUser } from '@/lib/analytics/events';
+import { PAYMENTS_ENABLED } from '@/lib/config/features';
 
 interface HeaderProps {
   user?: { email: string; tier: string } | null;
@@ -17,6 +18,10 @@ export default function Header({ user }: HeaderProps) {
   const tc = useTranslations('common');
   const [loggingOut, setLoggingOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // With payments off, /billing is only useful to someone who already has a
+  // subscription to manage — free users would land on a dead end.
+  const showBilling = PAYMENTS_ENABLED || (user?.tier ?? 'free') !== 'free';
 
   async function handleLogout() {
     setLoggingOut(true);
@@ -64,7 +69,7 @@ export default function Header({ user }: HeaderProps) {
               <NavLink href="/tarot-card-meanings" current={pathname} label={t('cardMeanings')} />
               <NavLink href="/spreads" current={pathname} label={t('spreads')} />
               <NavLink href="/history" current={pathname} label={t('history')} />
-              <NavLink href="/billing" current={pathname} label={t('billing')} />
+              {showBilling && <NavLink href="/billing" current={pathname} label={t('billing')} />}
               <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-amber-200/80 capitalize">
                 {user.tier}
               </span>
@@ -122,7 +127,7 @@ export default function Header({ user }: HeaderProps) {
               <NavLink href="/tarot-card-meanings" current={pathname} label={t('cardMeanings')} onClick={() => setMenuOpen(false)} />
               <NavLink href="/spreads" current={pathname} label={t('spreads')} onClick={() => setMenuOpen(false)} />
               <NavLink href="/history" current={pathname} label={t('history')} onClick={() => setMenuOpen(false)} />
-              <NavLink href="/billing" current={pathname} label={t('billing')} onClick={() => setMenuOpen(false)} />
+              {showBilling && <NavLink href="/billing" current={pathname} label={t('billing')} onClick={() => setMenuOpen(false)} />}
               <div className="flex items-center gap-3 pt-1">
                 <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-amber-200/80 capitalize">
                   {user.tier}

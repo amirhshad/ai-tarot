@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import PricingTable from '@/components/billing/PricingTable';
+import { PAYMENTS_ENABLED } from '@/lib/config/features';
 
 /* ─── Fanned card data: iconic Major Arcana picks ─── */
 const HERO_CARDS = [
@@ -514,6 +515,7 @@ export default function LandingPage() {
       </RevealSection>
 
       {/* ══════════════ PRICING ══════════════ */}
+      {PAYMENTS_ENABLED && (
       <RevealSection id="pricing" className="relative px-4 py-24">
         <hr className="section-divider mb-20" />
         <div className="max-w-5xl mx-auto">
@@ -531,6 +533,7 @@ export default function LandingPage() {
           </div>
         </div>
       </RevealSection>
+      )}
 
       {/* ══════════════ FAQ ══════════════ */}
       <RevealSection id="faq" className="relative px-4 py-24">

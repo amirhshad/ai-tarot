@@ -7,6 +7,7 @@ import DeleteReadingButton from '@/components/reading/DeleteReadingButton';
 import VerificationGate from '@/components/auth/VerificationGate';
 import VerifiedToast from '@/components/auth/VerifiedToast';
 import { getReadingCount } from '@/lib/db/queries';
+import { PAYMENTS_ENABLED } from '@/lib/config/features';
 
 export default async function DashboardPage({
   params,
@@ -86,7 +87,7 @@ export default async function DashboardPage({
           </p>
         </Link>
 
-        {profile?.tier === 'free' && (
+        {PAYMENTS_ENABLED && profile?.tier === 'free' && (
           <Link
             href="/billing"
             className="p-6 rounded-2xl bg-gradient-to-br from-amber-900/20 to-white/[0.02] border border-amber-700/20 hover:border-amber-400/30 transition-colors group"
@@ -101,7 +102,7 @@ export default async function DashboardPage({
           </Link>
         )}
 
-        {(profile?.tier === 'free' || profile?.tier === 'pro') && (
+        {PAYMENTS_ENABLED && (profile?.tier === 'free' || profile?.tier === 'pro') && (
           <Link
             href="/billing"
             className="p-6 rounded-2xl bg-gradient-to-br from-purple-900/20 to-white/[0.02] border border-purple-700/20 hover:border-purple-400/30 transition-colors group"

@@ -2,6 +2,7 @@
 
 import { Link } from '@/i18n/navigation';
 import { motion } from 'framer-motion';
+import { PAYMENTS_ENABLED } from '@/lib/config/features';
 
 export default function UpsellPanel() {
   return (
@@ -38,8 +39,8 @@ export default function UpsellPanel() {
             icon="&#x2736;"
             title="Celtic Cross Spread"
             description="Unlock 10-card deep readings with richer narrative interpretation."
-            cta="Go Pro"
-            href="/signup?plan=pro"
+            cta={PAYMENTS_ENABLED ? 'Go Pro' : 'Sign Up Free'}
+            href={PAYMENTS_ENABLED ? '/signup?plan=pro' : '/signup'}
             highlight
           />
         </div>
