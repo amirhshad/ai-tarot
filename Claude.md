@@ -40,7 +40,7 @@ You are the orchestration layer (Layer 2) of a 3-layer system for the AI Tarot p
 | Randomization | Web Crypto API (client-side Fisher-Yates) |
 | Database | Turso (libSQL / SQLite at the edge) |
 | Auth | Google OAuth (custom JWT session) |
-| Payments | Stripe Billing |
+| Payments | Stripe Billing — **currently disabled**, see `directives/core-business-rules.md` |
 | i18n | next-intl — English, Farsi (RTL), Arabic |
 | Analytics | PostHog |
 | Email | Resend + React Email |
