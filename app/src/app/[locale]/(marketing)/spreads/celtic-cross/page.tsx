@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buildAlternates } from '@/lib/seo/alternates';
+import { PAYMENTS_ENABLED } from '@/lib/config/features';
 
 const siteUrl = 'https://www.tarotveil.com';
 
@@ -149,12 +150,14 @@ export default async function CelticCrossSpreadPage({ params }: { params: Promis
             >
               {t('tryFreeReading')}
             </Link>
-            <span className="text-xs text-stone-500">
-              {t('proNote')}{' '}
-              <Link href="/#pricing" className="text-gold-400/70 hover:text-gold-400 transition-colors">
-                {t('proPlan')}
-              </Link>
-            </span>
+            {PAYMENTS_ENABLED && (
+              <span className="text-xs text-stone-500">
+                {t('proNote')}{' '}
+                <Link href="/#pricing" className="text-gold-400/70 hover:text-gold-400 transition-colors">
+                  {t('proPlan')}
+                </Link>
+              </span>
+            )}
           </div>
         </div>
 

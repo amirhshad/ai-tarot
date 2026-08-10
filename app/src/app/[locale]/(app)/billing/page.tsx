@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import PricingTable from '@/components/billing/PricingTable';
+import { PAYMENTS_ENABLED } from '@/lib/config/features';
 
 export default function BillingPage() {
   const [tier, setTier] = useState('free');
@@ -84,7 +85,18 @@ export default function BillingPage() {
         </div>
       )}
 
-      <PricingTable currentTier={tier} onSelectPlan={handleSelectPlan} />
+      {PAYMENTS_ENABLED ? (
+        <PricingTable currentTier={tier} onSelectPlan={handleSelectPlan} />
+      ) : (
+        tier === 'free' && (
+          <div className="p-4 rounded-xl bg-white/[0.04] border border-white/[0.08]">
+            <p className="text-white font-medium">Free Plan</p>
+            <p className="text-sm text-gray-500 mt-1">
+              You&apos;re on the free plan. Paid subscriptions aren&apos;t available right now.
+            </p>
+          </div>
+        )
+      )}
     </div>
   );
 }

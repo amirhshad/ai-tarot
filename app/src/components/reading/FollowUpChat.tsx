@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { getFollowUpLimit } from '@/lib/stripe/config';
+import { PAYMENTS_ENABLED } from '@/lib/config/features';
 import { DECK } from '@/lib/tarot/deck';
 import { TarotCard } from '@/lib/tarot/types';
 import Image from 'next/image';
@@ -347,13 +348,15 @@ export default function FollowUpChat({
           <p className="text-sm text-gray-300">
             {limit === 0
               ? (en
-                  ? 'Follow-up questions are available with Pro. Upgrade to explore your reading deeper.'
+                  ? (PAYMENTS_ENABLED
+                      ? 'Follow-up questions are available with Pro. Upgrade to explore your reading deeper.'
+                      : 'Follow-up questions are available to members.')
                   : 'سؤالات بعدی با اشتراک حرفه‌ای فعال می‌شوند.')
               : (en
                   ? 'You\'ve used all your follow-up questions for this reading.'
                   : 'تمام سؤالات بعدی این خوانش را استفاده کرده‌اید.')}
           </p>
-          {limit === 0 && (
+          {limit === 0 && PAYMENTS_ENABLED && (
             <div className="flex flex-col sm:flex-row gap-2 justify-center">
               <a
                 href="/billing"

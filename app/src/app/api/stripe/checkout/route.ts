@@ -3,9 +3,17 @@ import { getSessionUser } from '@/lib/db/auth';
 import { getProfile, updateProfile } from '@/lib/db/queries';
 import { createCheckoutSession, getOrCreateCustomer } from '@/lib/stripe/helpers';
 import { PLANS, PlanName } from '@/lib/stripe/config';
+import { PAYMENTS_ENABLED } from '@/lib/config/features';
 
 export async function POST(request: NextRequest) {
   try {
+    if (!PAYMENTS_ENABLED) {
+      return NextResponse.json(
+        { error: 'Subscriptions are not available at the moment.' },
+        { status: 503 },
+      );
+    }
+
     const user = await getSessionUser();
 
     if (!user) {

@@ -1,14 +1,17 @@
 import { SpreadType } from '@/lib/tarot/types';
 import { getPlan } from '@/lib/stripe/config';
 import { getUsage, upsertUsage } from '@/lib/db/queries';
+import { PAYMENTS_ENABLED } from '@/lib/config/features';
 
-/** Get the Monday of the current week (ISO week start) */
-function getCurrentWeekStart(): string {
-  const now = new Date();
-  const day = now.getDay();
-  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
-  const monday = new Date(now.setDate(diff));
-  return monday.toISOString().split('T')[0];
+/**
+ * Current quota period — one UTC day (YYYY-MM-DD).
+ *
+ * Stored in the `usage.week_start` column, which is now a generic period key.
+ * The column name is legacy; no migration is needed since old weekly rows simply
+ * fall outside today's key and are ignored.
+ */
+function getCurrentPeriod(): string {
+  return new Date().toISOString().split('T')[0];
 }
 
 /** Check if a user can perform a reading of the given spread type */
@@ -24,8 +27,8 @@ export async function checkQuota(
     return { allowed: true };
   }
 
-  const weekStart = getCurrentWeekStart();
-  const usage = await getUsage(userId, weekStart);
+  const period = getCurrentPeriod();
+  const usage = await getUsage(userId, period);
 
   const currentUsage = usage || {
     single_count: 0,
@@ -34,25 +37,35 @@ export async function checkQuota(
     horseshoe_count: 0,
   };
 
+  // With payments disabled there is nothing for a free user to upgrade to,
+  // so the copy points at the reset instead of at a checkout page.
+  const limitSuffix = PAYMENTS_ENABLED
+    ? ' Upgrade to Pro for unlimited readings.'
+    : ' Come back tomorrow for another.';
+  const membersOnly = (spread: string) =>
+    PAYMENTS_ENABLED
+      ? `${spread} is available for Pro and Premium members.`
+      : `${spread} is available to members only.`;
+
   switch (spreadType) {
     case 'single':
       if (currentUsage.single_count >= plan.limits.singlePerDay) {
-        return { allowed: false, reason: 'Daily single card limit reached. Upgrade to Pro for unlimited readings.' };
+        return { allowed: false, reason: `Daily single card limit reached.${limitSuffix}` };
       }
       break;
     case 'three-card':
-      if (currentUsage.three_card_count >= plan.limits.threeCardPerWeek) {
-        return { allowed: false, reason: 'Weekly three-card limit reached. Upgrade to Pro for unlimited readings.' };
+      if (currentUsage.three_card_count >= plan.limits.threeCardPerDay) {
+        return { allowed: false, reason: `Daily three-card limit reached.${limitSuffix}` };
       }
       break;
     case 'celtic-cross':
-      if (plan.limits.celticCrossPerWeek === 0) {
-        return { allowed: false, reason: 'Celtic Cross is available for Pro and Premium members.' };
+      if (plan.limits.celticCrossPerDay === 0) {
+        return { allowed: false, reason: membersOnly('Celtic Cross') };
       }
       break;
     case 'horseshoe':
-      if (plan.limits.horseshoePerWeek === 0) {
-        return { allowed: false, reason: 'Horseshoe Spread is available for Pro and Premium members.' };
+      if (plan.limits.horseshoePerDay === 0) {
+        return { allowed: false, reason: membersOnly('Horseshoe Spread') };
       }
       break;
   }
@@ -65,7 +78,7 @@ export async function incrementUsage(
   userId: string,
   spreadType: SpreadType,
 ): Promise<void> {
-  const weekStart = getCurrentWeekStart();
+  const period = getCurrentPeriod();
 
   const columnMap: Record<SpreadType, string> = {
     'single': 'single_count',
@@ -74,5 +87,5 @@ export async function incrementUsage(
     'horseshoe': 'horseshoe_count',
   };
 
-  await upsertUsage(userId, weekStart, columnMap[spreadType]);
+  await upsertUsage(userId, period, columnMap[spreadType]);
 }
