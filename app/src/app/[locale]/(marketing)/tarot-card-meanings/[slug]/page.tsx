@@ -42,7 +42,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (card) {
     const alternates = buildAlternates(`/tarot-card-meanings/${card.slug}`, locale);
     return {
-      title: card.metaTitle,
+      // Opt out of the layout's '%s | brand' template: card names push these
+      // titles past the ~60-char SERP cut, and the suffix is the least useful
+      // part. metaTitle already reads as a complete title on its own.
+      title: { absolute: card.metaTitle },
       description: card.metaDescription,
       alternates,
       openGraph: {

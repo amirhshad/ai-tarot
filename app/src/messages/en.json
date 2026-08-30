@@ -67,6 +67,8 @@
   },
   "cardHub": {
     "pageTitle": "Tarot Card Meanings",
+    "metaTitle": "Tarot Card Meanings — Complete Guide to All 78 Cards",
+    "metaDescription": "Explore every card in the Rider-Waite-Smith deck with AI-powered narrative interpretations. Upright and reversed meanings, love, career, and yes/no guidance for all 78 cards.",
     "pageDescription": "Explore every card in the Rider-Waite-Smith deck with AI-powered narrative interpretations. Upright and reversed meanings, love, career, and yes/no guidance for all 78 cards.",
     "majorArcanaTitle": "Major Arcana",
     "majorArcanaDesc": "22 trump cards representing life's major themes and spiritual lessons.",
@@ -163,6 +165,8 @@
   },
   "freeReading": {
     "pageTitle": "Free AI Tarot Reading",
+    "metaTitle": "Free AI Tarot Reading",
+    "metaDescription": "Choose a topic for your three-card past, present, and future spread",
     "pageSubtitle": "Choose a topic for your three-card past, present, and future spread",
     "pageNote": "Crypto-random card draws · Narrative AI interpretation · No signup required",
     "topicGeneral": "General Reading",
@@ -512,7 +516,7 @@
     "bottomCtaButton": "Get a Free Reading"
   },
   "spreadCelticCross": {
-    "metaTitle": "Celtic Cross Tarot Spread — 10-Card Layout Guide | AI Tarot",
+    "metaTitle": "Celtic Cross Tarot Spread — 10-Card Layout Guide",
     "metaDescription": "Master the Celtic Cross tarot spread: all 10 positions explained with meanings, tips, and an AI-powered sample reading. The most comprehensive tarot layout.",
     "ogTitle": "Celtic Cross Tarot Spread — 10-Card Layout Guide | AI Tarot",
     "ogDescription": "The definitive guide to the Celtic Cross tarot spread. All 10 positions explained with AI-powered interpretations.",
@@ -748,7 +752,7 @@
   },
   "yesOrNo": {
     "metaTitle": "Yes or No Tarot — Free AI Yes/No Tarot Reading",
-    "metaDescription": "Get a free yes or no tarot reading with AI interpretation. Ask a question, draw one card, and receive a clear answer with nuanced guidance from TarotVeil.",
+    "metaDescription": "Get a free yes or no tarot reading with AI interpretation. Ask a question, draw three cards, and receive a clear answer with nuanced guidance from TarotVeil.",
     "ogTitle": "Yes or No Tarot — Free AI Yes/No Tarot Reading | TarotVeil",
     "ogDescription": "Quick yes or no tarot readings powered by AI. One card, one answer, with nuanced interpretation.",
     "breadcrumbHome": "Home",

@@ -14,16 +14,20 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   setRequestLocale(locale);
   const t = await getTranslations('cardHub');
 
-  // No brand suffix here — the root layout's title template appends '| TarotVeil'.
-  const title = `${t('pageTitle')} — Complete Guide to All 78 Cards`;
-  const description = t('pageDescription');
+  // No brand suffix here — the root layout's title template appends the brand.
+  // Both halves must come from the message file: hard-coding the English tail
+  // shipped a half-English <title> on /fa/tarot-card-meanings.
+  const title = t('metaTitle');
+  const description = t('metaDescription');
 
   return {
     title,
     description,
     alternates: buildAlternates('/tarot-card-meanings', locale),
     openGraph: {
-      title: `${title} | TarotVeil`,
+      // openGraph.title bypasses the layout's title template, so the brand is
+      // appended here — in the locale's own script.
+      title: `${title} | ${locale === 'fa' ? 'تاروت‌ویل' : 'TarotVeil'}`,
       description,
       url: `${siteUrl}/tarot-card-meanings`,
     },

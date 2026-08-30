@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       default: isFa
         ? 'تاروت‌ویل — فال تاروت آنلاین با تفسیر روایی هوش مصنوعی'
         : 'TarotVeil — AI-Powered Tarot Readings That Tell Your Story',
-      template: '%s | TarotVeil',
+      template: isFa ? '%s | تاروت‌ویل' : '%s | TarotVeil',
     },
     description: isFa
       ? 'فال تاروت آنلاین رایگان با تفسیر روایی هوش مصنوعی. کشیدن کارت تصادفی رمزنگاری شده، سؤالات بعدی و پشتیبانی چند زبانه.'

@@ -12,13 +12,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const t = await getTranslations('freeReading');
 
   return {
-    // No brand suffix — the root layout's title template appends '| TarotVeil'.
-    title: t('pageTitle'),
-    description: t('pageSubtitle'),
+    // No brand suffix — the root layout's title template appends the brand.
+    // metaTitle/metaDescription are written for search; pageTitle/pageSubtitle
+    // are on-page UI copy and read poorly as a snippet.
+    title: t('metaTitle'),
+    description: t('metaDescription'),
     alternates: buildAlternates('/reading/free', locale),
     openGraph: {
-      title: `${t('pageTitle')} | TarotVeil`,
-      description: t('pageSubtitle'),
+      title: `${t('metaTitle')} | ${locale === 'fa' ? 'تاروت‌ویل' : 'TarotVeil'}`,
+      description: t('metaDescription'),
       url: `${siteUrl}/reading/free`,
     },
   };
