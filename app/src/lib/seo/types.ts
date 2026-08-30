@@ -9,6 +9,15 @@ export interface FaqItem {
   answer: string;
 }
 
+/** A per-card deep section from the indexation experiment. Which sections a
+ *  card carries, and in what order, varies by card on purpose — see
+ *  execution/deepen-cards-kimi.mjs. English only. */
+export interface DeepSection {
+  id: string;
+  heading: string;
+  body: string;
+}
+
 export interface RichCardContent {
   slug: string;
   cardId: number;
@@ -32,6 +41,7 @@ export interface RichCardContent {
   yesOrNoVerdict: 'yes' | 'no' | 'maybe';
   combinations: CardCombinationRef[];
   faq: FaqItem[];
+  deepSections: DeepSection[];
   relatedCards: string[];
   metaTitle: string;
   metaDescription: string;

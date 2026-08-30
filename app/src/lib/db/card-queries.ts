@@ -27,7 +27,13 @@ function rowToRichCard(row: Record<string, unknown>, locale: string = 'en'): Ric
     yesOrNo: (fa && row.yes_or_no_fa ? row.yes_or_no_fa : row.yes_or_no) as string,
     yesOrNoVerdict: row.yes_or_no_verdict as 'yes' | 'no' | 'maybe',
     combinations: JSON.parse((fa && row.combinations_fa ? row.combinations_fa : row.combinations) as string),
-    faq: JSON.parse((fa && row.faq_fa ? row.faq_fa : row.faq) as string),
+    faq: [
+      ...JSON.parse((fa && row.faq_fa ? row.faq_fa : row.faq) as string),
+      // Extra FAQs from the deepening experiment. English only — appending
+      // English answers to a Farsi page would be worse than having none.
+      ...(!fa && row.deep_faq ? JSON.parse(row.deep_faq as string) : []),
+    ],
+    deepSections: !fa && row.deep_sections ? JSON.parse(row.deep_sections as string) : [],
     relatedCards: JSON.parse(row.related_cards as string),
     metaTitle: (fa && row.meta_title_fa ? row.meta_title_fa : row.meta_title) as string,
     metaDescription: (fa && row.meta_description_fa ? row.meta_description_fa : row.meta_description) as string,
