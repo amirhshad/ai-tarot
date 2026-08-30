@@ -89,6 +89,33 @@ function suitSubHub(arcana: string, suit: string | null) {
   return { name: map[suit] || suit, slug: `suit-of-${suit}` };
 }
 
+/** Like Paragraphs, but keeps numbered lists as lists. The deep sections can
+ *  contain a run of "1. …\n2. …" lines that Paragraphs would flatten. */
+/** Section ids are camelCase in the data; URL fragments should not be. */
+function deepAnchor(id: string) {
+  return `deep-${id.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()}`;
+}
+
+function DeepBody({ text }: { text: string }) {
+  const blocks = text.split('\n\n').filter(Boolean);
+  return (
+    <>
+      {blocks.map((block, i) => {
+        const lines = block.split('\n').filter(Boolean);
+        const numbered = lines.length > 1 && lines.every(l => /^\s*\d+[.)]\s/.test(l));
+        if (numbered) {
+          return (
+            <ol key={i} className="mb-4 last:mb-0 list-decimal pl-5 space-y-2">
+              {lines.map((l, j) => <li key={j}>{l.replace(/^\s*\d+[.)]\s*/, '')}</li>)}
+            </ol>
+          );
+        }
+        return <p key={i} className="mb-4 last:mb-0">{block.replace(/\n/g, ' ')}</p>;
+      })}
+    </>
+  );
+}
+
 function Paragraphs({ text }: { text: string }) {
   return (
     <>
@@ -214,6 +241,7 @@ export default async function CardMeaningPage({ params }: { params: Promise<{ sl
               ...(card.asFeelings ? [{ id: 'feelings', label: t('tocFeelings') }] : []),
               ...(card.howSomeoneSeesYou ? [{ id: 'how-seen', label: t('tocHowSeen') }] : []),
               ...(card.advice ? [{ id: 'advice', label: t('tocAdvice') }] : []),
+              ...card.deepSections.map(ds => ({ id: deepAnchor(ds.id), label: ds.heading })),
               { id: 'yes-or-no', label: t('tocYesOrNo') },
               { id: 'combinations', label: t('tocCombinations') },
               { id: 'faq', label: t('tocFaq') },
@@ -302,6 +330,19 @@ export default async function CardMeaningPage({ params }: { params: Promise<{ sl
             </div>
           </section>
         )}
+
+        {/* Deep sections (indexation experiment). Order and membership vary per
+            card by design — see execution/deepen-cards-kimi.mjs. */}
+        {card.deepSections.map(ds => (
+          <section key={ds.id} id={deepAnchor(ds.id)} className="mb-12">
+            <h2 className="font-display text-2xl font-semibold text-white mb-4 flex items-center gap-3">
+              <span className="text-gold-400/50">✧</span> {ds.heading}
+            </h2>
+            <div className="font-body text-base font-medium text-stone-300 leading-relaxed pl-8 border-l border-gold-400/10">
+              <DeepBody text={ds.body} />
+            </div>
+          </section>
+        ))}
 
         {/* Yes or No */}
         <section id="yes-or-no" className="mb-12">

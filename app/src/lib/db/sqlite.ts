@@ -125,6 +125,13 @@ export async function ensureSchema(): Promise<void> {
     `ALTER TABLE card_content ADD COLUMN faq_fa TEXT`,
     `ALTER TABLE card_content ADD COLUMN meta_title_fa TEXT`,
     `ALTER TABLE card_content ADD COLUMN meta_description_fa TEXT`,
+    // Indexation experiment: per-card deep sections (see execution/deepen-cards-kimi.mjs).
+    // deep_sections is an ordered JSON array of { id, heading, body } so each card
+    // can carry a different set of sections without a column per section.
+    `ALTER TABLE card_content ADD COLUMN deep_sections TEXT`,
+    `ALTER TABLE card_content ADD COLUMN deep_faq TEXT`,
+    `ALTER TABLE card_content ADD COLUMN deepened_at TEXT`,
+    `ALTER TABLE card_content ADD COLUMN deepened_model TEXT`,
     `ALTER TABLE profiles ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 0`,
     `ALTER TABLE profiles ADD COLUMN verification_token TEXT DEFAULT NULL`,
     `ALTER TABLE profiles ADD COLUMN verification_token_expires_at TEXT DEFAULT NULL`,
