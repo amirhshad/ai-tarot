@@ -23,7 +23,6 @@ const { createClient } = require('@libsql/client');
 
 const TITLE_MAX = 60;
 const DESC_MAX = 155;
-const BRAND_SUFFIX = ' | TarotVeil';
 
 const violations = [];
 const fail = (where, msg) => violations.push(`${where}: ${msg}`);
@@ -84,7 +83,9 @@ async function main() {
     const y = msgs.yesOrNo || {};
     // yes-or-no uses a bare `title`, so the layout appends the brand suffix.
     // Task 2 switches it to absolute; until then the budget is 60-13=47.
-    checkLen(`msg:${locale}.yesOrNo`, 'metaTitle+suffix', y.metaTitle + BRAND_SUFFIX, TITLE_MAX);
+    // yes-or-no opts out of the layout's '%s | TarotVeil' template via
+    // `title: { absolute }`, so it gets the full 60-char budget.
+    checkLen(`msg:${locale}.yesOrNo`, 'metaTitle', y.metaTitle, TITLE_MAX);
     checkLen(`msg:${locale}.yesOrNo`, 'metaDescription', y.metaDescription, DESC_MAX);
   }
 
