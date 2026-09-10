@@ -51,6 +51,8 @@ You are the orchestration layer (Layer 2) of a 3-layer system for the AI Tarot p
 cd app && npm run dev      # Dev server
 cd app && npm run build    # Production build
 # Deployed via Vercel (auto on git push)
+
+node execution/indexnow-submit.mjs   # After any content deploy: resubmit sitemap to Bing IndexNow
 ```
 
 ## MCP Servers
