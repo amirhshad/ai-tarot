@@ -13,6 +13,18 @@
  * no API spend. Variation comes from yes_or_no_verdict and the keyword lists,
  * which differ for every card.
  *
+ * Backup naming: each `--write` run creates execution/output/card-meta-backup-
+ * <ISO>.json holding the values it is ABOUT TO OVERWRITE. If this script is
+ * ever re-run, the OLDEST backup for a rewrite is the true original — not the
+ * newest, which only captures the previous run's output. See
+ * execution/output/README.md before restoring from any of these files.
+ *
+ * Idempotent: before writing, generated values are compared against what is
+ * already in the table. If every row already matches, the script prints that
+ * nothing changed and exits without creating a backup or touching the DB.
+ * The actual write is a single atomic db.batch() — not a sequential loop —
+ * so a dropped connection mid-write can't leave the table half-updated.
+ *
  * Usage:
  *   node execution/rewrite-card-meta.mjs            # dry run, prints all 78
  *   node execution/rewrite-card-meta.mjs --write    # backs up, then writes
@@ -219,17 +231,34 @@ async function main() {
     return;
   }
 
+  // Idempotent no-op guard: if the table already holds exactly these values
+  // (e.g. this is a re-run after a previous write already succeeded), there
+  // is nothing to back up or write. Skipping avoids creating a confusing
+  // extra backup file whose "old" values would just be the current — already
+  // correct — copy, and makes the script safe to re-run at will.
+  const changed = updates.filter(u => u.title !== u.oldTitle || u.description !== u.oldDescription);
+  if (changed.length === 0) {
+    console.log('\nNo changes: every row already matches the generated values. Nothing to back up or write.');
+    return;
+  }
+  console.log(`\n${changed.length} of ${updates.length} rows differ from the current DB values.`);
+
   mkdirSync(join(__dirname, 'output'), { recursive: true });
   const backupPath = join(__dirname, 'output', `card-meta-backup-${new Date().toISOString().replace(/[:.]/g, '-')}.json`);
   writeFileSync(backupPath, JSON.stringify(updates.map(u => ({ slug: u.slug, meta_title: u.oldTitle, meta_description: u.oldDescription })), null, 2));
-  console.log(`\nBacked up previous values to ${backupPath}`);
+  console.log(`Backed up previous values to ${backupPath}`);
 
-  for (const u of updates) {
-    await db.execute({
+  // Single atomic batch rather than 78 sequential db.execute() calls — a
+  // dropped connection mid-loop previously could have left some rows
+  // rewritten and the rest untouched, with no detection. libSQL applies a
+  // batch atomically.
+  await db.batch(
+    updates.map(u => ({
       sql: 'UPDATE card_content SET meta_title = ?, meta_description = ? WHERE slug = ?',
       args: [u.title, u.description, u.slug],
-    });
-  }
+    })),
+    'write'
+  );
   console.log(`✓ Wrote ${updates.length} rows.`);
 }
 
