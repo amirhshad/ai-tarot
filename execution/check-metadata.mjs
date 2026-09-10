@@ -49,7 +49,7 @@ function checkUnique(where, field, rows, pick) {
     if (!v) continue;
     // Strip the card name so a shared TEMPLATE is caught even though the
     // rendered strings differ. This is the check that matters.
-    const skeleton = v.replace(new RegExp(r.name || r.slug, 'gi'), '«CARD»').trim();
+    const skeleton = v.replace(new RegExp(`\\b${r.name || r.slug}\\b`, 'gi'), '«CARD»').trim();
     if (seen.has(skeleton)) {
       fail(where, `${field} template collision: "${r.slug}" duplicates "${seen.get(skeleton)}"\n    ${skeleton}`);
     } else {
