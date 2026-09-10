@@ -59,7 +59,10 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization)
      * - favicon.ico, images, cards
+     * - any .txt file in public/ (robots.txt, IndexNow key verification
+     *   files, and any future .txt file placed in public/) — these must be
+     *   served directly rather than routed through locale/auth middleware
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|cards/|images/|sitemap\\.xml|robots\\.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|cards/|images/|sitemap\\.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|txt)$).*)',
   ],
 };
