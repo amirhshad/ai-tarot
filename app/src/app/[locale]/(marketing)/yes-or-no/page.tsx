@@ -12,7 +12,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const t = await getTranslations('yesOrNo');
 
   return {
-    title: t('metaTitle'),
+    // Opt out of the layout's '%s | TarotVeil' template. The brand suffix is
+    // the least useful 13 characters in a 60-char budget, and Bing data shows
+    // the words that earn the click ("Free", "AI") must sit at the front.
+    title: { absolute: t('metaTitle') },
     description: t('metaDescription'),
     keywords: [
       'yes or no tarot',

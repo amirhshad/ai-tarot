@@ -19,3 +19,6 @@ app/data/
 # Deepening-run scratch: pre-write row backups and raw parse failures
 execution/output/deepen/backup-*.json
 execution/output/deepen/*.RAW-PARSE-FAIL.txt
+
+# superpowers SDD scratch workspace (ledgers, briefs, review packages)
+.superpowers/
