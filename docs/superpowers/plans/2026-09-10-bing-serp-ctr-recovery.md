@@ -89,13 +89,19 @@ Create `execution/check-metadata.mjs`:
  * Usage: node execution/check-metadata.mjs
  * Exit 0 = pass, 1 = violations.
  */
-import { createClient } from '@libsql/client';
+import { createRequire } from 'module';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
+
+// There is no package.json or node_modules at the repo root — deps live in
+// app/. This is the bootstrap every script in execution/ uses; see
+// deepen-cards-kimi.mjs:31-33. A bare `import from '@libsql/client'` fails.
+const require = createRequire(resolve(__dirname, '../app/package.json'));
+const { createClient } = require('@libsql/client');
 
 const TITLE_MAX = 60;
 const DESC_MAX = 155;
@@ -350,13 +356,19 @@ Create `execution/rewrite-card-meta.mjs`:
  *   node execution/rewrite-card-meta.mjs            # dry run, prints all 78
  *   node execution/rewrite-card-meta.mjs --write    # backs up, then writes
  */
-import { createClient } from '@libsql/client';
+import { createRequire } from 'module';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
+
+// There is no package.json or node_modules at the repo root — deps live in
+// app/. This is the bootstrap every script in execution/ uses; see
+// deepen-cards-kimi.mjs:31-33. A bare `import from '@libsql/client'` fails.
+const require = createRequire(resolve(__dirname, '../app/package.json'));
+const { createClient } = require('@libsql/client');
 const WRITE = process.argv.includes('--write');
 
 const TITLE_MAX = 60;
@@ -846,4 +858,5 @@ After deploy: `node execution/indexnow-submit.mjs --limit 50`
 - **Ordering:** the guard (1) precedes the changes it validates (2, 3); the deploy (4) precedes IndexNow (5) so no stale URL is submitted; the investigation (6) is independent and can run in parallel.
 - **Naming consistency:** `execution/check-metadata.mjs`, `execution/rewrite-card-meta.mjs`, `execution/indexnow-submit.mjs` — referenced identically in every task. `TITLE_MAX = 60` / `DESC_MAX = 155` match between the guard and the generator.
 - **Resolved at preflight:** the `BRAND_SUFFIX` conflict between Tasks 1 and 2 is now a mandatory, fully specified edit in Task 2 Step 4 rather than a contingency.
+- **Resolved at preflight:** both new scripts use the repo's `createRequire(.../app/package.json)` bootstrap. There is no root `package.json`/`node_modules`, so a bare ESM import of `@libsql/client` would fail.
 - **Resolved at preflight:** Task 3's description generator was rewritten after checking the live table — the keyword columns hold full phrases, not short keywords. The replacement is verified against all 78 rows.
