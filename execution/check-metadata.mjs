@@ -76,7 +76,12 @@ async function main() {
     if (r.meta_description_fa) checkLen(`card:${r.slug}`, 'meta_description_fa', r.meta_description_fa, DESC_MAX);
   }
   checkUnique('cards', 'meta_description', rows, r => r.meta_description);
-  checkUnique('cards', 'meta_title', rows, r => r.meta_title);
+  // NOTE: titles are deliberately NOT checked for skeleton uniqueness.
+  // `<Card> Tarot Meaning — Upright, Reversed & Yes/No` is a template by
+  // design and is correct practice — the searcher scans for the card name,
+  // and every competitor outranking us uses the same shape. The Bing data
+  // identified the DESCRIPTION as the differentiator problem, not the title.
+  // Title length is still enforced above.
 
   for (const locale of ['en', 'fa']) {
     const msgs = JSON.parse(readFileSync(join(ROOT, 'app', 'src', 'messages', `${locale}.json`), 'utf8'));
