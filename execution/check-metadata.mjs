@@ -81,8 +81,6 @@ async function main() {
   for (const locale of ['en', 'fa']) {
     const msgs = JSON.parse(readFileSync(join(ROOT, 'app', 'src', 'messages', `${locale}.json`), 'utf8'));
     const y = msgs.yesOrNo || {};
-    // yes-or-no uses a bare `title`, so the layout appends the brand suffix.
-    // Task 2 switches it to absolute; until then the budget is 60-13=47.
     // yes-or-no opts out of the layout's '%s | TarotVeil' template via
     // `title: { absolute }`, so it gets the full 60-char budget.
     checkLen(`msg:${locale}.yesOrNo`, 'metaTitle', y.metaTitle, TITLE_MAX);
