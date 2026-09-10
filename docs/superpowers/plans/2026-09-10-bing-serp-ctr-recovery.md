@@ -588,6 +588,41 @@ position moves materially, the comparison is confounded and needs a longer
 window.
 ```
 
+## Measurement
+
+Baseline, Bing lifetime through 2026-09-07 (recorded 2026-09-10, before this branch shipped):
+
+| Metric | Impressions | Clicks | CTR | Avg pos |
+|---|---|---|---|---|
+| `/yes-or-no` | 14,900 | 513 | 3.44% | 5.62 |
+| English card pages (79) | 3,622 | 26 | 0.72% | 7.49 |
+| Farsi (all, 23 pages) | 3,062 | 94 | 3.07% | 5.12 |
+| Query "yes or no tarot" | 5,565 | 52 | 0.93% | 5.25 |
+| Query "yes no tarot" | 3,168 | 45 | 1.42% | 5.74 |
+| Query "online yes no tarot" | 458 | 0 | 0.00% | 6.78 |
+| Desktop | 20,875 | 239 | 1.14% | 5.88 |
+| Mobile | 9,258 | 420 | 4.54% | 5.40 |
+
+Whole property: 30,133 impressions, 659 clicks, 2.19% CTR, avg position 5.6.
+Of the 79 English card pages, **57 had never received a single click.**
+
+**Re-export the same four Bing reports on 2026-10-10** (30 days post-deploy) and
+compare. Positions should be roughly unchanged — only CTR is under test here. If
+position moves materially, the comparison is confounded and needs a longer window.
+
+The three specific predictions this branch is making, so the result is falsifiable:
+
+1. `/yes-or-no` CTR rises from 3.44%. The plain "yes or no tarot" query at 0.93%
+   is where the headroom is; front-loading "Free" and "AI" targets exactly it.
+2. English card-page CTR rises from 0.72%. 57 pages at zero clicks is the number
+   to watch — if most stay at zero, the snippet was not the binding constraint
+   and the next suspect is sitewide authority.
+3. The desktop/mobile CTR gap (1.14% vs 4.54%) does NOT close from this work.
+   Task 6 investigates why; if it is Copilot consuming the answer on desktop, no
+   snippet rewrite can recover it and that is a separate project.
+
+---
+
 - [ ] **Step 2: Push and open the PR**
 
 ```bash
