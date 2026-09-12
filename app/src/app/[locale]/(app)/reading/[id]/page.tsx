@@ -26,7 +26,10 @@ export default async function ReadingPage({
   const followUps = await getFollowUps(id);
 
   const tier = profile?.tier || 'free';
-  const credits = await getBalance(user.id, tier);
+  // getBalance() reaches ensureGrant's INSERT into credit_ledger, whose
+  // user_id has an enforced FK to profiles(id) — calling it without a
+  // profile row throws. Only compute a balance when a profile exists.
+  const credits = profile ? await getBalance(user.id, tier) : null;
 
   const spread = getSpread(reading.spread_type);
   const cardsData = typeof reading.cards === 'string' ? JSON.parse(reading.cards) : reading.cards;

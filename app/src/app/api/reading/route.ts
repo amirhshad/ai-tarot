@@ -55,6 +55,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid card count' }, { status: 400 });
   }
 
+  // Celtic Cross is paid-tier-only by explicit product decision, not merely
+  // because its 5-credit cost outstrips the free daily grant — a future grant
+  // increase, promo, or credit pack must not silently unlock it. Horseshoe is
+  // deliberately available to free users (see directives/core-business-rules.md),
+  // so this checks the spread type directly rather than trusting
+  // spread.minimumTier, which currently marks horseshoe as 'pro' too.
+  if (spreadType === 'celtic-cross' && tier === 'free') {
+    return NextResponse.json(
+      { error: 'The Celtic Cross spread is available to members.' },
+      { status: 403 },
+    );
+  }
+
   // Deserialize cards before any debit — this is a pure function whose job here is
   // exactly to validate the client-supplied card ids, so a bad id becomes a clean
   // 400 instead of a charged 500.

@@ -41,9 +41,17 @@ Entitlements are credits, not per-spread daily counters.
   the calendar month. **Credits do not roll over.**
 - Grants are lazy — the first request of a new period inserts its own grant row.
   There is no cron job.
-- Celtic Cross is unreachable on free (5 credits against a 3-credit daily
-  grant). Horseshoe is reachable: free readings are capped at 150-200 words by
-  `getMaxTokens` regardless of spread, so it costs the same as a single card.
+- Celtic Cross is paid-tier-only, enforced by an explicit server-side check in
+  `app/src/app/api/reading/route.ts` (not just by its 5-credit cost outstripping
+  the 3-credit free daily grant — a future grant increase or credit pack must
+  not silently unlock it). Horseshoe is reachable on free: free readings are
+  capped at 150-200 words by `getMaxTokens` regardless of spread, so it costs
+  the same as a single card.
+- **Credits do not bound every reading.** `/api/reading/free` is unauthenticated
+  and never touches the credit ledger — anonymous readings sit outside the
+  credit system entirely. They are bounded instead by the per-IP and global
+  rate limits in `app/src/lib/utils/rate-limit.ts`. Do not read this section as
+  a guarantee that every reading's cost is capped by credits.
 - Every reading includes 2 free follow-ups on paid tiers. **Free tier gets
   none.**
 - A failed generation is refunded automatically, keyed on the reading id.

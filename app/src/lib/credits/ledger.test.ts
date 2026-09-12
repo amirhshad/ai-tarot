@@ -10,7 +10,7 @@ vi.mock('@/lib/db/sqlite', () => ({
   ensureSchema: async () => {},
 }));
 
-import { ensureGrant, getBalance, spend, refund } from './ledger';
+import { ensureGrant, getBalance, spend, refund, claimIncluded } from './ledger';
 
 beforeEach(async () => {
   db = createClient({ url: ':memory:' });
@@ -124,6 +124,30 @@ describe('period rollover', () => {
     await spend('u1', 'pro', 120, 'r1', sept);
     expect(await getBalance('u1', 'pro', sept)).toBe(0);
     expect(await getBalance('u1', 'pro', oct)).toBe(120);
+  });
+});
+
+describe('claimIncluded', () => {
+  it('succeeds on the first claim of a slot and costs nothing', async () => {
+    await ensureGrant('u1', 'pro');
+    const won = await claimIncluded('u1', 'pro', 'reading-1:included:0');
+    expect(won).toBe(true);
+    expect(await getBalance('u1', 'pro')).toBe(120);
+  });
+
+  it('refuses a second claim on the same ref', async () => {
+    await claimIncluded('u1', 'pro', 'reading-1:included:0');
+    const second = await claimIncluded('u1', 'pro', 'reading-1:included:0');
+    expect(second).toBe(false);
+  });
+
+  it('resolves concurrent claims on one ref to exactly one winner', async () => {
+    const results = await Promise.all([
+      claimIncluded('u1', 'pro', 'reading-1:included:0'),
+      claimIncluded('u1', 'pro', 'reading-1:included:0'),
+      claimIncluded('u1', 'pro', 'reading-1:included:0'),
+    ]);
+    expect(results.filter(Boolean)).toHaveLength(1);
   });
 });
 

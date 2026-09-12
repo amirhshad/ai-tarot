@@ -5,11 +5,14 @@
  * identical table — a test passing against a drifted schema is worse than no
  * test.
  *
- * Two partial unique indexes do real work:
+ * Three partial unique indexes do real work:
  *  - one grant per (user, period) makes lazy granting idempotent, so two
  *    concurrent first-requests of a period cannot both grant.
  *  - one refund per ref_id makes refunding idempotent, so the pre-stream and
  *    mid-stream failure handlers cannot both pay out.
+ *  - one include per ref_id makes claiming an included (free) follow-up slot
+ *    idempotent, so concurrent requests for the same slot resolve to exactly
+ *    one winner instead of a check-then-act race.
  */
 export const CREDIT_LEDGER_DDL = `
   CREATE TABLE IF NOT EXISTS credit_ledger (
@@ -30,4 +33,7 @@ export const CREDIT_LEDGER_DDL = `
 
   CREATE UNIQUE INDEX IF NOT EXISTS idx_credit_ledger_one_refund
     ON credit_ledger(ref_id) WHERE reason = 'refund';
+
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_credit_ledger_one_include
+    ON credit_ledger(ref_id) WHERE reason = 'include';
 `;

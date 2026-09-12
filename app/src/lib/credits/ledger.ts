@@ -76,6 +76,31 @@ export async function spend(
 }
 
 /**
+ * Claim one of a reading's included (free) follow-up slots.
+ *
+ * Returns true if this caller won the slot. The claim is a zero-delta ledger
+ * row, so it costs nothing but is still subject to the partial unique index on
+ * ref_id — which is what makes concurrent requests for the same slot resolve to
+ * exactly one winner. Losers fall through to the paid branch rather than
+ * generating for free.
+ */
+export async function claimIncluded(
+  userId: string,
+  tier: string,
+  refId: string,
+  now: Date = new Date(),
+): Promise<boolean> {
+  await ensureSchema();
+  const db = getDb();
+  const result = await db.execute({
+    sql: `INSERT OR IGNORE INTO credit_ledger (user_id, period_key, delta, reason, ref_id)
+          VALUES (?, ?, 0, 'include', ?)`,
+    args: [userId, periodKeyFor(tier, now), refId],
+  });
+  return result.rowsAffected > 0;
+}
+
+/**
  * Reverse a spend, identified by what it paid for.
  *
  * The refund lands in the period the ORIGINAL spend belongs to, not the current

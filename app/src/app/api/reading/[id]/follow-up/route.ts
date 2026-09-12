@@ -5,7 +5,7 @@ import { getSpread } from '@/lib/tarot/spreads';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
 import { buildFollowUpPrompt, buildExtraCardContext } from '@/lib/ai/prompts';
 import { streamFollowUp } from '@/lib/ai/client';
-import { spend, refund } from '@/lib/credits/ledger';
+import { spend, refund, claimIncluded } from '@/lib/credits/ledger';
 import { FOLLOW_UP_COST, INCLUDED_FOLLOW_UPS } from '@/lib/credits/config';
 import { getCardById } from '@/lib/tarot/deck';
 
@@ -64,7 +64,17 @@ export async function POST(
   }
 
   const followUpRef = `${id}:followup:${crypto.randomUUID()}`;
-  const isIncluded = userMessageCount < INCLUDED_FOLLOW_UPS;
+
+  // The included-slot check is a claim, not a read: the slot ref is
+  // deterministic per slot index so that concurrent requests for the same
+  // slot collide on the same ledger row, and the partial unique index on
+  // ref_id lets exactly one of them win. A request that loses the race (or
+  // has already used up its included slots) falls through to the paid path
+  // below like any other follow-up.
+  const includedSlotRef = `${id}:included:${userMessageCount}`;
+  const isIncluded =
+    userMessageCount < INCLUDED_FOLLOW_UPS &&
+    (await claimIncluded(user.id, tier, includedSlotRef));
 
   if (!isIncluded) {
     const charge = await spend(user.id, tier, FOLLOW_UP_COST, followUpRef);

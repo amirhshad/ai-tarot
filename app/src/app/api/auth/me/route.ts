@@ -21,9 +21,12 @@ export async function GET() {
       language: profile.language,
       tier: profile.tier,
     } : null,
-    credits: {
+    // getBalance() reaches ensureGrant's INSERT into credit_ledger, whose
+    // user_id has an enforced FK to profiles(id) — calling it without a
+    // profile row throws. Only compute a balance when a profile exists.
+    credits: profile ? {
       balance: await getBalance(user.id, tier),
       grant: grantFor(tier),
-    },
+    } : null,
   });
 }
