@@ -5,7 +5,8 @@ import { getSpread } from '@/lib/tarot/spreads';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
 import { buildFollowUpPrompt, buildExtraCardContext } from '@/lib/ai/prompts';
 import { streamFollowUp } from '@/lib/ai/client';
-import { getFollowUpLimit } from '@/lib/stripe/config';
+import { spend, refund } from '@/lib/credits/ledger';
+import { FOLLOW_UP_COST, INCLUDED_FOLLOW_UPS } from '@/lib/credits/config';
 import { getCardById } from '@/lib/tarot/deck';
 
 export async function POST(
@@ -31,15 +32,34 @@ export async function POST(
 
   const tier = profile?.tier || 'free';
 
-  // Check follow-up limit
+  // Follow-ups are the single largest hidden cost in a reading — ten of them in
+  // Farsi cost more than the Celtic Cross that spawned them. The first two come
+  // free so normal use never feels metered; beyond that they draw credits.
   const userMessageCount = await countUserFollowUps(id);
-  const limit = getFollowUpLimit(tier);
 
-  if (userMessageCount >= limit) {
+  if (tier === 'free') {
     return NextResponse.json(
-      { error: limit === 0 ? 'Follow-up questions require Pro subscription.' : 'Follow-up limit reached for this reading.' },
+      { error: 'Follow-up questions are available to members.' },
       { status: 403 },
     );
+  }
+
+  const followUpRef = `${id}:followup:${crypto.randomUUID()}`;
+  const isIncluded = userMessageCount < INCLUDED_FOLLOW_UPS;
+
+  if (!isIncluded) {
+    const charge = await spend(user.id, tier, FOLLOW_UP_COST, followUpRef);
+    if (!charge.ok) {
+      return NextResponse.json(
+        {
+          error: 'You are out of credits for this billing period.',
+          code: 'INSUFFICIENT_CREDITS',
+          balance: charge.balance,
+          cost: FOLLOW_UP_COST,
+        },
+        { status: 403 },
+      );
+    }
   }
 
   const body = await request.json();
@@ -102,12 +122,23 @@ export async function POST(
     content: f.content,
   }));
 
-  // Stream response
-  const stream = await streamFollowUp({
-    systemPrompt,
-    messages,
-    tier: tier as 'free' | 'pro' | 'premium',
-  });
+  // Stream response. A pre-stream throw means no tokens were generated, so the
+  // credit must go back.
+  let stream;
+  try {
+    stream = await streamFollowUp({
+      systemPrompt,
+      messages,
+      tier: tier as 'free' | 'pro' | 'premium',
+    });
+  } catch (err) {
+    if (!isIncluded) await refund(followUpRef);
+    console.error('Follow-up generation failed before streaming:', err);
+    return NextResponse.json(
+      { error: 'The response could not be generated. Your credits have not been used.' },
+      { status: 502 },
+    );
+  }
 
   const encoder = new TextEncoder();
 
@@ -134,7 +165,9 @@ export async function POST(
           encoder.encode(`data: ${JSON.stringify({ done: true, fullText })}\n\n`),
         );
         controller.close();
-      } catch {
+      } catch (err) {
+        if (!isIncluded) await refund(followUpRef);
+        console.error('Follow-up stream error:', err);
         controller.enqueue(
           encoder.encode(`data: ${JSON.stringify({ error: 'Stream error' })}\n\n`),
         );
