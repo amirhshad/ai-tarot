@@ -1,4 +1,5 @@
 import { createClient, type Client } from '@libsql/client';
+import { CREDIT_LEDGER_DDL } from '@/lib/credits/schema';
 
 let _client: Client | null = null;
 let _initialized = false;
@@ -96,6 +97,9 @@ export async function ensureSchema(): Promise<void> {
     );
     CREATE INDEX IF NOT EXISTS idx_free_rate_ip_time ON free_reading_rate_limits(ip, created_at);
   `);
+
+  // Credit ledger — append-only entitlement store (replaces the `usage` table).
+  await db.executeMultiple(CREDIT_LEDGER_DDL);
 
   // Migrations for new columns (try/catch since SQLite lacks ADD COLUMN IF NOT EXISTS)
   const migrations = [
