@@ -58,6 +58,7 @@ export interface ReadingRow {
 }
 
 export async function createReading(data: {
+  id?: string;
   user_id: string;
   spread_type: string;
   question?: string;
@@ -68,7 +69,7 @@ export async function createReading(data: {
 }): Promise<string> {
   await ensureSchema();
   const db = getDb();
-  const id = crypto.randomUUID();
+  const id = data.id ?? crypto.randomUUID();
   await db.execute({
     sql: `INSERT INTO readings (id, user_id, spread_type, question, cards, model_used, language, topic) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     args: [id, data.user_id, data.spread_type, data.question || null, JSON.stringify(data.cards), data.model_used, data.language, data.topic || null],

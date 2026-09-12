@@ -6,7 +6,8 @@ import { SpreadType } from '@/lib/tarot/types';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
 import { buildInterpretationPrompt, buildQuestionMessage, ReadingTopic } from '@/lib/ai/prompts';
 import { streamInterpretation } from '@/lib/ai/client';
-import { checkQuota, incrementUsage } from '@/lib/utils/quota';
+import { spend, refund } from '@/lib/credits/ledger';
+import { SPREAD_COSTS } from '@/lib/credits/config';
 import { sendReadingSummary } from '@/lib/email/client';
 
 export async function POST(request: NextRequest) {
@@ -54,10 +55,25 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid card count' }, { status: 400 });
   }
 
-  // Check quota
-  const quota = await checkQuota(user.id, tier, spreadType);
-  if (!quota.allowed) {
-    return NextResponse.json({ error: quota.reason }, { status: 403 });
+  // Reserve credits before spending any money with Anthropic. The reading id is
+  // generated here so the debit and the reading row share one identifier, which
+  // is what lets a failed generation be refunded precisely.
+  const readingId = crypto.randomUUID();
+  const cost = SPREAD_COSTS[spreadType];
+  const charge = await spend(user.id, tier, cost, readingId);
+
+  if (!charge.ok) {
+    return NextResponse.json(
+      {
+        error: tier === 'free'
+          ? 'You have used your free readings for today. Come back tomorrow for more.'
+          : 'You are out of credits for this billing period.',
+        code: 'INSUFFICIENT_CREDITS',
+        balance: charge.balance,
+        cost,
+      },
+      { status: 403 },
+    );
   }
 
   // Deserialize cards
@@ -75,7 +91,8 @@ export async function POST(request: NextRequest) {
   const questionSuffix = buildQuestionMessage({ question, language });
 
   // Create reading record (interpretation filled later)
-  const readingId = await createReading({
+  await createReading({
+    id: readingId,
     user_id: user.id,
     spread_type: spreadType,
     question,
@@ -85,16 +102,24 @@ export async function POST(request: NextRequest) {
     topic: topic || undefined,
   });
 
-  // Increment usage
-  await incrementUsage(user.id, spreadType);
-
-  // Stream the interpretation
-  const stream = await streamInterpretation({
-    systemPrompt,
-    userMessage: userMessage + questionSuffix,
-    tier,
-    spreadType: spread.type,
-  });
+  // The Anthropic call can fail before a single token arrives — an outage, or
+  // our own credit balance running out. The user must not pay for that.
+  let stream;
+  try {
+    stream = await streamInterpretation({
+      systemPrompt,
+      userMessage: userMessage + questionSuffix,
+      tier,
+      spreadType: spread.type,
+    });
+  } catch (err) {
+    await refund(readingId);
+    console.error('Reading generation failed before streaming:', err);
+    return NextResponse.json(
+      { error: 'The reading could not be generated. Your credits have not been used.' },
+      { status: 502 },
+    );
+  }
 
   const encoder = new TextEncoder();
 
@@ -129,6 +154,7 @@ export async function POST(request: NextRequest) {
         controller.close();
       } catch (err) {
         console.error('Reading stream error:', err);
+        await refund(readingId);
         controller.enqueue(
           encoder.encode(`data: ${JSON.stringify({ error: (err as Error).message || 'Stream error' })}\n\n`),
         );
