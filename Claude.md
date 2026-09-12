@@ -50,10 +50,15 @@ You are the orchestration layer (Layer 2) of a 3-layer system for the AI Tarot p
 ```bash
 cd app && npm run dev      # Dev server
 cd app && npm run build    # Production build
+cd app && npm test         # Unit tests (vitest) — pure logic only
+cd app && npm run verify   # tsc + tests + prompt freeze gate (what CI runs)
 node execution/bing-wmt.mjs GetUserSites  # Query Bing Webmaster Tools (read-only, see --help)
 # Deployed via Vercel (auto on git push)
 
 node execution/indexnow-submit.mjs   # After any content deploy: resubmit sitemap to Bing IndexNow
+
+node execution/prompt-freeze.mjs     # After ANY edit to app/src/lib/ai/prompts.ts: verify frozen prompts
+node execution/prompt-freeze.mjs --update   # Re-freeze, only when the voice change is intended
 ```
 
 ## MCP Servers

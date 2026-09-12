@@ -239,6 +239,8 @@ export interface UsageRow {
   single_count: number;
   three_card_count: number;
   celtic_cross_count: number;
+  // Added to the table by migration (see sqlite.ts), but missing here until now.
+  horseshoe_count: number;
 }
 
 export async function getUsage(userId: string, weekStart: string): Promise<UsageRow | undefined> {

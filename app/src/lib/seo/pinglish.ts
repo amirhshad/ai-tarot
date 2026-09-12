@@ -4,7 +4,7 @@
  */
 
 const MAJOR_ARCANA_PINGLISH: Record<string, string> = {
-  'the-fool': 'kart ahmagh, kart abلeh, the fool tarot farsi',
+  'the-fool': 'kart ahmagh, kart ableh, the fool tarot farsi',
   'the-magician': 'kart jadoogar, kart kimiyagar, the magician tarot farsi',
   'the-high-priestess': 'kart pap banoo, kart kahene, the high priestess tarot farsi',
   'the-empress': 'kart malakeh, kart shahbanoo, the empress tarot farsi',
@@ -39,7 +39,7 @@ const COURT_NAMES_PINGLISH: Record<string, string> = {
   king: 'shah',
   queen: 'malakeh',
   knight: 'shovalyeh',
-  page: 'nobaалeh',
+  page: 'nobaaleh',
 };
 
 const NUMBER_NAMES_PINGLISH: Record<string, string> = {

@@ -62,10 +62,18 @@ export async function checkQuota(
       if (plan.limits.celticCrossPerDay === 0) {
         return { allowed: false, reason: membersOnly('Celtic Cross') };
       }
+      // A non-zero allowance still has to be counted. Without this, raising the
+      // free limit from 0 to any number would grant unlimited Celtic Crosses.
+      if (currentUsage.celtic_cross_count >= plan.limits.celticCrossPerDay) {
+        return { allowed: false, reason: `Daily Celtic Cross limit reached.${limitSuffix}` };
+      }
       break;
     case 'horseshoe':
       if (plan.limits.horseshoePerDay === 0) {
         return { allowed: false, reason: membersOnly('Horseshoe Spread') };
+      }
+      if (currentUsage.horseshoe_count >= plan.limits.horseshoePerDay) {
+        return { allowed: false, reason: `Daily Horseshoe limit reached.${limitSuffix}` };
       }
       break;
   }
