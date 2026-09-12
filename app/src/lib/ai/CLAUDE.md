@@ -18,7 +18,9 @@
 
 6. **Protect API keys.** The Anthropic API key lives in environment variables. Never log it, expose it to the client, or include it in error messages.
 
-7. **Cultural adaptation.** For Farsi/Arabic readings, include cultural context notes in the prompt — not just the target language. See `directives/prompt-engineering.md` for specifics.
+7. **Cultural adaptation.** For Farsi/Arabic readings, include cultural context notes in the prompt — not just the target language. See `directives/prompt-engineering.md` for specifics. Per-language rule blocks are **not translations of each other** — each targets the failure modes of its own language.
+
+8. **Prompt text is frozen.** After any edit to `prompts.ts`, run `node execution/prompt-freeze.mjs`. It fails if a rendered prompt changed. If the change was intended, re-freeze with `--update` and commit the snapshot in the same commit, so the diff shows the voice change as deliberate. Never re-freeze to make a red gate go away.
 
 ## Key files
 - `client.ts` — API client setup, model selection

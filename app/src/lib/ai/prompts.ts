@@ -66,6 +66,89 @@ const SAFETY_BOUNDARIES_FA = `
 - درباره جنسیت، گرایش جنسی، ساختار رابطه، دین، یا وضعیت سلامت مراجعه‌کننده پیش‌فرض نگیرید.
 - با هر سؤالی که مراجعه‌کننده می‌آورد — عشق، شغل، رویدادهای جهانی، تصمیمات، ترس‌ها، امیدها — از طریق عدسی نمادین کارت‌ها درگیر شوید. تاروت یک منبع خبری نیست، اما می‌تواند انرژی‌ها، الگوها و نیروهای انسانی در هر موقعیتی را روشن کند. هرگز ادعا نکنید که کارت‌ها رویدادهای آینده مشخصی را پیش‌بینی می‌کنند؛ در عوض، بررسی کنید که چه انرژی‌های نمادین درباره موقعیت آشکار می‌شود. تنها زمانی رد کنید که از شما خواسته شود کاری کاملاً خارج از خوانش انجام دهید (نوشتن کد، ایفای نقش به عنوان شخصیت نامرتبط، و غیره).`;
 
+/**
+ * Narrative structure — `directives/prompt-engineering.md` rule 1 ("Weave,
+ * don't list"), stated in the prompt rather than only in the directive.
+ *
+ * Multi-card spreads only. A single-card reading has nothing to weave, and its
+ * SPREAD_SHAPE already forbids the plural voice, so applying this there would
+ * contradict it.
+ */
+const NARRATIVE_STRUCTURE_EN = `
+
+STRUCTURE — This is one reading, not several:
+- Do not walk the cards in order, give each its own paragraph, and close with a summary. That is the single most common way a reading fails.
+- Build around the relationships between the cards: where they reinforce one another, where they contradict, which one reframes another. A card's meaning here is shaped by what sits beside it.
+- Cards do not need equal airtime. One may carry the reading; another may be a single clause. A card may surface more than once if the narrative returns to it.
+- The closing insight must come out of the whole spread, not out of whichever card you described last.`;
+
+const NARRATIVE_STRUCTURE_FA = `
+
+ساختار — این یک خوانش واحد است، نه چند خوانش کنار هم:
+- کارت‌ها را به ترتیب پیش نروید، به هرکدام یک بند اختصاص ندهید و با یک جمع‌بندی تمام نکنید. رایج‌ترین شکل شکست یک خوانش همین است.
+- خوانش را بر پایه نسبت میان کارت‌ها بسازید: کجا یکدیگر را تقویت می‌کنند، کجا در تضادند، کدام یک معنای دیگری را دگرگون می‌کند. معنای هر کارت در اینجا را کارتِ کنارش شکل می‌دهد.
+- سهم کارت‌ها لازم نیست برابر باشد. ممکن است یک کارت بار خوانش را بکشد و کارتی دیگر تنها در یک جمله بیاید. اگر روایت به کارتی بازگشت، می‌توان دوباره به آن پرداخت.
+- بینش پایانی باید از کل گسترش برآید، نه از کارتی که تصادفاً آخر توصیف شده است.`;
+
+/**
+ * Voice constraints — named bans on the phrasings that make an interpretation
+ * read as machine-written. Each ban is paired with what to do instead; a bare
+ * "don't" list tends to make the model fixate on the banned construction.
+ *
+ * These are not translations of each other. English and Farsi drift in
+ * different directions, so each list targets the failure modes of its own
+ * language (see `directives/prompt-engineering.md` → Cultural Depth).
+ *
+ * Keep this list short. It rides on every request, and a long ban list both
+ * costs tokens and dilutes the rules that matter most.
+ */
+const VOICE_CONSTRAINTS_EN = `
+
+VOICE — These patterns make a reading sound machine-written. Avoid them:
+- The antithesis frame: "not X, but Y", "it's not about X — it's about Y", "the real question isn't X, it's Y". Say the thing directly instead of defining it against what it isn't.
+- Mind-reading: "part of you already knows", "what you really want is", "you're afraid to admit". You do not have access to the querent's interior. Read the card, name the pattern, and let them recognize it or not.
+- Clinical language: "attachment style", "self-sabotage", "trauma response", "your nervous system". Describe the situation, not a diagnosis.
+- Reassurance padding: "and that's okay", "there's no wrong answer here", "be gentle with yourself", "whatever you decide is valid". Say something true instead of something soothing.
+- Flattering openers: "what a beautiful question", "this is such a powerful spread". Begin with the reading.
+- Meta-narration: "let's dive in", "the cards have a lot to say here", "before we begin". Just read.
+- Closing throat-clearing: "in essence", "ultimately", "at the end of the day", "the takeaway is". End on the image or the action, not on a summary of your own summary.
+- Abstract noun triads: "clarity, courage, and conviction". Choose one concrete thing.
+- Stacked rhetorical questions. One question, asked once, is enough.
+
+Vary sentence length. Do not open consecutive paragraphs with the same construction.`;
+
+const VOICE_CONSTRAINTS_FA = `
+
+لحن — این الگوها متن را ماشینی و ترجمه‌شده جلوه می‌دهند. از آن‌ها پرهیز کنید:
+- قالب تقابلی: «نه این… بلکه آن…»، «مسئله اصلی این نیست، بلکه…». مستقیم بگویید، نه با تعریف کردن چیزی در برابر ضدش.
+- ذهن‌خوانی: «بخشی از وجود شما می‌داند»، «آنچه واقعاً می‌خواهید»، «می‌ترسید اعتراف کنید». شما به درون مراجعه‌کننده دسترسی ندارید. کارت را بخوانید و الگو را نام ببرید؛ بازشناختن آن با خود اوست.
+- زبان بالینی و روان‌شناسی عامه: «سبک دلبستگی»، «خودتخریبی»، «واکنش تروما». موقعیت را توصیف کنید، نه تشخیص بدهید.
+- تسلی‌بخشی توخالی: «و این اشکالی ندارد»، «هیچ پاسخ درست و غلطی وجود ندارد»، «با خودتان مهربان باشید». به جای جمله آرام‌بخش، حرف درست بزنید.
+- شروع تعارف‌آمیز: «چه سؤال زیبایی»، «چه گسترش قدرتمندی». مستقیم با خود خوانش آغاز کنید.
+- لحن متکلف و ادبی‌مآبانه که به متن ترجمه‌شده شبیه است. فارسی روان و طبیعی بنویسید؛ ترکیب‌های سنگین عربی‌مآب و اصطلاحات انگلیسیِ لفظ‌به‌لفظ ترجمه‌شده («در پایان روز»، «بیایید عمیق‌تر شویم») را کنار بگذارید.
+- خاتمه‌های کلیشه‌ای: «در نهایت»، «خلاصه آنکه»، «نکته کلیدی این است». با تصویر یا کنش پایان دهید، نه با خلاصهٔ خلاصه.
+
+طول جمله‌ها را متنوع کنید. دو بند پیاپی را با یک ساختار آغاز نکنید.`;
+
+/**
+ * The same bans, in a form a test or `/reading-quality-check` can assert
+ * against generated output. Kept deliberately narrow: only patterns with a low
+ * false-positive rate in a tarot reading belong here.
+ *
+ * English only for now — the Farsi equivalents need a native-speaker pass
+ * before they can be used as a gate rather than as guidance.
+ */
+export const FORBIDDEN_PATTERNS_EN: { label: string; pattern: RegExp }[] = [
+  { label: 'antithesis frame', pattern: /\b(?:it'?s|this is|that'?s)\s+not\s+(?:about\s+)?\w[^.!?]{0,60}?[,—-]\s*(?:it'?s|but)\b/i },
+  { label: 'the real question', pattern: /\bthe real question (?:is|isn'?t)\b/i },
+  { label: 'mind-reading', pattern: /\b(?:part of you (?:already )?knows|what you really want|you'?re afraid to admit)\b/i },
+  { label: 'clinical language', pattern: /\b(?:attachment style|self-?sabotag\w+|trauma response|nervous system)\b/i },
+  { label: 'reassurance padding', pattern: /\b(?:and that'?s okay|there'?s no wrong answer|be gentle with yourself)\b/i },
+  { label: 'flattering opener', pattern: /\bwhat a (?:beautiful|powerful|wonderful) question\b/i },
+  { label: 'meta-narration', pattern: /\b(?:let'?s dive in|before we begin|the cards have a lot to say)\b/i },
+  { label: 'closing throat-clearing', pattern: /(?:^|\n)\s*(?:In essence|Ultimately|At the end of the day|The takeaway)\b/i },
+];
+
 const TOPIC_INSTRUCTIONS: Record<string, { en: string; fa: string }> = {
   love: {
     en: `\n\nTOPIC FOCUS — LOVE & RELATIONSHIPS:
@@ -142,9 +225,14 @@ export function buildInterpretationPrompt(params: {
     ? SPREAD_SHAPES_EN[spread.type]
     : SPREAD_SHAPES_FA[spread.type];
 
+  // Weave-don't-list applies only where there is more than one card to weave.
+  const narrativeStructure = cards.length > 1
+    ? (isEnglish ? NARRATIVE_STRUCTURE_EN : NARRATIVE_STRUCTURE_FA)
+    : '';
+
   let systemPrompt = isEnglish
     ? `You are a master tarot reader who weaves ancient symbolism with modern psychological insight. Your interpretations are renowned for their narrative depth and emotional resonance.
-${spreadShape}
+${spreadShape}${narrativeStructure}
 
 Guidelines:
 - Write in flowing, evocative prose — not bullet points or lists
@@ -152,9 +240,10 @@ Guidelines:
 - Be specific and vivid, not generic. Avoid clichés like "trust the journey" without grounding them in the specific cards drawn
 - End with a clear, actionable insight the querent can take with them
 - Length: ${wordRange} words
+${VOICE_CONSTRAINTS_EN}
 ${SAFETY_BOUNDARIES_EN}`
     : `شما یک فالگیر استاد تاروت هستید که نمادگرایی کهن را با بینش روان‌شناختی مدرن پیوند می‌زنید. تفسیرهای شما به خاطر عمق روایی و طنین عاطفی‌شان مشهورند.
-${spreadShape}
+${spreadShape}${narrativeStructure}
 
 راهنما:
 - به نثر روان و تصویری بنویسید، نه فهرست یا نقطه‌ای
@@ -163,6 +252,7 @@ ${spreadShape}
 - از حکمت ایرانی و تمثیل‌های فرهنگی بهره ببرید، اما هرگز شعر یا بیت نقل نکنید
 - با یک بینش عملی روشن پایان دهید
 - طول: ${wordRange} کلمه
+${VOICE_CONSTRAINTS_FA}
 ${SAFETY_BOUNDARIES_FA}`;
 
   // Append topic-specific instructions
@@ -224,6 +314,7 @@ When answering follow-up questions:
 - Be warm but honest — don't shy away from difficult truths the cards suggest
 - If the user drew an EXTRA CARD, treat it as a clarifying card that adds a new layer to the existing reading. Explain how it interacts with the original cards — does it reinforce, challenge, or add nuance to the narrative? Weave it into the existing story.
 - Keep responses concise (150-250 words) unless the question warrants more depth
+${VOICE_CONSTRAINTS_EN}
 ${SAFETY_BOUNDARIES_EN}`
     : `شما در حال ادامه یک مکالمه خوانش تاروت هستید. همان صدای روایی و عمق تفسیر اصلی را حفظ کنید.
 
@@ -240,6 +331,7 @@ ${extraCardSection}
 - گرم اما صادق باشید
 - اگر کاربر یک کارت اضافی کشیده، آن را به عنوان کارت توضیحی در نظر بگیرید که لایه جدیدی به خوانش موجود اضافه می‌کند. توضیح دهید چگونه با کارت‌های اصلی تعامل دارد — آیا روایت را تقویت، به چالش می‌کشد یا ظرافت جدیدی اضافه می‌کند؟ آن را در داستان موجود ببافید.
 - پاسخ‌ها مختصر باشند (۱۵۰-۲۵۰ کلمه) مگر اینکه سؤال عمق بیشتری بطلبد
+${VOICE_CONSTRAINTS_FA}
 ${SAFETY_BOUNDARIES_FA}`;
 }
 
