@@ -16,11 +16,14 @@ An AI-powered conversational tarot reading platform with narrative-driven interp
 
 | Feature | Free | Pro ($7.99/mo) | Premium ($14.99/mo) |
 |---------|------|----------------|---------------------|
-| Readings/Day | 1 single + 1 three-card/week | Unlimited | Unlimited + custom spreads |
+| Credits | 3/day | 120/month | 350/month |
 | AI Model | Haiku 4.5 (short summary) | Sonnet 5 (deep narrative) | Sonnet 5 (deep narrative) |
-| Follow-ups | 0 | 5 per reading | 10 per reading |
+| Follow-ups | None | 2 free per reading, then 1 credit | 2 free per reading, then 1 credit |
 | Languages | English only | English + Farsi | English + Farsi + Arabic |
 | History | Last 5 readings | Full + search | Full + trend analysis |
+
+Credits do not roll over. Costs per action are in
+`directives/core-business-rules.md`.
 
 ## Model Selection Logic
 

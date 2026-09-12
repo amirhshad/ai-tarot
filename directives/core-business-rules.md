@@ -8,44 +8,48 @@
 
 ## Pricing & Model Selection
 
-| Tier | Price | AI Model | Interpretation Style |
-|------|-------|----------|---------------------|
-| Free | $0 | Claude Haiku 4.5 | Short summary (~150-300 words) |
-| Pro | $7.99/mo (not for sale) | Claude Sonnet 5 | Deep narrative (~400-700 words) |
-| Premium | $14.99/mo (not for sale) | Claude Sonnet 5 | Deep narrative + custom spreads |
+| Tier | Price | Credits | AI Model | Interpretation Style |
+|------|-------|---------|----------|---------------------|
+| Free | $0 | 3 / day | Claude Haiku 4.5 | Short summary (~150-300 words) |
+| Pro | $7.99/mo (not for sale) | 120 / month | Claude Sonnet 5 | Deep narrative (~400-700 words) |
+| Premium | $14.99/mo (not for sale) | 350 / month | Claude Sonnet 5 | Deep narrative + custom spreads |
 
-Prices are the configured amounts, retained for when payments are re-enabled. Nothing can be purchased today.
+Prices are the configured amounts, retained for when payments are re-enabled.
+Nothing can be purchased today. The intended repricing ($8.99 / $19.99) is
+recorded in `docs/superpowers/specs/2026-09-12-credit-ledger-design.md` and
+applies only when Stripe is switched back on.
 
-**Model selection is server-side only.** The client sends the reading request; the server checks the user's tier from the `profiles` table and selects the model. Never trust client-provided model preferences.
+**Model selection is server-side only.** The client sends the reading request;
+the server checks the user's tier from the `profiles` table and selects the
+model. Never trust client-provided model preferences.
 
-## Rate Limits (Free Tier)
+## Credits
 
-- 1 single-card reading per day
-- 1 three-card reading per day
-- Celtic Cross and Horseshoe are members-only (`pro` / `premium`), limit 0 on free
-- Tracked in the `usage` table, one row per user per day
-- Reset logic: counters reset at 00:00 UTC
+Entitlements are credits, not per-spread daily counters.
 
-**On the `usage.week_start` column.** It holds a `YYYY-MM-DD` day key, not a week
-start — the name is legacy. Quota periods were weekly until Aug 2026, which meant
-`singlePerDay: 1` was really enforcing one reading per *week*. The period key in
-`checkQuota` is now the UTC day; the column was left alone to avoid a migration,
-and stale weekly rows are simply never matched again. Rename it only alongside a
-real migration.
+| Action | Credits |
+|--------|---------|
+| Single card | 1 |
+| Three-card | 2 |
+| Horseshoe | 3 |
+| Celtic Cross | 5 |
+| Follow-up beyond the first 2 of a reading | 1 |
 
-Limits live in `PLANS[tier].limits` in `app/src/lib/stripe/config.ts` and are read
-by `app/src/lib/utils/quota.ts`. That file is the source of truth for entitlements,
-not just prices — it stays even if Stripe is removed entirely.
+- Costs live in `app/src/lib/credits/config.ts`; the store is
+  `app/src/lib/credits/ledger.ts`. Those two files are the source of truth.
+- Free users get 3 credits per UTC day; paid users a monthly allowance keyed to
+  the calendar month. **Credits do not roll over.**
+- Grants are lazy — the first request of a new period inserts its own grant row.
+  There is no cron job.
+- Celtic Cross is unreachable on free (5 credits against a 3-credit daily
+  grant). Horseshoe is reachable: free readings are capped at 150-200 words by
+  `getMaxTokens` regardless of spread, so it costs the same as a single card.
+- Every reading includes 2 free follow-ups on paid tiers. **Free tier gets
+  none.**
+- A failed generation is refunded automatically, keyed on the reading id.
 
-## Follow-up Limits
-
-| Tier | Follow-ups per Reading |
-|------|----------------------|
-| Free | 0 |
-| Pro | 5 |
-| Premium | 10 |
-
-Follow-ups are counted per reading, not per day. Each follow-up retains full context (original cards, interpretation, and all prior messages).
+**The `usage` table is dead.** It is left in place to avoid a migration, but
+nothing reads or writes it. Do not add to it.
 
 ## Language Access
 

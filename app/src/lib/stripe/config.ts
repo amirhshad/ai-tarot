@@ -1,42 +1,36 @@
+import { TIER_GRANTS } from '@/lib/credits/config';
+
+/**
+ * Plans.
+ *
+ * Prices are retained for when payments are re-enabled — nothing is for sale
+ * today (see PAYMENTS_ENABLED). Entitlements are credits: see
+ * `lib/credits/config.ts` for costs and `lib/credits/ledger.ts` for the store.
+ */
 export const PLANS = {
   free: {
     name: 'Free',
     monthlyPrice: 0,
     monthlyPriceId: null,
     yearlyPriceId: null,
-    limits: {
-      singlePerDay: 1,
-      threeCardPerDay: 1,
-      celticCrossPerDay: 0,
-      horseshoePerDay: 0,
-      followUpsPerReading: 0,
-    },
+    credits: TIER_GRANTS.free,
+    period: 'day' as const,
   },
   pro: {
     name: 'Pro',
     monthlyPrice: 799, // cents
     monthlyPriceId: process.env.STRIPE_PRO_MONTHLY_PRICE_ID || '',
     yearlyPriceId: process.env.STRIPE_PRO_YEARLY_PRICE_ID || '',
-    limits: {
-      singlePerDay: Infinity,
-      threeCardPerDay: Infinity,
-      celticCrossPerDay: Infinity,
-      horseshoePerDay: Infinity,
-      followUpsPerReading: 5,
-    },
+    credits: TIER_GRANTS.pro,
+    period: 'month' as const,
   },
   premium: {
     name: 'Premium',
     monthlyPrice: 1499, // cents
     monthlyPriceId: process.env.STRIPE_PREMIUM_MONTHLY_PRICE_ID || '',
     yearlyPriceId: process.env.STRIPE_PREMIUM_YEARLY_PRICE_ID || '',
-    limits: {
-      singlePerDay: Infinity,
-      threeCardPerDay: Infinity,
-      celticCrossPerDay: Infinity,
-      horseshoePerDay: Infinity,
-      followUpsPerReading: 10,
-    },
+    credits: TIER_GRANTS.premium,
+    period: 'month' as const,
   },
 } as const;
 
@@ -44,8 +38,4 @@ export type PlanName = keyof typeof PLANS;
 
 export function getPlan(tier: string) {
   return PLANS[tier as PlanName] || PLANS.free;
-}
-
-export function getFollowUpLimit(tier: string): number {
-  return getPlan(tier).limits.followUpsPerReading;
 }
