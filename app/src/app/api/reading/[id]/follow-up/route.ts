@@ -44,6 +44,25 @@ export async function POST(
     );
   }
 
+  // Anything that can deterministically reject the request must run before the
+  // debit, so parse and validate the body first.
+  const body = await request.json();
+  const { question, extraCard, language: requestLanguage } = body as {
+    question: string;
+    extraCard?: { cardId: number; reversed: boolean };
+    language?: 'en' | 'fa';
+  };
+
+  const language = (requestLanguage || profile?.language || 'en') as 'en' | 'fa';
+
+  if (!question?.trim()) {
+    return NextResponse.json({ error: 'Question is required' }, { status: 400 });
+  }
+
+  if (question.length > 500) {
+    return NextResponse.json({ error: 'Question is too long (max 500 characters)' }, { status: 400 });
+  }
+
   const followUpRef = `${id}:followup:${crypto.randomUUID()}`;
   const isIncluded = userMessageCount < INCLUDED_FOLLOW_UPS;
 
@@ -60,23 +79,6 @@ export async function POST(
         { status: 403 },
       );
     }
-  }
-
-  const body = await request.json();
-  const { question, extraCard, language: requestLanguage } = body as {
-    question: string;
-    extraCard?: { cardId: number; reversed: boolean };
-    language?: 'en' | 'fa';
-  };
-
-  const language = (requestLanguage || profile?.language || 'en') as 'en' | 'fa';
-
-  if (!question?.trim()) {
-    return NextResponse.json({ error: 'Question is required' }, { status: 400 });
-  }
-
-  if (question.length > 500) {
-    return NextResponse.json({ error: 'Question is too long (max 500 characters)' }, { status: 400 });
   }
 
   // Save user message

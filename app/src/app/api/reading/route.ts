@@ -55,6 +55,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid card count' }, { status: 400 });
   }
 
+  // Deserialize cards before any debit — this is a pure function whose job here is
+  // exactly to validate the client-supplied card ids, so a bad id becomes a clean
+  // 400 instead of a charged 500.
+  let drawnCards;
+  try {
+    drawnCards = deserializeDrawnCards(cardData, spread.positions);
+  } catch (err) {
+    console.error('Invalid card data:', err);
+    return NextResponse.json({ error: 'Invalid card data' }, { status: 400 });
+  }
+
   // Reserve credits before spending any money with Anthropic. The reading id is
   // generated here so the debit and the reading row share one identifier, which
   // is what lets a failed generation be refunded precisely.
@@ -76,9 +87,6 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Deserialize cards
-  const drawnCards = deserializeDrawnCards(cardData, spread.positions);
-
   // Build prompts
   const { systemPrompt, userMessage } = buildInterpretationPrompt({
     spread,
@@ -90,22 +98,24 @@ export async function POST(request: NextRequest) {
 
   const questionSuffix = buildQuestionMessage({ question, language });
 
-  // Create reading record (interpretation filled later)
-  await createReading({
-    id: readingId,
-    user_id: user.id,
-    spread_type: spreadType,
-    question,
-    cards: cardData,
-    model_used: tier === 'free' ? 'haiku-4.5' : 'sonnet-5',
-    language,
-    topic: topic || undefined,
-  });
-
-  // The Anthropic call can fail before a single token arrives — an outage, or
-  // our own credit balance running out. The user must not pay for that.
+  // Everything from here through the start of streaming can throw (a DB write
+  // failure in createReading, an outage or our own credit balance running out in
+  // the Anthropic call), and none of it produced a single token — the user must
+  // not pay for any of it.
   let stream;
   try {
+    // Create reading record (interpretation filled later)
+    await createReading({
+      id: readingId,
+      user_id: user.id,
+      spread_type: spreadType,
+      question,
+      cards: cardData,
+      model_used: tier === 'free' ? 'haiku-4.5' : 'sonnet-5',
+      language,
+      topic: topic || undefined,
+    });
+
     stream = await streamInterpretation({
       systemPrompt,
       userMessage: userMessage + questionSuffix,
