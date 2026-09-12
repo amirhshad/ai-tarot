@@ -81,9 +81,6 @@ export async function POST(
     }
   }
 
-  // Save user message
-  await createFollowUp({ reading_id: id, role: 'user', content: question });
-
   // Build context
   const spread = getSpread(reading.spread_type);
   const cardsData = typeof reading.cards === 'string' ? JSON.parse(reading.cards) : reading.cards;
@@ -116,18 +113,22 @@ export async function POST(
     extraCardContext,
   });
 
-  // Build conversation history
-  const allFollowUps = await getFollowUps(id);
-
-  const messages = allFollowUps.map(f => ({
-    role: f.role as 'user' | 'assistant',
-    content: f.content,
-  }));
-
-  // Stream response. A pre-stream throw means no tokens were generated, so the
-  // credit must go back.
+  // Everything from here through the start of streaming can throw (a DB write
+  // failure saving the user's message or reading back the conversation history,
+  // an outage or our own credit balance running out in the Anthropic call), and
+  // none of it produced a single token — the credit must go back.
   let stream;
   try {
+    // Save user message
+    await createFollowUp({ reading_id: id, role: 'user', content: question });
+
+    // Build conversation history (includes the message just saved above)
+    const allFollowUps = await getFollowUps(id);
+    const messages = allFollowUps.map(f => ({
+      role: f.role as 'user' | 'assistant',
+      content: f.content,
+    }));
+
     stream = await streamFollowUp({
       systemPrompt,
       messages,
