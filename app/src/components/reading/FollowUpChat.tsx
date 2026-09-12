@@ -47,6 +47,9 @@ export default function FollowUpChat({
   const [isCardRevealed, setIsCardRevealed] = useState(false);
   const [extraCardQuestion, setExtraCardQuestion] = useState('');
   const [showExtraCardInput, setShowExtraCardInput] = useState(false);
+  // Mirrors the `credits` prop so we can decrement locally as charged
+  // follow-ups succeed, without waiting for a server round trip.
+  const [localCredits, setLocalCredits] = useState<number | null>(credits);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const userMessageCount = messages.filter(m => m.role === 'user').length;
@@ -55,7 +58,7 @@ export default function FollowUpChat({
   // Free users have no follow-ups at all; paid users are limited by their
   // balance once the included follow-ups are used up.
   const canAsk =
-    tier !== 'free' && (!nextCostsCredits || (credits ?? 0) >= FOLLOW_UP_COST);
+    tier !== 'free' && (!nextCostsCredits || (localCredits ?? 0) >= FOLLOW_UP_COST);
   const remaining = includedLeft;
 
   const en = language === 'en';
@@ -64,7 +67,11 @@ export default function FollowUpChat({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, streamingText]);
 
-  async function sendFollowUp(question: string, extraCard?: { cardId: number; reversed: boolean }) {
+  async function sendFollowUp(
+    question: string,
+    extraCard?: { cardId: number; reversed: boolean },
+    chargesCredit: boolean = false,
+  ) {
     setIsLoading(true);
     setStreamingText('');
 
@@ -105,6 +112,9 @@ export default function FollowUpChat({
             if (data.done) {
               setMessages(prev => [...prev, { role: 'assistant', content: data.fullText }]);
               setStreamingText('');
+              if (chargesCredit) {
+                setLocalCredits(prev => Math.max(0, (prev ?? 0) - FOLLOW_UP_COST));
+              }
             }
           }
         }
@@ -124,9 +134,10 @@ export default function FollowUpChat({
     if (!input.trim() || !canAsk || isLoading) return;
 
     const question = input.trim();
+    const chargesCredit = nextCostsCredits;
     setInput('');
     setMessages(prev => [...prev, { role: 'user', content: question }]);
-    await sendFollowUp(question);
+    await sendFollowUp(question, undefined, chargesCredit);
   }
 
   function handleDrawExtraCard() {
@@ -164,12 +175,13 @@ export default function FollowUpChat({
           : `من یک کارت اضافی برای بینش عمیق‌تر کشیدم: ${cardName} (${orientation}). این کارت چگونه به خوانش اضافه می‌کند یا آن را تغییر می‌دهد؟`);
 
     const extraCardData = { cardId: card.id, reversed: drawnExtraCard.reversed };
+    const chargesCredit = nextCostsCredits;
     setMessages(prev => [...prev, { role: 'user', content: userContent, extraCard: extraCardData }]);
     setDrawnExtraCard(null);
     setIsCardRevealed(false);
     setExtraCardQuestion('');
 
-    await sendFollowUp(userContent, extraCardData);
+    await sendFollowUp(userContent, extraCardData, chargesCredit);
   }
 
   function handleCancelExtraCard() {

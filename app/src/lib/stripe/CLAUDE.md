@@ -11,10 +11,13 @@
 
 ## Rules
 
-0. **`config.ts` is not just Stripe.** `PLANS[tier].limits` is the source of truth
-   for entitlements — quota checks and follow-up limits both read it, and they run
-   for every user whether or not payments are on. Changing a limit here changes
-   what free users can do. Don't delete this file if Stripe is ever removed; move it.
+0. **Entitlements live outside this file.** `app/src/lib/credits/config.ts` is the
+   source of truth for what each tier gets — spread costs, follow-up costs, and
+   per-tier credit grants — and `app/src/lib/credits/ledger.ts` is the store that
+   enforces it, for every user whether or not payments are on. `PLANS` here only
+   carries price display data now; changing a tier's entitlement means editing
+   `credits/config.ts`, not this file. Don't delete this file if Stripe is ever
+   removed; move it.
 
 1. **Never expose secret keys.** Stripe secret key (`sk_live_*`, `sk_test_*`) must stay in server-side environment variables only. Never log, return in API responses, or include in client bundles.
 
@@ -40,6 +43,7 @@
 
 ## Key files
 - `client.ts` — Stripe client initialization (throws if `STRIPE_SECRET_KEY` unset)
-- `config.ts` — Price IDs **and per-tier entitlement limits** (see rule 0)
+- `config.ts` — Price IDs and display-only credit grants (see rule 0; the
+  entitlement source of truth is `../credits/config.ts` and `../credits/ledger.ts`)
 - `helpers.ts` — Checkout session creation, portal session, webhook handling
 - `../config/features.ts` — `PAYMENTS_ENABLED` master switch
