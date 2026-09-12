@@ -21,7 +21,8 @@
 - Period keys: free `d:YYYY-MM-DD` (UTC), paid `m:YYYY-MM` (UTC). The prefix is part of the key.
 - The `usage` table is left in place but becomes unread. Do not drop it; do not write to it.
 - Schema changes go in `ensureSchema()` in `app/src/lib/db/sqlite.ts`, following the existing pattern. There is no migration runner.
-- All commands run from the `app/` directory. Test command: `npm test`. Typecheck: `npx tsc --noEmit`.
+- **There is a stray nested git repository at `app/.git`** (a leftover `create-next-app` scaffold from 2026-03-10). The real project repo is the parent at the repo root. **Every `git add` / `git commit` / `git rm` in this plan runs from the repo root**, never from `app/` — a commit made from inside `app/` lands in the vestigial nested repo and never reaches the project history. Verify commits with `git -C "<repo root>" log --oneline`.
+- npm commands (and only npm commands) run from the `app/` directory. Test command: `npm test`. Typecheck: `npx tsc --noEmit`.
 - Per `app/vitest.config.ts`, API routes and React components are deliberately not unit-tested in this codebase. Tasks 4–6 use `tsc --noEmit` plus a scripted manual verification instead.
 
 ---
@@ -210,7 +211,7 @@ Expected: PASS, 9 tests.
 - [ ] **Step 5: Commit**
 
 ```bash
-cd app && git add src/lib/credits/config.ts src/lib/credits/config.test.ts
+git add app/src/lib/credits/config.ts app/src/lib/credits/config.test.ts
 git commit -m "feat(credits): add credit costs, tier grants, and period keys"
 ```
 
@@ -308,7 +309,7 @@ If `tsx` is not installed, skip this step — Task 3's tests exercise the same D
 - [ ] **Step 4: Commit**
 
 ```bash
-cd app && git add src/lib/credits/schema.ts src/lib/db/sqlite.ts
+git add app/src/lib/credits/schema.ts app/src/lib/db/sqlite.ts
 git commit -m "feat(credits): add credit_ledger table to schema"
 ```
 
@@ -586,7 +587,7 @@ If the concurrency test is flaky, do NOT add a retry or a sleep — a genuine fa
 - [ ] **Step 5: Commit**
 
 ```bash
-cd app && git add src/lib/credits/ledger.ts src/lib/credits/ledger.test.ts
+git add app/src/lib/credits/ledger.ts app/src/lib/credits/ledger.test.ts
 git commit -m "feat(credits): add atomic credit ledger with lazy grants and refunds"
 ```
 
@@ -770,7 +771,7 @@ Expected: a `spend` row and a matching `refund` row with the same `ref_id`, nett
 - [ ] **Step 7: Commit**
 
 ```bash
-cd app && git add src/lib/db/queries.ts src/app/api/reading/route.ts
+git add app/src/lib/db/queries.ts app/src/app/api/reading/route.ts
 git commit -m "feat(credits): charge readings against the ledger, refund on failure"
 ```
 
@@ -911,7 +912,7 @@ As a user whose tier is `pro` (set `profiles.tier` in Turso), open a reading and
 - [ ] **Step 5: Commit**
 
 ```bash
-cd app && git add "src/app/api/reading/[id]/follow-up/route.ts"
+git add "app/src/app/api/reading/[id]/follow-up/route.ts"
 git commit -m "feat(credits): include two follow-ups per reading, charge beyond that"
 ```
 
@@ -1072,7 +1073,7 @@ Expected: both clean. The build is the only check that catches a broken componen
 - [ ] **Step 5: Commit**
 
 ```bash
-cd app && git add src/app/api/auth/me/route.ts src/components/reading/FollowUpChat.tsx "src/app/[locale]/(app)/reading/[id]/page.tsx"
+git add app/src/app/api/auth/me/route.ts app/src/components/reading/FollowUpChat.tsx "app/src/app/[locale]/(app)/reading/[id]/page.tsx"
 git commit -m "feat(credits): surface credit balance in the API and follow-up UI"
 ```
 
@@ -1087,13 +1088,23 @@ git commit -m "feat(credits): surface credit balance in the API and follow-up UI
 
 - [ ] **Step 1: Confirm nothing still imports quota**
 
-Run: `cd app && grep -rn "utils/quota\|checkQuota\|incrementUsage\|getFollowUpLimit" src`
-Expected: no results. If anything remains, fix that call site before deleting.
+Run this from the repo root:
+
+```bash
+grep -rn "utils/quota\|checkQuota\|incrementUsage\|getFollowUpLimit" app/src \
+  | grep -v "lib/utils/quota" | grep -v "lib/stripe/config.ts"
+```
+
+Expected: no results. The two excluded paths still legitimately match at this
+point — `quota.ts`/`quota.test.ts` are deleted in Step 2 and the
+`getFollowUpLimit` definition in `stripe/config.ts` in Step 3. What must be gone
+is every remaining *caller*. If anything else matches, fix that call site before
+deleting.
 
 - [ ] **Step 2: Delete the old quota module**
 
 ```bash
-cd app && git rm src/lib/utils/quota.ts src/lib/utils/quota.test.ts
+git rm app/src/lib/utils/quota.ts app/src/lib/utils/quota.test.ts
 ```
 
 - [ ] **Step 3: Replace the limits block in PLANS**
