@@ -5,6 +5,7 @@ import { getSpread } from '@/lib/tarot/spreads';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
 import Image from 'next/image';
 import FollowUpChat from '@/components/reading/FollowUpChat';
+import { getBalance } from '@/lib/credits/ledger';
 import ShareButton from '@/components/reading/ShareButton';
 import ReadingFeedback from '@/components/reading/ReadingFeedback';
 
@@ -23,6 +24,9 @@ export default async function ReadingPage({
 
   const profile = await getProfile(user.id);
   const followUps = await getFollowUps(id);
+
+  const tier = profile?.tier || 'free';
+  const credits = await getBalance(user.id, tier);
 
   const spread = getSpread(reading.spread_type);
   const cardsData = typeof reading.cards === 'string' ? JSON.parse(reading.cards) : reading.cards;
@@ -118,7 +122,8 @@ export default async function ReadingPage({
         </h2>
         <FollowUpChat
           readingId={id}
-          tier={profile?.tier || 'free'}
+          tier={tier}
+          credits={credits}
           existingMessages={followUps.map(f => ({ role: f.role as 'user' | 'assistant', content: f.content }))}
           language={language}
         />

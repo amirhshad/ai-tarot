@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { getFollowUpLimit } from '@/lib/stripe/config';
+import { INCLUDED_FOLLOW_UPS, FOLLOW_UP_COST } from '@/lib/credits/config';
 import { PAYMENTS_ENABLED } from '@/lib/config/features';
 import { DECK } from '@/lib/tarot/deck';
 import { TarotCard } from '@/lib/tarot/types';
@@ -18,6 +18,8 @@ interface FollowUpChatProps {
   tier: string;
   existingMessages?: Message[];
   language?: 'en' | 'fa';
+  /** Current credit balance; null for signed-out or unknown. */
+  credits?: number | null;
 }
 
 /** Draw a single crypto-random card with 50% reversal chance */
@@ -35,6 +37,7 @@ export default function FollowUpChat({
   tier,
   existingMessages = [],
   language = 'en',
+  credits = null,
 }: FollowUpChatProps) {
   const [messages, setMessages] = useState<Message[]>(existingMessages);
   const [input, setInput] = useState('');
@@ -46,10 +49,14 @@ export default function FollowUpChat({
   const [showExtraCardInput, setShowExtraCardInput] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const limit = getFollowUpLimit(tier);
   const userMessageCount = messages.filter(m => m.role === 'user').length;
-  const remaining = limit - userMessageCount;
-  const canAsk = remaining > 0;
+  const includedLeft = Math.max(0, INCLUDED_FOLLOW_UPS - userMessageCount);
+  const nextCostsCredits = includedLeft === 0;
+  // Free users have no follow-ups at all; paid users are limited by their
+  // balance once the included follow-ups are used up.
+  const canAsk =
+    tier !== 'free' && (!nextCostsCredits || (credits ?? 0) >= FOLLOW_UP_COST);
+  const remaining = includedLeft;
 
   const en = language === 'en';
 
@@ -346,17 +353,17 @@ export default function FollowUpChat({
       ) : !drawnExtraCard ? (
         <div className="text-center py-5 px-4 bg-gradient-to-b from-amber-900/10 to-white/[0.02] rounded-xl border border-amber-500/20 space-y-4">
           <p className="text-sm text-gray-300">
-            {limit === 0
+            {tier === 'free'
               ? (en
                   ? (PAYMENTS_ENABLED
                       ? 'Follow-up questions are available with Pro. Upgrade to explore your reading deeper.'
                       : 'Follow-up questions are available to members.')
                   : 'سؤالات بعدی با اشتراک حرفه‌ای فعال می‌شوند.')
               : (en
-                  ? 'You\'ve used all your follow-up questions for this reading.'
-                  : 'تمام سؤالات بعدی این خوانش را استفاده کرده‌اید.')}
+                  ? 'You don\'t have enough credits for another follow-up.'
+                  : 'اعتبار کافی برای سؤال بعدی ندارید.')}
           </p>
-          {limit === 0 && PAYMENTS_ENABLED && (
+          {tier === 'free' && PAYMENTS_ENABLED && (
             <div className="flex flex-col sm:flex-row gap-2 justify-center">
               <a
                 href="/billing"
@@ -378,11 +385,15 @@ export default function FollowUpChat({
       ) : null}
 
       {/* Counter */}
-      {limit > 0 && (
+      {tier !== 'free' && (
         <p className="text-sm text-gray-400 text-center">
-          {en
-            ? `${remaining} of ${limit} questions remaining`
-            : `${remaining} از ${limit} سؤال باقی‌مانده`}
+          {remaining > 0
+            ? (en
+                ? `${remaining} of ${INCLUDED_FOLLOW_UPS} included follow-ups remaining`
+                : `${remaining} از ${INCLUDED_FOLLOW_UPS} سؤال رایگان باقی‌مانده`)
+            : (en
+                ? `Next follow-up costs ${FOLLOW_UP_COST} credit`
+                : `سؤال بعدی ${FOLLOW_UP_COST} اعتبار هزینه دارد`)}
         </p>
       )}
     </div>
