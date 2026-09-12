@@ -153,7 +153,10 @@ The only module that touches the ledger:
 - `ensureGrant(userId, tier)` — idempotent lazy grant for the current period
 - `getBalance(userId, tier)` — calls `ensureGrant`, returns the current balance
 - `spend(userId, tier, cost, refId)` → `{ ok, balance, reason? }`
-- `refund(userId, tier, cost, refId)` — positive row, `reason = 'refund'`
+- `refund(refId)` — reverses the spend with that `ref_id`. Takes only the
+  reference: user, tier, amount, and period are all read from the original
+  spend row, which is what lets a refund land in the period the spend came
+  from rather than the period the failure happened in.
 
 ### Retired
 
@@ -235,7 +238,15 @@ up today:
   a month (paid), yields a full balance.
 - Tier change mid-period — a free user upgraded mid-month gets the full monthly
   grant, and their daily-key rows are not counted.
-- Route-level — a reading is refunded when `streamInterpretation` throws.
+- Refund period correctness — a spend at 23:59 refunded at 00:01 credits the
+  original day, not the new one.
+
+`app/vitest.config.ts` excludes API routes and components from unit testing by
+design ("they need DB and Stripe mocking, which is a lot of scaffolding for thin
+handlers"). The route wiring is therefore verified by `tsc --noEmit` plus a
+scripted manual check — force `streamInterpretation` to throw, then confirm a
+matching `spend`/`refund` pair in the ledger. Revisit if route logic grows past
+validation and delegation, per that file's own note.
 
 ## Out of scope
 
