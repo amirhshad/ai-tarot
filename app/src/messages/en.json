@@ -331,7 +331,26 @@
     "upgradeFollowUp": "Follow-up questions are available with Pro.",
     "limitReached": "You've used all your follow-up questions for this reading.",
     "reversed": "Reversed",
-    "upright": "Upright"
+    "upright": "Upright",
+    "feedback": {
+      "question": "Was this reading helpful?",
+      "yes": "Yes",
+      "no": "No",
+      "thanksPositive": "Glad it resonated with you!",
+      "thanksNegative": "Thanks for your honesty \u2014 we\u2019ll keep improving."
+    },
+    "upsell": {
+      "title": "Want to go deeper?",
+      "subtitle": "Create a free account to unlock more from your readings.",
+      "signUpFree": "Sign Up Free",
+      "goPro": "Go Pro",
+      "saveTitle": "Save This Reading",
+      "saveDescription": "Create an account to save this reading to your history and revisit it anytime.",
+      "followUpTitle": "Ask Follow-ups",
+      "followUpDescription": "Go deeper with up to 5 follow-up questions about your reading.",
+      "celticTitle": "Celtic Cross Spread",
+      "celticDescription": "Unlock 10-card deep readings with richer narrative interpretation."
+    }
   },
   "dashboard": {
     "welcome": "Welcome back, {name}",

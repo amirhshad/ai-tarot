@@ -2,9 +2,12 @@
 
 import { Link } from '@/i18n/navigation';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { PAYMENTS_ENABLED } from '@/lib/config/features';
 
 export default function UpsellPanel() {
+  const t = useTranslations('reading.upsell');
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -14,32 +17,32 @@ export default function UpsellPanel() {
     >
       <div className="p-6 rounded-2xl bg-gradient-to-b from-white/[0.04] to-white/[0.02] border border-white/10">
         <h3 className="text-center font-display text-lg text-gold-400 mb-2">
-          Want to go deeper?
+          {t('title')}
         </h3>
         <p className="text-center text-sm text-stone-400 mb-6">
-          Create a free account to unlock more from your readings.
+          {t('subtitle')}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <UpsellCard
             icon="&#x2727;"
-            title="Save This Reading"
-            description="Create an account to save this reading to your history and revisit it anytime."
-            cta="Sign Up Free"
+            title={t('saveTitle')}
+            description={t('saveDescription')}
+            cta={t('signUpFree')}
             href="/signup"
           />
           <UpsellCard
             icon="&#x2726;"
-            title="Ask Follow-ups"
-            description="Go deeper with up to 5 follow-up questions about your reading."
-            cta="Sign Up Free"
+            title={t('followUpTitle')}
+            description={t('followUpDescription')}
+            cta={t('signUpFree')}
             href="/signup"
           />
           <UpsellCard
             icon="&#x2736;"
-            title="Celtic Cross Spread"
-            description="Unlock 10-card deep readings with richer narrative interpretation."
-            cta={PAYMENTS_ENABLED ? 'Go Pro' : 'Sign Up Free'}
+            title={t('celticTitle')}
+            description={t('celticDescription')}
+            cta={PAYMENTS_ENABLED ? t('goPro') : t('signUpFree')}
             href={PAYMENTS_ENABLED ? '/signup?plan=pro' : '/signup'}
             highlight
           />
