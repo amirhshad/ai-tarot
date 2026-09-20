@@ -18,7 +18,7 @@ export const PLANS = {
   },
   pro: {
     name: 'Pro',
-    monthlyPrice: 799, // cents
+    monthlyPrice: 899, // cents
     monthlyPriceId: process.env.STRIPE_PRO_MONTHLY_PRICE_ID || '',
     yearlyPriceId: process.env.STRIPE_PRO_YEARLY_PRICE_ID || '',
     credits: TIER_GRANTS.pro,
@@ -26,7 +26,7 @@ export const PLANS = {
   },
   premium: {
     name: 'Premium',
-    monthlyPrice: 1499, // cents
+    monthlyPrice: 1999, // cents
     monthlyPriceId: process.env.STRIPE_PREMIUM_MONTHLY_PRICE_ID || '',
     yearlyPriceId: process.env.STRIPE_PREMIUM_YEARLY_PRICE_ID || '',
     credits: TIER_GRANTS.premium,

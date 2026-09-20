@@ -1,23 +1,29 @@
 # Core Business Rules
 
-> **Paid subscriptions are currently disabled.** `PAYMENTS_ENABLED` in
-> `app/src/lib/config/features.ts` is `false`, so no one can buy a plan — see
-> [Subscription Management](#subscription-management). Tier logic below is still
-> live and correct; paid tiers are granted manually. Flip the flag to `true` to
-> restore paid signups, at which point every rule here applies as written.
+> **The pricing UI is live; Stripe is not yet wired up.** `PAYMENTS_ENABLED` in
+> `app/src/lib/config/features.ts` is `true`, so the pricing table and upgrade
+> CTAs are public and clicks are recorded as `upgrade_clicked` in PostHog. But
+> until `STRIPE_SECRET_KEY` and the four price-ID env vars are set in Vercel,
+> `/api/stripe/checkout` answers `503 PAYMENTS_NOT_YET_CONFIGURED` with an
+> "opening shortly" message. Nobody can complete a purchase yet; paid tiers are
+> still granted manually. Setting those env vars completes the funnel with no
+> code change — see [Subscription Management](#subscription-management).
 
 ## Pricing & Model Selection
 
 | Tier | Price | Credits | AI Model | Interpretation Style |
 |------|-------|---------|----------|---------------------|
 | Free | $0 | 3 / day | Claude Haiku 4.5 | Short summary (~150-300 words) |
-| Pro | $7.99/mo (not for sale) | 120 / month | Claude Sonnet 5 | Deep narrative (~400-700 words) |
-| Premium | $14.99/mo (not for sale) | 350 / month | Claude Sonnet 5 | Deep narrative + custom spreads |
+| Pro | $8.99/mo | 120 / month | Claude Sonnet 5 | Deep narrative (~400-700 words) |
+| Premium | $19.99/mo | 350 / month | Claude Sonnet 5 | Deep narrative + custom spreads |
 
-Prices are the configured amounts, retained for when payments are re-enabled.
-Nothing can be purchased today. The intended repricing ($8.99 / $19.99) is
-recorded in `docs/superpowers/specs/2026-09-12-credit-ledger-design.md` and
-applies only when Stripe is switched back on.
+These prices are set against measured worst-case (Farsi) token cost: Pro lands
+near 64% gross margin at full usage, Premium near 75%. The earlier $7.99 /
+$14.99 left Premium with no headroom for the Farsi multiplier. Changing a price
+means changing `monthlyPrice` in `lib/stripe/config.ts`, the display strings in
+`components/billing/PricingTable.tsx` and `components/reading/FollowUpChat.tsx`,
+and the `Offer` JSON-LD in `app/[locale]/layout.tsx` — all four, or the site
+contradicts itself.
 
 **Model selection is server-side only.** The client sends the reading request;
 the server checks the user's tier from the `profiles` table and selects the
@@ -77,9 +83,12 @@ nothing reads or writes it. Do not add to it.
 
 ## Subscription Management
 
-**Status: disabled (Aug 2026).** `PAYMENTS_ENABLED` in
-`app/src/lib/config/features.ts` is `false`. The owner's own subscription was
-cancelled in the Stripe Dashboard; there are no other subscribers.
+**Status: UI live, checkout not yet connected (Sep 2026).** `PAYMENTS_ENABLED`
+is `true`, so the pricing table and upgrade CTAs are public, but no Stripe
+credentials are set — every checkout attempt answers `503
+PAYMENTS_NOT_YET_CONFIGURED`. There are no subscribers, and nobody can become
+one until the env vars below are set. The flag was turned on ahead of Stripe
+deliberately, to measure how many people click through to pay.
 
 ### Granting a paid tier today
 
@@ -88,11 +97,16 @@ grants Sonnet 5, all spreads, and follow-ups immediately — the app reads tier 
 the database and never asks Stripe on the read path. No Stripe customer or
 subscription record is required.
 
-### What the flag turns off
+### What the flag controls
 
-- `/api/stripe/checkout` returns 503 before a Checkout session is created
+When `false` it hides all of this; it is currently `true`, so all of it is live:
+
+- `/api/stripe/checkout` accepting requests at all (when `false` it 503s immediately)
 - Pricing table, upgrade CTAs, and the `/billing` nav link for free users
 - "Upgrade to Pro" wording in quota and follow-up messages
+
+**The flag does not gate the credit system.** Credits are enforced on every
+reading and follow-up regardless of its value — see [Credits](#credits).
 
 ### What stays live regardless
 

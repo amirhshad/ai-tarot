@@ -30,8 +30,8 @@ const plans = [
     id: 'pro' as const,
     name: 'Pro',
     nameFA: 'حرفه‌ای',
-    price: '$7.99/mo',
-    priceFA: '۷.۹۹$/ماه',
+    price: '$8.99/mo',
+    priceFA: '۸.۹۹$/ماه',
     popular: true,
     features: [
       '120 credits per month',
@@ -54,8 +54,8 @@ const plans = [
     id: 'premium' as const,
     name: 'Premium',
     nameFA: 'ویژه',
-    price: '$14.99/mo',
-    priceFA: '۱۴.۹۹$/ماه',
+    price: '$19.99/mo',
+    priceFA: '۱۹.۹۹$/ماه',
     features: [
       '350 credits per month',
       'Everything in Pro',

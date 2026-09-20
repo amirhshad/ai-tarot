@@ -14,7 +14,7 @@ An AI-powered conversational tarot reading platform with narrative-driven interp
 
 ## Pricing Tiers
 
-| Feature | Free | Pro ($7.99/mo) | Premium ($14.99/mo) |
+| Feature | Free | Pro ($8.99/mo) | Premium ($19.99/mo) |
 |---------|------|----------------|---------------------|
 | Credits | 3/day | 120/month | 350/month |
 | AI Model | Haiku 4.5 (short summary) | Sonnet 5 (deep narrative) | Sonnet 5 (deep narrative) |

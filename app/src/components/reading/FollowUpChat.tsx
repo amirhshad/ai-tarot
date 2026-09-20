@@ -382,14 +382,14 @@ export default function FollowUpChat({
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-xl text-sm transition-colors"
               >
                 <span>&#9733;</span>
-                {en ? 'Upgrade to Pro — $7.99/mo' : 'ارتقا به حرفه‌ای — ۷.۹۹$/ماه'}
+                {en ? 'Upgrade to Pro — $8.99/mo' : 'ارتقا به حرفه‌ای — ۸.۹۹$/ماه'}
               </a>
               <a
                 href="/billing"
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-purple-500/30 text-purple-300 hover:bg-purple-500/10 rounded-xl text-sm transition-colors"
               >
                 <span>&#10023;</span>
-                {en ? 'Go Premium — $14.99/mo' : 'ویژه — ۱۴.۹۹$/ماه'}
+                {en ? 'Go Premium — $19.99/mo' : 'ویژه — ۱۹.۹۹$/ماه'}
               </a>
             </div>
           )}
