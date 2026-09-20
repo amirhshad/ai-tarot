@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import PricingTable from '@/components/billing/PricingTable';
 import { PAYMENTS_ENABLED } from '@/lib/config/features';
+import { trackUpgradeClicked } from '@/lib/analytics/events';
 
 export default function BillingPage() {
   const [tier, setTier] = useState('free');
@@ -19,6 +20,7 @@ export default function BillingPage() {
   }, []);
 
   async function handleSelectPlan(plan: 'pro' | 'premium') {
+    trackUpgradeClicked(plan, 'billing', tier);
     setLoading(true);
     setError(null);
     try {

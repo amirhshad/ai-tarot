@@ -7,6 +7,7 @@ import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import PricingTable from '@/components/billing/PricingTable';
 import { PAYMENTS_ENABLED } from '@/lib/config/features';
+import { trackUpgradeClicked } from '@/lib/analytics/events';
 
 /* ─── Fanned card data: iconic Major Arcana picks ─── */
 const HERO_CARDS = [
@@ -528,6 +529,7 @@ export default function LandingPage() {
           <Ornament />
           <div className="mt-14">
             <PricingTable onSelectPlan={(plan) => {
+              trackUpgradeClicked(plan, 'homepage');
               window.location.href = `/signup?plan=${plan}`;
             }} />
           </div>

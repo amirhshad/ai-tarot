@@ -38,6 +38,18 @@ export function trackFeedbackSubmitted(readingId: string, helpful: boolean) {
   trackEvent('feedback_submitted', { reading_id: readingId, helpful });
 }
 
+/**
+ * A user clicked a paid plan. Fired at the click, before any network call, so
+ * it records intent even while checkout is not yet wired to Stripe.
+ */
+export function trackUpgradeClicked(
+  plan: 'pro' | 'premium',
+  source: 'billing' | 'homepage',
+  currentTier?: string,
+) {
+  trackEvent('upgrade_clicked', { plan, source, current_tier: currentTier });
+}
+
 export function trackSignup(method: 'email' | 'google') {
   trackEvent('user_signed_up', { method });
 }
