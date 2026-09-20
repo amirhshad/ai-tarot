@@ -14,14 +14,14 @@ const plans = [
     price: '$0',
     priceFA: 'رایگان',
     features: [
-      '1 single-card reading/day',
-      '1 three-card reading/week',
+      '3 credits per day',
+      'Single, three-card & horseshoe',
       'Short AI interpretation',
       'English only',
     ],
     featuresFA: [
-      '۱ خوانش تک‌کارت در روز',
-      '۱ خوانش سه‌کارت در هفته',
+      '۳ اعتبار در روز',
+      'تک‌کارتی، سه‌کارتی و نعل اسبی',
       'تفسیر کوتاه هوش مصنوعی',
       'فقط انگلیسی',
     ],
@@ -34,20 +34,20 @@ const plans = [
     priceFA: '۷.۹۹$/ماه',
     popular: true,
     features: [
-      'Unlimited all spreads',
+      '120 credits per month',
+      'All spreads, incl. Celtic Cross',
       'Deep narrative interpretation',
-      '5 follow-up questions/reading',
+      '2 free follow-ups per reading, then 1 credit',
       'Full reading history',
       'English + Farsi',
-      '3 reader personalities',
     ],
     featuresFA: [
-      'گسترش‌های نامحدود',
+      '۱۲۰ اعتبار در ماه',
+      'همه گسترش‌ها، از جمله صلیب سلتیک',
       'تفسیر روایی عمیق',
-      '۵ سؤال بعدی/خوانش',
+      '۲ سؤال رایگان در هر خوانش، سپس ۱ اعتبار',
       'تاریخچه کامل',
       'انگلیسی + فارسی',
-      '۳ شخصیت خواننده',
     ],
   },
   {
@@ -57,23 +57,29 @@ const plans = [
     price: '$14.99/mo',
     priceFA: '۱۴.۹۹$/ماه',
     features: [
+      '350 credits per month',
       'Everything in Pro',
-      '10 follow-up questions/reading',
       'Custom spreads',
       'Cross-reading trend analysis',
       'English + Farsi + Arabic',
-      '6+ reader personalities',
     ],
     featuresFA: [
+      '۳۵۰ اعتبار در ماه',
       'همه امکانات حرفه‌ای',
-      '۱۰ سؤال بعدی/خوانش',
       'گسترش‌های سفارشی',
       'تحلیل روند بین خوانش‌ها',
       'انگلیسی + فارسی + عربی',
-      '۶+ شخصیت خواننده',
     ],
   },
 ];
+
+/**
+ * What a credit buys. Without this the allowances above are just numbers —
+ * "120 credits" means nothing until you know a three-card reading costs 2.
+ * Kept in sync with SPREAD_COSTS in lib/credits/config.ts.
+ */
+const COST_LEGEND_EN = 'Single card 1 credit · Three-card 2 · Horseshoe 3 · Celtic Cross 5 · Extra follow-up 1';
+const COST_LEGEND_FA = 'تک‌کارتی ۱ اعتبار · سه‌کارتی ۲ · نعل اسبی ۳ · صلیب سلتیک ۵ · سؤال بعدی اضافه ۱';
 
 export default function PricingTable({
   currentTier,
@@ -81,7 +87,8 @@ export default function PricingTable({
   onSelectPlan,
 }: PricingTableProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {plans.map((plan) => {
         const isCurrent = currentTier === plan.id;
         const name = language === 'en' ? plan.name : plan.nameFA;
@@ -139,6 +146,11 @@ export default function PricingTable({
           </div>
         );
       })}
+      </div>
+
+      <p className="mt-8 text-center text-xs text-stone-500">
+        {language === 'en' ? COST_LEGEND_EN : COST_LEGEND_FA}
+      </p>
     </div>
   );
 }
