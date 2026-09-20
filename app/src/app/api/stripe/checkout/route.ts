@@ -31,8 +31,20 @@ export async function POST(request: NextRequest) {
     }
 
     const priceId = interval === 'yearly' ? planConfig.yearlyPriceId : planConfig.monthlyPriceId;
-    if (!priceId) {
-      return NextResponse.json({ error: 'Pricing not configured' }, { status: 500 });
+
+    // PAYMENTS_ENABLED can be on before Stripe itself is wired up — the pricing
+    // table goes live first so we can measure intent. Until the secret key and
+    // price IDs are set in Vercel, say so plainly rather than failing with a 500
+    // (or, worse, leaking "STRIPE_SECRET_KEY is not set" from the catch below).
+    if (!priceId || !process.env.STRIPE_SECRET_KEY?.trim()) {
+      console.warn('Checkout attempted before Stripe was configured', { plan, interval });
+      return NextResponse.json(
+        {
+          error: 'Card payments are opening shortly. Your interest has been noted — check back soon.',
+          code: 'PAYMENTS_NOT_YET_CONFIGURED',
+        },
+        { status: 503 },
+      );
     }
 
     // Get or create Stripe customer
@@ -59,8 +71,12 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ url: session.url });
   } catch (err: unknown) {
+    // Log the real error; never return it. Stripe failures carry internal
+    // detail (including config state) that should not reach the browser.
     console.error('Stripe checkout error:', err);
-    const message = err instanceof Error ? err.message : 'Internal server error';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: 'We could not start checkout. Please try again shortly.' },
+      { status: 500 },
+    );
   }
 }

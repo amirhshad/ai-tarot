@@ -13,6 +13,13 @@
  * `profiles.tier` directly in Turso. The Stripe webhook stays live so existing
  * subscriptions keep syncing.
  *
- * Flip to true to restore paid signups.
+ * **Currently true, ahead of Stripe being wired up.** The pricing table and
+ * upgrade CTAs are live so we can measure how many people click through to pay
+ * (`upgrade_clicked` in PostHog). Until STRIPE_SECRET_KEY and the four price-ID
+ * env vars are set in Vercel, /api/stripe/checkout answers 503 with
+ * PAYMENTS_NOT_YET_CONFIGURED — a deliberate "opening shortly" message, not a
+ * failure. Set those env vars to complete the funnel; no code change needed.
+ *
+ * Flip to false to hide paid signups again.
  */
-export const PAYMENTS_ENABLED = false;
+export const PAYMENTS_ENABLED = true;

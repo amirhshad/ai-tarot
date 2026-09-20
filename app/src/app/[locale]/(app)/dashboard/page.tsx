@@ -8,6 +8,8 @@ import VerificationGate from '@/components/auth/VerificationGate';
 import VerifiedToast from '@/components/auth/VerifiedToast';
 import { getReadingCount } from '@/lib/db/queries';
 import { PAYMENTS_ENABLED } from '@/lib/config/features';
+import { getBalance } from '@/lib/credits/ledger';
+import { grantFor } from '@/lib/credits/config';
 
 export default async function DashboardPage({
   params,
@@ -26,6 +28,10 @@ export default async function DashboardPage({
   const profile = await getProfile(user.id);
   const readings = await getRecentReadings(user.id, 5);
   const readingCount = await getReadingCount(user.id);
+  const tier = profile?.tier || 'free';
+  // Guarded on `profile`: getBalance reaches ensureGrant's INSERT into
+  // credit_ledger, whose foreign key requires the profiles row to exist.
+  const credits = profile ? await getBalance(user.id, tier) : null;
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const justVerified = resolvedSearchParams.verified === 'true';
   const showGate = profile?.email_verified === 0 && readingCount >= 1;
@@ -70,6 +76,21 @@ export default async function DashboardPage({
         <p className="text-gray-500 text-sm mt-1">
           {t('subtitle')}
         </p>
+        {credits !== null && (
+          <p className="text-sm mt-3">
+            <span className="text-amber-400 font-medium">
+              {isFA
+                ? `${credits} از ${grantFor(tier)} اعتبار`
+                : `${credits} of ${grantFor(tier)} credits`}
+            </span>
+            <span className="text-gray-500">
+              {' '}
+              {tier === 'free'
+                ? (isFA ? 'باقی‌مانده امروز' : 'remaining today')
+                : (isFA ? 'باقی‌مانده این ماه' : 'remaining this month')}
+            </span>
+          </p>
+        )}
       </div>
 
       {/* Quick Actions */}

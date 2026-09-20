@@ -8,6 +8,7 @@ import Deck from '@/components/tarot/Deck';
 import SpreadLayout from '@/components/tarot/SpreadLayout';
 import { SpreadType, DrawnCard } from '@/lib/tarot/types';
 import { drawCards } from '@/lib/tarot/shuffle';
+import { SPREAD_COSTS } from '@/lib/credits/config';
 import { getSpread } from '@/lib/tarot/spreads';
 import { serializeDrawnCards } from '@/lib/tarot/shuffle';
 import type { ReadingTopic } from '@/lib/ai/prompts';
@@ -44,6 +45,7 @@ export default function NewReadingPage() {
   const locale = useLocale();
   const language = (locale === 'fa' ? 'fa' : 'en') as 'en' | 'fa';
   const [tier, setTier] = useState<string>('free');
+  const [credits, setCredits] = useState<number | null>(null);
 
   useEffect(() => {
     fetch('/api/auth/me')
@@ -51,6 +53,9 @@ export default function NewReadingPage() {
       .then(data => {
         if (data.profile) {
           setTier(data.profile.tier || 'free');
+        }
+        if (data.credits) {
+          setCredits(data.credits.balance);
         }
       })
       .catch(() => {});
@@ -85,6 +90,23 @@ export default function NewReadingPage() {
   }
 
   function handleSelectSpread(type: SpreadType) {
+    // Check affordability here rather than at interpretation time. The server
+    // is authoritative either way, but finding out after drawing your cards is
+    // a bad moment — and /api/auth/me already told us the balance.
+    const cost = SPREAD_COSTS[type];
+    if (credits !== null && credits < cost) {
+      setError(
+        tier === 'free'
+          ? (en
+              ? `This reading costs ${cost} credits and you have ${credits} left today. Your credits reset at midnight UTC.`
+              : `این خوانش ${cost} اعتبار هزینه دارد و شما امروز ${credits} اعتبار دارید. اعتبار شما نیمه‌شب به وقت UTC تازه می‌شود.`)
+          : (en
+              ? `This reading costs ${cost} credits and you have ${credits} left this period.`
+              : `این خوانش ${cost} اعتبار هزینه دارد و شما در این دوره ${credits} اعتبار دارید.`),
+      );
+      return;
+    }
+    setError('');
     setSpreadType(type);
     setStep('question');
   }
