@@ -2261,6 +2261,23 @@ and in `dashboard/page.tsx`, the `date.toLocaleDateString('fa-IR')` / bare `toLo
 
 Delete the `isFA` / `isFa` locals once nothing reads them.
 
+- [ ] **Step 8b: Make the English and Farsi copy true again**
+
+Shipping Arabic falsifies copy that already exists in the other two bundles. Fix these four values — the claims are user-facing and will be wrong the moment Arabic deploys:
+
+| File | Key | Problem |
+|---|---|---|
+| `en.json` | `landing.faqA4` | Says "TarotVeil currently supports English and Farsi, **with Arabic coming soon**." Arabic now ships. |
+| `fa.json` | `landing.faqA4` | Same claim in Farsi (`و عربی به‌زودی اضافه خواهد شد`). |
+| `en.json` | `about.multiLangP1` | Lists only "English and Farsi (Persian)"; should include Arabic. |
+| `fa.json` | `about.multiLangP1` | Same omission. |
+
+Rewrite each so all three languages are named as supported, keeping the surrounding "culturally native, not just translated" point intact. The Arabic values were already written correctly in Task 6.
+
+Note `premiumDesc` in both bundles already says "English + Farsi + Arabic" — it has been contradicting `faqA4` all along, and becomes correct on its own once you fix `faqA4`.
+
+These are message-bundle values only; they do not touch `prompts.ts`, so the freeze gate is unaffected.
+
 - [ ] **Step 9: Verify and commit**
 
 Run: `cd app && npm run verify`
