@@ -10,7 +10,15 @@ import { getBalance } from '@/lib/credits/ledger';
 import ShareButton from '@/components/reading/ShareButton';
 import ReadingFeedback from '@/components/reading/ReadingFeedback';
 import { getTranslations } from 'next-intl/server';
-import { toLocale } from '@/i18n/locales';
+import { toLocale, HTML_LANG } from '@/i18n/locales';
+
+/** Spread type -> its label key in the `dashboard` namespace. */
+const SPREAD_LABEL_KEYS: Record<string, string> = {
+  'single': 'spreadSingle',
+  'three-card': 'spreadThreeCard',
+  'celtic-cross': 'spreadCelticCross',
+  'horseshoe': 'spreadHorseshoe',
+};
 
 export default async function ReadingPage({
   params,
@@ -42,16 +50,22 @@ export default async function ReadingPage({
 
   const language = toLocale(locale);
   const t = await getTranslations('reading');
+  // The four spread labels already exist, translated, in the dashboard
+  // namespace — reuse them rather than add a fifth copy.
+  const tSpread = await getTranslations('dashboard');
+  const spreadLabel = SPREAD_LABEL_KEYS[reading.spread_type]
+    ? tSpread(SPREAD_LABEL_KEYS[reading.spread_type])
+    : reading.spread_type.replaceAll('-', ' ');
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white capitalize">
-          {reading.spread_type.replace('-', ' ')} Reading
+        <h1 className="text-2xl font-bold text-white">
+          {t('spreadReadingTitle', { spread: spreadLabel })}
         </h1>
         <p className="text-gray-500 text-sm mt-1">
-          {new Date(reading.created_at).toLocaleDateString('en-US', {
+          {new Date(reading.created_at).toLocaleDateString(HTML_LANG[language], {
             weekday: 'long',
             year: 'numeric',
             month: 'long',

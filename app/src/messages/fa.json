@@ -334,6 +334,7 @@
     "yourReading": "خوانش شما",
     "viewFull": "مشاهده فال کامل و سؤالات بعدی",
     "cardsDrawn": "کارت‌های کشیده شده",
+    "spreadReadingTitle": "فال {spread}",
     "followUp": "سؤالات بعدی",
     "askFollowUp": "سؤال بعدی خود را بپرسید...",
     "ask": "بپرس",
@@ -393,6 +394,16 @@
       "drawExtraCard": "کشیدن کارت اضافی",
       "keywordSeparator": "، "
     },
+    "share": {
+      "twitterText": "فال تاروت من را ببینید!",
+      "whatsappText": "فال تاروت من را ببینید: {url}",
+      "creating": "در حال ساخت لینک...",
+      "shared": "به اشتراک گذاشته شد",
+      "shareReading": "اشتراک‌گذاری فال",
+      "panelTitle": "این فال را به اشتراک بگذارید",
+      "copied": "کپی شد!",
+      "copyLink": "کپی لینک"
+    },
     "limitReached": "تمام سؤالات بعدی این خوانش را استفاده کرده‌اید.",
     "feedback": {
       "question": "آیا این فال برایتان مفید بود؟",
@@ -420,7 +431,7 @@
     "remainingThisMonth": "باقی‌مانده این ماه",
     "relativeToday": "امروز",
     "relativeYesterday": "دیروز",
-    "relativeTwoDaysAgo": "۲ روز پیش",
+    "relativeTwoDaysAgo": "2 روز پیش",
     "relativeDaysAgo": "{count} روز پیش",
     "spreadSingle": "تک کارت",
     "spreadThreeCard": "سه کارت",

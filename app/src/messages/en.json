@@ -334,6 +334,7 @@
     "yourReading": "Your Reading",
     "viewFull": "View Full Reading & Follow-up",
     "cardsDrawn": "Cards Drawn",
+    "spreadReadingTitle": "{spread} Reading",
     "followUp": "Ask Follow-up Questions",
     "askFollowUp": "Ask a follow-up question...",
     "ask": "Ask",
@@ -392,6 +393,16 @@
       "getInterpretation": "Get Interpretation",
       "drawExtraCard": "Draw an Extra Card",
       "keywordSeparator": ", "
+    },
+    "share": {
+      "twitterText": "Check out my tarot reading!",
+      "whatsappText": "Check out my tarot reading: {url}",
+      "creating": "Creating link...",
+      "shared": "Shared",
+      "shareReading": "Share Reading",
+      "panelTitle": "Share this reading",
+      "copied": "Copied!",
+      "copyLink": "Copy link"
     },
     "limitReached": "You've used all your follow-up questions for this reading.",
     "feedback": {
