@@ -942,12 +942,29 @@ describe('every card is complete in every locale', () => {
     });
   }
 
-  it('uses Arabic script for every Arabic name and keyword', () => {
+  /**
+   * The Arabic Unicode block U+0600-U+06FF contains the Persian-only letters
+   * too, so "is in the Arabic block" does not prove "is Arabic". Assert the
+   * absence of Persian-specific forms as well — otherwise pasting the Farsi
+   * column into the ar slot would pass.
+   */
+  it('uses Arabic script, not Persian, for every Arabic name and keyword', () => {
+    const PERSIAN_ONLY = /[\u067E\u0686\u0698\u06AF\u06A9\u06CC]/; // پ چ ژ گ ک ی
     for (const card of DECK) {
-      expect(cardName(card, 'ar'), card.name).toMatch(/[؀-ۿ]/);
+      const name = cardName(card, 'ar');
+      expect(name, card.name).toMatch(/[\u0600-\u06FF]/);
+      expect(name, `${card.name} uses Persian letters`).not.toMatch(PERSIAN_ONLY);
       for (const keyword of cardKeywords(card, 'ar')) {
-        expect(keyword, `${card.name} keyword`).toMatch(/[؀-ۿ]/);
+        expect(keyword, `${card.name} keyword`).toMatch(/[\u0600-\u06FF]/);
+        expect(keyword, `${card.name} keyword uses Persian letters`).not.toMatch(PERSIAN_ONLY);
       }
+    }
+  });
+
+  it('never reuses a Farsi string as the Arabic one', () => {
+    for (const card of DECK) {
+      expect(cardName(card, 'ar'), card.name).not.toBe(cardName(card, 'fa'));
+      expect(cardKeywords(card, 'ar'), card.name).not.toEqual(cardKeywords(card, 'fa'));
     }
   });
 
