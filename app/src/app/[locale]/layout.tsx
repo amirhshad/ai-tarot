@@ -176,7 +176,7 @@ export default async function LocaleLayout({
         />
       </head>
       <body className={`${fontClasses} antialiased min-h-screen flex flex-col`}>
-        <IntlProvider messages={messages}>
+        <IntlProvider locale={locale} messages={messages}>
           <PostHogProvider>
             {children}
           </PostHogProvider>
