@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { TarotCard } from '@/lib/tarot/types';
 import { cardName } from '@/lib/tarot/localized';
 import Image from 'next/image';
@@ -12,6 +13,7 @@ interface CardFaceProps {
 }
 
 export default function CardFace({ card, reversed, language = 'en' }: CardFaceProps) {
+  const t = useTranslations('reading');
   const name = cardName(card, language);
 
   return (
@@ -45,7 +47,7 @@ export default function CardFace({ card, reversed, language = 'en' }: CardFacePr
         <p className="text-xs font-medium text-slate-700 truncate">{name}</p>
         {reversed && (
           <p className="text-[10px] text-red-500 font-light">
-            {language === 'en' ? 'Reversed' : 'معکوس'}
+            {t('reversed')}
           </p>
         )}
       </div>

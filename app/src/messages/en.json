@@ -335,6 +335,7 @@
     "viewFull": "View Full Reading & Follow-up",
     "cardsDrawn": "Cards Drawn",
     "spreadReadingTitle": "{spread} Reading",
+    "requiresTier": "Requires {tier}",
     "followUp": "Ask Follow-up Questions",
     "askFollowUp": "Ask a follow-up question...",
     "ask": "Ask",

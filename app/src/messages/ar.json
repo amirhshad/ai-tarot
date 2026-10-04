@@ -335,6 +335,7 @@
     "viewFull": "اطّلع على القراءة كاملة وأسئلة المتابعة",
     "cardsDrawn": "البطاقات المسحوبة",
     "spreadReadingTitle": "قراءة {spread}",
+    "requiresTier": "يتطلب {tier}",
     "followUp": "اطرح أسئلة متابعة",
     "askFollowUp": "اطرح سؤال متابعة...",
     "ask": "اسأل",
