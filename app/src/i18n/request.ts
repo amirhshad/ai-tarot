@@ -11,5 +11,16 @@ export default getRequestConfig(async ({ requestLocale }) => {
   return {
     locale,
     messages: (await import(`../messages/${locale}.json`)).default,
+    /**
+     * A missing key silently falling back is how English text ends up mid-page
+     * in a translated locale. `parity.test.ts` is the real gate; this makes a
+     * gap visible the moment it is introduced locally.
+     */
+    onError(error) {
+      if (process.env.NODE_ENV === 'development') {
+        throw error;
+      }
+      console.error(error);
+    },
   };
 });
