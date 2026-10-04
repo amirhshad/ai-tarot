@@ -153,16 +153,16 @@ Arabic blocks to author, in warm MSA, to the directive's Arabic guidance:
 - Question message
 - Extra-card context
 
-**New deliverable: Arabic `VOICE_CONSTRAINT_PATTERNS`.** The existing set is English-only; the code comment records that the Farsi equivalents never got a native pass. With no Arabic reviewer, these regexes are the only automated tone guard. They target Arabic's own machine-translation tells and are not a port of the English patterns.
+**New deliverable: `FORBIDDEN_PATTERNS_AR`.** The existing `FORBIDDEN_PATTERNS_EN` is English-only; the code comment records that the Farsi equivalents never got a native pass. With no Arabic reviewer, these regexes are the only automated tone guard. They target Arabic's own machine-translation tells and are not a port of the English patterns.
 
 ## 4. The Prompt-Freeze Gate — Sequenced as Proof
 
 `execution/prompt-freeze.fixtures.ts` freezes **rendered** prompts across language × tier × topic. This is the refactor's safety proof, and the sequencing is mandatory. Two separate commits:
 
 1. **Refactor only.** Run `node execution/prompt-freeze.mjs`. The snapshot must be **byte-identical**. Zero diff proves no existing English or Farsi reading changed — including that no block was dropped from one language, no assembly order shifted, and no conditional broke. **A diff here is a refactor bug. Never resolve it with `--update`.**
-2. **Then add Arabic.** Extend the fixtures' `LANGUAGES` to `['en', 'fa', 'ar']` and run `--update` to extend the snapshot with ar × 2 tiers × 4 topics.
+2. **Then add Arabic.** Extend the fixtures' `LANGUAGES` to `['en', 'fa', 'ar']`. The runner's own rules allow this: *"ADDED prompt -> allowed. New spreads and languages may add keys."* So the Arabic keys simply appear and the gate still guards every existing one. **`--update` is never run in this project** — a changed `en` or `fa` key always means a bug to fix, not a snapshot to re-bless.
 
-Collapsing these into one commit forfeits the proof, because the re-freeze in step 2 would silently absorb any drift from step 1.
+Collapsing these into one commit forfeits the proof: with both changes in flight there is no moment at which an unchanged snapshot certifies the refactor alone.
 
 ## 5. RTL and Typography
 
@@ -191,7 +191,7 @@ The existing `[dir="rtl"]` rules in `globals.css` apply to Arabic automatically.
 | Arabic prompt family | ~10 blocks (§3) |
 | `MESSAGES_AR` in `ReadingLoadingAnimation` | 5 strings |
 | Inline bilingual copy moved to messages | `dashboard/page.tsx` (2 ternaries + `spreadLabels`/`topicLabels` maps), `daily/page.tsx` (7 ternaries) |
-| Arabic `VOICE_CONSTRAINT_PATTERNS` | New; no Farsi precedent to copy |
+| `FORBIDDEN_PATTERNS_AR` | New; no Farsi precedent to copy |
 
 The marketing pages need no per-page work: all 24 already read copy through `getTranslations`, so they render in Arabic once `ar.json` exists. Their only hardcoded locale logic is the brand-name ternaries, replaced by `BRAND`.
 
