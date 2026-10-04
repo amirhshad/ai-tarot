@@ -46,6 +46,10 @@ export default async function DashboardPage({
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     if (diffDays === 0) return t('relativeToday');
     if (diffDays === 1) return t('relativeYesterday');
+    // Arabic has a dual: "قبل يومين" for exactly two, and the construct-form
+    // plural "قبل {count} أيام" for three to ten. One key cannot cover both, and
+    // two is the most common value after "yesterday".
+    if (diffDays === 2) return t('relativeTwoDaysAgo');
     if (diffDays < 7) return t('relativeDaysAgo', { count: String(diffDays) });
     return date.toLocaleDateString(HTML_LANG[current]);
   }

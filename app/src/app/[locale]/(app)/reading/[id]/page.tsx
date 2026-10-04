@@ -9,6 +9,7 @@ import FollowUpChat from '@/components/reading/FollowUpChat';
 import { getBalance } from '@/lib/credits/ledger';
 import ShareButton from '@/components/reading/ShareButton';
 import ReadingFeedback from '@/components/reading/ReadingFeedback';
+import { getTranslations } from 'next-intl/server';
 import { toLocale } from '@/i18n/locales';
 
 export default async function ReadingPage({
@@ -40,6 +41,7 @@ export default async function ReadingPage({
     : [];
 
   const language = toLocale(locale);
+  const t = await getTranslations('reading');
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
@@ -64,7 +66,7 @@ export default async function ReadingPage({
       {/* Cards */}
       <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08]">
         <h2 className="text-sm font-medium text-gray-500 mb-4">
-          {language === 'en' ? 'Cards Drawn' : 'کارت‌های کشیده شده'}
+          {t('cardsDrawn')}
         </h2>
         <div className={`flex justify-center gap-4 ${cards.length > 3 ? 'flex-wrap' : ''}`}>
           {cards.map((dc, i) => {
@@ -85,7 +87,7 @@ export default async function ReadingPage({
                 <p className="text-xs text-white font-medium mt-0.5">{name}</p>
                 {dc.reversed && (
                   <span className="text-[10px] text-red-400 mt-0.5">
-                    {language === 'en' ? 'Reversed' : 'معکوس'}
+                    {t('reversed')}
                   </span>
                 )}
               </div>
@@ -97,7 +99,7 @@ export default async function ReadingPage({
       {/* Interpretation */}
       <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
         <h2 className="text-xl font-semibold text-amber-400 mb-4">
-          {language === 'en' ? 'Your Reading' : 'خوانش شما'}
+          {t('yourReading')}
         </h2>
         <div className="prose prose-invert max-w-none">
           <p className="text-amber-50/95 text-base sm:text-lg leading-7 sm:leading-8 whitespace-pre-wrap">
@@ -123,7 +125,7 @@ export default async function ReadingPage({
       {/* Follow-up Chat */}
       <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
         <h2 className="text-lg font-semibold text-white mb-4">
-          {language === 'en' ? 'Ask Follow-up Questions' : 'سؤالات بعدی'}
+          {t('followUp')}
         </h2>
         <FollowUpChat
           readingId={id}
