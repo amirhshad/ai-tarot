@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { Inter, Cinzel, Vazirmatn } from 'next/font/google';
-import { NextIntlClientProvider, hasLocale } from 'next-intl';
+import { hasLocale } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import PostHogProvider from '@/components/analytics/PostHogProvider';
+import IntlProvider from '@/components/i18n/IntlProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -175,11 +176,11 @@ export default async function LocaleLayout({
         />
       </head>
       <body className={`${fontClasses} antialiased min-h-screen flex flex-col`}>
-        <NextIntlClientProvider messages={messages}>
+        <IntlProvider messages={messages}>
           <PostHogProvider>
             {children}
           </PostHogProvider>
-        </NextIntlClientProvider>
+        </IntlProvider>
       </body>
     </html>
   );

@@ -85,9 +85,40 @@ describe('message bundle parity', () => {
     expect(persian, `Persian letters (پ چ ژ گ ک ی) in ar.json`).toEqual([]);
   });
 
-  it('keeps the brand Latin in ar.json', () => {
+  /**
+   * The Arabic-script assertion above only proves a value sits in the U+0600
+   * block — which Farsi does too. Farsi that happens to avoid پ چ ژ گ ک ی
+   * therefore passes both of the checks above. `فال` is the Persian word for a
+   * divination reading and the single most likely such word to appear in this
+   * product's copy, so it gets its own assertion.
+   *
+   * The lookarounds are the point: `فال` is also the Arabic conjunction فـ
+   * joined to the article الـ, so `فالتاروت` and `فالبطاقة الأولى` are correct
+   * Arabic. Only `فال` standing alone as a word is Persian.
+   */
+  it('ar.json does not use the Persian word فال', () => {
+    const offenders: string[] = [];
     for (const [path, value] of leafEntries(ar)) {
-      expect(String(value), path).not.toMatch(/تاروت‌ویل|تاروتفيل/);
+      if (/(?<![؀-ۿ])فال(?![؀-ۿ])/.test(String(value))) offenders.push(path);
     }
+    expect(offenders, `Persian word فال in ar.json`).toEqual([]);
+  });
+
+  /**
+   * Replaces an earlier `not.toMatch(/تاروت‌ویل|تاروتفيل/)` test that could
+   * never fire: that pattern's first alternative contains a ZWNJ and a Persian
+   * ی, so any bundle passing the Persian-letter test passed it for free.
+   * Asserting presence parity instead catches both a translated brand and a
+   * brand inserted where English has none — the real defect found in review.
+   */
+  it('mentions TarotVeil in exactly the values en.json does', () => {
+    const enMap = new Map(leafEntries(en));
+    const mismatched: string[] = [];
+    for (const [path, value] of leafEntries(ar)) {
+      const inEn = String(enMap.get(path) ?? '').includes('TarotVeil');
+      const inAr = String(value).includes('TarotVeil');
+      if (inEn !== inAr) mismatched.push(`${path} (en: ${inEn}, ar: ${inAr})`);
+    }
+    expect(mismatched, `brand presence differs from en.json`).toEqual([]);
   });
 });
