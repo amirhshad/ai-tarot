@@ -13,6 +13,11 @@ function supported(value: string | undefined | null): Locale | undefined {
  * The URL beats the stored profile deliberately. Someone reading /en with
  * `language: 'ar'` saved is reading English right now, and an Arabic
  * interpretation inside an English page is worse than ignoring the preference.
+ *
+ * `urlLocale` has no production caller today: every client already posts its
+ * URL locale as `language`, so the first tier carries the behaviour. It is a
+ * safety net for a caller that knows the page locale but not the body value —
+ * not load-bearing, so do not plumb anything to reach it.
  */
 export function resolveReadingLanguage(params: {
   requestLanguage?: string;

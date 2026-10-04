@@ -46,6 +46,17 @@ const DAILY_USER_MESSAGE: Record<Locale, (cardName: string, keywords: string[]) 
     `بطاقة التاروت لهذا اليوم: ${cardName}\nالكلمات المفتاحية: ${keywords.join('، ')}\n\nقدّم تفسير بطاقة التاروت لهذا اليوم.`,
 };
 
+/**
+ * Keyword-list separator per locale, mirroring KEYWORD_JOIN in prompts.ts.
+ * The meta description's keyword list is user-visible in the SERP snippet, so
+ * Arabic and Farsi need U+060C rather than a Latin comma.
+ */
+const KEYWORD_JOIN: Record<Locale, string> = {
+  en: ', ',
+  fa: '، ',
+  ar: '، ',
+};
+
 /** Strip markdown formatting from AI output */
 function stripMarkdown(text: string): string {
   return text
@@ -71,7 +82,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const dateStr = getTodayDateStr();
   const card = getDailyCard(dateStr);
   const cardName = getCardName(card, current);
-  const keywords = getCardKeywords(card, current).slice(0, 3).join(', ');
+  const keywords = getCardKeywords(card, current).slice(0, 3).join(KEYWORD_JOIN[current]);
   const today = new Date().toLocaleDateString(HTML_LANG[current], { month: 'long', day: 'numeric', year: 'numeric' });
 
   return {
