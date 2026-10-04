@@ -10,6 +10,7 @@ import { getReadingCount } from '@/lib/db/queries';
 import { PAYMENTS_ENABLED } from '@/lib/config/features';
 import { getBalance } from '@/lib/credits/ledger';
 import { grantFor } from '@/lib/credits/config';
+import { HTML_LANG, toLocale } from '@/i18n/locales';
 
 export default async function DashboardPage({
   params,
@@ -36,32 +37,32 @@ export default async function DashboardPage({
   const justVerified = resolvedSearchParams.verified === 'true';
   const showGate = profile?.email_verified === 0 && readingCount >= 1;
   const displayName = profile?.display_name || user.email?.split('@')[0] || 'Reader';
-  const isFA = locale === 'fa';
+  const current = toLocale(locale);
 
   function formatRelativeDate(dateStr: string): string {
     const now = new Date();
     const date = new Date(dateStr);
     const diffMs = now.getTime() - date.getTime();
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    if (isFA) {
-      if (diffDays === 0) return 'امروز';
-      if (diffDays === 1) return 'دیروز';
-      if (diffDays < 7) return `${diffDays} روز پیش`;
-      return date.toLocaleDateString('fa-IR');
-    }
-    if (diffDays === 0) return 'Today';
-    if (diffDays === 1) return 'Yesterday';
-    if (diffDays < 7) return `${diffDays} days ago`;
-    return date.toLocaleDateString();
+    if (diffDays === 0) return t('relativeToday');
+    if (diffDays === 1) return t('relativeYesterday');
+    if (diffDays < 7) return t('relativeDaysAgo', { count: String(diffDays) });
+    return date.toLocaleDateString(HTML_LANG[current]);
   }
 
-  const spreadLabels: Record<string, string> = isFA
-    ? { 'single': 'تک کارت', 'three-card': 'سه کارت', 'celtic-cross': 'صلیب سلتی', 'horseshoe': 'نعل اسب' }
-    : { 'single': 'Single', 'three-card': 'Three Card', 'celtic-cross': 'Celtic Cross', 'horseshoe': 'Horseshoe' };
+  const spreadLabels: Record<string, string> = {
+    'single': t('spreadSingle'),
+    'three-card': t('spreadThreeCard'),
+    'celtic-cross': t('spreadCelticCross'),
+    'horseshoe': t('spreadHorseshoe'),
+  };
 
-  const topicLabels: Record<string, string> = isFA
-    ? { 'love': 'عشق', 'career': 'شغل', 'yes-or-no': 'بله/خیر', 'general': 'عمومی' }
-    : { 'love': 'Love', 'career': 'Career', 'yes-or-no': 'Yes/No', 'general': 'General' };
+  const topicLabels: Record<string, string> = {
+    'love': t('topicLove'),
+    'career': t('topicCareer'),
+    'yes-or-no': t('topicYesOrNo'),
+    'general': t('topicGeneral'),
+  };
 
   return (
     <div className="space-y-8">
@@ -79,15 +80,11 @@ export default async function DashboardPage({
         {credits !== null && (
           <p className="text-sm mt-3">
             <span className="text-amber-400 font-medium">
-              {isFA
-                ? `${credits} از ${grantFor(tier)} اعتبار`
-                : `${credits} of ${grantFor(tier)} credits`}
+              {t('creditsCount', { credits: String(credits), total: String(grantFor(tier)) })}
             </span>
             <span className="text-gray-500">
               {' '}
-              {tier === 'free'
-                ? (isFA ? 'باقی‌مانده امروز' : 'remaining today')
-                : (isFA ? 'باقی‌مانده این ماه' : 'remaining this month')}
+              {tier === 'free' ? t('remainingToday') : t('remainingThisMonth')}
             </span>
           </p>
         )}

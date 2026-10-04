@@ -11,6 +11,7 @@ import { DrawnCard } from '@/lib/tarot/types';
 import { drawCards, serializeDrawnCards } from '@/lib/tarot/shuffle';
 import { getSpread } from '@/lib/tarot/spreads';
 import type { ReadingTopic } from '@/lib/ai/prompts';
+import type { Locale } from '@/i18n/locales';
 
 type Step = 'question' | 'draw' | 'reveal' | 'interpret';
 
@@ -37,15 +38,21 @@ const TOPIC_CONFIG: Record<string, { title: string; titleFA: string; subtitle: s
   },
 };
 
-export default function FreeReadingClient({ language = 'en' }: { language?: 'en' | 'fa' }) {
+const LOADING_TEXT: Record<Locale, string> = {
+  en: 'Loading your reading...',
+  fa: 'در حال بارگذاری...',
+  ar: 'جارٍ تحضير قراءتك...',
+};
+
+export default function FreeReadingClient({ language = 'en' }: { language?: Locale }) {
   return (
-    <Suspense fallback={<div className="max-w-4xl mx-auto px-4 py-12 text-center text-stone-400">{language === 'fa' ? 'در حال بارگذاری...' : 'Loading your reading...'}</div>}>
+    <Suspense fallback={<div className="max-w-4xl mx-auto px-4 py-12 text-center text-stone-400">{LOADING_TEXT[language]}</div>}>
       <FreeReadingContent language={language} />
     </Suspense>
   );
 }
 
-function FreeReadingContent({ language }: { language: 'en' | 'fa' }) {
+function FreeReadingContent({ language }: { language: Locale }) {
   const en = language === 'en';
   const searchParams = useSearchParams();
   const rawTopic = searchParams.get('topic');

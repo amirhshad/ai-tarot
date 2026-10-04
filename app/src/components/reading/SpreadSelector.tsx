@@ -3,12 +3,13 @@
 import { SpreadType } from '@/lib/tarot/types';
 import { SPREADS, getAvailableSpreads } from '@/lib/tarot/spreads';
 import { spreadName, spreadDescription } from '@/lib/tarot/localized';
+import type { Locale } from '@/i18n/locales';
 
 interface SpreadSelectorProps {
   tier: string;
   selectedSpread: SpreadType | null;
   onSelect: (type: SpreadType) => void;
-  language?: 'en' | 'fa';
+  language?: Locale;
   allowedSpreads?: SpreadType[];
 }
 

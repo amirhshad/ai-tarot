@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { TarotCard } from '@/lib/tarot/types';
 import CardBack from './CardBack';
 import CardFace from './CardFace';
+import type { Locale } from '@/i18n/locales';
 
 type CardSize = 'default' | 'sm';
 
@@ -18,7 +19,7 @@ interface CardProps {
   reversed: boolean;
   isRevealed?: boolean;
   onReveal?: () => void;
-  language?: 'en' | 'fa';
+  language?: Locale;
   size?: CardSize;
   className?: string;
 }

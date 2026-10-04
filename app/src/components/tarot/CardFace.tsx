@@ -3,11 +3,12 @@
 import { TarotCard } from '@/lib/tarot/types';
 import { cardName } from '@/lib/tarot/localized';
 import Image from 'next/image';
+import type { Locale } from '@/i18n/locales';
 
 interface CardFaceProps {
   card: TarotCard;
   reversed: boolean;
-  language?: 'en' | 'fa';
+  language?: Locale;
 }
 
 export default function CardFace({ card, reversed, language = 'en' }: CardFaceProps) {

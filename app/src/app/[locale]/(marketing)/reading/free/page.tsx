@@ -3,6 +3,7 @@ import { Link } from '@/i18n/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import FreeReadingClient from '@/components/reading/FreeReadingClient';
 import { buildAlternates } from '@/lib/seo/alternates';
+import { BRAND, toLocale } from '@/i18n/locales';
 
 const siteUrl = 'https://www.tarotveil.com';
 
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: t('metaDescription'),
     alternates: buildAlternates('/reading/free', locale),
     openGraph: {
-      title: `${t('metaTitle')} | ${locale === 'fa' ? 'تاروت‌ویل' : 'TarotVeil'}`,
+      title: `${t('metaTitle')} | ${BRAND[toLocale(locale)]}`,
       description: t('metaDescription'),
       url: `${siteUrl}/reading/free`,
     },
@@ -42,7 +43,7 @@ export default async function FreeReadingPage({ params, searchParams }: PageProp
 
   // If a topic is selected (via URL), render the interactive client component
   if (hasTopic) {
-    return <FreeReadingClient language={locale === 'fa' ? 'fa' : 'en'} />;
+    return <FreeReadingClient language={toLocale(locale)} />;
   }
 
   const t = await getTranslations('freeReading');

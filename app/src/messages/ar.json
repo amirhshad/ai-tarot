@@ -201,6 +201,10 @@
     "haveAccount": "لديك حساب بالفعل؟"
   },
   "daily": {
+    "metaTitle": "بطاقة التاروت اليومية — {card} — {today}",
+    "metaDescription": "بطاقة التاروت اليومية: بطاقة اليوم هي {card}. اكتشف ما تحمله هذه البطاقة ليومك مع قراءتنا المجانية. الكلمات المفتاحية: {keywords}.",
+    "ogTitle": "تاروت اليوم: {card} — {today}",
+    "ogDescription": "بطاقة اليوم هي {card}. اطّلع على ما يخبّئه لك التاروت في يومك.",
     "label": "بطاقة التاروت اليومية",
     "todaysMessage": "رسالة اليوم",
     "deeperReading": "أتريد قراءة أعمق ومخصصة لك؟",
@@ -353,6 +357,20 @@
     }
   },
   "dashboard": {
+    "creditsCount": "{credits} من {total} رصيد",
+    "remainingToday": "متبقٍ اليوم",
+    "remainingThisMonth": "متبقٍ هذا الشهر",
+    "relativeToday": "اليوم",
+    "relativeYesterday": "أمس",
+    "relativeDaysAgo": "قبل {count} أيام",
+    "spreadSingle": "بطاقة واحدة",
+    "spreadThreeCard": "ثلاث بطاقات",
+    "spreadCelticCross": "الصليب السلتي",
+    "spreadHorseshoe": "حذوة الحصان",
+    "topicLove": "الحب",
+    "topicCareer": "المسار المهني",
+    "topicYesOrNo": "نعم/لا",
+    "topicGeneral": "عام",
     "welcome": "مرحباً بعودتك، {name}",
     "subtitle": "قراءاتك في انتظارك.",
     "newReading": "قراءة جديدة",

@@ -3,10 +3,11 @@
 import { Link } from '@/i18n/navigation';
 import type { ReadingRow } from '@/lib/db/queries';
 import DeleteReadingButton from '@/components/reading/DeleteReadingButton';
+import type { Locale } from '@/i18n/locales';
 
 interface ReadingTimelineProps {
   readings: ReadingRow[];
-  language?: 'en' | 'fa';
+  language?: Locale;
   onDelete?: (readingId: string) => void;
 }
 

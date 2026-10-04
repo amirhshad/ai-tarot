@@ -7,6 +7,7 @@ import { DECK } from '@/lib/tarot/deck';
 import { TarotCard } from '@/lib/tarot/types';
 import { cardName, cardKeywords } from '@/lib/tarot/localized';
 import Image from 'next/image';
+import type { Locale } from '@/i18n/locales';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -18,7 +19,7 @@ interface FollowUpChatProps {
   readingId: string;
   tier: string;
   existingMessages?: Message[];
-  language?: 'en' | 'fa';
+  language?: Locale;
   /** Current credit balance; null for signed-out or unknown. */
   credits?: number | null;
 }
@@ -414,7 +415,7 @@ export default function FollowUpChat({
 }
 
 /** Small inline badge showing the extra card in a message */
-function ExtraCardBadge({ cardId, reversed, language }: { cardId: number; reversed: boolean; language: 'en' | 'fa' }) {
+function ExtraCardBadge({ cardId, reversed, language }: { cardId: number; reversed: boolean; language: Locale }) {
   const card = DECK.find(c => c.id === cardId);
   if (!card) return null;
 

@@ -4,6 +4,7 @@ import { SpreadType } from '@/lib/tarot/types';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
 import { buildInterpretationPrompt, buildQuestionMessage, ReadingTopic } from '@/lib/ai/prompts';
 import { streamInterpretation } from '@/lib/ai/client';
+import { resolveReadingLanguage } from '@/lib/ai/language';
 import { getClientIp, checkFreeReadingLimit, checkGlobalFreeReadingLimit, recordFreeReading } from '@/lib/utils/rate-limit';
 
 export async function POST(request: NextRequest) {
@@ -12,10 +13,10 @@ export async function POST(request: NextRequest) {
     cards: { cardId: number; reversed: boolean; positionIndex: number }[];
     question?: string;
     topic?: string;
-    language?: 'en' | 'fa';
+    language?: string;
   };
 
-  const language = (requestLanguage === 'fa' ? 'fa' : 'en') as 'en' | 'fa';
+  const language = resolveReadingLanguage({ requestLanguage });
 
   const validTopics = ['love', 'yes-or-no', 'career'];
   const topic: ReadingTopic = rawTopic && validTopics.includes(rawTopic) ? rawTopic as ReadingTopic : null;

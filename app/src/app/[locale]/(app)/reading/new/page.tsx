@@ -13,8 +13,15 @@ import { getSpread } from '@/lib/tarot/spreads';
 import { serializeDrawnCards } from '@/lib/tarot/shuffle';
 import type { ReadingTopic } from '@/lib/ai/prompts';
 import ReadingLoadingAnimation from '@/components/reading/ReadingLoadingAnimation';
+import { toLocale, type Locale } from '@/i18n/locales';
 
 type Step = 'topic' | 'select-spread' | 'question' | 'draw' | 'reveal' | 'interpret';
+
+const YOUR_READING: Record<Locale, string> = {
+  en: 'Your Reading',
+  fa: 'خوانش شما',
+  ar: 'قراءتك',
+};
 
 const TOPICS: { key: ReadingTopic; title: string; titleFA: string; desc: string; descFA: string; symbol: string }[] = [
   { key: null, title: 'General Reading', titleFA: 'فال عمومی', desc: 'Open-ended — explore whatever comes up', descFA: 'آزاد — هر آنچه پیش آید کاوش کنید', symbol: '✨' },
@@ -43,7 +50,7 @@ export default function NewReadingPage() {
   const loadingStartRef = useRef<number>(0);
 
   const locale = useLocale();
-  const language = (locale === 'fa' ? 'fa' : 'en') as 'en' | 'fa';
+  const language = toLocale(locale);
   const [tier, setTier] = useState<string>('free');
   const [credits, setCredits] = useState<number | null>(null);
 
@@ -356,7 +363,7 @@ export default function NewReadingPage() {
         >
           <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
             <h2 className="text-xl font-semibold text-amber-400 mb-4">
-              {language === 'fa' ? 'خوانش شما' : 'Your Reading'}
+              {YOUR_READING[language]}
             </h2>
             <div className="prose prose-invert max-w-none">
               <p className="text-amber-50/95 text-base sm:text-lg leading-7 sm:leading-8 whitespace-pre-wrap">

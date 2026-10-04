@@ -9,6 +9,7 @@ import FollowUpChat from '@/components/reading/FollowUpChat';
 import { getBalance } from '@/lib/credits/ledger';
 import ShareButton from '@/components/reading/ShareButton';
 import ReadingFeedback from '@/components/reading/ReadingFeedback';
+import { toLocale } from '@/i18n/locales';
 
 export default async function ReadingPage({
   params,
@@ -38,7 +39,7 @@ export default async function ReadingPage({
     ? deserializeDrawnCards(cardsData as { cardId: number; reversed: boolean; positionIndex: number }[], spread.positions)
     : [];
 
-  const language = (locale === 'fa' ? 'fa' : 'en') as 'en' | 'fa';
+  const language = toLocale(locale);
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">

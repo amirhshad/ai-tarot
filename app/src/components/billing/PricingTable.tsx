@@ -1,8 +1,9 @@
 'use client';
+import type { Locale } from '@/i18n/locales';
 
 interface PricingTableProps {
   currentTier?: string;
-  language?: 'en' | 'fa';
+  language?: Locale;
   onSelectPlan?: (plan: 'pro' | 'premium') => void;
 }
 

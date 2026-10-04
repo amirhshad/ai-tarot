@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import type { Locale } from '@/i18n/locales';
 
 interface ReadingFiltersProps {
   search: string;
@@ -14,7 +15,7 @@ interface ReadingFiltersProps {
   onDateFromChange: (value: string) => void;
   onDateToChange: (value: string) => void;
   onClear: () => void;
-  language?: 'en' | 'fa';
+  language?: Locale;
 }
 
 const SPREAD_OPTIONS = [
