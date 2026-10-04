@@ -1094,8 +1094,15 @@ Expected: PASS, including the 78-card completeness and naming-scheme assertions.
 
 - [ ] **Step 6: Verify the Farsi data survived the move**
 
-Run: `cd app && npm run verify`
-Expected: PASS. `tsc` is clean again — this is the commit that closes the red window Task 2 opened, so a remaining `nameFA` error anywhere means Step 4b missed a file. And **the prompt freeze reports no changed prompts** — proof that no Farsi card name or keyword was altered while being moved into the sidecar. If the freeze reports a change, a Farsi string was mistyped in step 3. Fix the typo; do not re-freeze.
+Run: `cd app && npx tsc --noEmit`
+
+Expected: errors in **`app/src/lib/ai/prompts.ts` only.** That file is the last reader of the removed fields and belongs to Task 4, which restructures it wholesale — repointing it mechanically here would be thrown away and risks the byte-exact prompt requirement. An error in any *other* file means Step 4b missed one.
+
+Then run the test suite: `cd app && npx vitest run` — expected fully green.
+
+Do **not** run `npm run verify` as your gate: the prompt-freeze step imports `prompts.ts`, so it cannot execute until Task 4 lands. The red window Task 2 opened closes at the end of Task 4, not here.
+
+Once Task 4 completes, **the prompt freeze must report no changed prompts** — proof that no Farsi card name or keyword was altered while being moved into the sidecar. If the freeze reports a change, a Farsi string was mistyped in step 3. Fix the typo; do not re-freeze.
 
 - [ ] **Step 7: Commit**
 
@@ -1125,16 +1132,23 @@ rather than being improvised per card; a test asserts the scheme."
 - Consumes: `Locale` from `@/i18n/locales`; `cardName`, `cardKeywords`, `spreadName`, `positionName`, `positionDescription` from `@/lib/tarot/localized`.
 - Produces: `buildInterpretationPrompt`, `buildFollowUpPrompt`, `buildQuestionMessage`, `buildExtraCardContext` — all with `language: Locale` instead of `language: 'en' | 'fa'`. Also `FORBIDDEN_PATTERNS_EN` (unchanged name and content). Task 5 adds the `ar` entries to the tables this task creates.
 
-- [ ] **Step 1: Record the current snapshot hash**
+- [ ] **Step 1: Confirm the snapshot baseline**
 
-Run:
+The gate cannot run yet — it imports `prompts.ts`, which does not compile until your refactor lands. So take the baseline from the snapshot file itself, which has not been touched on this branch:
 
 ```bash
-cd "/Users/amir/Desktop/My Projects/AI Tarot"
-node execution/prompt-freeze.mjs && shasum -a 256 execution/prompt-freeze.snapshot.json
+shasum -a 256 execution/prompt-freeze.snapshot.json
 ```
 
-Expected: the gate passes. Write the hash down — `execution/prompt-freeze.snapshot.json` must be byte-identical at the end of this task, and it must not appear in this task's commit at all.
+Expected, exactly:
+
+```
+a6a024b207a81b4fcdd83698fcab337baa578e0d32e390e164d3556625c9555e
+```
+
+If it differs, stop and report — something has already modified the snapshot and the proof this task rests on is void.
+
+`execution/prompt-freeze.snapshot.json` must still hash to that value when you finish, and it must not appear in your commit at all. Your refactor is the thing that makes the gate runnable again; when it runs, it must report zero changed prompts.
 
 - [ ] **Step 2: Restructure the constant pairs into locale tables**
 
