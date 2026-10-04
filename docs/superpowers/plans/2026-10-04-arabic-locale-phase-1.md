@@ -19,7 +19,8 @@
 - Arabic date/number formatting locale is exactly `ar-u-nu-latn` (Latin digits).
 - Arabic fonts: `Amiri` for display, `Noto Naskh Arabic` for body. `/ar` must not ship Vazirmatn; `/fa` must not ship Amiri or Noto Naskh.
 - Crisis guidance in Arabic is region-neutral — direct to local emergency services, never a specific number.
-- `node execution/prompt-freeze.mjs` must pass at every commit. Per the runner's own rules: a CHANGED or REMOVED frozen prompt is a failure; an ADDED prompt is allowed. **`--update` is never run in this plan.** If the gate reports a change to an `en` or `fa` key, that is a bug in your refactor — fix the code, do not re-freeze.
+- `node execution/prompt-freeze.mjs` must pass at every commit. Per the runner's own rules: a CHANGED or REMOVED frozen prompt is a failure; an ADDED prompt is allowed. If the gate reports a change to an `en` or `fa` key, that is a bug — fix the code, never re-freeze.
+- **`--update` is forbidden in Tasks 1-10, with exactly one exception: Task 11 step 2b.** Allowing added keys is not the same as recording them, and an unrecorded Arabic prompt is an unguarded one — a later refactor could change Arabic reading voice with nothing to catch it. So the Arabic keys are frozen once, deliberately, at the end, after review has settled the Arabic content. That re-freeze must be proved additive: the snapshot diff may contain insertions only.
 - `cd app && npm run verify` (tsc + vitest + freeze) is the definition of green.
 - One concern per commit (`CLAUDE.md` principle 7).
 - Phase 1 touches no SQL and adds no migration.
@@ -2691,6 +2692,34 @@ git log --oneline -- execution/prompt-freeze.snapshot.json
 ```
 
 Expected: no commits from this branch. If the snapshot was modified, an existing English or Farsi prompt changed somewhere and the drift was absorbed rather than fixed — investigate before deploying.
+
+- [ ] **Step 2b: Freeze the Arabic prompts — the one deliberate re-freeze**
+
+Through Task 10 the gate *allows* the 69 Arabic keys without *recording* them. That means Arabic reading voice is unprotected: a later refactor could change it and the gate would stay silent. Record them now, once, deliberately — this is the intended-change case `--update` exists for.
+
+```bash
+node execution/prompt-freeze.mjs --update
+```
+
+Then prove the re-freeze was purely additive. This is the check that preserves everything Task 4 established:
+
+```bash
+git diff --numstat execution/prompt-freeze.snapshot.json
+```
+
+Expected: insertions only, **zero deletions**. A non-zero deletion count means an existing English or Farsi hash was rewritten — in that case `git checkout execution/prompt-freeze.snapshot.json` to discard the re-freeze, and investigate, because an en/fa prompt has drifted somewhere in Tasks 5-10.
+
+Confirm the recorded set is complete, then commit the snapshot on its own:
+
+```bash
+node execution/prompt-freeze.mjs    # expect: 207 prompts match, 0 new
+git add execution/prompt-freeze.snapshot.json
+git commit -m "chore(ai): freeze the Arabic prompts
+
+Adding a locale is the intended-change case for a re-freeze. Verified
+additive: the snapshot diff is insertions only, so every English and
+Farsi hash Task 4 proved unchanged is still unchanged."
+```
 
 - [ ] **Step 3: Manual Arabic pass**
 
