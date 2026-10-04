@@ -1372,7 +1372,15 @@ describe('Arabic prompts are actually Arabic', () => {
       spread, cards: drawFor(spread), language: 'ar', tier: 'pro', topic: null,
     });
     expect(systemPrompt).toMatch(/الطوارئ/);
-    expect(systemPrompt).not.toMatch(/\b\d{3,4}\b/);
+
+    // Scope the digit check to the crisis sentence. The prompt legitimately
+    // carries a word-range ("1000-1100"), so asserting over the whole string
+    // would fail a correct implementation.
+    const crisisSentence = systemPrompt
+      .split(/[\n.؟!]/)
+      .find((line) => /الطوارئ/.test(line));
+    expect(crisisSentence, 'crisis sentence not found').toBeDefined();
+    expect(crisisSentence).not.toMatch(/\d/);
   });
 });
 
@@ -1562,9 +1570,14 @@ function leafEntries(value: unknown, prefix = ''): [string, unknown][] {
 const enPaths = leafPaths(en);
 
 describe('message bundle parity', () => {
-  it('en.json has the expected shape', () => {
-    expect(Object.keys(en as object)).toHaveLength(26);
-    expect(enPaths).toHaveLength(769);
+  /**
+   * A floor, not an exact count. Later tasks legitimately add keys (inline
+   * bilingual copy moves into the bundles), so pinning the exact number would
+   * make a correct change fail. The floor still catches a truncated bundle.
+   */
+  it('en.json has at least the namespaces and keys it shipped with', () => {
+    expect(Object.keys(en as object).length).toBeGreaterThanOrEqual(26);
+    expect(enPaths.length).toBeGreaterThanOrEqual(769);
   });
 
   // Review Focus 4: a key missing from ar.json renders English mid-Arabic page
@@ -2150,7 +2163,7 @@ and in the component body:
 
 `dashboard/page.tsx` has an `isFA` boolean driving two ternaries plus `spreadLabels` and `topicLabels` maps; `daily/page.tsx` has seven. These are UI strings that belong in the message bundles.
 
-For each one, add a key to the matching namespace in all three of `en.json`, `fa.json`, and `ar.json` (the parity test from Task 6 enforces that you touch all three), then read it via `getTranslations`. Replace the date formatting:
+For each one, add a key to the matching namespace in all three of `en.json`, `fa.json`, and `ar.json` (the parity test from Task 6 enforces that you touch all three), then read it via `getTranslations`. The parity test asserts a key-count floor rather than an exact count, so adding keys here is expected and does not require editing that test. Replace the date formatting:
 
 ```ts
   const today = new Date().toLocaleDateString(HTML_LANG[current], { month: 'long', day: 'numeric', year: 'numeric' });
