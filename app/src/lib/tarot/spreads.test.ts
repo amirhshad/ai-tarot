@@ -37,9 +37,9 @@ describe('SPREADS integrity', () => {
     for (const spread of Object.values(SPREADS)) {
       for (const position of spread.positions) {
         expect(position.name.trim(), `${spread.type}.${position.index}.name`).not.toBe('');
-        expect(position.nameFA.trim(), `${spread.type}.${position.index}.nameFA`).not.toBe('');
+        expect(position.localized.fa.name.trim(), `${spread.type}.${position.index}.fa.name`).not.toBe('');
         expect(position.description.trim()).not.toBe('');
-        expect(position.descriptionFA.trim()).not.toBe('');
+        expect(position.localized.fa.description.trim()).not.toBe('');
       }
     }
   });
@@ -47,9 +47,9 @@ describe('SPREADS integrity', () => {
   it('gives every spread both English and Farsi names', () => {
     for (const spread of Object.values(SPREADS)) {
       expect(spread.name.trim()).not.toBe('');
-      expect(spread.nameFA.trim()).not.toBe('');
+      expect(spread.localized.fa.name.trim()).not.toBe('');
       expect(spread.description.trim()).not.toBe('');
-      expect(spread.descriptionFA.trim()).not.toBe('');
+      expect(spread.localized.fa.description.trim()).not.toBe('');
     }
   });
 
