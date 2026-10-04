@@ -1402,14 +1402,40 @@ describe('every locale renders every prompt', () => {
 describe('Arabic prompts are actually Arabic', () => {
   const spread = SPREADS['celtic-cross'];
 
-  it('contains no Latin prose and no Persian-only letters', () => {
-    const { systemPrompt } = buildInterpretationPrompt({
-      spread, cards: drawFor(spread), language: 'ar', tier: 'pro', topic: 'love',
-    });
-    // Persian-specific letters that must not appear in MSA.
-    expect(systemPrompt).not.toMatch(/[پچژگکی]/); // پ چ ژ گ ک ی
-    // No run of 4+ Latin letters: the register must not fall back to English.
-    expect(systemPrompt.replace(/TarotVeil/g, '')).not.toMatch(/[A-Za-z]{4,}/);
+  /**
+   * Checks EVERY rendered surface, not just the system prompt. The orientation
+   * words and keyword joiner are interpolated into the *user message*, so a
+   * Farsi value copied into an `ar` table slot would not show up in
+   * systemPrompt at all.
+   */
+  it('contains no Latin prose and no Persian-only letters, on every surface', () => {
+    const PERSIAN_ONLY = /[\u067E\u0686\u0698\u06AF\u06A9\u06CC]/; // پ چ ژ گ ک ی
+    const cards = drawFor(spread);
+
+    const surfaces: [string, string][] = [];
+    for (const topic of TOPICS) {
+      const { systemPrompt, userMessage } = buildInterpretationPrompt({
+        spread, cards, language: 'ar', tier: 'pro', topic,
+      });
+      surfaces.push([`system.${topic ?? 'none'}`, systemPrompt]);
+      surfaces.push([`user.${topic ?? 'none'}`, userMessage]);
+    }
+    surfaces.push(['followup', buildFollowUpPrompt({
+      spread, cards, interpretation: 'X', language: 'ar',
+    })]);
+    surfaces.push(['question', buildQuestionMessage({ question: 'س؟', language: 'ar' })]);
+    for (const wasInOriginal of [false, true]) {
+      surfaces.push([`extra.${wasInOriginal}`, buildExtraCardContext({
+        card: DECK[10], reversed: true, language: 'ar',
+        originalCardIds: wasInOriginal ? [DECK[10].id] : [],
+      })]);
+    }
+
+    for (const [label, text] of surfaces) {
+      expect(text, `${label} uses Persian letters`).not.toMatch(PERSIAN_ONLY);
+      // No run of 4+ Latin letters: the register must not fall back to English.
+      expect(text.replace(/TarotVeil/g, ''), `${label} has Latin prose`).not.toMatch(/[A-Za-z]{4,}/);
+    }
   });
 
   it('avoids deterministic prediction verbs', () => {
@@ -1491,6 +1517,10 @@ In `app/src/lib/ai/prompts.ts`, delete the `PromptLocale` alias and replace its 
 `tsc` will now point at each table missing an `ar` key. Add an authored Arabic body to every one: `SPREAD_SHAPES.ar` (all four spread types), `NARRATIVE_STRUCTURE.ar`, `VOICE_CONSTRAINTS.ar`, `SAFETY_BOUNDARIES.ar`, `TOPIC_INSTRUCTIONS.love.ar`, `TOPIC_INSTRUCTIONS['yes-or-no'].ar`, `TOPIC_INSTRUCTIONS.career.ar`, `SYSTEM_PREAMBLE.ar`, `ORIENTATION.ar` (`{ upright: 'مستقيمة', reversed: 'معكوسة' }`), `KEYWORD_JOIN.ar` (`'، '`), `USER_MESSAGE.ar`, `FOLLOWUP_PROMPT.ar`, `QUESTION_PREFIX.ar`, `EXTRA_CARD.ar`.
 
 The `yes-or-no` topic needs its four answer formats in Arabic, matching the English structure: `نعم`, `لا`, `نعم، ولكن…`, `لا، إلّا إذا…`.
+
+**Do not copy any `fa` value into its `ar` slot.** Farsi is written in Arabic script, so a copied value compiles cleanly and looks plausible while being the wrong language. The traps are `ORIENTATION` (`ایستاده`/`معکوس` are Farsi — Arabic is `مستقيمة`/`معكوسة`) and `EXTRA_CARD.repeat`/`.fresh`, which are Farsi prose. The test above catches these by rejecting the Persian-only letters ی and ک on every rendered surface.
+
+**One legitimate exception:** `KEYWORD_JOIN.ar` is `'، '` — the same Arabic comma (U+060C) Farsi uses. That value genuinely coincides; it is not a copy-paste error.
 
 - [ ] **Step 4: Add the Arabic forbidden patterns**
 
