@@ -142,6 +142,24 @@ describe('FORBIDDEN_PATTERNS_AR', () => {
     }
   });
 
+  /**
+   * Regression for the clinical-language pattern. It used to match
+   * `إيذاء الذات` (self-harm), which both left the term VOICE_CONSTRAINTS.ar
+   * actually bans (`تخريب الذات`) ungated and would have flagged a
+   * compassionate reply to a self-harm disclosure as clinical register.
+   */
+  it('gates the clinical term the voice rules ban, and not self-harm', () => {
+    const flags = (text: string) =>
+      FORBIDDEN_PATTERNS_AR.filter(({ pattern }) => pattern.test(text)).map((f) => f.label);
+
+    expect(flags('ما يجري هنا هو تخريب الذات في صورته المعتادة')).toContain('clinical language');
+    // Generated Arabic routinely drops the shadda, so both forms must be caught.
+    expect(flags('يظهر نمط التعلّق في هذه البطاقة')).toContain('clinical language');
+    expect(flags('يظهر نمط التعلق في هذه البطاقة')).toContain('clinical language');
+    // A compassionate response to a self-harm disclosure is not clinical language.
+    expect(flags('إذا ذكر إيذاء الذات فأجب بتعاطف ووجّهه إلى خدمات الطوارئ المحلية')).toEqual([]);
+  });
+
   it('does not flag ordinary reflective Arabic', () => {
     const good = [
       'تدعوك البطاقات إلى أن تتأمّل في ما يجري حولك.',
