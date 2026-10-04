@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { DrawnCard, SpreadType } from '@/lib/tarot/types';
+import { positionName } from '@/lib/tarot/localized';
 import Card from './Card';
 
 interface SpreadLayoutProps {
@@ -148,7 +149,7 @@ function CardSlot({
   onReveal: (i: number) => void;
   language: 'en' | 'fa';
 }) {
-  const posName = language === 'en' ? drawnCard.position.name : drawnCard.position.nameFA;
+  const posName = positionName(drawnCard.position, language);
 
   return (
     <motion.div
@@ -186,7 +187,7 @@ function CelticCard({
   hideLabel?: boolean;
   size?: 'default' | 'sm';
 }) {
-  const posName = language === 'en' ? dc.position.name : dc.position.nameFA;
+  const posName = positionName(dc.position, language);
 
   return (
     <motion.div

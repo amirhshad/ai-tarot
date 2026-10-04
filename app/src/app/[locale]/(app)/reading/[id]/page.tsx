@@ -3,6 +3,7 @@ import { getProfile, getReading, getFollowUps } from '@/lib/db/queries';
 import { notFound } from 'next/navigation';
 import { getSpread } from '@/lib/tarot/spreads';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
+import { cardName, positionName } from '@/lib/tarot/localized';
 import Image from 'next/image';
 import FollowUpChat from '@/components/reading/FollowUpChat';
 import { getBalance } from '@/lib/credits/ledger';
@@ -66,8 +67,8 @@ export default async function ReadingPage({
         </h2>
         <div className={`flex justify-center gap-4 ${cards.length > 3 ? 'flex-wrap' : ''}`}>
           {cards.map((dc, i) => {
-            const name = language === 'en' ? dc.card.name : dc.card.nameFA;
-            const posName = language === 'en' ? dc.position.name : dc.position.nameFA;
+            const name = cardName(dc.card, language);
+            const posName = positionName(dc.position, language);
             return (
               <div key={i} className="flex flex-col items-center text-center w-[90px] sm:w-[110px]">
                 <div className={`relative w-[80px] h-[133px] sm:w-[100px] sm:h-[167px] rounded-md overflow-hidden border border-amber-400/20 ${dc.reversed ? 'rotate-180' : ''}`}>

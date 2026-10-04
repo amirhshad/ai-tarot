@@ -5,6 +5,7 @@ import { INCLUDED_FOLLOW_UPS, FOLLOW_UP_COST } from '@/lib/credits/config';
 import { PAYMENTS_ENABLED } from '@/lib/config/features';
 import { DECK } from '@/lib/tarot/deck';
 import { TarotCard } from '@/lib/tarot/types';
+import { cardName, cardKeywords } from '@/lib/tarot/localized';
 import Image from 'next/image';
 
 interface Message {
@@ -160,7 +161,7 @@ export default function FollowUpChat({
     if (!drawnExtraCard || isLoading) return;
 
     const card = drawnExtraCard.card;
-    const cardName = en ? card.name : card.nameFA;
+    const extraCardName = cardName(card, language);
     const orientation = drawnExtraCard.reversed
       ? (en ? 'Reversed' : 'معکوس')
       : (en ? 'Upright' : 'ایستاده');
@@ -168,11 +169,11 @@ export default function FollowUpChat({
     const question = extraCardQuestion.trim();
     const userContent = question
       ? (en
-          ? `I drew an extra card: ${cardName} (${orientation}). My question: ${question}`
-          : `من یک کارت اضافی کشیدم: ${cardName} (${orientation}). سؤال من: ${question}`)
+          ? `I drew an extra card: ${extraCardName} (${orientation}). My question: ${question}`
+          : `من یک کارت اضافی کشیدم: ${extraCardName} (${orientation}). سؤال من: ${question}`)
       : (en
-          ? `I drew an extra card for deeper insight: ${cardName} (${orientation}). How does this card add to or change the reading?`
-          : `من یک کارت اضافی برای بینش عمیق‌تر کشیدم: ${cardName} (${orientation}). این کارت چگونه به خوانش اضافه می‌کند یا آن را تغییر می‌دهد؟`);
+          ? `I drew an extra card for deeper insight: ${extraCardName} (${orientation}). How does this card add to or change the reading?`
+          : `من یک کارت اضافی برای بینش عمیق‌تر کشیدم: ${extraCardName} (${orientation}). این کارت چگونه به خوانش اضافه می‌کند یا آن را تغییر می‌دهد؟`);
 
     const extraCardData = { cardId: card.id, reversed: drawnExtraCard.reversed };
     const chargesCredit = nextCostsCredits;
@@ -292,7 +293,7 @@ export default function FollowUpChat({
           {isCardRevealed && (
             <div className="text-center">
               <p className="text-white text-sm font-medium">
-                {en ? drawnExtraCard.card.name : drawnExtraCard.card.nameFA}
+                {cardName(drawnExtraCard.card, language)}
                 {drawnExtraCard.reversed && (
                   <span className="text-red-400 text-xs ml-1">
                     ({en ? 'Reversed' : 'معکوس'})
@@ -300,7 +301,7 @@ export default function FollowUpChat({
                 )}
               </p>
               <p className="text-gray-400 text-sm mt-1">
-                {(en ? drawnExtraCard.card.keywords : drawnExtraCard.card.keywordsFA).join(en ? ', ' : '، ')}
+                {cardKeywords(drawnExtraCard.card, language).join(en ? ', ' : '، ')}
               </p>
             </div>
           )}
@@ -413,7 +414,7 @@ export default function FollowUpChat({
 }
 
 /** Small inline badge showing the extra card in a message */
-function ExtraCardBadge({ cardId, reversed, language }: { cardId: number; reversed: boolean; language: string }) {
+function ExtraCardBadge({ cardId, reversed, language }: { cardId: number; reversed: boolean; language: 'en' | 'fa' }) {
   const card = DECK.find(c => c.id === cardId);
   if (!card) return null;
 
@@ -424,7 +425,7 @@ function ExtraCardBadge({ cardId, reversed, language }: { cardId: number; revers
         <Image src={card.image} alt={card.name} fill className="object-contain" sizes="32px" />
       </div>
       <span className="text-xs opacity-80">
-        {en ? card.name : card.nameFA}
+        {cardName(card, language)}
         {reversed && ` (${en ? 'Reversed' : 'معکوس'})`}
       </span>
     </div>

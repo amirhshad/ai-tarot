@@ -1,6 +1,7 @@
 'use client';
 
 import { TarotCard } from '@/lib/tarot/types';
+import { cardName } from '@/lib/tarot/localized';
 import Image from 'next/image';
 
 interface CardFaceProps {
@@ -10,7 +11,7 @@ interface CardFaceProps {
 }
 
 export default function CardFace({ card, reversed, language = 'en' }: CardFaceProps) {
-  const name = language === 'en' ? card.name : card.nameFA;
+  const name = cardName(card, language);
 
   return (
     <div

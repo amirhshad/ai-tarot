@@ -5,6 +5,8 @@ import { getDailyCard, getTodayDateStr } from '@/lib/tarot/daily';
 import { generateCompletion } from '@/lib/ai/client';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buildAlternates } from '@/lib/seo/alternates';
+import { toLocale } from '@/i18n/locales';
+import { cardName as getCardName, cardKeywords as getCardKeywords } from '@/lib/tarot/localized';
 
 export const revalidate = 86400; // ISR: regenerate once per day
 
@@ -52,7 +54,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const isFA = locale === 'fa';
   const dateStr = getTodayDateStr();
   const card = getDailyCard(dateStr);
-  const cardName = isFA ? card.nameFA : card.name;
+  const cardName = getCardName(card, toLocale(locale));
   const today = new Date().toLocaleDateString(isFA ? 'fa-IR' : 'en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
   return {
@@ -82,8 +84,8 @@ export default async function DailyPage({ params }: { params: Promise<{ locale: 
   const isFA = locale === 'fa';
   const dateStr = getTodayDateStr();
   const card = getDailyCard(dateStr);
-  const cardName = isFA ? card.nameFA : card.name;
-  const cardKeywords = isFA ? card.keywordsFA : card.keywords;
+  const cardName = getCardName(card, toLocale(locale));
+  const cardKeywords = getCardKeywords(card, toLocale(locale));
   const today = new Date().toLocaleDateString(isFA ? 'fa-IR' : 'en-US', {
     weekday: 'long',
     year: 'numeric',

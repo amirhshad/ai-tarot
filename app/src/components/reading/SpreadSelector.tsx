@@ -2,6 +2,7 @@
 
 import { SpreadType } from '@/lib/tarot/types';
 import { SPREADS, getAvailableSpreads } from '@/lib/tarot/spreads';
+import { spreadName, spreadDescription } from '@/lib/tarot/localized';
 
 interface SpreadSelectorProps {
   tier: string;
@@ -32,8 +33,8 @@ export default function SpreadSelector({
       {visibleSpreads.map((spread) => {
         const isAvailable = availableTypes.has(spread.type);
         const isSelected = selectedSpread === spread.type;
-        const name = language === 'en' ? spread.name : spread.nameFA;
-        const desc = language === 'en' ? spread.description : spread.descriptionFA;
+        const name = spreadName(spread, language);
+        const desc = spreadDescription(spread, language);
 
         return (
           <button
