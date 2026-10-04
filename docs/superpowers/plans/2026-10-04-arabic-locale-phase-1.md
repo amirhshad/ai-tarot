@@ -1541,7 +1541,10 @@ export const FORBIDDEN_PATTERNS_AR: { label: string; pattern: RegExp }[] = [
   { label: 'deterministic future', pattern: /(?:^|\s)(?:سوف\s+\S+|س[يتن]\S+)\s+(?:قريبًا|حتمًا|بالتأكيد)/ },
   { label: 'the real question', pattern: /السؤال\s+الحقيقي\s+(?:هو|ليس)/ },
   { label: 'mind-reading', pattern: /(?:جزء\s+منك\s+يعرف|ما\s+تريده\s+فعل(?:ًا|ا)|تخشى\s+أن\s+تعترف)/ },
-  { label: 'clinical language', pattern: /(?:نمط\s+التعلّق|إيذاء\s+الذات|استجابة\s+الصدمة|جهازك\s+العصبي)/ },
+  // NOT إيذاء الذات — that is self-HARM, and flagging it would catch a reading
+  // responding compassionately to a disclosure. The voice list bans self-SABOTAGE.
+  // The shadda is optional because generated text usually omits it.
+  { label: 'clinical language', pattern: /(?:نمط\s+التعل(?:ّ)?ق|تخريب\s+الذات|استجابة\s+الصدمة|جهازك\s+العصبي)/ },
   { label: 'reassurance padding', pattern: /(?:وهذا\s+أمر\s+طبيعي|لا\s+يوجد\s+جواب\s+خاطئ|كن\s+لطيف(?:ًا|ا)\s+مع\s+نفسك)/ },
   { label: 'flattering opener', pattern: /يا\s+له\s+من\s+سؤال\s+(?:جميل|عميق|رائع)/ },
   { label: 'meta-narration', pattern: /(?:لنبدأ\s+إذ(?:ًا|ا)|قبل\s+أن\s+نبدأ|للبطاقات\s+كثير\s+لتقوله)/ },
