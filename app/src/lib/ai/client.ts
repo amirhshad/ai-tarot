@@ -10,7 +10,22 @@ function getModel(tier: Tier): string {
   if (tier === 'free') {
     return 'claude-haiku-4-5-20251001';
   }
-  return 'claude-sonnet-5';
+  return 'claude-sonnet-5-5';
+}
+
+/**
+ * Lowest thinking setting for a tier's model.
+ *
+ * Up-front thinking stays off on every tier: thinking shares the max_tokens
+ * budget, and the ceilings in getMaxTokens are sized for narrative text alone,
+ * so enabling it would truncate long Farsi readings. The parameter differs by
+ * model — Sonnet 5.5 rejects 'disabled' with a 400 and spells this
+ * 'between_tools' (valid at 'high' effort or below, which is the default).
+ * With no tools in play it returns text only. Haiku 4.5 predates
+ * 'between_tools' and rejects it, so the free tier keeps 'disabled'.
+ */
+function getThinking(tier: Tier): Anthropic.ThinkingConfigParam {
+  return tier === 'free' ? { type: 'disabled' } : { type: 'between_tools' };
 }
 
 /**
@@ -52,9 +67,7 @@ export async function streamInterpretation(req: InterpretationRequest) {
   return anthropic.messages.stream({
     model,
     max_tokens: maxTokens,
-    // Sonnet 5 runs adaptive thinking when this is omitted, and thinking shares
-    // the max_tokens budget — which would truncate long Farsi readings.
-    thinking: { type: 'disabled' },
+    thinking: getThinking(req.tier),
     system: req.systemPrompt,
     messages: [{ role: 'user', content: req.userMessage }],
   });
@@ -69,7 +82,7 @@ export async function streamFollowUp(req: FollowUpRequest) {
   return anthropic.messages.stream({
     model,
     max_tokens: 1200, // target 150-250 words; Farsi needs ~900 (see getMaxTokens)
-    thinking: { type: 'disabled' },
+    thinking: getThinking(req.tier),
     system: req.systemPrompt,
     messages: req.messages,
   });
