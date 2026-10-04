@@ -93,3 +93,16 @@ export function isolateLtr(text: string): string {
   if (text.startsWith(FSI) && text.endsWith(PDI)) return text;
   return `${FSI}${text}${PDI}`;
 }
+
+/**
+ * The brand as it should appear inside a title template.
+ *
+ * Isolation is needed only when a Latin wordmark sits inside RTL text —
+ * otherwise the separator renders on the wrong side. Farsi's brand is
+ * already Arabic script, so isolating it would add invisible control
+ * characters to an indexed title for no benefit.
+ */
+export function brandForTitle(locale: Locale): string {
+  const brand = BRAND[locale];
+  return isRtl(locale) && /[A-Za-z]/.test(brand) ? isolateLtr(brand) : brand;
+}

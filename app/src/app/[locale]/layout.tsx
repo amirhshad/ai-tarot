@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import PostHogProvider from '@/components/analytics/PostHogProvider';
 import IntlProvider from '@/components/i18n/IntlProvider';
-import { toLocale, isRtl, BRAND, isolateLtr, type Locale } from '@/i18n/locales';
+import { toLocale, isRtl, brandForTitle, type Locale } from '@/i18n/locales';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -99,8 +99,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: {
       default: titles[current],
       // The Latin wordmark is bidi-isolated so the separator does not jump in
-      // RTL rendering.
-      template: `%s | ${isRtl(current) ? isolateLtr(BRAND[current]) : BRAND[current]}`,
+      // RTL rendering; Farsi's brand is already RTL script and is left
+      // byte-identical (see brandForTitle).
+      template: `%s | ${brandForTitle(current)}`,
     },
     description: descriptions[current],
     keywords: keywords[current],
