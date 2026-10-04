@@ -2809,6 +2809,65 @@ git commit -m "docs: record Arabic Phase 1 as shipped, Phase 2 as pending"
 
 ---
 
+### Task 12: Arabic copy in the reading flow
+
+**Runs before Task 11**, not after. It is numbered 12 only because it was added after the plan was written; Task 11 is the final verification and must stay last.
+
+**Why this task exists.** Tasks 1-8 left the core reading flow serving Farsi to Arabic users. Four files hold large inline bilingual blocks keyed on a single boolean, `const en = language === 'en'`, so every non-English locale takes the Farsi branch. Verified live: `/ar/reading/free?topic=love` serves Persian on an Arabic page, 13 Persian-letter occurrences. Widening the type unions in Task 8 exposed this rather than causing it, since `'ar'` was previously unreachable in those branches.
+
+This defeats the spec's Phase 1 goal — "an Arabic speaker can land, draw, and receive a genuine Arabic narrative reading end to end" — so it is not deferrable to Phase 2.
+
+**Files:**
+- Modify: `app/src/app/[locale]/(app)/reading/new/page.tsx` (19 `en ?` ternaries + the `TOPICS` array's `titleFA`/`descFA` fields)
+- Modify: `app/src/components/reading/FreeReadingClient.tsx` (11 ternaries + the `TOPIC_CONFIG` record's `titleFA`/`subtitleFA`/`placeholderFA`/`labelFA` fields)
+- Modify: `app/src/components/reading/FollowUpChat.tsx` (19 ternaries, two `const en` locals at lines 66 and 422)
+- Modify: `app/src/app/[locale]/(app)/reading/[id]/page.tsx` (1 ternary)
+- Modify: `app/src/messages/en.json`, `fa.json`, `ar.json`
+
+**Interfaces:**
+- Consumes: `Locale`, `toLocale` from `@/i18n/locales`; `useTranslations`/`getTranslations` from next-intl.
+- Produces: no new exports. The deliverable is that no `en ?` ternary and no `*FA` field remains in these four files.
+
+**Approach - move the copy into the message bundles, do not add a third branch.**
+
+A `language === 'ar' ? x : en ? y : z` three-way ternary would work and is the wrong answer: it triples the inline prose, keeps Arabic coverage unenforced, and the next locale makes it worse. Task 8 established the pattern - UI copy lives in the bundles - and the parity test then guarantees Arabic coverage mechanically instead of by inspection.
+
+So: for each string, add a key to the appropriate existing namespace (`reading`, `freeReading`) in all three bundles, copying the existing English and Farsi values **verbatim** from the inline code, and authoring the Arabic. Then read it through `useTranslations` (client components) or `getTranslations` (server components), following the pattern the 24 marketing pages already use.
+
+`TOPICS` and `TOPIC_CONFIG` keep their structural fields (`key`, `symbol`) and lose their text fields, which become message lookups keyed by topic.
+
+- [ ] **Step 1: Inventory the strings**
+
+Before changing anything, list every string you will move: file, line, the English value, the Farsi value, and the message key you will give it. Put this table in your report. It is the checklist that makes the rest verifiable, and it is how a reviewer confirms nothing was dropped.
+
+- [ ] **Step 2: Add the keys to all three bundles**
+
+Copy English and Farsi verbatim - a retyped Farsi string is a silent content regression on a live locale. Author the Arabic in warm MSA, matching the terminology already committed (`انتشار` for a spread, `السائل` for the querent, `مستقيمة`/`معكوسة` for orientation).
+
+Run `cd app && npx vitest run src/messages/parity.test.ts` - it fails until all three bundles carry every key, and its Persian-letter and brand assertions cover your Arabic automatically.
+
+- [ ] **Step 3: Replace the ternaries, one file at a time**
+
+After each file, run `cd app && npx tsc --noEmit` and confirm the file is clean before moving on. Delete each `const en = ...` local once nothing reads it.
+
+- [ ] **Step 4: Prove the Farsi did not change**
+
+This is the step that protects the live locale. For each of `/fa/reading/free?topic=love`, `?topic=career`, `?topic=yes-or-no`, capture the rendered page before and after your change and diff them. The visible Farsi text must be identical. Read the real dev port from the server's startup output - port 3000 is occupied by another server that lacks the Arabic locale.
+
+- [ ] **Step 5: Prove Arabic no longer serves Persian**
+
+For each of `/ar/reading/free?topic=love`, `?topic=career`, `?topic=yes-or-no`, and `/ar/reading/new`, count Persian-only letters in the rendered HTML:
+
+    curl -s "http://localhost:PORT/ar/reading/free?topic=love" | grep -oE "[پچژگکی]" | wc -l
+
+Expected: `0`. Before this task that count is 13 on the love page.
+
+- [ ] **Step 6: Verify and commit**
+
+Run `cd app && npm run verify`. The freeze gate must still read `207 prompts match the snapshot (69 new, allowed)` - this task touches no prompt bodies. Commit with a message naming the defect, the approach, and the Farsi-unchanged evidence.
+
+---
+
 ## Phase 2 (not in this plan)
 
 For the follow-up spec: `_ar` DB columns and their migration, 78 cards of Arabic card-meaning content (**paid token cost — needs explicit approval per `CLAUDE.md` principle 2**), the Arabic card-meaning and sub-hub pages, an Arabic equivalent of `FARSI_NAME_VARIANTS`, Arabic keyword research, and removing the `CARD_CONTENT_LOCALES` gate.
