@@ -23,8 +23,9 @@ import {
 import { SPREADS } from '@/lib/tarot/spreads';
 import { DECK } from '@/lib/tarot/deck';
 import type { DrawnCard, SpreadDefinition, Tier } from '@/lib/tarot/types';
+import type { Locale } from '@/i18n/locales';
 
-const LANGUAGES: ('en' | 'fa')[] = ['en', 'fa'];
+const LANGUAGES: Locale[] = ['en', 'fa', 'ar'];
 const TIERS: Tier[] = ['free', 'pro'];
 const TOPICS: ReadingTopic[] = [null, 'love', 'yes-or-no', 'career'];
 
