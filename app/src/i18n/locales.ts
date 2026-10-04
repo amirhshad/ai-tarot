@@ -77,3 +77,19 @@ export const LOCALE_LABELS: Record<Locale, string> = {
 export function localePathPattern(): RegExp {
   return new RegExp(`^/(?:${LOCALES.join('|')})(?=/|$)`);
 }
+
+const FSI = '⁨'; // First Strong Isolate
+const PDI = '⁩'; // Pop Directional Isolate
+
+/**
+ * Bidi-isolate a Latin run so it can sit inside RTL text without dragging
+ * neighbouring punctuation around it.
+ *
+ * The Arabic brand is the Latin wordmark, so `'%s | TarotVeil'` in an RTL
+ * context renders the separator on the wrong side without this.
+ */
+export function isolateLtr(text: string): string {
+  if (text === '') return '';
+  if (text.startsWith(FSI) && text.endsWith(PDI)) return text;
+  return `${FSI}${text}${PDI}`;
+}
