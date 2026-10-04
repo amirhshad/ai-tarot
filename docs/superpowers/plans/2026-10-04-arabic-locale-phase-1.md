@@ -1970,9 +1970,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     metadataBase: new URL(siteUrl),
     title: {
       default: titles[current],
-      // The Latin wordmark is bidi-isolated so the separator does not jump in
-      // RTL rendering.
-      template: `%s | ${isRtl(current) ? isolateLtr(BRAND[current]) : BRAND[current]}`,
+      // Isolation is needed only where a LATIN wordmark sits inside RTL text.
+      // Farsi's brand is already Arabic script, so isolating it would add
+      // invisible control characters to an indexed title for no benefit — see
+      // brandForTitle in locales.ts.
+      template: `%s | ${brandForTitle(current)}`,
     },
     description: descriptions[current],
     keywords: keywords[current],
