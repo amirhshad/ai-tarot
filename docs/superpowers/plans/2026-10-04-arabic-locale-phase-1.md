@@ -858,9 +858,10 @@ deck.ts does not compile until the next commit converts its 78 cards."
 ### Task 3: Arabic card names and keywords for all 78 cards
 
 **Files:**
-- Modify: `app/src/lib/tarot/deck.ts` (all 78 card literals)
+- Modify: `app/src/lib/tarot/deck.ts` (all 78 card literals **and** the minor-arcana builder helper at lines 173-181)
 - Modify: `app/src/lib/tarot/daily.test.ts:95`
 - Create: `app/src/lib/tarot/deck.test.ts`
+- Modify (repoint field reads at the accessors — see Step 4b): `app/src/components/tarot/CardFace.tsx:13`, `app/src/components/tarot/SpreadLayout.tsx:151,189`, `app/src/components/reading/SpreadSelector.tsx:35-36`, `app/src/components/reading/FollowUpChat.tsx:163,295,303,427`, `app/src/app/[locale]/(app)/reading/[id]/page.tsx:69-70`, `app/src/app/[locale]/(marketing)/daily/page.tsx:55,85-86`
 
 **Interfaces:**
 - Consumes: `TarotCard.localized` from Task 2; `cardName`/`cardKeywords` from `./localized`.
@@ -1033,6 +1034,8 @@ export const MAJOR_ARCANA: TarotCard[] = [
 ];
 ```
 
+**The 56 minor cards are not literals.** `deck.ts` builds them through a helper whose signature currently takes `nameFA: string` and `keywordsFA: string[]` (around lines 173-181). Change that helper to take the `localized` record instead, and pass Farsi plus Arabic at each of its 56 call sites. Derive every Arabic minor name from the scheme above rather than improvising per card.
+
 Rules while converting:
 - Never alter `id`, `name`, `arcana`, `suit`, `number`, `court`, `keywords`, or `image`. Only move Farsi into `localized.fa` and add `localized.ar`.
 - Copy each Farsi name and keyword array verbatim. A typo here changes a frozen Farsi prompt and trips the gate in Task 4.
@@ -1047,6 +1050,26 @@ In `app/src/lib/tarot/daily.test.ts`, line 95 asserts `card.nameFA`. Replace wit
     expect(card.localized.ar.name).toBeTruthy();
 ```
 
+- [ ] **Step 4b: Repoint every remaining field read at the accessors**
+
+Task 2 removed `nameFA`/`descriptionFA`/`keywordsFA`, and six files outside the tarot library still read them. Until they are repointed, `tsc` stays red and every later task's `npm run verify` gate fails — so they belong here, with the change that broke them.
+
+Replace each read with the matching accessor from `@/lib/tarot/localized`. The pattern is always the same: a `language === 'en' ? X.name : X.nameFA` ternary becomes `cardName(X, language)` (or `positionName`, `spreadName`, `spreadDescription`, `cardKeywords`).
+
+| File | Lines | Change |
+|---|---|---|
+| `components/tarot/CardFace.tsx` | 13 | `cardName(card, language)` |
+| `components/tarot/SpreadLayout.tsx` | 151, 189 | `positionName(drawnCard.position, language)` / `positionName(dc.position, language)` |
+| `components/reading/SpreadSelector.tsx` | 35-36 | `spreadName(spread, language)` / `spreadDescription(spread, language)` |
+| `components/reading/FollowUpChat.tsx` | 163, 295, 427 | `cardName(card, language)` / `cardName(drawnExtraCard.card, language)` |
+| `components/reading/FollowUpChat.tsx` | 303 | `cardKeywords(drawnExtraCard.card, language).join(...)` — keep the existing `en ? ', ' : '، '` joiner as-is; Task 8 replaces it with the locale table |
+| `app/[locale]/(app)/reading/[id]/page.tsx` | 69-70 | `cardName(dc.card, language)` / `positionName(dc.position, language)` |
+| `app/[locale]/(marketing)/daily/page.tsx` | 55, 85-86 | `cardName(card, locale)` / `cardKeywords(card, locale)` |
+
+These files currently type `language` as `'en' | 'fa'`, which is assignable to `Locale`, so no signature change is needed here. Task 8 widens those unions.
+
+**Do not touch two look-alikes.** `components/billing/PricingTable.tsx` has its own `nameFA` on a local pricing-plan object, and `execution/generate-card-content-fa.mjs` has a local `nameFA` variable. Neither is a `TarotCard` field. Leave both exactly as they are.
+
 - [ ] **Step 5: Run the tests**
 
 Run: `cd app && npx vitest run src/lib/tarot/`
@@ -1055,7 +1078,7 @@ Expected: PASS, including the 78-card completeness and naming-scheme assertions.
 - [ ] **Step 6: Verify the Farsi data survived the move**
 
 Run: `cd app && npm run verify`
-Expected: PASS. `tsc` is clean again, and **the prompt freeze reports no changed prompts** — proof that no Farsi card name or keyword was altered while being moved into the sidecar. If the freeze reports a change, a Farsi string was mistyped in step 3. Fix the typo; do not re-freeze.
+Expected: PASS. `tsc` is clean again — this is the commit that closes the red window Task 2 opened, so a remaining `nameFA` error anywhere means Step 4b missed a file. And **the prompt freeze reports no changed prompts** — proof that no Farsi card name or keyword was altered while being moved into the sidecar. If the freeze reports a change, a Farsi string was mistyped in step 3. Fix the typo; do not re-freeze.
 
 - [ ] **Step 7: Commit**
 
