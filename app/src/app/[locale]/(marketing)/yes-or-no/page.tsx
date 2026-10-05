@@ -223,7 +223,8 @@ export default async function YesOrNoPage({ params }: { params: Promise<{ locale
                   <CardMeaningLink
                     key={card.slug}
                     slug={card.slug}
-                    className="group text-center"
+                    className="text-center"
+                    linkClassName="group"
                   >
                     <div className="relative w-full aspect-[2/3] rounded overflow-hidden border border-gold-400/10 group-hover:border-gold-400/30 transition-all mb-1">
                       <Image
@@ -255,7 +256,8 @@ export default async function YesOrNoPage({ params }: { params: Promise<{ locale
                   <CardMeaningLink
                     key={card.slug}
                     slug={card.slug}
-                    className="group text-center"
+                    className="text-center"
+                    linkClassName="group"
                   >
                     <div className="relative w-full aspect-[2/3] rounded overflow-hidden border border-gold-400/10 group-hover:border-gold-400/30 transition-all mb-1">
                       <Image
@@ -387,7 +389,10 @@ export default async function YesOrNoPage({ params }: { params: Promise<{ locale
                 {t('relatedLoveTarotDesc')}
               </p>
             </Link>
-            <CardMeaningLink className="group p-4 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all">
+            <CardMeaningLink
+              className="p-4 rounded-sm border border-gold-400/[0.06]"
+              linkClassName="group hover:border-gold-400/20 transition-all"
+            >
               <h3 className="font-display text-sm font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
                 {t('relatedCardMeanings')}
               </h3>

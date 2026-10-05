@@ -120,7 +120,8 @@ export default async function SubHubPage({ configKey, locale }: { configKey: str
             <CardMeaningLink
               key={card.slug}
               slug={card.slug}
-              className="group p-3 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 bg-gradient-to-b from-white/[0.01] to-transparent transition-all duration-300 text-center"
+              className="p-3 rounded-sm border border-gold-400/[0.06] bg-gradient-to-b from-white/[0.01] to-transparent text-center"
+              linkClassName="group hover:border-gold-400/20 transition-all duration-300"
             >
               <div className="relative w-[90px] h-[150px] mx-auto mb-3 rounded overflow-hidden">
                 <Image

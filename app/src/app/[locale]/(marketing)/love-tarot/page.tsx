@@ -223,7 +223,8 @@ export default async function LoveTarotPage({ params }: { params: Promise<{ loca
               <CardMeaningLink
                 key={card.slug}
                 slug={card.slug}
-                className="group text-center"
+                className="text-center"
+                linkClassName="group"
               >
                 <div className="relative w-full aspect-[2/3] rounded overflow-hidden border border-gold-400/10 group-hover:border-gold-400/30 transition-all mb-2">
                   <Image

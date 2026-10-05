@@ -332,7 +332,10 @@ export default async function ThreeCardSpreadPage({ params }: { params: Promise<
                 {t('relatedCelticCrossDesc')}
               </p>
             </Link>
-            <CardMeaningLink className="group p-5 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all">
+            <CardMeaningLink
+              className="p-5 rounded-sm border border-gold-400/[0.06]"
+              linkClassName="group hover:border-gold-400/20 transition-all"
+            >
               <h3 className="font-display text-base font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
                 {t('relatedCardMeanings')}
               </h3>

@@ -319,7 +319,8 @@ export default async function CelticCrossSpreadPage({ params }: { params: Promis
               <CardMeaningLink
                 key={pos.num}
                 slug={pos.cardSlug}
-                className="group text-center"
+                className="text-center"
+                linkClassName="group"
               >
                 <div className="relative w-full aspect-[2/3] rounded overflow-hidden border border-gold-400/10 group-hover:border-gold-400/30 transition-all mb-1">
                   <Image
