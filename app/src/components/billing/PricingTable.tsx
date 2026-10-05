@@ -1,9 +1,16 @@
 'use client';
-import type { Locale } from '@/i18n/locales';
 
 interface PricingTableProps {
   currentTier?: string;
-  language?: Locale;
+  /**
+   * Deliberately narrower than `Locale`: the else-branch below is hardcoded
+   * Farsi (nameFA, COST_LEGEND_FA, etc.), so this component is not
+   * locale-complete. Neither call site passes this prop today. Widening the
+   * type to `Locale` would make `language="ar"` type-legal on a component
+   * that would actually render Persian copy to Arabic readers. Localising
+   * this component (~26 strings) is tracked as separate work.
+   */
+  language?: 'en' | 'fa';
   onSelectPlan?: (plan: 'pro' | 'premium') => void;
 }
 
