@@ -7,7 +7,7 @@ import { DECK } from '@/lib/tarot/deck';
 import { cardToSlug } from '@/lib/tarot/slugs';
 import { buildCardJsonLd } from '@/lib/seo/json-ld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { buildAlternates, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
+import { assertCardContentLocale, buildAlternates, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
 import { toLocale } from '@/i18n/locales';
 import Disclaimer from '@/components/seo/Disclaimer';
 import { getPinglishVariants } from '@/lib/seo/pinglish';
@@ -147,7 +147,7 @@ export default async function CardMeaningPage({ params }: { params: Promise<{ sl
   // English columns when a locale's columns are empty, so without this gate
   // /ar/tarot-card-meanings/<slug> would serve English card text under an
   // Arabic URL — duplicate content in the ar namespace.
-  if (!CARD_CONTENT_LOCALES.includes(toLocale(locale))) notFound();
+  assertCardContentLocale(locale);
 
   setRequestLocale(locale);
   const t = await getTranslations('cardDetail');

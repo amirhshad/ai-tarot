@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { LOCALES, toLocale, DEFAULT_LOCALE, type Locale } from '@/i18n/locales';
 
 const SITE_URL = 'https://www.tarotveil.com';
@@ -14,6 +15,20 @@ const SITE_URL = 'https://www.tarotveil.com';
  * adding 'ar' here and nowhere else.
  */
 export const CARD_CONTENT_LOCALES: readonly Locale[] = ['en', 'fa'];
+
+/**
+ * The Phase-1 gate for every card-meaning route. Calls `notFound()` when the
+ * given locale is outside `CARD_CONTENT_LOCALES`.
+ *
+ * This is the single implementation of the gate — the seven card-meaning
+ * route files each call it once instead of repeating
+ * `if (!CARD_CONTENT_LOCALES.includes(toLocale(locale))) notFound();`
+ * verbatim. It reads `CARD_CONTENT_LOCALES` rather than restating the list,
+ * so Phase 2 still ships by editing that one constant.
+ */
+export function assertCardContentLocale(locale: string): void {
+  if (!CARD_CONTENT_LOCALES.includes(toLocale(locale))) notFound();
+}
 
 function localeUrl(locale: Locale, cleanPath: string): string {
   if (locale === DEFAULT_LOCALE) {

@@ -1,12 +1,11 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { DECK } from '@/lib/tarot/deck';
 import { cardToSlug } from '@/lib/tarot/slugs';
 import { buildHubJsonLd } from '@/lib/seo/json-ld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { buildAlternates, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
+import { assertCardContentLocale, buildAlternates, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
 import { BRAND, toLocale } from '@/i18n/locales';
 
 const siteUrl = 'https://www.tarotveil.com';
@@ -108,7 +107,7 @@ export default async function TarotCardMeaningsHub({ params }: { params: Promise
   // English card text under an /ar/ URL, which is duplicate content in the
   // Arabic namespace — and this product's primary search channel already
   // ranks these pages.
-  if (!CARD_CONTENT_LOCALES.includes(toLocale(locale))) notFound();
+  assertCardContentLocale(locale);
 
   setRequestLocale(locale);
 
