@@ -92,7 +92,8 @@ describe('getDailyCard', () => {
   it('returns a fully formed card', () => {
     const card = getDailyCard('2026-05-05');
     expect(card.name).toBeTruthy();
-    expect(card.nameFA).toBeTruthy();
+    expect(card.localized.fa.name).toBeTruthy();
+    expect(card.localized.ar.name).toBeTruthy();
     expect(card.keywords.length).toBeGreaterThan(0);
   });
 });

@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import CardMeaningLink from '@/components/seo/CardMeaningLink';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buildAlternates } from '@/lib/seo/alternates';
 
@@ -219,10 +220,11 @@ export default async function YesOrNoPage({ params }: { params: Promise<{ locale
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {yesCards.map((card) => (
-                  <Link
+                  <CardMeaningLink
                     key={card.slug}
-                    href={`/tarot-card-meanings/${card.slug}`}
-                    className="group text-center"
+                    slug={card.slug}
+                    className="text-center"
+                    linkClassName="group"
                   >
                     <div className="relative w-full aspect-[2/3] rounded overflow-hidden border border-gold-400/10 group-hover:border-gold-400/30 transition-all mb-1">
                       <Image
@@ -236,7 +238,7 @@ export default async function YesOrNoPage({ params }: { params: Promise<{ locale
                     <p className="text-[10px] text-stone-500 group-hover:text-gold-400 transition-colors">
                       {card.name}
                     </p>
-                  </Link>
+                  </CardMeaningLink>
                 ))}
               </div>
             </div>
@@ -251,10 +253,11 @@ export default async function YesOrNoPage({ params }: { params: Promise<{ locale
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {noCards.map((card) => (
-                  <Link
+                  <CardMeaningLink
                     key={card.slug}
-                    href={`/tarot-card-meanings/${card.slug}`}
-                    className="group text-center"
+                    slug={card.slug}
+                    className="text-center"
+                    linkClassName="group"
                   >
                     <div className="relative w-full aspect-[2/3] rounded overflow-hidden border border-gold-400/10 group-hover:border-gold-400/30 transition-all mb-1">
                       <Image
@@ -268,7 +271,7 @@ export default async function YesOrNoPage({ params }: { params: Promise<{ locale
                     <p className="text-[10px] text-stone-500 group-hover:text-gold-400 transition-colors">
                       {card.name}
                     </p>
-                  </Link>
+                  </CardMeaningLink>
                 ))}
               </div>
             </div>
@@ -327,12 +330,12 @@ export default async function YesOrNoPage({ params }: { params: Promise<{ locale
                   {t('sampleCardDrawn')}
                 </p>
                 <p className="font-display text-lg font-semibold text-white">
-                  <Link
-                    href="/tarot-card-meanings/justice"
-                    className="hover:text-gold-400 transition-colors"
+                  <CardMeaningLink
+                    slug="justice"
+                    linkClassName="hover:text-gold-400 transition-colors"
                   >
                     {t('sampleCardName')}
-                  </Link>{' '}
+                  </CardMeaningLink>{' '}
                   <span className="text-stone-500 font-normal">&middot; {t('sampleUpright')}</span>
                 </p>
               </div>
@@ -386,9 +389,9 @@ export default async function YesOrNoPage({ params }: { params: Promise<{ locale
                 {t('relatedLoveTarotDesc')}
               </p>
             </Link>
-            <Link
-              href="/tarot-card-meanings"
-              className="group p-4 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all"
+            <CardMeaningLink
+              className="p-4 rounded-sm border border-gold-400/[0.06]"
+              linkClassName="group hover:border-gold-400/20 transition-all"
             >
               <h3 className="font-display text-sm font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
                 {t('relatedCardMeanings')}
@@ -396,7 +399,7 @@ export default async function YesOrNoPage({ params }: { params: Promise<{ locale
               <p className="font-body text-xs font-medium text-stone-500">
                 {t('relatedCardMeaningsDesc')}
               </p>
-            </Link>
+            </CardMeaningLink>
           </div>
         </section>
 

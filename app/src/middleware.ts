@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import createIntlMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
+import { localePathPattern } from './i18n/locales';
 
 const COOKIE_NAME = 'tarot_session';
 
@@ -29,7 +30,7 @@ export function middleware(request: NextRequest) {
 
   // Strip locale prefix for route matching
   const pathname = request.nextUrl.pathname;
-  const pathWithoutLocale = pathname.replace(/^\/(en|fa)/, '') || '/';
+  const pathWithoutLocale = pathname.replace(localePathPattern(), '') || '/';
 
   // Protected routes — redirect to login if not authenticated
   const protectedPaths = ['/dashboard', '/reading', '/settings', '/billing', '/admin'];

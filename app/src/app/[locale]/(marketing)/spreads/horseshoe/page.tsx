@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import CardMeaningLink from '@/components/seo/CardMeaningLink';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buildAlternates } from '@/lib/seo/alternates';
 
@@ -267,12 +268,12 @@ export default async function HorseshoeSpreadPage({ params }: { params: Promise<
                       {pos.name}
                     </p>
                     <p className="font-display text-sm font-semibold text-white">
-                      <Link
-                        href={`/tarot-card-meanings/${pos.cardSlug}`}
-                        className="hover:text-gold-400 transition-colors"
+                      <CardMeaningLink
+                        slug={pos.cardSlug}
+                        linkClassName="hover:text-gold-400 transition-colors"
                       >
                         {pos.card}
-                      </Link>
+                      </CardMeaningLink>
                     </p>
                   </div>
                 </div>

@@ -2,11 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { DEFAULT_LOCALE, LOCALES, LOCALE_LABELS, toLocale, type Locale } from '@/i18n/locales';
 
 export default function SettingsPage() {
   const router = useRouter();
+  const t = useTranslations('settings');
+  const tc = useTranslations('common');
   const [displayName, setDisplayName] = useState('');
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState<Locale>(DEFAULT_LOCALE);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -16,7 +20,9 @@ export default function SettingsPage() {
       const data = await res.json();
       if (data.profile) {
         setDisplayName(data.profile.display_name || '');
-        setLanguage(data.profile.language || 'en');
+        // A stored value outside LOCALES would leave the select with no
+        // matching option, so narrow it instead of trusting the row.
+        setLanguage(toLocale(data.profile.language));
       }
     }
     loadProfile();
@@ -46,14 +52,17 @@ export default function SettingsPage() {
   return (
     <div className="max-w-md mx-auto space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Settings</h1>
-        <p className="text-gray-500 text-sm mt-1">Manage your profile and preferences.</p>
+        <h1 className="text-2xl font-bold text-white">{t('title')}</h1>
+        <p className="text-gray-500 text-sm mt-1">{t('subtitle')}</p>
       </div>
 
       <form onSubmit={handleSave} className="space-y-6">
         <div>
-          <label className="block text-sm text-gray-400 mb-1.5">Display Name</label>
+          <label htmlFor="settings-display-name" className="block text-sm text-gray-400 mb-1.5">
+            {t('displayName')}
+          </label>
           <input
+            id="settings-display-name"
             type="text"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
@@ -62,14 +71,20 @@ export default function SettingsPage() {
         </div>
 
         <div>
-          <label className="block text-sm text-gray-400 mb-1.5">Language</label>
+          <label htmlFor="settings-language" className="block text-sm text-gray-400 mb-1.5">
+            {t('language')}
+          </label>
           <select
+            id="settings-language"
             value={language}
-            onChange={(e) => setLanguage(e.target.value)}
+            onChange={(e) => setLanguage(toLocale(e.target.value))}
             className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400/50"
           >
-            <option value="en">English</option>
-            <option value="fa">فارسی (Farsi)</option>
+            {LOCALES.map((candidate) => (
+              <option key={candidate} value={candidate}>
+                {LOCALE_LABELS[candidate]}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -79,9 +94,9 @@ export default function SettingsPage() {
             disabled={saving}
             className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-black font-medium rounded-xl text-sm transition-colors"
           >
-            {saving ? 'Saving...' : 'Save Changes'}
+            {saving ? t('saving') : tc('save')}
           </button>
-          {saved && <span className="text-sm text-green-400">Saved!</span>}
+          {saved && <span className="text-sm text-green-400">{t('saved')}</span>}
         </div>
       </form>
 
@@ -90,7 +105,7 @@ export default function SettingsPage() {
           onClick={handleSignOut}
           className="text-sm text-red-400 hover:text-red-300 transition-colors"
         >
-          Sign Out
+          {tc('signOut')}
         </button>
       </div>
     </div>

@@ -19,7 +19,8 @@
 - Arabic date/number formatting locale is exactly `ar-u-nu-latn` (Latin digits).
 - Arabic fonts: `Amiri` for display, `Noto Naskh Arabic` for body. `/ar` must not ship Vazirmatn; `/fa` must not ship Amiri or Noto Naskh.
 - Crisis guidance in Arabic is region-neutral — direct to local emergency services, never a specific number.
-- `node execution/prompt-freeze.mjs` must pass at every commit. Per the runner's own rules: a CHANGED or REMOVED frozen prompt is a failure; an ADDED prompt is allowed. **`--update` is never run in this plan.** If the gate reports a change to an `en` or `fa` key, that is a bug in your refactor — fix the code, do not re-freeze.
+- `node execution/prompt-freeze.mjs` must pass at every commit. Per the runner's own rules: a CHANGED or REMOVED frozen prompt is a failure; an ADDED prompt is allowed. If the gate reports a change to an `en` or `fa` key, that is a bug — fix the code, never re-freeze.
+- **`--update` is forbidden in Tasks 1-10, with exactly one exception: Task 11 step 2b.** Allowing added keys is not the same as recording them, and an unrecorded Arabic prompt is an unguarded one — a later refactor could change Arabic reading voice with nothing to catch it. So the Arabic keys are frozen once, deliberately, at the end, after review has settled the Arabic content. That re-freeze must be proved additive: the snapshot diff may contain insertions only.
 - `cd app && npm run verify` (tsc + vitest + freeze) is the definition of green.
 - One concern per commit (`CLAUDE.md` principle 7).
 - Phase 1 touches no SQL and adds no migration.
@@ -858,9 +859,10 @@ deck.ts does not compile until the next commit converts its 78 cards."
 ### Task 3: Arabic card names and keywords for all 78 cards
 
 **Files:**
-- Modify: `app/src/lib/tarot/deck.ts` (all 78 card literals)
+- Modify: `app/src/lib/tarot/deck.ts` (all 78 card literals **and** the minor-arcana builder helper at lines 173-181)
 - Modify: `app/src/lib/tarot/daily.test.ts:95`
 - Create: `app/src/lib/tarot/deck.test.ts`
+- Modify (repoint field reads at the accessors — see Step 4b): `app/src/components/tarot/CardFace.tsx:13`, `app/src/components/tarot/SpreadLayout.tsx:151,189`, `app/src/components/reading/SpreadSelector.tsx:35-36`, `app/src/components/reading/FollowUpChat.tsx:163,295,303,427`, `app/src/app/[locale]/(app)/reading/[id]/page.tsx:69-70`, `app/src/app/[locale]/(marketing)/daily/page.tsx:55,85-86`
 
 **Interfaces:**
 - Consumes: `TarotCard.localized` from Task 2; `cardName`/`cardKeywords` from `./localized`.
@@ -941,12 +943,29 @@ describe('every card is complete in every locale', () => {
     });
   }
 
-  it('uses Arabic script for every Arabic name and keyword', () => {
+  /**
+   * The Arabic Unicode block U+0600-U+06FF contains the Persian-only letters
+   * too, so "is in the Arabic block" does not prove "is Arabic". Assert the
+   * absence of Persian-specific forms as well — otherwise pasting the Farsi
+   * column into the ar slot would pass.
+   */
+  it('uses Arabic script, not Persian, for every Arabic name and keyword', () => {
+    const PERSIAN_ONLY = /[\u067E\u0686\u0698\u06AF\u06A9\u06CC]/; // پ چ ژ گ ک ی
     for (const card of DECK) {
-      expect(cardName(card, 'ar'), card.name).toMatch(/[؀-ۿ]/);
+      const name = cardName(card, 'ar');
+      expect(name, card.name).toMatch(/[\u0600-\u06FF]/);
+      expect(name, `${card.name} uses Persian letters`).not.toMatch(PERSIAN_ONLY);
       for (const keyword of cardKeywords(card, 'ar')) {
-        expect(keyword, `${card.name} keyword`).toMatch(/[؀-ۿ]/);
+        expect(keyword, `${card.name} keyword`).toMatch(/[\u0600-\u06FF]/);
+        expect(keyword, `${card.name} keyword uses Persian letters`).not.toMatch(PERSIAN_ONLY);
       }
+    }
+  });
+
+  it('never reuses a Farsi string as the Arabic one', () => {
+    for (const card of DECK) {
+      expect(cardName(card, 'ar'), card.name).not.toBe(cardName(card, 'fa'));
+      expect(cardKeywords(card, 'ar'), card.name).not.toEqual(cardKeywords(card, 'fa'));
     }
   });
 
@@ -1033,6 +1052,8 @@ export const MAJOR_ARCANA: TarotCard[] = [
 ];
 ```
 
+**The 56 minor cards are not literals.** `deck.ts` builds them through a helper whose signature currently takes `nameFA: string` and `keywordsFA: string[]` (around lines 173-181). Change that helper to take the `localized` record instead, and pass Farsi plus Arabic at each of its 56 call sites. Derive every Arabic minor name from the scheme above rather than improvising per card.
+
 Rules while converting:
 - Never alter `id`, `name`, `arcana`, `suit`, `number`, `court`, `keywords`, or `image`. Only move Farsi into `localized.fa` and add `localized.ar`.
 - Copy each Farsi name and keyword array verbatim. A typo here changes a frozen Farsi prompt and trips the gate in Task 4.
@@ -1047,6 +1068,26 @@ In `app/src/lib/tarot/daily.test.ts`, line 95 asserts `card.nameFA`. Replace wit
     expect(card.localized.ar.name).toBeTruthy();
 ```
 
+- [ ] **Step 4b: Repoint every remaining field read at the accessors**
+
+Task 2 removed `nameFA`/`descriptionFA`/`keywordsFA`, and six files outside the tarot library still read them. Until they are repointed, `tsc` stays red and every later task's `npm run verify` gate fails — so they belong here, with the change that broke them.
+
+Replace each read with the matching accessor from `@/lib/tarot/localized`. The pattern is always the same: a `language === 'en' ? X.name : X.nameFA` ternary becomes `cardName(X, language)` (or `positionName`, `spreadName`, `spreadDescription`, `cardKeywords`).
+
+| File | Lines | Change |
+|---|---|---|
+| `components/tarot/CardFace.tsx` | 13 | `cardName(card, language)` |
+| `components/tarot/SpreadLayout.tsx` | 151, 189 | `positionName(drawnCard.position, language)` / `positionName(dc.position, language)` |
+| `components/reading/SpreadSelector.tsx` | 35-36 | `spreadName(spread, language)` / `spreadDescription(spread, language)` |
+| `components/reading/FollowUpChat.tsx` | 163, 295, 427 | `cardName(card, language)` / `cardName(drawnExtraCard.card, language)` |
+| `components/reading/FollowUpChat.tsx` | 303 | `cardKeywords(drawnExtraCard.card, language).join(...)` — keep the existing `en ? ', ' : '، '` joiner as-is; Task 8 replaces it with the locale table |
+| `app/[locale]/(app)/reading/[id]/page.tsx` | 69-70 | `cardName(dc.card, language)` / `positionName(dc.position, language)` |
+| `app/[locale]/(marketing)/daily/page.tsx` | 55, 85-86 | `cardName(card, locale)` / `cardKeywords(card, locale)` |
+
+These files currently type `language` as `'en' | 'fa'`, which is assignable to `Locale`, so no signature change is needed here. Task 8 widens those unions.
+
+**Do not touch two look-alikes.** `components/billing/PricingTable.tsx` has its own `nameFA` on a local pricing-plan object, and `execution/generate-card-content-fa.mjs` has a local `nameFA` variable. Neither is a `TarotCard` field. Leave both exactly as they are.
+
 - [ ] **Step 5: Run the tests**
 
 Run: `cd app && npx vitest run src/lib/tarot/`
@@ -1054,8 +1095,15 @@ Expected: PASS, including the 78-card completeness and naming-scheme assertions.
 
 - [ ] **Step 6: Verify the Farsi data survived the move**
 
-Run: `cd app && npm run verify`
-Expected: PASS. `tsc` is clean again, and **the prompt freeze reports no changed prompts** — proof that no Farsi card name or keyword was altered while being moved into the sidecar. If the freeze reports a change, a Farsi string was mistyped in step 3. Fix the typo; do not re-freeze.
+Run: `cd app && npx tsc --noEmit`
+
+Expected: errors in **`app/src/lib/ai/prompts.ts` only.** That file is the last reader of the removed fields and belongs to Task 4, which restructures it wholesale — repointing it mechanically here would be thrown away and risks the byte-exact prompt requirement. An error in any *other* file means Step 4b missed one.
+
+Then run the test suite: `cd app && npx vitest run` — expected fully green.
+
+Do **not** run `npm run verify` as your gate: the prompt-freeze step imports `prompts.ts`, so it cannot execute until Task 4 lands. The red window Task 2 opened closes at the end of Task 4, not here.
+
+Once Task 4 completes, **the prompt freeze must report no changed prompts** — proof that no Farsi card name or keyword was altered while being moved into the sidecar. If the freeze reports a change, a Farsi string was mistyped in step 3. Fix the typo; do not re-freeze.
 
 - [ ] **Step 7: Commit**
 
@@ -1085,16 +1133,23 @@ rather than being improvised per card; a test asserts the scheme."
 - Consumes: `Locale` from `@/i18n/locales`; `cardName`, `cardKeywords`, `spreadName`, `positionName`, `positionDescription` from `@/lib/tarot/localized`.
 - Produces: `buildInterpretationPrompt`, `buildFollowUpPrompt`, `buildQuestionMessage`, `buildExtraCardContext` — all with `language: Locale` instead of `language: 'en' | 'fa'`. Also `FORBIDDEN_PATTERNS_EN` (unchanged name and content). Task 5 adds the `ar` entries to the tables this task creates.
 
-- [ ] **Step 1: Record the current snapshot hash**
+- [ ] **Step 1: Confirm the snapshot baseline**
 
-Run:
+The gate cannot run yet — it imports `prompts.ts`, which does not compile until your refactor lands. So take the baseline from the snapshot file itself, which has not been touched on this branch:
 
 ```bash
-cd "/Users/amir/Desktop/My Projects/AI Tarot"
-node execution/prompt-freeze.mjs && shasum -a 256 execution/prompt-freeze.snapshot.json
+shasum -a 256 execution/prompt-freeze.snapshot.json
 ```
 
-Expected: the gate passes. Write the hash down — `execution/prompt-freeze.snapshot.json` must be byte-identical at the end of this task, and it must not appear in this task's commit at all.
+Expected, exactly:
+
+```
+a6a024b207a81b4fcdd83698fcab337baa578e0d32e390e164d3556625c9555e
+```
+
+If it differs, stop and report — something has already modified the snapshot and the proof this task rests on is void.
+
+`execution/prompt-freeze.snapshot.json` must still hash to that value when you finish, and it must not appear in your commit at all. Your refactor is the thing that makes the gate runnable again; when it runs, it must report zero changed prompts.
 
 - [ ] **Step 2: Restructure the constant pairs into locale tables**
 
@@ -1348,14 +1403,40 @@ describe('every locale renders every prompt', () => {
 describe('Arabic prompts are actually Arabic', () => {
   const spread = SPREADS['celtic-cross'];
 
-  it('contains no Latin prose and no Persian-only letters', () => {
-    const { systemPrompt } = buildInterpretationPrompt({
-      spread, cards: drawFor(spread), language: 'ar', tier: 'pro', topic: 'love',
-    });
-    // Persian-specific letters that must not appear in MSA.
-    expect(systemPrompt).not.toMatch(/[پچژگکی]/); // پ چ ژ گ ک ی
-    // No run of 4+ Latin letters: the register must not fall back to English.
-    expect(systemPrompt.replace(/TarotVeil/g, '')).not.toMatch(/[A-Za-z]{4,}/);
+  /**
+   * Checks EVERY rendered surface, not just the system prompt. The orientation
+   * words and keyword joiner are interpolated into the *user message*, so a
+   * Farsi value copied into an `ar` table slot would not show up in
+   * systemPrompt at all.
+   */
+  it('contains no Latin prose and no Persian-only letters, on every surface', () => {
+    const PERSIAN_ONLY = /[\u067E\u0686\u0698\u06AF\u06A9\u06CC]/; // پ چ ژ گ ک ی
+    const cards = drawFor(spread);
+
+    const surfaces: [string, string][] = [];
+    for (const topic of TOPICS) {
+      const { systemPrompt, userMessage } = buildInterpretationPrompt({
+        spread, cards, language: 'ar', tier: 'pro', topic,
+      });
+      surfaces.push([`system.${topic ?? 'none'}`, systemPrompt]);
+      surfaces.push([`user.${topic ?? 'none'}`, userMessage]);
+    }
+    surfaces.push(['followup', buildFollowUpPrompt({
+      spread, cards, interpretation: 'X', language: 'ar',
+    })]);
+    surfaces.push(['question', buildQuestionMessage({ question: 'س؟', language: 'ar' })]);
+    for (const wasInOriginal of [false, true]) {
+      surfaces.push([`extra.${wasInOriginal}`, buildExtraCardContext({
+        card: DECK[10], reversed: true, language: 'ar',
+        originalCardIds: wasInOriginal ? [DECK[10].id] : [],
+      })]);
+    }
+
+    for (const [label, text] of surfaces) {
+      expect(text, `${label} uses Persian letters`).not.toMatch(PERSIAN_ONLY);
+      // No run of 4+ Latin letters: the register must not fall back to English.
+      expect(text.replace(/TarotVeil/g, ''), `${label} has Latin prose`).not.toMatch(/[A-Za-z]{4,}/);
+    }
   });
 
   it('avoids deterministic prediction verbs', () => {
@@ -1372,7 +1453,15 @@ describe('Arabic prompts are actually Arabic', () => {
       spread, cards: drawFor(spread), language: 'ar', tier: 'pro', topic: null,
     });
     expect(systemPrompt).toMatch(/الطوارئ/);
-    expect(systemPrompt).not.toMatch(/\b\d{3,4}\b/);
+
+    // Scope the digit check to the crisis sentence. The prompt legitimately
+    // carries a word-range ("1000-1100"), so asserting over the whole string
+    // would fail a correct implementation.
+    const crisisSentence = systemPrompt
+      .split(/[\n.؟!]/)
+      .find((line) => /الطوارئ/.test(line));
+    expect(crisisSentence, 'crisis sentence not found').toBeDefined();
+    expect(crisisSentence).not.toMatch(/\d/);
   });
 });
 
@@ -1430,6 +1519,10 @@ In `app/src/lib/ai/prompts.ts`, delete the `PromptLocale` alias and replace its 
 
 The `yes-or-no` topic needs its four answer formats in Arabic, matching the English structure: `نعم`, `لا`, `نعم، ولكن…`, `لا، إلّا إذا…`.
 
+**Do not copy any `fa` value into its `ar` slot.** Farsi is written in Arabic script, so a copied value compiles cleanly and looks plausible while being the wrong language. The traps are `ORIENTATION` (`ایستاده`/`معکوس` are Farsi — Arabic is `مستقيمة`/`معكوسة`) and `EXTRA_CARD.repeat`/`.fresh`, which are Farsi prose. The test above catches these by rejecting the Persian-only letters ی and ک on every rendered surface.
+
+**One legitimate exception:** `KEYWORD_JOIN.ar` is `'، '` — the same Arabic comma (U+060C) Farsi uses. That value genuinely coincides; it is not a copy-paste error.
+
 - [ ] **Step 4: Add the Arabic forbidden patterns**
 
 Add below `FORBIDDEN_PATTERNS_EN` in `app/src/lib/ai/prompts.ts`:
@@ -1448,7 +1541,10 @@ export const FORBIDDEN_PATTERNS_AR: { label: string; pattern: RegExp }[] = [
   { label: 'deterministic future', pattern: /(?:^|\s)(?:سوف\s+\S+|س[يتن]\S+)\s+(?:قريبًا|حتمًا|بالتأكيد)/ },
   { label: 'the real question', pattern: /السؤال\s+الحقيقي\s+(?:هو|ليس)/ },
   { label: 'mind-reading', pattern: /(?:جزء\s+منك\s+يعرف|ما\s+تريده\s+فعل(?:ًا|ا)|تخشى\s+أن\s+تعترف)/ },
-  { label: 'clinical language', pattern: /(?:نمط\s+التعلّق|إيذاء\s+الذات|استجابة\s+الصدمة|جهازك\s+العصبي)/ },
+  // NOT إيذاء الذات — that is self-HARM, and flagging it would catch a reading
+  // responding compassionately to a disclosure. The voice list bans self-SABOTAGE.
+  // The shadda is optional because generated text usually omits it.
+  { label: 'clinical language', pattern: /(?:نمط\s+التعل(?:ّ)?ق|تخريب\s+الذات|استجابة\s+الصدمة|جهازك\s+العصبي)/ },
   { label: 'reassurance padding', pattern: /(?:وهذا\s+أمر\s+طبيعي|لا\s+يوجد\s+جواب\s+خاطئ|كن\s+لطيف(?:ًا|ا)\s+مع\s+نفسك)/ },
   { label: 'flattering opener', pattern: /يا\s+له\s+من\s+سؤال\s+(?:جميل|عميق|رائع)/ },
   { label: 'meta-narration', pattern: /(?:لنبدأ\s+إذ(?:ًا|ا)|قبل\s+أن\s+نبدأ|للبطاقات\s+كثير\s+لتقوله)/ },
@@ -1562,9 +1658,14 @@ function leafEntries(value: unknown, prefix = ''): [string, unknown][] {
 const enPaths = leafPaths(en);
 
 describe('message bundle parity', () => {
-  it('en.json has the expected shape', () => {
-    expect(Object.keys(en as object)).toHaveLength(26);
-    expect(enPaths).toHaveLength(769);
+  /**
+   * A floor, not an exact count. Later tasks legitimately add keys (inline
+   * bilingual copy moves into the bundles), so pinning the exact number would
+   * make a correct change fail. The floor still catches a truncated bundle.
+   */
+  it('en.json has at least the namespaces and keys it shipped with', () => {
+    expect(Object.keys(en as object).length).toBeGreaterThanOrEqual(26);
+    expect(enPaths.length).toBeGreaterThanOrEqual(769);
   });
 
   // Review Focus 4: a key missing from ar.json renders English mid-Arabic page
@@ -1869,9 +1970,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     metadataBase: new URL(siteUrl),
     title: {
       default: titles[current],
-      // The Latin wordmark is bidi-isolated so the separator does not jump in
-      // RTL rendering.
-      template: `%s | ${isRtl(current) ? isolateLtr(BRAND[current]) : BRAND[current]}`,
+      // Isolation is needed only where a LATIN wordmark sits inside RTL text.
+      // Farsi's brand is already Arabic script, so isolating it would add
+      // invisible control characters to an indexed title for no benefit — see
+      // brandForTitle in locales.ts.
+      template: `%s | ${brandForTitle(current)}`,
     },
     description: descriptions[current],
     keywords: keywords[current],
@@ -2150,7 +2253,7 @@ and in the component body:
 
 `dashboard/page.tsx` has an `isFA` boolean driving two ternaries plus `spreadLabels` and `topicLabels` maps; `daily/page.tsx` has seven. These are UI strings that belong in the message bundles.
 
-For each one, add a key to the matching namespace in all three of `en.json`, `fa.json`, and `ar.json` (the parity test from Task 6 enforces that you touch all three), then read it via `getTranslations`. Replace the date formatting:
+For each one, add a key to the matching namespace in all three of `en.json`, `fa.json`, and `ar.json` (the parity test from Task 6 enforces that you touch all three), then read it via `getTranslations`. The parity test asserts a key-count floor rather than an exact count, so adding keys here is expected and does not require editing that test. Replace the date formatting:
 
 ```ts
   const today = new Date().toLocaleDateString(HTML_LANG[current], { month: 'long', day: 'numeric', year: 'numeric' });
@@ -2159,6 +2262,23 @@ For each one, add a key to the matching namespace in all three of `en.json`, `fa
 and in `dashboard/page.tsx`, the `date.toLocaleDateString('fa-IR')` / bare `toLocaleDateString()` branches become a single `date.toLocaleDateString(HTML_LANG[current])`.
 
 Delete the `isFA` / `isFa` locals once nothing reads them.
+
+- [ ] **Step 8b: Make the English and Farsi copy true again**
+
+Shipping Arabic falsifies copy that already exists in the other two bundles. Fix these four values — the claims are user-facing and will be wrong the moment Arabic deploys:
+
+| File | Key | Problem |
+|---|---|---|
+| `en.json` | `landing.faqA4` | Says "TarotVeil currently supports English and Farsi, **with Arabic coming soon**." Arabic now ships. |
+| `fa.json` | `landing.faqA4` | Same claim in Farsi (`و عربی به‌زودی اضافه خواهد شد`). |
+| `en.json` | `about.multiLangP1` | Lists only "English and Farsi (Persian)"; should include Arabic. |
+| `fa.json` | `about.multiLangP1` | Same omission. |
+
+Rewrite each so all three languages are named as supported, keeping the surrounding "culturally native, not just translated" point intact. The Arabic values were already written correctly in Task 6.
+
+Note `premiumDesc` in both bundles already says "English + Farsi + Arabic" — it has been contradicting `faqA4` all along, and becomes correct on its own once you fix `faqA4`.
+
+These are message-bundle values only; they do not touch `prompts.ts`, so the freeze gate is unaffected.
 
 - [ ] **Step 9: Verify and commit**
 
@@ -2595,6 +2715,62 @@ git log --oneline -- execution/prompt-freeze.snapshot.json
 
 Expected: no commits from this branch. If the snapshot was modified, an existing English or Farsi prompt changed somewhere and the drift was absorbed rather than fixed — investigate before deploying.
 
+- [ ] **Step 2b: Freeze the Arabic prompts — the one deliberate re-freeze**
+
+Through Task 10 the gate *allows* the 69 Arabic keys without *recording* them. That means Arabic reading voice is unprotected: a later refactor could change it and the gate would stay silent. Record them now, once, deliberately — this is the intended-change case `--update` exists for.
+
+```bash
+node execution/prompt-freeze.mjs --update
+```
+
+Then prove the re-freeze was purely additive. This is the check that preserves everything Task 4 established:
+
+```bash
+git diff --numstat execution/prompt-freeze.snapshot.json
+```
+
+Expected: insertions only, **zero deletions**. A non-zero deletion count means an existing English or Farsi hash was rewritten — in that case `git checkout execution/prompt-freeze.snapshot.json` to discard the re-freeze, and investigate, because an en/fa prompt has drifted somewhere in Tasks 5-10.
+
+Confirm the recorded set is complete, then commit the snapshot on its own:
+
+```bash
+node execution/prompt-freeze.mjs    # expect: 207 prompts match, 0 new
+git add execution/prompt-freeze.snapshot.json
+git commit -m "chore(ai): freeze the Arabic prompts
+
+Adding a locale is the intended-change case for a re-freeze. Verified
+additive: the snapshot diff is insertions only, so every English and
+Farsi hash Task 4 proved unchanged is still unchanged."
+```
+
+- [ ] **Step 2c: The static Persian sweep — the load-bearing Arabic check**
+
+Do this BEFORE any browser work, and treat it as the primary gate.
+
+Task 12 established that a curl sweep certifies the **initial server render only**. Two real defects escaped exactly that way: `SpreadSelector.tsx` rendered `نیاز به …` on every tier-gated spread and `CardFace.tsx` rendered `معکوس` under every reversed card — both Persian, both on Arabic pages, both invisible to curl because they appear only after a client interaction (a spread selected, a card revealed). Five share-panel strings have the same property.
+
+So sweep the source, not the rendered page. It is cheap, deterministic, and complete:
+
+```bash
+cd app && grep -rnE '[پچژگکی]' src --include=*.ts --include=*.tsx
+```
+
+Every hit must be in a **legitimate Farsi home**. The allowlist:
+- `src/messages/fa.json`
+- `src/lib/tarot/farsi-names.ts` and the `localized.fa` entries in `deck.ts` / `spreads.ts`
+- the `fa` entries of a `Record<Locale, …>` table (`prompts.ts` and any page-level table)
+- `FORBIDDEN_PATTERNS_AR`'s Persian-letter character class, which names those letters deliberately
+
+A hit anywhere else — especially a bare string literal in a `.tsx` — is a Persian leak onto a non-Farsi surface. Fix it before continuing.
+
+Then sweep the predicate, not the spelling. The Task 12 reviewer's miss came from grepping for a ternary *spelling* (`en ?`) rather than the defect *class*:
+
+```bash
+cd app && grep -rn "language === 'en'\|locale === 'fa'\|language === 'fa'\|locale === 'en'" src
+```
+
+Review every hit site by site. Legitimate homes are `localized.ts` (English is canonical by design), `parity.test.ts`, `card-queries.ts` (Phase 2), and `locales.ts` itself. Anything else collapses three locales into two.
+
 - [ ] **Step 3: Manual Arabic pass**
 
 Run `cd app && npm run dev`, then walk through and confirm each:
@@ -2658,6 +2834,65 @@ cd "/Users/amir/Desktop/My Projects/AI Tarot"
 git add CLAUDE.md AGENTS.md GEMINI.md directives
 git commit -m "docs: record Arabic Phase 1 as shipped, Phase 2 as pending"
 ```
+
+---
+
+### Task 12: Arabic copy in the reading flow
+
+**Runs before Task 11**, not after. It is numbered 12 only because it was added after the plan was written; Task 11 is the final verification and must stay last.
+
+**Why this task exists.** Tasks 1-8 left the core reading flow serving Farsi to Arabic users. Four files hold large inline bilingual blocks keyed on a single boolean, `const en = language === 'en'`, so every non-English locale takes the Farsi branch. Verified live: `/ar/reading/free?topic=love` serves Persian on an Arabic page, 13 Persian-letter occurrences. Widening the type unions in Task 8 exposed this rather than causing it, since `'ar'` was previously unreachable in those branches.
+
+This defeats the spec's Phase 1 goal — "an Arabic speaker can land, draw, and receive a genuine Arabic narrative reading end to end" — so it is not deferrable to Phase 2.
+
+**Files:**
+- Modify: `app/src/app/[locale]/(app)/reading/new/page.tsx` (19 `en ?` ternaries + the `TOPICS` array's `titleFA`/`descFA` fields)
+- Modify: `app/src/components/reading/FreeReadingClient.tsx` (11 ternaries + the `TOPIC_CONFIG` record's `titleFA`/`subtitleFA`/`placeholderFA`/`labelFA` fields)
+- Modify: `app/src/components/reading/FollowUpChat.tsx` (19 ternaries, two `const en` locals at lines 66 and 422)
+- Modify: `app/src/app/[locale]/(app)/reading/[id]/page.tsx` (1 ternary)
+- Modify: `app/src/messages/en.json`, `fa.json`, `ar.json`
+
+**Interfaces:**
+- Consumes: `Locale`, `toLocale` from `@/i18n/locales`; `useTranslations`/`getTranslations` from next-intl.
+- Produces: no new exports. The deliverable is that no `en ?` ternary and no `*FA` field remains in these four files.
+
+**Approach - move the copy into the message bundles, do not add a third branch.**
+
+A `language === 'ar' ? x : en ? y : z` three-way ternary would work and is the wrong answer: it triples the inline prose, keeps Arabic coverage unenforced, and the next locale makes it worse. Task 8 established the pattern - UI copy lives in the bundles - and the parity test then guarantees Arabic coverage mechanically instead of by inspection.
+
+So: for each string, add a key to the appropriate existing namespace (`reading`, `freeReading`) in all three bundles, copying the existing English and Farsi values **verbatim** from the inline code, and authoring the Arabic. Then read it through `useTranslations` (client components) or `getTranslations` (server components), following the pattern the 24 marketing pages already use.
+
+`TOPICS` and `TOPIC_CONFIG` keep their structural fields (`key`, `symbol`) and lose their text fields, which become message lookups keyed by topic.
+
+- [ ] **Step 1: Inventory the strings**
+
+Before changing anything, list every string you will move: file, line, the English value, the Farsi value, and the message key you will give it. Put this table in your report. It is the checklist that makes the rest verifiable, and it is how a reviewer confirms nothing was dropped.
+
+- [ ] **Step 2: Add the keys to all three bundles**
+
+Copy English and Farsi verbatim - a retyped Farsi string is a silent content regression on a live locale. Author the Arabic in warm MSA, matching the terminology already committed (`انتشار` for a spread, `السائل` for the querent, `مستقيمة`/`معكوسة` for orientation).
+
+Run `cd app && npx vitest run src/messages/parity.test.ts` - it fails until all three bundles carry every key, and its Persian-letter and brand assertions cover your Arabic automatically.
+
+- [ ] **Step 3: Replace the ternaries, one file at a time**
+
+After each file, run `cd app && npx tsc --noEmit` and confirm the file is clean before moving on. Delete each `const en = ...` local once nothing reads it.
+
+- [ ] **Step 4: Prove the Farsi did not change**
+
+This is the step that protects the live locale. For each of `/fa/reading/free?topic=love`, `?topic=career`, `?topic=yes-or-no`, capture the rendered page before and after your change and diff them. The visible Farsi text must be identical. Read the real dev port from the server's startup output - port 3000 is occupied by another server that lacks the Arabic locale.
+
+- [ ] **Step 5: Prove Arabic no longer serves Persian**
+
+For each of `/ar/reading/free?topic=love`, `?topic=career`, `?topic=yes-or-no`, and `/ar/reading/new`, count Persian-only letters in the rendered HTML:
+
+    curl -s "http://localhost:PORT/ar/reading/free?topic=love" | grep -oE "[پچژگکی]" | wc -l
+
+Expected: `0`. Before this task that count is 13 on the love page.
+
+- [ ] **Step 6: Verify and commit**
+
+Run `cd app && npm run verify`. The freeze gate must still read `207 prompts match the snapshot (69 new, allowed)` - this task touches no prompt bodies. Commit with a message naming the defect, the approach, and the Farsi-unchanged evidence.
 
 ---
 

@@ -109,13 +109,30 @@ body::after {
   }
 }
 
-/* Farsi (RTL) font override */
-[dir="rtl"] .font-body,
+/* RTL fallback — applies to any RTL locale that has no specific stack below. */
+[dir="rtl"] .font-body {
+  font-family: var(--font-vazirmatn), var(--font-inter), system-ui, sans-serif;
+}
+
+[dir="rtl"] .font-display {
+  font-family: var(--font-vazirmatn), var(--font-cinzel), serif;
+}
+
+/* Farsi — Vazirmatn is Persian-optimised. */
 [lang="fa"] .font-body {
   font-family: var(--font-vazirmatn), var(--font-inter), system-ui, sans-serif;
 }
 
-[dir="rtl"] .font-display,
 [lang="fa"] .font-display {
   font-family: var(--font-vazirmatn), var(--font-cinzel), serif;
+}
+
+/* Arabic — Amiri carries the literary register; Noto Naskh keeps small UI
+   text legible. Cinzel has no Arabic glyphs, so it is only a last resort. */
+[lang="ar"] .font-body {
+  font-family: var(--font-noto-naskh), var(--font-inter), system-ui, sans-serif;
+}
+
+[lang="ar"] .font-display {
+  font-family: var(--font-amiri), var(--font-noto-naskh), serif;
 }

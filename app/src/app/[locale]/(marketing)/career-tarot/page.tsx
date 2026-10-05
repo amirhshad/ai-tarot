@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import CardMeaningLink from '@/components/seo/CardMeaningLink';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buildAlternates } from '@/lib/seo/alternates';
 
@@ -215,10 +216,11 @@ export default async function CareerTarotPage({ params }: { params: Promise<{ lo
           </p>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
             {careerCards.map((card) => (
-              <Link
+              <CardMeaningLink
                 key={card.slug}
-                href={`/tarot-card-meanings/${card.slug}`}
-                className="group text-center"
+                slug={card.slug}
+                className="text-center"
+                linkClassName="group"
               >
                 <div className="relative w-full aspect-[2/3] rounded overflow-hidden border border-gold-400/10 group-hover:border-gold-400/30 transition-all mb-2">
                   <Image
@@ -232,7 +234,7 @@ export default async function CareerTarotPage({ params }: { params: Promise<{ lo
                 <p className="font-display text-[11px] text-stone-400 group-hover:text-gold-400 transition-colors leading-tight">
                   {card.name}
                 </p>
-              </Link>
+              </CardMeaningLink>
             ))}
           </div>
         </section>
@@ -353,9 +355,9 @@ export default async function CareerTarotPage({ params }: { params: Promise<{ lo
                 {t('relatedYesOrNoDesc')}
               </p>
             </Link>
-            <Link
-              href="/tarot-card-meanings"
-              className="group p-4 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 transition-all"
+            <CardMeaningLink
+              className="p-4 rounded-sm border border-gold-400/[0.06]"
+              linkClassName="group hover:border-gold-400/20 transition-all"
             >
               <h3 className="font-display text-sm font-semibold text-white group-hover:text-gold-400 transition-colors mb-1">
                 {t('relatedCardMeanings')}
@@ -363,7 +365,7 @@ export default async function CareerTarotPage({ params }: { params: Promise<{ lo
               <p className="font-body text-xs font-medium text-stone-500">
                 {t('relatedCardMeaningsDesc')}
               </p>
-            </Link>
+            </CardMeaningLink>
           </div>
         </section>
 

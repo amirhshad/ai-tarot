@@ -3,11 +3,22 @@ import { getProfile, getReading, getFollowUps } from '@/lib/db/queries';
 import { notFound } from 'next/navigation';
 import { getSpread } from '@/lib/tarot/spreads';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
+import { cardName, positionName } from '@/lib/tarot/localized';
 import Image from 'next/image';
 import FollowUpChat from '@/components/reading/FollowUpChat';
 import { getBalance } from '@/lib/credits/ledger';
 import ShareButton from '@/components/reading/ShareButton';
 import ReadingFeedback from '@/components/reading/ReadingFeedback';
+import { getTranslations } from 'next-intl/server';
+import { toLocale, HTML_LANG } from '@/i18n/locales';
+
+/** Spread type -> its label key in the `dashboard` namespace. */
+const SPREAD_LABEL_KEYS: Record<string, string> = {
+  'single': 'spreadSingle',
+  'three-card': 'spreadThreeCard',
+  'celtic-cross': 'spreadCelticCross',
+  'horseshoe': 'spreadHorseshoe',
+};
 
 export default async function ReadingPage({
   params,
@@ -37,17 +48,24 @@ export default async function ReadingPage({
     ? deserializeDrawnCards(cardsData as { cardId: number; reversed: boolean; positionIndex: number }[], spread.positions)
     : [];
 
-  const language = (locale === 'fa' ? 'fa' : 'en') as 'en' | 'fa';
+  const language = toLocale(locale);
+  const t = await getTranslations('reading');
+  // The four spread labels already exist, translated, in the dashboard
+  // namespace — reuse them rather than add a fifth copy.
+  const tSpread = await getTranslations('dashboard');
+  const spreadLabel = SPREAD_LABEL_KEYS[reading.spread_type]
+    ? tSpread(SPREAD_LABEL_KEYS[reading.spread_type])
+    : reading.spread_type.replaceAll('-', ' ');
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white capitalize">
-          {reading.spread_type.replace('-', ' ')} Reading
+        <h1 className="text-2xl font-bold text-white">
+          {t('spreadReadingTitle', { spread: spreadLabel })}
         </h1>
         <p className="text-gray-500 text-sm mt-1">
-          {new Date(reading.created_at).toLocaleDateString('en-US', {
+          {new Date(reading.created_at).toLocaleDateString(HTML_LANG[language], {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
@@ -62,12 +80,12 @@ export default async function ReadingPage({
       {/* Cards */}
       <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08]">
         <h2 className="text-sm font-medium text-gray-500 mb-4">
-          {language === 'en' ? 'Cards Drawn' : 'کارت‌های کشیده شده'}
+          {t('cardsDrawn')}
         </h2>
         <div className={`flex justify-center gap-4 ${cards.length > 3 ? 'flex-wrap' : ''}`}>
           {cards.map((dc, i) => {
-            const name = language === 'en' ? dc.card.name : dc.card.nameFA;
-            const posName = language === 'en' ? dc.position.name : dc.position.nameFA;
+            const name = cardName(dc.card, language);
+            const posName = positionName(dc.position, language);
             return (
               <div key={i} className="flex flex-col items-center text-center w-[90px] sm:w-[110px]">
                 <div className={`relative w-[80px] h-[133px] sm:w-[100px] sm:h-[167px] rounded-md overflow-hidden border border-amber-400/20 ${dc.reversed ? 'rotate-180' : ''}`}>
@@ -83,7 +101,7 @@ export default async function ReadingPage({
                 <p className="text-xs text-white font-medium mt-0.5">{name}</p>
                 {dc.reversed && (
                   <span className="text-[10px] text-red-400 mt-0.5">
-                    {language === 'en' ? 'Reversed' : 'معکوس'}
+                    {t('reversed')}
                   </span>
                 )}
               </div>
@@ -95,7 +113,7 @@ export default async function ReadingPage({
       {/* Interpretation */}
       <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
         <h2 className="text-xl font-semibold text-amber-400 mb-4">
-          {language === 'en' ? 'Your Reading' : 'خوانش شما'}
+          {t('yourReading')}
         </h2>
         <div className="prose prose-invert max-w-none">
           <p className="text-amber-50/95 text-base sm:text-lg leading-7 sm:leading-8 whitespace-pre-wrap">
@@ -121,7 +139,7 @@ export default async function ReadingPage({
       {/* Follow-up Chat */}
       <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
         <h2 className="text-lg font-semibold text-white mb-4">
-          {language === 'en' ? 'Ask Follow-up Questions' : 'سؤالات بعدی'}
+          {t('followUp')}
         </h2>
         <FollowUpChat
           readingId={id}

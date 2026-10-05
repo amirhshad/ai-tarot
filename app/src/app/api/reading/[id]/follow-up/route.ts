@@ -5,6 +5,7 @@ import { getSpread } from '@/lib/tarot/spreads';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
 import { buildFollowUpPrompt, buildExtraCardContext } from '@/lib/ai/prompts';
 import { streamFollowUp } from '@/lib/ai/client';
+import { resolveReadingLanguage } from '@/lib/ai/language';
 import { spend, refund, claimIncluded } from '@/lib/credits/ledger';
 import { FOLLOW_UP_COST, INCLUDED_FOLLOW_UPS } from '@/lib/credits/config';
 import { getCardById } from '@/lib/tarot/deck';
@@ -50,10 +51,13 @@ export async function POST(
   const { question, extraCard, language: requestLanguage } = body as {
     question: string;
     extraCard?: { cardId: number; reversed: boolean };
-    language?: 'en' | 'fa';
+    language?: string;
   };
 
-  const language = (requestLanguage || profile?.language || 'en') as 'en' | 'fa';
+  const language = resolveReadingLanguage({
+    requestLanguage,
+    profileLanguage: profile?.language,
+  });
 
   if (!question?.trim()) {
     return NextResponse.json({ error: 'Question is required' }, { status: 400 });

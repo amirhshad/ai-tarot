@@ -6,6 +6,7 @@ import { SpreadType } from '@/lib/tarot/types';
 import { deserializeDrawnCards } from '@/lib/tarot/shuffle';
 import { buildInterpretationPrompt, buildQuestionMessage, ReadingTopic } from '@/lib/ai/prompts';
 import { streamInterpretation } from '@/lib/ai/client';
+import { resolveReadingLanguage } from '@/lib/ai/language';
 import { spend, refund } from '@/lib/credits/ledger';
 import { SPREAD_COSTS } from '@/lib/credits/config';
 import { sendReadingSummary } from '@/lib/email/client';
@@ -35,10 +36,13 @@ export async function POST(request: NextRequest) {
     cards: { cardId: number; reversed: boolean; positionIndex: number }[];
     question?: string;
     topic?: ReadingTopic;
-    language?: 'en' | 'fa';
+    language?: string;
   };
 
-  const language = (requestLanguage || profile?.language || 'en') as 'en' | 'fa';
+  const language = resolveReadingLanguage({
+    requestLanguage,
+    profileLanguage: profile?.language,
+  });
 
   // Validate question length
   if (question && question.length > 500) {

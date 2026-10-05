@@ -1,11 +1,12 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import CardMeaningLink from '@/components/seo/CardMeaningLink';
 import { DECK } from '@/lib/tarot/deck';
 import { cardToSlug } from '@/lib/tarot/slugs';
 import { buildHubJsonLd } from '@/lib/seo/json-ld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { buildAlternates } from '@/lib/seo/alternates';
+import { buildAlternates, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
 import Disclaimer from '@/components/seo/Disclaimer';
 
 const siteUrl = 'https://www.tarotveil.com';
@@ -48,7 +49,11 @@ export async function generateSubHubMetadata(configKey: string, locale: string):
   return {
     title,
     description,
-    alternates: buildAlternates(`/tarot-card-meanings/${config.slug}`, locale),
+    // The subset keeps every sub-hub from advertising an ar hreflang that
+    // would point at a 404 until Phase 2 ships Arabic card content.
+    alternates: buildAlternates(`/tarot-card-meanings/${config.slug}`, locale, {
+      locales: CARD_CONTENT_LOCALES,
+    }),
     openGraph: {
       title,
       description,
@@ -94,7 +99,7 @@ export default async function SubHubPage({ configKey, locale }: { configKey: str
         <nav className="text-sm text-stone-500 mb-8 flex items-center gap-2">
           <Link href="/" className="hover:text-gold-400 transition-colors">{tCommon('home')}</Link>
           <span>/</span>
-          <Link href="/tarot-card-meanings" className="hover:text-gold-400 transition-colors">{t('tarotCardMeanings')}</Link>
+          <CardMeaningLink linkClassName="hover:text-gold-400 transition-colors">{t('tarotCardMeanings')}</CardMeaningLink>
           <span>/</span>
           <span className="text-stone-300">{heading}</span>
         </nav>
@@ -112,10 +117,11 @@ export default async function SubHubPage({ configKey, locale }: { configKey: str
         {/* Card Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-16">
           {cards.map(card => (
-            <Link
+            <CardMeaningLink
               key={card.slug}
-              href={`/tarot-card-meanings/${card.slug}`}
-              className="group p-3 rounded-sm border border-gold-400/[0.06] hover:border-gold-400/20 bg-gradient-to-b from-white/[0.01] to-transparent transition-all duration-300 text-center"
+              slug={card.slug}
+              className="p-3 rounded-sm border border-gold-400/[0.06] bg-gradient-to-b from-white/[0.01] to-transparent text-center"
+              linkClassName="group hover:border-gold-400/20 transition-all duration-300"
             >
               <div className="relative w-[90px] h-[150px] mx-auto mb-3 rounded overflow-hidden">
                 <Image
@@ -129,7 +135,7 @@ export default async function SubHubPage({ configKey, locale }: { configKey: str
               <p className="font-display text-sm font-medium text-stone-300 group-hover:text-gold-400 transition-colors leading-tight">
                 {card.name}
               </p>
-            </Link>
+            </CardMeaningLink>
           ))}
         </div>
 

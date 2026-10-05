@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface ShareButtonProps {
   readingId: string;
@@ -8,6 +9,7 @@ interface ShareButtonProps {
 }
 
 export default function ShareButton({ readingId, existingShareUrl }: ShareButtonProps) {
+  const t = useTranslations('reading.share');
   const [shareUrl, setShareUrl] = useState<string | null>(existingShareUrl || null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -54,10 +56,10 @@ export default function ShareButton({ readingId, existingShareUrl }: ShareButton
   }
 
   const twitterUrl = shareUrl
-    ? `https://twitter.com/intent/tweet?text=${encodeURIComponent('Check out my tarot reading!')}&url=${encodeURIComponent(shareUrl)}`
+    ? `https://twitter.com/intent/tweet?text=${encodeURIComponent(t('twitterText'))}&url=${encodeURIComponent(shareUrl)}`
     : '';
   const whatsappUrl = shareUrl
-    ? `https://wa.me/?text=${encodeURIComponent(`Check out my tarot reading: ${shareUrl}`)}`
+    ? `https://wa.me/?text=${encodeURIComponent(t('whatsappText', { url: shareUrl }))}`
     : '';
   const facebookUrl = shareUrl
     ? `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`
@@ -71,16 +73,16 @@ export default function ShareButton({ readingId, existingShareUrl }: ShareButton
         className="flex items-center gap-2 px-4 py-2 text-sm rounded-lg border border-white/15 text-gray-300 hover:border-amber-400/50 hover:text-amber-400 transition-colors disabled:opacity-50"
       >
         {loading ? (
-          'Creating link...'
+          t('creating')
         ) : shareUrl ? (
           <>
             <ShareIcon />
-            Shared
+            {t('shared')}
           </>
         ) : (
           <>
             <ShareIcon />
-            Share Reading
+            {t('shareReading')}
           </>
         )}
       </button>
@@ -88,7 +90,7 @@ export default function ShareButton({ readingId, existingShareUrl }: ShareButton
       {showPanel && shareUrl && (
         <div className="absolute bottom-full mb-2 left-0 right-0 sm:left-auto sm:right-0 sm:w-72 p-4 rounded-xl bg-[#1a1a1a] border border-white/10 shadow-xl z-50">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-medium text-white">Share this reading</span>
+            <span className="text-sm font-medium text-white">{t('panelTitle')}</span>
             <button
               onClick={() => setShowPanel(false)}
               className="text-gray-500 hover:text-white text-lg leading-none"
@@ -103,7 +105,7 @@ export default function ShareButton({ readingId, existingShareUrl }: ShareButton
             className="w-full flex items-center gap-2 px-3 py-2 mb-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm text-gray-300 transition-colors"
           >
             <ClipboardIcon />
-            {copied ? 'Copied!' : 'Copy link'}
+            {copied ? t('copied') : t('copyLink')}
           </button>
 
           {/* Social buttons */}

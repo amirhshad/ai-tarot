@@ -1,11 +1,16 @@
 'use client';
 
 import { Link } from '@/i18n/navigation';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { toLocale } from '@/i18n/locales';
+import { CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
 
 export default function Footer() {
   const t = useTranslations('footer');
   const tn = useTranslations('nav');
+
+  // Arabic card meanings land in Phase 2; the routes 404 for `ar` until then.
+  const showCardMeanings = CARD_CONTENT_LOCALES.includes(toLocale(useLocale()));
 
   return (
     <footer className="border-t border-white/10 bg-black/50 mt-auto">
@@ -15,9 +20,11 @@ export default function Footer() {
           {t('disclaimer')}
         </p>
         <div className="flex gap-4">
-          <Link href="/tarot-card-meanings" className="hover:text-gray-300 transition-colors">
-            {tn('cardMeanings')}
-          </Link>
+          {showCardMeanings && (
+            <Link href="/tarot-card-meanings" className="hover:text-gray-300 transition-colors">
+              {tn('cardMeanings')}
+            </Link>
+          )}
           <Link href="/spreads" className="hover:text-gray-300 transition-colors">
             {tn('spreads')}
           </Link>

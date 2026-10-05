@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import SpreadSelector from '@/components/reading/SpreadSelector';
 import Deck from '@/components/tarot/Deck';
 import SpreadLayout from '@/components/tarot/SpreadLayout';
@@ -13,15 +13,28 @@ import { getSpread } from '@/lib/tarot/spreads';
 import { serializeDrawnCards } from '@/lib/tarot/shuffle';
 import type { ReadingTopic } from '@/lib/ai/prompts';
 import ReadingLoadingAnimation from '@/components/reading/ReadingLoadingAnimation';
+import { toLocale } from '@/i18n/locales';
 
 type Step = 'topic' | 'select-spread' | 'question' | 'draw' | 'reveal' | 'interpret';
 
-const TOPICS: { key: ReadingTopic; title: string; titleFA: string; desc: string; descFA: string; symbol: string }[] = [
-  { key: null, title: 'General Reading', titleFA: 'فال عمومی', desc: 'Open-ended — explore whatever comes up', descFA: 'آزاد — هر آنچه پیش آید کاوش کنید', symbol: '✨' },
-  { key: 'love', title: 'Love & Relationships', titleFA: 'عشق و روابط', desc: 'Romantic connections, compatibility, emotional clarity', descFA: 'ارتباطات عاشقانه، سازگاری، وضوح عاطفی', symbol: '♡' },
-  { key: 'career', title: 'Career & Work', titleFA: 'شغل و کار', desc: 'Professional path, growth, and direction', descFA: 'مسیر حرفه‌ای، رشد و جهت‌گیری', symbol: '☆' },
-  { key: 'yes-or-no', title: 'Yes or No', titleFA: 'بله یا خیر', desc: 'A direct answer to your question', descFA: 'پاسخی مستقیم به سؤال شما', symbol: '⧖' },
+/**
+ * Structure only. Every string lives in the `reading` message namespace, keyed
+ * by `messageKey`, so a new locale is a bundle entry rather than another branch
+ * of a `language === 'en'` ternary.
+ */
+const TOPICS: { key: ReadingTopic; messageKey: string; symbol: string }[] = [
+  { key: null, messageKey: 'general', symbol: '\u2728' },
+  { key: 'love', messageKey: 'love', symbol: '\u2661' },
+  { key: 'career', messageKey: 'career', symbol: '\u2606' },
+  { key: 'yes-or-no', messageKey: 'yesOrNo', symbol: '\u29D6' },
 ];
+
+/** Topic -> the placeholder message key for its question prompt. */
+const TOPIC_PLACEHOLDERS: Record<string, string> = {
+  love: 'placeholderLove',
+  career: 'placeholderCareer',
+  'yes-or-no': 'placeholderYesOrNo',
+};
 
 // Yes/No topic only supports simple spreads
 const YES_NO_SPREADS: SpreadType[] = ['single', 'three-card'];
@@ -43,7 +56,8 @@ export default function NewReadingPage() {
   const loadingStartRef = useRef<number>(0);
 
   const locale = useLocale();
-  const language = (locale === 'fa' ? 'fa' : 'en') as 'en' | 'fa';
+  const language = toLocale(locale);
+  const t = useTranslations('reading');
   const [tier, setTier] = useState<string>('free');
   const [credits, setCredits] = useState<number | null>(null);
 
@@ -73,18 +87,12 @@ export default function NewReadingPage() {
     }
   }, [interpretation]);
 
-  const en = language === 'en';
+  const questionPlaceholder = t(
+    (topic && TOPIC_PLACEHOLDERS[topic]) || 'placeholderGeneral',
+  );
 
-  const questionPlaceholder = topic === 'love'
-    ? (en ? 'What would you like to know about your love life?' : 'درباره زندگی عاشقانه‌تان چه می‌خواهید بدانید؟')
-    : topic === 'career'
-      ? (en ? 'What would you like to know about your career?' : 'درباره مسیر شغلی‌تان چه می‌خواهید بدانید؟')
-      : topic === 'yes-or-no'
-        ? (en ? 'Ask a yes or no question…' : 'یک سؤال بله یا خیر بپرسید…')
-        : (en ? "What's on your mind? (optional — leave blank for a general reading)" : 'چه چیزی در ذهنتان است؟ (اختیاری — برای فال عمومی خالی بگذارید)');
-
-  function handleSelectTopic(t: ReadingTopic) {
-    setTopic(t);
+  function handleSelectTopic(selected: ReadingTopic) {
+    setTopic(selected);
     setSpreadType(null);
     setStep('select-spread');
   }
@@ -95,14 +103,14 @@ export default function NewReadingPage() {
     // a bad moment — and /api/auth/me already told us the balance.
     const cost = SPREAD_COSTS[type];
     if (credits !== null && credits < cost) {
+      // String(), not the raw numbers: a numeric ICU argument gets formatted
+      // with the locale's numbering system, which would turn the Latin digits
+      // the Farsi copy has always rendered into Persian ones.
+      const values = { cost: String(cost), credits: String(credits) };
       setError(
         tier === 'free'
-          ? (en
-              ? `This reading costs ${cost} credits and you have ${credits} left today. Your credits reset at midnight UTC.`
-              : `این خوانش ${cost} اعتبار هزینه دارد و شما امروز ${credits} اعتبار دارید. اعتبار شما نیمه‌شب به وقت UTC تازه می‌شود.`)
-          : (en
-              ? `This reading costs ${cost} credits and you have ${credits} left this period.`
-              : `این خوانش ${cost} اعتبار هزینه دارد و شما در این دوره ${credits} اعتبار دارید.`),
+          ? t('notEnoughCreditsToday', values)
+          : t('notEnoughCreditsPeriod', values),
       );
       return;
     }
@@ -214,34 +222,34 @@ export default function NewReadingPage() {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-white">{en ? 'New Reading' : 'فال جدید'}</h1>
+        <h1 className="text-2xl font-bold text-white">{t('newReading')}</h1>
         <p className="text-gray-500 text-sm mt-1">
-          {step === 'topic' && (en ? 'What would you like guidance on?' : 'در چه موضوعی راهنمایی می‌خواهید؟')}
-          {step === 'select-spread' && (en ? 'Choose your spread type' : 'نوع گسترش را انتخاب کنید')}
-          {step === 'question' && (topic === 'yes-or-no' ? (en ? 'Ask a clear question for a direct answer' : 'یک سؤال روشن برای پاسخ مستقیم بپرسید') : (en ? 'What would you like to explore? (optional)' : 'چه چیزی را می‌خواهید کاوش کنید؟ (اختیاری)'))}
-          {step === 'draw' && (en ? 'Focus your energy and draw your cards' : 'انرژی خود را متمرکز کنید و کارت‌ها را بکشید')}
-          {step === 'reveal' && (en ? 'Tap each card to reveal it' : 'روی هر کارت بزنید تا آشکار شود')}
-          {step === 'interpret' && (en ? 'Your reading is unfolding...' : 'فال شما در حال آشکار شدن است...')}
+          {step === 'topic' && t('topicPrompt')}
+          {step === 'select-spread' && t('chooseSpread')}
+          {step === 'question' && t(topic === 'yes-or-no' ? 'askClearQuestion' : 'enterQuestion')}
+          {step === 'draw' && t('drawCards')}
+          {step === 'reveal' && t('tapToReveal')}
+          {step === 'interpret' && t('unfolding')}
         </p>
       </div>
 
       {/* Step: Topic */}
       {step === 'topic' && (
         <div className="max-w-lg mx-auto space-y-3">
-          {TOPICS.map((t) => (
+          {TOPICS.map((option) => (
             <button
-              key={t.title}
-              onClick={() => handleSelectTopic(t.key)}
+              key={option.messageKey}
+              onClick={() => handleSelectTopic(option.key)}
               className="w-full flex items-center gap-4 p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-amber-400/30 hover:bg-white/[0.04] transition-all text-left group"
             >
               <span className="text-2xl text-amber-400/50 group-hover:text-amber-400/90 transition-colors w-10 text-center flex-shrink-0">
-                {t.symbol}
+                {option.symbol}
               </span>
               <div className="min-w-0">
                 <h3 className="text-base font-medium text-white group-hover:text-amber-400 transition-colors">
-                  {en ? t.title : t.titleFA}
+                  {t(`topics.${option.messageKey}`)}
                 </h3>
-                <p className="text-xs text-gray-500 mt-0.5">{en ? t.desc : t.descFA}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{t(`topics.${option.messageKey}Desc`)}</p>
               </div>
             </button>
           ))}
@@ -263,7 +271,7 @@ export default function NewReadingPage() {
               onClick={() => setStep('topic')}
               className="px-6 py-2.5 border border-white/15 text-gray-400 rounded-xl text-sm hover:border-white/30 transition-colors"
             >
-              {en ? 'Back' : 'بازگشت'}
+              {t('back')}
             </button>
           </div>
         </div>
@@ -284,13 +292,13 @@ export default function NewReadingPage() {
               onClick={() => setStep('select-spread')}
               className="px-6 py-2.5 border border-white/15 text-gray-400 rounded-xl text-sm hover:border-white/30 transition-colors"
             >
-              {en ? 'Back' : 'بازگشت'}
+              {t('back')}
             </button>
             <button
               onClick={handleQuestion}
               className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-xl text-sm transition-colors"
             >
-              {en ? 'Continue' : 'ادامه'}
+              {t('continue')}
             </button>
           </div>
         </div>
@@ -324,7 +332,7 @@ export default function NewReadingPage() {
                 onClick={handleRevealAll}
                 className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
               >
-                {en ? 'Reveal all cards' : 'نمایش همه کارت‌ها'}
+                {t('revealAll')}
               </button>
             </div>
           )}
@@ -336,7 +344,7 @@ export default function NewReadingPage() {
                 disabled={isInterpreting}
                 className="px-8 py-3 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-black font-semibold rounded-xl text-lg transition-colors"
               >
-                {isInterpreting ? (en ? 'Reading the cards...' : 'در حال خواندن کارت‌ها...') : (en ? 'Get Your Reading' : 'دریافت فال')}
+                {isInterpreting ? t('readingCards') : t('getReading')}
               </button>
             </div>
           )}
@@ -356,7 +364,7 @@ export default function NewReadingPage() {
         >
           <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
             <h2 className="text-xl font-semibold text-amber-400 mb-4">
-              {language === 'fa' ? 'خوانش شما' : 'Your Reading'}
+              {t('yourReading')}
             </h2>
             <div className="prose prose-invert max-w-none">
               <p className="text-amber-50/95 text-base sm:text-lg leading-7 sm:leading-8 whitespace-pre-wrap">
@@ -371,7 +379,7 @@ export default function NewReadingPage() {
                 onClick={() => router.push(`/reading/${readingId}`)}
                 className="px-6 py-2.5 bg-white/10 hover:bg-white/15 text-gray-200 font-medium rounded-xl text-sm transition-colors"
               >
-                {en ? 'View Full Reading & Follow-up' : 'مشاهده فال کامل و سؤالات بعدی'}
+                {t('viewFull')}
               </button>
             </div>
           )}

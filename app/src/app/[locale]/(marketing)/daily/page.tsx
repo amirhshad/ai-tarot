@@ -1,30 +1,62 @@
 import { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
+import CardMeaningLink from '@/components/seo/CardMeaningLink';
 import Image from 'next/image';
 import { getDailyCard, getTodayDateStr } from '@/lib/tarot/daily';
 import { generateCompletion } from '@/lib/ai/client';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buildAlternates } from '@/lib/seo/alternates';
+import { HTML_LANG, toLocale, type Locale } from '@/i18n/locales';
+import { cardName as getCardName, cardKeywords as getCardKeywords } from '@/lib/tarot/localized';
 
 export const revalidate = 86400; // ISR: regenerate once per day
 
-const DAILY_SYSTEM_PROMPT_EN = `You are a wise and warm tarot reader. Provide today's daily card interpretation.
+const DAILY_SYSTEM_PROMPT: Record<Locale, string> = {
+  en: `You are a wise and warm tarot reader. Provide today's daily card interpretation.
 Write 100-150 words covering:
 1. The card's core energy for today
 2. Practical guidance for the reader
 3. An uplifting closing thought
 
 Be warm, specific, and conversational. Avoid generic platitudes. Write as if speaking directly to someone starting their day.
-Do NOT use markdown formatting — no #, ##, **, or * symbols. Write in plain text only.`;
-
-const DAILY_SYSTEM_PROMPT_FA = `شما یک فالگیر خردمند و مهربان تاروت هستید. تفسیر کارت روز را ارائه دهید.
+Do NOT use markdown formatting — no #, ##, **, or * symbols. Write in plain text only.`,
+  fa: `شما یک فالگیر خردمند و مهربان تاروت هستید. تفسیر کارت روز را ارائه دهید.
 ۱۰۰ تا ۱۵۰ کلمه بنویسید که شامل:
 ۱. انرژی اصلی کارت برای امروز
 ۲. راهنمایی عملی برای خواننده
 ۳. یک فکر امیدبخش در پایان
 
 به فارسی روان بنویسید. گرم، خاص و مکالمه‌ای باشید. از کلیشه‌ها پرهیز کنید. طوری بنویسید که انگار مستقیماً با کسی صحبت می‌کنید که روز خود را آغاز می‌کند.
-از قالب‌بندی مارک‌داون استفاده نکنید — بدون #، ##، ** یا *. فقط متن ساده بنویسید.`;
+از قالب‌بندی مارک‌داون استفاده نکنید — بدون #، ##، ** یا *. فقط متن ساده بنویسید.`,
+  ar: `أنت قارئ تاروت حكيم ودافئ. قدّم تفسير بطاقة اليوم.
+اكتب من 100 إلى 150 كلمة تتناول:
+1. طاقة البطاقة الجوهرية لهذا اليوم
+2. إرشاداً عملياً للقارئ
+3. خاتمة تبعث على الأمل
+
+اكتب بعربية فصحى سليمة وسهلة. كن دافئاً ومحدداً وقريباً من روح الحديث. تجنّب العبارات العامة المحفوظة. اكتب كأنك تخاطب شخصاً يبدأ يومه الآن.
+لا تستخدم تنسيق ماركداون — بلا #، ##، ** أو *. اكتب نصاً عادياً فقط.`,
+};
+
+const DAILY_USER_MESSAGE: Record<Locale, (cardName: string, keywords: string[]) => string> = {
+  en: (cardName, keywords) =>
+    `Today's daily card is: ${cardName}\nKeywords: ${keywords.join(', ')}\n\nProvide today's daily tarot card interpretation.`,
+  fa: (cardName, keywords) =>
+    `کارت تاروت امروز: ${cardName}\nکلمات کلیدی: ${keywords.join('، ')}\n\nتفسیر کارت تاروت امروز را ارائه دهید.`,
+  ar: (cardName, keywords) =>
+    `بطاقة التاروت لهذا اليوم: ${cardName}\nالكلمات المفتاحية: ${keywords.join('، ')}\n\nقدّم تفسير بطاقة التاروت لهذا اليوم.`,
+};
+
+/**
+ * Keyword-list separator per locale, mirroring KEYWORD_JOIN in prompts.ts.
+ * The meta description's keyword list is user-visible in the SERP snippet, so
+ * Arabic and Farsi need U+060C rather than a Latin comma.
+ */
+const KEYWORD_JOIN: Record<Locale, string> = {
+  en: ', ',
+  fa: '، ',
+  ar: '، ',
+};
 
 /** Strip markdown formatting from AI output */
 function stripMarkdown(text: string): string {
@@ -37,37 +69,30 @@ function stripMarkdown(text: string): string {
     .trim();
 }
 
-async function getDailyInterpretation(cardName: string, keywords: string[], locale: string): Promise<string> {
-  const isFA = locale === 'fa';
-  const systemPrompt = isFA ? DAILY_SYSTEM_PROMPT_FA : DAILY_SYSTEM_PROMPT_EN;
-  const userMessage = isFA
-    ? `کارت تاروت امروز: ${cardName}\nکلمات کلیدی: ${keywords.join('، ')}\n\nتفسیر کارت تاروت امروز را ارائه دهید.`
-    : `Today's daily card is: ${cardName}\nKeywords: ${keywords.join(', ')}\n\nProvide today's daily tarot card interpretation.`;
+async function getDailyInterpretation(cardName: string, keywords: string[], locale: Locale): Promise<string> {
+  const systemPrompt = DAILY_SYSTEM_PROMPT[locale];
+  const userMessage = DAILY_USER_MESSAGE[locale](cardName, keywords);
   return generateCompletion(systemPrompt, userMessage, 300);
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   setRequestLocale(locale);
-  const isFA = locale === 'fa';
+  const t = await getTranslations('daily');
+  const current = toLocale(locale);
   const dateStr = getTodayDateStr();
   const card = getDailyCard(dateStr);
-  const cardName = isFA ? card.nameFA : card.name;
-  const today = new Date().toLocaleDateString(isFA ? 'fa-IR' : 'en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const cardName = getCardName(card, current);
+  const keywords = getCardKeywords(card, current).slice(0, 3).join(KEYWORD_JOIN[current]);
+  const today = new Date().toLocaleDateString(HTML_LANG[current], { month: 'long', day: 'numeric', year: 'numeric' });
 
   return {
-    title: isFA
-      ? `فال تاروت روزانه — ${cardName} — ${today}`
-      : `Daily Tarot Card — ${today} — ${card.name}`,
-    description: isFA
-      ? `فال تاروت روزانه: کارت امروز ${cardName} است. ببینید فال تاروت چه پیامی برای روز شما دارد.`
-      : `Today's tarot card is ${card.name}. Discover what this card means for your day with our free daily tarot reading. Keywords: ${card.keywords.slice(0, 3).join(', ')}.`,
+    title: t('metaTitle', { today, card: cardName }),
+    description: t('metaDescription', { card: cardName, keywords }),
     alternates: buildAlternates('/daily', locale),
     openGraph: {
-      title: isFA ? `فال تاروت روزانه: ${cardName} — ${today}` : `Daily Tarot: ${card.name} — ${today}`,
-      description: isFA
-        ? `فال تاروت روزانه: کارت امروز ${cardName} است. ببینید تاروت چه پیامی برای شما دارد.`
-        : `Today's card is ${card.name}. See what the tarot has in store for you today.`,
+      title: t('ogTitle', { card: cardName, today }),
+      description: t('ogDescription', { card: cardName }),
       type: 'article',
     },
   };
@@ -79,19 +104,19 @@ export default async function DailyPage({ params }: { params: Promise<{ locale: 
   const t = await getTranslations('daily');
   const tc = await getTranslations('common');
 
-  const isFA = locale === 'fa';
+  const current = toLocale(locale);
   const dateStr = getTodayDateStr();
   const card = getDailyCard(dateStr);
-  const cardName = isFA ? card.nameFA : card.name;
-  const cardKeywords = isFA ? card.keywordsFA : card.keywords;
-  const today = new Date().toLocaleDateString(isFA ? 'fa-IR' : 'en-US', {
+  const cardName = getCardName(card, current);
+  const cardKeywords = getCardKeywords(card, current);
+  const today = new Date().toLocaleDateString(HTML_LANG[current], {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 
-  const rawInterpretation = await getDailyInterpretation(cardName, cardKeywords, locale);
+  const rawInterpretation = await getDailyInterpretation(cardName, cardKeywords, current);
   const interpretation = stripMarkdown(rawInterpretation);
 
   return (
@@ -166,12 +191,13 @@ export default async function DailyPage({ params }: { params: Promise<{ locale: 
 
       {/* Learn more link */}
       <div className="text-center mt-12">
-        <Link
-          href={`/tarot-card-meanings/${card.name.toLowerCase().replace(/\s+/g, '-')}`}
-          className="text-sm text-gray-500 hover:text-amber-400 transition-colors"
+        <CardMeaningLink
+          slug={card.name.toLowerCase().replace(/\s+/g, '-')}
+          className="text-sm text-gray-500"
+          linkClassName="hover:text-amber-400 transition-colors"
         >
           {tc('learnMore')} {cardName} &rarr;
-        </Link>
+        </CardMeaningLink>
       </div>
     </div>
   );

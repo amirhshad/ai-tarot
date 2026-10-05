@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
-import { Inter, Cinzel, Vazirmatn } from 'next/font/google';
-import { NextIntlClientProvider, hasLocale } from 'next-intl';
+import { Inter, Cinzel, Vazirmatn, Amiri, Noto_Naskh_Arabic } from 'next/font/google';
+import { hasLocale } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import PostHogProvider from '@/components/analytics/PostHogProvider';
+import IntlProvider from '@/components/i18n/IntlProvider';
+import { toLocale, isRtl, brandForTitle, type Locale } from '@/i18n/locales';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,6 +25,21 @@ const vazirmatn = Vazirmatn({
   display: 'swap',
 });
 
+/** Display face for Arabic — Cinzel has no Arabic glyphs. */
+const amiri = Amiri({
+  subsets: ['arabic'],
+  weight: ['400', '700'],
+  variable: '--font-amiri',
+  display: 'swap',
+});
+
+/** Body face for Arabic. Vazirmatn is Persian-optimised and stays on /fa. */
+const notoNaskhArabic = Noto_Naskh_Arabic({
+  subsets: ['arabic'],
+  variable: '--font-noto-naskh',
+  display: 'swap',
+});
+
 const siteUrl = 'https://www.tarotveil.com';
 
 export function generateStaticParams() {
@@ -31,22 +48,63 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  const isFa = locale === 'fa';
+  const current = toLocale(locale);
+
+  const titles: Record<Locale, string> = {
+    en: 'TarotVeil — AI-Powered Tarot Readings That Tell Your Story',
+    fa: 'تاروت‌ویل — فال تاروت آنلاین با تفسیر روایی هوش مصنوعی',
+    ar: 'TarotVeil — قراءة التاروت بالذكاء الاصطناعي تحكي حكايتك',
+  };
+
+  const shortTitles: Record<Locale, string> = {
+    en: 'TarotVeil — AI-Powered Tarot Readings',
+    fa: 'تاروت‌ویل — فال تاروت با هوش مصنوعی',
+    ar: 'TarotVeil — تاروت بالذكاء الاصطناعي',
+  };
+
+  const descriptions: Record<Locale, string> = {
+    en: 'AI-powered tarot readings that weave your cards into one narrative story. Crypto-random draws, follow-up conversations, and multi-language support.',
+    fa: 'فال تاروت آنلاین رایگان با تفسیر روایی هوش مصنوعی. کشیدن کارت تصادفی رمزنگاری شده، سؤالات بعدی و پشتیبانی چند زبانه.',
+    ar: 'قراءة تاروت بالذكاء الاصطناعي تنسج بطاقاتك في حكاية واحدة. سحبٌ عشوائي مُعمّى، وأسئلة متابعة، ودعم لعدة لغات.',
+  };
+
+  const ogDescriptions: Record<Locale, string> = {
+    en: 'AI-powered narrative tarot readings with conversational depth. Crypto-random cards, multi-language support. Start your free reading today.',
+    fa: 'فال تاروت آنلاین رایگان با تفسیر روایی هوش مصنوعی. کارت‌ها را بکشید و داستان خود را کشف کنید.',
+    ar: 'قراءة تاروت روائية بالذكاء الاصطناعي. سحبٌ عشوائي مُعمّى ودعم لعدة لغات. ابدأ قراءتك المجانية الآن.',
+  };
+
+  const twitterDescriptions: Record<Locale, string> = {
+    en: 'Narrative tarot readings powered by AI. Not generic card meanings — a story woven from your entire spread.',
+    fa: 'فال تاروت روایی با هوش مصنوعی. نه معانی جداگانه — داستانی از کل کارت‌های شما.',
+    ar: 'قراءة تاروت روائية بالذكاء الاصطناعي. ليست معاني منفصلة بل حكاية واحدة تنسجها كل بطاقاتك.',
+  };
+
+  const keywords: Record<Locale, string[]> = {
+    en: ['tarot reading', 'AI tarot', 'online tarot', 'tarot card reading', 'free tarot reading', 'narrative tarot', 'tarot spread', 'three card tarot', 'celtic cross tarot', 'tarot interpretation'],
+    fa: ['فال تاروت', 'فال تاروت آنلاین', 'فال تاروت رایگان', 'معنی کارت تاروت', 'تاروت با هوش مصنوعی', 'فال تاروت عشق', 'فال تاروت بله یا خیر', 'تاروت روزانه', 'fal tarot', 'tarot farsi'],
+    ar: ['قراءة التاروت', 'تاروت مجاني', 'قراءة التاروت أونلاين', 'معاني بطاقات التاروت', 'تاروت بالذكاء الاصطناعي', 'تاروت الحب', 'تاروت نعم أو لا', 'تاروت يومي', 'انتشار التاروت', 'تفسير التاروت'],
+  };
+
+  const openGraphLocales: Record<Locale, string> = {
+    en: 'en_US',
+    fa: 'fa_IR',
+    ar: 'ar_AR',
+  };
+
+  const pageUrl = current === 'en' ? siteUrl : `${siteUrl}/${current}`;
 
   return {
     metadataBase: new URL(siteUrl),
     title: {
-      default: isFa
-        ? 'تاروت‌ویل — فال تاروت آنلاین با تفسیر روایی هوش مصنوعی'
-        : 'TarotVeil — AI-Powered Tarot Readings That Tell Your Story',
-      template: isFa ? '%s | تاروت‌ویل' : '%s | TarotVeil',
+      default: titles[current],
+      // The Latin wordmark is bidi-isolated so the separator does not jump in
+      // RTL rendering; Farsi's brand is already RTL script and is left
+      // byte-identical (see brandForTitle).
+      template: `%s | ${brandForTitle(current)}`,
     },
-    description: isFa
-      ? 'فال تاروت آنلاین رایگان با تفسیر روایی هوش مصنوعی. کشیدن کارت تصادفی رمزنگاری شده، سؤالات بعدی و پشتیبانی چند زبانه.'
-      : 'AI-powered tarot readings that weave your cards into one narrative story. Crypto-random draws, follow-up conversations, and multi-language support.',
-    keywords: isFa
-      ? ['فال تاروت', 'فال تاروت آنلاین', 'فال تاروت رایگان', 'معنی کارت تاروت', 'تاروت با هوش مصنوعی', 'فال تاروت عشق', 'فال تاروت بله یا خیر', 'تاروت روزانه', 'fal tarot', 'tarot farsi']
-      : ['tarot reading', 'AI tarot', 'online tarot', 'tarot card reading', 'free tarot reading', 'narrative tarot', 'tarot spread', 'three card tarot', 'celtic cross tarot', 'tarot interpretation'],
+    description: descriptions[current],
+    keywords: keywords[current],
     authors: [{ name: 'TarotVeil' }],
     creator: 'TarotVeil',
     publisher: 'TarotVeil',
@@ -63,24 +121,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     },
     openGraph: {
       type: 'website',
-      locale: isFa ? 'fa_IR' : 'en_US',
-      url: isFa ? `${siteUrl}/fa` : siteUrl,
+      locale: openGraphLocales[current],
+      url: pageUrl,
       siteName: 'TarotVeil',
-      title: isFa
-        ? 'تاروت‌ویل — فال تاروت آنلاین با تفسیر روایی هوش مصنوعی'
-        : 'TarotVeil — AI-Powered Tarot Readings That Tell Your Story',
-      description: isFa
-        ? 'فال تاروت آنلاین رایگان با تفسیر روایی هوش مصنوعی. کارت‌ها را بکشید و داستان خود را کشف کنید.'
-        : 'AI-powered narrative tarot readings with conversational depth. Crypto-random cards, multi-language support. Start your free reading today.',
+      title: titles[current],
+      description: ogDescriptions[current],
     },
     twitter: {
       card: 'summary_large_image',
-      title: isFa
-        ? 'تاروت‌ویل — فال تاروت با هوش مصنوعی'
-        : 'TarotVeil — AI-Powered Tarot Readings',
-      description: isFa
-        ? 'فال تاروت روایی با هوش مصنوعی. نه معانی جداگانه — داستانی از کل کارت‌های شما.'
-        : 'Narrative tarot readings powered by AI. Not generic card meanings — a story woven from your entire spread.',
+      title: shortTitles[current],
+      description: twitterDescriptions[current],
     },
     category: 'entertainment',
   };
@@ -88,7 +138,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 /** JSON-LD structured data — locale-aware */
 function buildJsonLd(locale: string) {
-  const pageUrl = locale === 'fa' ? `${siteUrl}/fa` : siteUrl;
+  const current = toLocale(locale);
+  const pageUrl = current === 'en' ? siteUrl : `${siteUrl}/${current}`;
+
+  const siteDescriptions: Record<Locale, string> = {
+    en: 'AI-powered narrative tarot readings with conversational depth.',
+    fa: 'فال تاروت آنلاین با تفسیر روایی هوش مصنوعی — داستانی از کل کارت‌های شما.',
+    ar: 'قراءة تاروت روائية بالذكاء الاصطناعي — حكاية تنسجها بطاقاتك كلّها.',
+  };
+
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -97,11 +155,9 @@ function buildJsonLd(locale: string) {
         '@id': `${siteUrl}/#website`,
         url: pageUrl,
         name: 'TarotVeil',
-        description: locale === 'fa'
-          ? 'فال تاروت آنلاین با تفسیر روایی هوش مصنوعی — داستانی از کل کارت‌های شما.'
-          : 'AI-powered narrative tarot readings with conversational depth.',
+        description: siteDescriptions[current],
         publisher: { '@id': `${siteUrl}/#organization` },
-        inLanguage: locale,
+        inLanguage: current,
       },
       {
         '@type': 'Organization',
@@ -163,11 +219,20 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const messages = await getMessages();
-  const dir = locale === 'fa' ? 'rtl' : 'ltr';
-  const fontClasses = `${inter.variable} ${cinzel.variable} ${locale === 'fa' ? vazirmatn.variable : ''}`;
+  const current = toLocale(locale);
+  const dir = isRtl(current) ? 'rtl' : 'ltr';
+
+  // Per-locale font loading: /ar must not ship Vazirmatn and /fa must not ship
+  // Amiri or Noto Naskh.
+  const localeFonts: Record<Locale, string> = {
+    en: '',
+    fa: vazirmatn.variable,
+    ar: `${amiri.variable} ${notoNaskhArabic.variable}`,
+  };
+  const fontClasses = `${inter.variable} ${cinzel.variable} ${localeFonts[current]}`;
 
   return (
-    <html lang={locale} dir={dir} className="dark">
+    <html lang={current} dir={dir} className="dark">
       <head>
         <script
           type="application/ld+json"
@@ -175,11 +240,11 @@ export default async function LocaleLayout({
         />
       </head>
       <body className={`${fontClasses} antialiased min-h-screen flex flex-col`}>
-        <NextIntlClientProvider messages={messages}>
+        <IntlProvider locale={locale} messages={messages}>
           <PostHogProvider>
             {children}
           </PostHogProvider>
-        </NextIntlClientProvider>
+        </IntlProvider>
       </body>
     </html>
   );

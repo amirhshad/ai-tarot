@@ -1,11 +1,14 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { INCLUDED_FOLLOW_UPS, FOLLOW_UP_COST } from '@/lib/credits/config';
 import { PAYMENTS_ENABLED } from '@/lib/config/features';
 import { DECK } from '@/lib/tarot/deck';
 import { TarotCard } from '@/lib/tarot/types';
+import { cardName, cardKeywords } from '@/lib/tarot/localized';
 import Image from 'next/image';
+import type { Locale } from '@/i18n/locales';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -17,7 +20,7 @@ interface FollowUpChatProps {
   readingId: string;
   tier: string;
   existingMessages?: Message[];
-  language?: 'en' | 'fa';
+  language?: Locale;
   /** Current credit balance; null for signed-out or unknown. */
   credits?: number | null;
 }
@@ -61,7 +64,7 @@ export default function FollowUpChat({
     tier !== 'free' && (!nextCostsCredits || (localCredits ?? 0) >= FOLLOW_UP_COST);
   const remaining = includedLeft;
 
-  const en = language === 'en';
+  const t = useTranslations('reading');
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -122,7 +125,7 @@ export default function FollowUpChat({
     } catch {
       setMessages(prev => [
         ...prev,
-        { role: 'assistant', content: en ? 'Something went wrong. Please try again.' : 'مشکلی پیش آمد. لطفاً دوباره تلاش کنید.' },
+        { role: 'assistant', content: t('chat.error') },
       ]);
     } finally {
       setIsLoading(false);
@@ -160,19 +163,13 @@ export default function FollowUpChat({
     if (!drawnExtraCard || isLoading) return;
 
     const card = drawnExtraCard.card;
-    const cardName = en ? card.name : card.nameFA;
-    const orientation = drawnExtraCard.reversed
-      ? (en ? 'Reversed' : 'معکوس')
-      : (en ? 'Upright' : 'ایستاده');
+    const extraCardName = cardName(card, language);
+    const orientation = t(drawnExtraCard.reversed ? 'reversed' : 'upright');
 
     const question = extraCardQuestion.trim();
     const userContent = question
-      ? (en
-          ? `I drew an extra card: ${cardName} (${orientation}). My question: ${question}`
-          : `من یک کارت اضافی کشیدم: ${cardName} (${orientation}). سؤال من: ${question}`)
-      : (en
-          ? `I drew an extra card for deeper insight: ${cardName} (${orientation}). How does this card add to or change the reading?`
-          : `من یک کارت اضافی برای بینش عمیق‌تر کشیدم: ${cardName} (${orientation}). این کارت چگونه به خوانش اضافه می‌کند یا آن را تغییر می‌دهد؟`);
+      ? t('chat.extraCardWithQuestion', { card: extraCardName, orientation, question })
+      : t('chat.extraCardNoQuestion', { card: extraCardName, orientation });
 
     const extraCardData = { cardId: card.id, reversed: drawnExtraCard.reversed };
     const chargesCredit = nextCostsCredits;
@@ -232,13 +229,13 @@ export default function FollowUpChat({
       {showExtraCardInput && !drawnExtraCard && (
         <div className="p-4 rounded-xl bg-white/[0.04] border border-amber-500/30 space-y-3">
           <p className="text-sm text-amber-400 font-medium text-center">
-            {en ? 'What would you like the extra card to answer?' : 'می‌خواهید کارت اضافی به چه سؤالی پاسخ دهد؟'}
+            {t('chat.extraCardPrompt')}
           </p>
           <input
             type="text"
             value={extraCardQuestion}
             onChange={e => setExtraCardQuestion(e.target.value)}
-            placeholder={en ? 'e.g. What should I focus on next? (optional)' : 'مثلاً: روی چه چیزی تمرکز کنم؟ (اختیاری)'}
+            placeholder={t('chat.extraCardPlaceholder')}
             className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-400/50"
             onKeyDown={e => { if (e.key === 'Enter') handleConfirmDrawExtraCard(); }}
           />
@@ -247,14 +244,14 @@ export default function FollowUpChat({
               onClick={handleCancelExtraCard}
               className="px-4 py-2 border border-white/15 text-gray-400 rounded-xl text-sm hover:border-white/30 transition-colors"
             >
-              {en ? 'Cancel' : 'لغو'}
+              {t('chat.cancel')}
             </button>
             <button
               onClick={handleConfirmDrawExtraCard}
               className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-xl text-sm transition-colors flex items-center gap-2"
             >
               <span className="text-lg">&#9813;</span>
-              {en ? 'Draw Card' : 'کشیدن کارت'}
+              {t('chat.drawCard')}
             </button>
           </div>
         </div>
@@ -264,7 +261,7 @@ export default function FollowUpChat({
       {drawnExtraCard && (
         <div className="p-4 rounded-xl bg-white/[0.04] border border-amber-500/30 space-y-4">
           <p className="text-sm text-amber-400 font-medium text-center">
-            {en ? 'Your Extra Card' : 'کارت اضافی شما'}
+            {t('chat.yourExtraCard')}
           </p>
           <div className="flex justify-center">
             <div
@@ -292,15 +289,15 @@ export default function FollowUpChat({
           {isCardRevealed && (
             <div className="text-center">
               <p className="text-white text-sm font-medium">
-                {en ? drawnExtraCard.card.name : drawnExtraCard.card.nameFA}
+                {cardName(drawnExtraCard.card, language)}
                 {drawnExtraCard.reversed && (
                   <span className="text-red-400 text-xs ml-1">
-                    ({en ? 'Reversed' : 'معکوس'})
+                    ({t('reversed')})
                   </span>
                 )}
               </p>
               <p className="text-gray-400 text-sm mt-1">
-                {(en ? drawnExtraCard.card.keywords : drawnExtraCard.card.keywordsFA).join(en ? ', ' : '، ')}
+                {cardKeywords(drawnExtraCard.card, language).join(t('chat.keywordSeparator'))}
               </p>
             </div>
           )}
@@ -310,14 +307,14 @@ export default function FollowUpChat({
               onClick={handleCancelExtraCard}
               className="px-4 py-2 border border-white/15 text-gray-400 rounded-xl text-sm hover:border-white/30 transition-colors"
             >
-              {en ? 'Cancel' : 'لغو'}
+              {t('chat.cancel')}
             </button>
             {!isCardRevealed ? (
               <button
                 onClick={handleRevealExtraCard}
                 className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-xl text-sm transition-colors"
               >
-                {en ? 'Reveal Card' : 'نمایش کارت'}
+                {t('chat.revealCard')}
               </button>
             ) : (
               <button
@@ -325,7 +322,7 @@ export default function FollowUpChat({
                 disabled={isLoading}
                 className="px-4 py-2 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-black font-medium rounded-xl text-sm transition-colors"
               >
-                {en ? 'Get Interpretation' : 'دریافت تفسیر'}
+                {t('chat.getInterpretation')}
               </button>
             )}
           </div>
@@ -340,7 +337,7 @@ export default function FollowUpChat({
               type="text"
               value={input}
               onChange={e => setInput(e.target.value)}
-              placeholder={en ? 'Ask a follow-up question...' : 'سؤال بعدی خود را بپرسید...'}
+              placeholder={t('askFollowUp')}
               className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-400/50"
               disabled={isLoading}
             />
@@ -349,7 +346,7 @@ export default function FollowUpChat({
               disabled={isLoading || !input.trim()}
               className="px-4 py-2 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 disabled:hover:bg-amber-500 text-black font-medium rounded-xl text-sm transition-colors"
             >
-              {en ? 'Ask' : 'بپرس'}
+              {t('ask')}
             </button>
           </form>
 
@@ -359,21 +356,15 @@ export default function FollowUpChat({
             className="w-full px-4 py-2.5 border border-dashed border-amber-500/40 text-amber-400 rounded-xl text-sm hover:bg-amber-500/10 hover:border-amber-500/60 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
           >
             <span className="text-lg">&#9813;</span>
-            {en ? 'Draw an Extra Card' : 'کشیدن کارت اضافی'}
+            {t('chat.drawExtraCard')}
           </button>
         </div>
       ) : !drawnExtraCard ? (
         <div className="text-center py-5 px-4 bg-gradient-to-b from-amber-900/10 to-white/[0.02] rounded-xl border border-amber-500/20 space-y-4">
           <p className="text-sm text-gray-300">
             {tier === 'free'
-              ? (en
-                  ? (PAYMENTS_ENABLED
-                      ? 'Follow-up questions are available with Pro. Upgrade to explore your reading deeper.'
-                      : 'Follow-up questions are available to members.')
-                  : 'سؤالات بعدی با اشتراک حرفه‌ای فعال می‌شوند.')
-              : (en
-                  ? 'You don\'t have enough credits for another follow-up.'
-                  : 'اعتبار کافی برای سؤال بعدی ندارید.')}
+              ? t(PAYMENTS_ENABLED ? 'upgradeFollowUp' : 'followUpMembersOnly')
+              : t('notEnoughCreditsFollowUp')}
           </p>
           {tier === 'free' && PAYMENTS_ENABLED && (
             <div className="flex flex-col sm:flex-row gap-2 justify-center">
@@ -382,14 +373,14 @@ export default function FollowUpChat({
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-xl text-sm transition-colors"
               >
                 <span>&#9733;</span>
-                {en ? 'Upgrade to Pro — $8.99/mo' : 'ارتقا به حرفه‌ای — ۸.۹۹$/ماه'}
+                {t('upgradeProPrice')}
               </a>
               <a
                 href="/billing"
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-purple-500/30 text-purple-300 hover:bg-purple-500/10 rounded-xl text-sm transition-colors"
               >
                 <span>&#10023;</span>
-                {en ? 'Go Premium — $19.99/mo' : 'ویژه — ۱۹.۹۹$/ماه'}
+                {t('goPremiumPrice')}
               </a>
             </div>
           )}
@@ -400,12 +391,8 @@ export default function FollowUpChat({
       {tier !== 'free' && (
         <p className="text-sm text-gray-400 text-center">
           {remaining > 0
-            ? (en
-                ? `${remaining} of ${INCLUDED_FOLLOW_UPS} included follow-ups remaining`
-                : `${remaining} از ${INCLUDED_FOLLOW_UPS} سؤال رایگان باقی‌مانده`)
-            : (en
-                ? `Next follow-up costs ${FOLLOW_UP_COST} credit`
-                : `سؤال بعدی ${FOLLOW_UP_COST} اعتبار هزینه دارد`)}
+            ? t('remaining', { remaining: String(remaining), limit: String(INCLUDED_FOLLOW_UPS) })
+            : t('nextFollowUpCost', { cost: String(FOLLOW_UP_COST) })}
         </p>
       )}
     </div>
@@ -413,19 +400,20 @@ export default function FollowUpChat({
 }
 
 /** Small inline badge showing the extra card in a message */
-function ExtraCardBadge({ cardId, reversed, language }: { cardId: number; reversed: boolean; language: string }) {
+function ExtraCardBadge({ cardId, reversed, language }: { cardId: number; reversed: boolean; language: Locale }) {
+  // Before the early return: a hook must not sit behind a conditional.
+  const t = useTranslations('reading');
   const card = DECK.find(c => c.id === cardId);
   if (!card) return null;
 
-  const en = language === 'en';
   return (
     <div className="flex items-center gap-2 mb-2 pb-2 border-b border-white/20">
       <div className={`relative w-8 h-12 rounded overflow-hidden flex-shrink-0 ${reversed ? 'rotate-180' : ''}`}>
         <Image src={card.image} alt={card.name} fill className="object-contain" sizes="32px" />
       </div>
       <span className="text-xs opacity-80">
-        {en ? card.name : card.nameFA}
-        {reversed && ` (${en ? 'Reversed' : 'معکوس'})`}
+        {cardName(card, language)}
+        {reversed && ` (${t('reversed')})`}
       </span>
     </div>
   );

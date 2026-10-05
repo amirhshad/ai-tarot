@@ -7,7 +7,8 @@ import { DECK } from '@/lib/tarot/deck';
 import { cardToSlug } from '@/lib/tarot/slugs';
 import { buildCardJsonLd } from '@/lib/seo/json-ld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { buildAlternates } from '@/lib/seo/alternates';
+import { assertCardContentLocale, buildAlternates, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
+import { toLocale } from '@/i18n/locales';
 import Disclaimer from '@/components/seo/Disclaimer';
 import { getPinglishVariants } from '@/lib/seo/pinglish';
 import { getFarsiVariants } from '@/lib/tarot/farsi-names';
@@ -22,7 +23,16 @@ type FallbackCard = {
 };
 const fallbackContent = cardContentJson as Record<string, FallbackCard>;
 
-export async function generateStaticParams() {
+/**
+ * Prerender the 78 card slugs per locale — but only for locales that have card
+ * content. Emitting Arabic here would have Next prerender 78 pages that
+ * immediately `notFound()`.
+ *
+ * Next calls this once per `{ locale }` produced by the `[locale]` layout, so
+ * returning an empty list for `ar` drops that whole branch.
+ */
+export async function generateStaticParams({ params }: { params: { locale: string } }) {
+  if (!CARD_CONTENT_LOCALES.includes(toLocale(params.locale))) return [];
   try {
     const slugs = await getAllCardSlugsFromDb();
     if (slugs.length > 0) return slugs.map(slug => ({ slug }));
@@ -40,7 +50,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   setRequestLocale(locale);
   const card = await getCardContent(slug, locale);
   if (card) {
-    const alternates = buildAlternates(`/tarot-card-meanings/${card.slug}`, locale);
+    const alternates = buildAlternates(`/tarot-card-meanings/${card.slug}`, locale, {
+      locales: CARD_CONTENT_LOCALES,
+    });
     return {
       // Opt out of the layout's '%s | brand' template: card names push these
       // titles past the ~60-char SERP cut, and the suffix is the least useful
@@ -73,7 +85,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const article = /^the /i.test(fb.name) ? '' : 'the ';
   const title = `${fb.name} Tarot Meaning — Upright & Reversed`;
   const description = `What does ${article}${fb.name} mean? Upright & reversed meanings for love, career, feelings, and yes-or-no readings. Free AI tarot reading included.`;
-  const alternates = buildAlternates(`/tarot-card-meanings/${fb.slug}`, locale);
+  const alternates = buildAlternates(`/tarot-card-meanings/${fb.slug}`, locale, {
+    locales: CARD_CONTENT_LOCALES,
+  });
   return {
     title,
     description,
@@ -128,6 +142,13 @@ function Paragraphs({ text }: { text: string }) {
 
 export default async function CardMeaningPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params;
+
+  // Arabic card content lands in Phase 2. `getCardContent` falls back to the
+  // English columns when a locale's columns are empty, so without this gate
+  // /ar/tarot-card-meanings/<slug> would serve English card text under an
+  // Arabic URL — duplicate content in the ar namespace.
+  assertCardContentLocale(locale);
+
   setRequestLocale(locale);
   const t = await getTranslations('cardDetail');
   const tc = await getTranslations('common');
@@ -138,7 +159,10 @@ export default async function CardMeaningPage({ params }: { params: Promise<{ sl
   // If no DB content, render fallback from JSON
   if (!card) {
     const fb = fallbackContent[slug];
-    if (!fb || !deckCard) redirect(locale === 'fa' ? '/fa/tarot-card-meanings' : '/tarot-card-meanings');
+    if (!fb || !deckCard) {
+      const current = toLocale(locale);
+      redirect(current === 'en' ? '/tarot-card-meanings' : `/${current}/tarot-card-meanings`);
+    }
     return <FallbackCardPage card={fb} deckCard={deckCard} t={t} tc={tc} />;
   }
 

@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import CardMeaningLink from '@/components/seo/CardMeaningLink';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buildAlternates } from '@/lib/seo/alternates';
 
@@ -237,12 +238,12 @@ export default async function SingleCardSpreadPage({ params }: { params: Promise
                   {t('sampleCardDrawn')}
                 </p>
                 <p className="font-display text-lg font-semibold text-white">
-                  <Link
-                    href="/tarot-card-meanings/the-star"
-                    className="hover:text-gold-400 transition-colors"
+                  <CardMeaningLink
+                    slug="the-star"
+                    linkClassName="hover:text-gold-400 transition-colors"
                   >
                     {t('sampleCardName')}
-                  </Link>{' '}
+                  </CardMeaningLink>{' '}
                   <span className="text-stone-500 font-normal">&middot; {t('sampleUpright')}</span>
                 </p>
               </div>
@@ -307,12 +308,12 @@ export default async function SingleCardSpreadPage({ params }: { params: Promise
           <p className="font-body text-sm font-medium text-stone-400 mb-4">
             {t('learnDesc')}
           </p>
-          <Link
-            href="/tarot-card-meanings"
-            className="text-sm text-gold-400 hover:text-gold-300 transition-colors font-medium"
+          <CardMeaningLink
+            className="text-sm font-medium"
+            linkClassName="text-gold-400 hover:text-gold-300 transition-colors"
           >
             {t('learnLink')}
-          </Link>
+          </CardMeaningLink>
         </section>
 
         {/* Bottom CTA */}

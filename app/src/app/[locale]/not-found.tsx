@@ -1,4 +1,5 @@
 import { Link } from '@/i18n/navigation';
+import CardMeaningLink from '@/components/seo/CardMeaningLink';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { getTranslations } from 'next-intl/server';
@@ -35,9 +36,9 @@ export default async function NotFound() {
             </Link>
           </div>
           <div className="mt-8 flex flex-wrap gap-4 justify-center text-sm">
-            <Link href="/tarot-card-meanings" className="text-stone-500 hover:text-gold-400 transition-colors">
+            <CardMeaningLink className="text-stone-500" linkClassName="hover:text-gold-400 transition-colors">
               {tn('cardMeanings')}
-            </Link>
+            </CardMeaningLink>
             <Link href="/spreads" className="text-stone-500 hover:text-gold-400 transition-colors">
               {tn('spreads')}
             </Link>

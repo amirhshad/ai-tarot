@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import CardMeaningLink from '@/components/seo/CardMeaningLink';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buildAlternates } from '@/lib/seo/alternates';
 
@@ -219,10 +220,11 @@ export default async function LoveTarotPage({ params }: { params: Promise<{ loca
           </p>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
             {loveCards.map((card) => (
-              <Link
+              <CardMeaningLink
                 key={card.slug}
-                href={`/tarot-card-meanings/${card.slug}`}
-                className="group text-center"
+                slug={card.slug}
+                className="text-center"
+                linkClassName="group"
               >
                 <div className="relative w-full aspect-[2/3] rounded overflow-hidden border border-gold-400/10 group-hover:border-gold-400/30 transition-all mb-2">
                   <Image
@@ -236,7 +238,7 @@ export default async function LoveTarotPage({ params }: { params: Promise<{ loca
                 <p className="font-display text-[11px] text-stone-400 group-hover:text-gold-400 transition-colors leading-tight">
                   {card.name}
                 </p>
-              </Link>
+              </CardMeaningLink>
             ))}
           </div>
         </section>
@@ -345,9 +347,9 @@ export default async function LoveTarotPage({ params }: { params: Promise<{ loca
           </Link>
           <p className="mt-6 font-body text-sm text-stone-500">
             {t('exploreLink')}{' '}
-            <Link href="/tarot-card-meanings" className="text-gold-400/70 hover:text-gold-400 transition-colors underline underline-offset-2">
+            <CardMeaningLink linkClassName="text-gold-400/70 hover:text-gold-400 transition-colors underline underline-offset-2">
               {t('exploreLinkText')}
-            </Link>
+            </CardMeaningLink>
           </p>
         </section>
       </div>

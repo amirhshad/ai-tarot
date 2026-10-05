@@ -41,7 +41,7 @@ You are the orchestration layer (Layer 2) of a 3-layer system for the AI Tarot p
 | Database | Turso (libSQL / SQLite at the edge) |
 | Auth | Google OAuth (custom JWT session) |
 | Payments | Stripe Billing — **currently disabled**, see `directives/core-business-rules.md` |
-| i18n | next-intl — English, Farsi (RTL), Arabic |
+| i18n | next-intl — English, Farsi (RTL), Arabic (RTL) |
 | Analytics | PostHog |
 | Email | Resend + React Email |
 
@@ -77,6 +77,22 @@ Detailed specs live in `docs/` — read them when working in their domain:
 | `docs/architecture.md` | Touching API routes, infrastructure, or integration points |
 | `docs/database.md` | Writing migrations or querying Turso |
 | `docs/project-map.md` | Navigating the codebase for the first time |
+
+## Arabic is Phase 1 only
+
+The app shell, UI, and reading flow are Arabic. **Card-meaning pages are not** —
+Arabic card content needs ~16 `_ar` database columns and 78 cards of generated
+content, which is Phase 2.
+
+So `/ar/tarot-card-meanings/*` deliberately returns 404, is absent from the
+sitemap, advertises no `ar` hreflang, and has its nav and in-body links hidden.
+Without that gate those routes would render *English* card content under Arabic
+URLs, via the English fallback in `card-queries.ts` — duplicate content in the
+Arabic namespace on a site whose primary search channel is Bing.
+
+Arabic's exclusion is encoded in exactly one place: `CARD_CONTENT_LOCALES` in
+`app/src/lib/seo/alternates.ts`. Phase 2 adds `'ar'` to that constant and the
+routes, sitemap, hreflang, nav links and in-body links all come back together.
 
 ## Directives
 

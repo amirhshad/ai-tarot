@@ -1,13 +1,16 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { SpreadType } from '@/lib/tarot/types';
 import { SPREADS, getAvailableSpreads } from '@/lib/tarot/spreads';
+import { spreadName, spreadDescription } from '@/lib/tarot/localized';
+import type { Locale } from '@/i18n/locales';
 
 interface SpreadSelectorProps {
   tier: string;
   selectedSpread: SpreadType | null;
   onSelect: (type: SpreadType) => void;
-  language?: 'en' | 'fa';
+  language?: Locale;
   allowedSpreads?: SpreadType[];
 }
 
@@ -18,6 +21,7 @@ export default function SpreadSelector({
   language = 'en',
   allowedSpreads,
 }: SpreadSelectorProps) {
+  const t = useTranslations('reading');
   const allSpreads = Object.values(SPREADS);
   const available = getAvailableSpreads(tier);
   const availableTypes = new Set(available.map(s => s.type));
@@ -32,8 +36,8 @@ export default function SpreadSelector({
       {visibleSpreads.map((spread) => {
         const isAvailable = availableTypes.has(spread.type);
         const isSelected = selectedSpread === spread.type;
-        const name = language === 'en' ? spread.name : spread.nameFA;
-        const desc = language === 'en' ? spread.description : spread.descriptionFA;
+        const name = spreadName(spread, language);
+        const desc = spreadDescription(spread, language);
 
         return (
           <button
@@ -55,7 +59,7 @@ export default function SpreadSelector({
             <p className="text-sm text-gray-400">{desc}</p>
             {!isAvailable && (
               <p className="text-xs text-amber-400 mt-2">
-                {language === 'en' ? `Requires ${spread.minimumTier}` : `نیاز به ${spread.minimumTier}`}
+                {t('requiresTier', { tier: spread.minimumTier })}
               </p>
             )}
           </button>

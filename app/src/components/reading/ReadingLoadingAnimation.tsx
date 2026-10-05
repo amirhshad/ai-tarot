@@ -2,31 +2,41 @@
 
 import { useState, useEffect } from 'react';
 
-const MESSAGES_EN = [
-  'Sensing the energy of your cards...',
-  'Reading the connections between them...',
-  'Weaving your narrative...',
-  'The story is taking shape...',
-  'Almost ready to reveal your reading...',
-];
+import type { Locale } from '@/i18n/locales';
 
-const MESSAGES_FA = [
-  '...در حال حس کردن انرژی کارت‌های شما',
-  '...در حال خواندن ارتباط بین آن‌ها',
-  '...در حال بافتن روایت شما',
-  '...داستان شما در حال شکل‌گیری است',
-  '...تقریباً آماده است تا خوانش شما آشکار شود',
-];
+const MESSAGES: Record<Locale, string[]> = {
+  en: [
+    'Sensing the energy of your cards...',
+    'Reading the connections between them...',
+    'Weaving your narrative...',
+    'The story is taking shape...',
+    'Almost ready to reveal your reading...',
+  ],
+  fa: [
+    '...در حال حس کردن انرژی کارت‌های شما',
+    '...در حال خواندن ارتباط بین آن‌ها',
+    '...در حال بافتن روایت شما',
+    '...داستان شما در حال شکل‌گیری است',
+    '...تقریباً آماده است تا خوانش شما آشکار شود',
+  ],
+  ar: [
+    '...نتحسّس طاقة بطاقاتك',
+    '...نقرأ الروابط التي تجمعها',
+    '...ننسج حكايتك',
+    '...الحكاية تتشكّل الآن',
+    '...أوشكت قراءتك أن تتكشّف',
+  ],
+};
 
 interface ReadingLoadingAnimationProps {
   cardCount: number;
-  language: 'en' | 'fa';
+  language: Locale;
 }
 
 export default function ReadingLoadingAnimation({ cardCount, language }: ReadingLoadingAnimationProps) {
   const [messageIndex, setMessageIndex] = useState(0);
   const [messageFade, setMessageFade] = useState(true);
-  const messages = language === 'fa' ? MESSAGES_FA : MESSAGES_EN;
+  const messages = MESSAGES[language];
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>;
