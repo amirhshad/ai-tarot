@@ -475,7 +475,8 @@
     "subtitle": "Manage your profile and preferences.",
     "displayName": "Display Name",
     "language": "Language",
-    "saved": "Saved!"
+    "saved": "Saved!",
+    "saving": "Saving..."
   },
   "footer": {
     "disclaimer": "For entertainment purposes.",

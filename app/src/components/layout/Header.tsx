@@ -174,6 +174,21 @@ function LanguageSwitcher({
   onSwitch,
 }: {
   label: string;
+  /**
+   * Which logical edge the menu hangs from. Do not collapse this to a single
+   * value — the two trees anchor the trigger on opposite sides:
+   *
+   * - Desktop: the `<nav>` sits at the container's inline-end, so the trigger
+   *   is near the inline-end edge and an `end`-hung menu grows inward. Fits.
+   * - Mobile: the menu row starts at the inline-start, so the trigger is ~16px
+   *   from the inline-start edge. An `end`-hung menu grows *outward* and hangs
+   *   off the viewport — measured at 66px of a 128px menu clipped on `/ar` at
+   *   390px wide, and mirrored in English, where `end-0` resolves to `right:0`
+   *   and puts the menu at a negative x. Hence `start` for the mobile sites.
+   *
+   * Both values are logical, so each mirrors correctly between LTR and RTL;
+   * the difference here is where the trigger sits, not which script it is in.
+   */
   align?: 'start' | 'end';
   onSwitch?: () => void;
 }) {
