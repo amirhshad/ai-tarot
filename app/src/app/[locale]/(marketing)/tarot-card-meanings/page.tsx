@@ -1,11 +1,13 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { DECK } from '@/lib/tarot/deck';
 import { cardToSlug } from '@/lib/tarot/slugs';
 import { buildHubJsonLd } from '@/lib/seo/json-ld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { buildAlternates } from '@/lib/seo/alternates';
+import { buildAlternates, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
+import { BRAND, toLocale } from '@/i18n/locales';
 
 const siteUrl = 'https://www.tarotveil.com';
 
@@ -23,11 +25,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title,
     description,
-    alternates: buildAlternates('/tarot-card-meanings', locale),
+    alternates: buildAlternates('/tarot-card-meanings', locale, { locales: CARD_CONTENT_LOCALES }),
     openGraph: {
       // openGraph.title bypasses the layout's title template, so the brand is
       // appended here — in the locale's own script.
-      title: `${title} | ${locale === 'fa' ? 'تاروت‌ویل' : 'TarotVeil'}`,
+      title: `${title} | ${BRAND[toLocale(locale)]}`,
       description,
       url: `${siteUrl}/tarot-card-meanings`,
     },
@@ -101,6 +103,13 @@ function CardGrid({ cards }: { cards: { name: string; slug: string; image: strin
 
 export default async function TarotCardMeaningsHub({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+
+  // Arabic card content lands in Phase 2. Until then this route would render
+  // English card text under an /ar/ URL, which is duplicate content in the
+  // Arabic namespace — and this product's primary search channel already
+  // ranks these pages.
+  if (!CARD_CONTENT_LOCALES.includes(toLocale(locale))) notFound();
+
   setRequestLocale(locale);
 
   const t = await getTranslations('cardHub');

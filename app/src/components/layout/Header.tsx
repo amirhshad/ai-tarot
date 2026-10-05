@@ -6,6 +6,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { trackLanguageSwitch, resetUser } from '@/lib/analytics/events';
 import { PAYMENTS_ENABLED } from '@/lib/config/features';
 import { LOCALES, LOCALE_LABELS, toLocale, type Locale } from '@/i18n/locales';
+import { CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
 
 interface HeaderProps {
   user?: { email: string; tier: string } | null;
@@ -18,6 +19,11 @@ export default function Header({ user }: HeaderProps) {
   const tc = useTranslations('common');
   const [loggingOut, setLoggingOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const locale = toLocale(useLocale());
+
+  // Arabic card meanings land in Phase 2; those routes 404 for `ar` until
+  // then, and a visible link to a 404 is worse than an absent one.
+  const showCardMeanings = CARD_CONTENT_LOCALES.includes(locale);
 
   // With payments off, /billing is only useful to someone who already has a
   // subscription to manage — free users would land on a dead end.
@@ -60,7 +66,9 @@ export default function Header({ user }: HeaderProps) {
             <>
               <NavLink href="/dashboard" current={pathname} label={t('dashboard')} />
               <NavLink href="/reading/new" current={pathname} label={t('newReading')} />
-              <NavLink href="/tarot-card-meanings" current={pathname} label={t('cardMeanings')} />
+              {showCardMeanings && (
+                <NavLink href="/tarot-card-meanings" current={pathname} label={t('cardMeanings')} />
+              )}
               <NavLink href="/spreads" current={pathname} label={t('spreads')} />
               <NavLink href="/history" current={pathname} label={t('history')} />
               {showBilling && <NavLink href="/billing" current={pathname} label={t('billing')} />}
@@ -81,9 +89,11 @@ export default function Header({ user }: HeaderProps) {
               <Link href="/daily" className="text-sm text-gray-400 hover:text-white transition-colors">
                 {t('dailyCard')}
               </Link>
-              <Link href="/tarot-card-meanings" className="text-sm text-gray-400 hover:text-white transition-colors">
-                {t('cardMeanings')}
-              </Link>
+              {showCardMeanings && (
+                <Link href="/tarot-card-meanings" className="text-sm text-gray-400 hover:text-white transition-colors">
+                  {t('cardMeanings')}
+                </Link>
+              )}
               <Link href="/spreads" className="text-sm text-gray-400 hover:text-white transition-colors">
                 {t('spreads')}
               </Link>
@@ -106,7 +116,9 @@ export default function Header({ user }: HeaderProps) {
             <>
               <NavLink href="/dashboard" current={pathname} label={t('dashboard')} onClick={() => setMenuOpen(false)} />
               <NavLink href="/reading/new" current={pathname} label={t('newReading')} onClick={() => setMenuOpen(false)} />
-              <NavLink href="/tarot-card-meanings" current={pathname} label={t('cardMeanings')} onClick={() => setMenuOpen(false)} />
+              {showCardMeanings && (
+                <NavLink href="/tarot-card-meanings" current={pathname} label={t('cardMeanings')} onClick={() => setMenuOpen(false)} />
+              )}
               <NavLink href="/spreads" current={pathname} label={t('spreads')} onClick={() => setMenuOpen(false)} />
               <NavLink href="/history" current={pathname} label={t('history')} onClick={() => setMenuOpen(false)} />
               {showBilling && <NavLink href="/billing" current={pathname} label={t('billing')} onClick={() => setMenuOpen(false)} />}
@@ -129,9 +141,11 @@ export default function Header({ user }: HeaderProps) {
               <Link href="/daily" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
                 {t('dailyCard')}
               </Link>
-              <Link href="/tarot-card-meanings" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
-                {t('cardMeanings')}
-              </Link>
+              {showCardMeanings && (
+                <Link href="/tarot-card-meanings" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
+                  {t('cardMeanings')}
+                </Link>
+              )}
               <Link href="/spreads" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
                 {t('spreads')}
               </Link>

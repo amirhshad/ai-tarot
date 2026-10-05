@@ -5,7 +5,7 @@ import { DECK } from '@/lib/tarot/deck';
 import { cardToSlug } from '@/lib/tarot/slugs';
 import { buildHubJsonLd } from '@/lib/seo/json-ld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { buildAlternates } from '@/lib/seo/alternates';
+import { buildAlternates, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
 import Disclaimer from '@/components/seo/Disclaimer';
 
 const siteUrl = 'https://www.tarotveil.com';
@@ -48,7 +48,11 @@ export async function generateSubHubMetadata(configKey: string, locale: string):
   return {
     title,
     description,
-    alternates: buildAlternates(`/tarot-card-meanings/${config.slug}`, locale),
+    // The subset keeps every sub-hub from advertising an ar hreflang that
+    // would point at a 404 until Phase 2 ships Arabic card content.
+    alternates: buildAlternates(`/tarot-card-meanings/${config.slug}`, locale, {
+      locales: CARD_CONTENT_LOCALES,
+    }),
     openGraph: {
       title,
       description,
