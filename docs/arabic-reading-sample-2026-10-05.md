@@ -106,3 +106,101 @@ a voice constraint currently targets, since `VOICE_CONSTRAINTS.ar` addresses
 register and cliché, not morphology.
 
 That comparison costs one paid reading and is the single highest-value next check.
+
+---
+
+# The paid-tier comparison — answered
+
+Run the same day. Same spread, same three cards, same question, same prompt
+builders — `tier: 'pro'`, so **Claude Sonnet 5.5** instead of Haiku 4.5. 403
+words against the free tier's ~300.
+
+## The Arabic, paid tier
+
+> الأحمق في موضع الماضي يقف على الحافة وفي يده زهرة، ولا يلتفت إلى ما تحت قدميه. هكذا دخلتَ الحبّ في المرّة التي تحملها هذه البطاقة: خفيفًا، مصدّقًا، تعطي قبل أن تحسب. وهنا الأمر الذي يستحقّ أن تتأمّله: الأحمق لا يقع في الهاوية في الرمز، لكنّ الذاكرة قد تحفظ القفزة وحدها وتنسى أنّها كانت شجاعة. ما ساقك إلى هذه اللحظة إذن هو انفتاح كامل سبق كلَّ حذر، وما جاء بعده هو ما صاغ حذرك الحالي.
+>
+> ثم تأتي بطاقة الموت، وهي معكوسة. وهذا أهمّ ما في الانتشار. الموت المستقيم يُغلق بابًا بإحكام ويدفنه. أمّا المعكوس فيشير إلى نهاية لم تكتمل، أو إلى تحوّل تتشبّث بحوافّه. تقف الآن عند شيء انتهى في معظمه ولم تأذن له بعدُ أن يرحل كلّه: علاقة، أو صورة عن نفسك في الحبّ، أو وعد قديم لم تتسلّم أنّه لن يتحقّق. وحين تضع هذه البطاقة بجوار الأحمق ترى التناقض واضحًا. الأحمق لا يحمل شيئًا من الماضي، ومعكوس الموت يحمل كلّ شيء. أنت بينهما: لا بريء كما كنت، ولا متحرّر ممّا تعلّمته. وسؤالك «هل أنا مستعدّ؟» يعيش في هذه المسافة تحديدًا.
+>
+> لهذا لا تجيبك البطاقات بنعم أو لا. ما تقوله البطاقة المعكوسة أنّ الاستعداد لا يسبق الانتهاء، بل يتبعه. لا تفتح قلبك من جديد وأنت لا تزال نصف واقف في الباب القديم. وما يمنع الموتَ أن يكتمل غالبًا هو الخوف من الفراغ الذي يليه، لا حبٌّ باقٍ. الفراغ مخيف، لكنّ بطاقة الموت في أصلها تُنهي كي تُفسح مكانًا.
+>
+> والنجمة في المستقبل تردّ على هذا الخوف مباشرة. تجثو امرأة عارية عند الماء بعد الليل الطويل، وتسكب من إناءين: واحد في الماء وواحد على الأرض. لا شيء مخبّأ ولا مدرَّع. لكنّها ليست الأحمق؛ فالأحمق لم يكن يعرف ما يمكن أن يُفقد، أمّا النجمة فتعرف، وتفتح يدها رغم ذلك. هذا الانفتاح الثاني أعمق من الأول، لأنّه يأتي بعد معرفة. ولاحظ أنّ النجمة تظهر بعد الموت في تسلسل الأوراق الكبرى، وهذا ليس عبثًا: الأمل الذي تعدك به لا يتجاوز الجرح، بل ينبت منه.
+>
+> فالخيط الذي يجمع الثلاثة هو أنّ انفتاحك المقبل لن يشبه الأول. الأحمق فتح قلبه جهلًا بالخطر، والنجمة تفتحه وهي تعرف الخطر. وبينهما الموت المعكوس، وهو ما عليك أن تعبره بأن تسمّي ما انتهى فعلًا وتكفّ عن إبقائه معلّقًا.
+>
+> أمّا استعدادك فتقرؤه البطاقات هكذا: أنت مستعدّ بقدر ما تسمح لما انتهى أن ينتهي. وليس المطلوب أن تتخلّص من الحذر أو تستعيد البراءة، فالنجمة لا تطلب منك ذلك. المطلوب أن تتأمّل: ما الذي ما زلتَ تمسك به من الباب القديم، ولماذا؟ وحين تجيب عن هذا بصدق، قد تجد أنّ السؤال عن الاستعداد قد أجاب عن نفسه.
+
+## Farsi translation
+
+> احمق در جایگاه گذشته بر لبهٔ پرتگاه ایستاده و گلی در دست دارد، و به آنچه زیر پایش است نمی‌نگرد. تو نیز در آن بار که این کارت حملش می‌کند، چنین به عشق درآمدی: سبک، باورکننده، بخشنده پیش از آنکه حساب کنی. و این نکته‌ای است که ارزش تأمل دارد: احمق در نماد به درّه نمی‌افتد، اما حافظه ممکن است تنها آن جهش را نگه دارد و فراموش کند که شجاعت بود. پس آنچه تو را به این لحظه رساند، گشودگیِ کاملی بود که بر هر احتیاطی مقدم شد؛ و آنچه پس از آن آمد، همان است که احتیاط امروزت را شکل داد.
+>
+> سپس کارت مرگ می‌آید، و معکوس است. و این مهم‌ترین چیز در این گسترش است. مرگِ مستقیم دری را محکم می‌بندد و به خاکش می‌سپارد. اما معکوس به پایانی اشاره می‌کند که کامل نشده، یا به دگرگونی‌ای که به لبه‌هایش چنگ زده‌ای. اکنون بر سر چیزی ایستاده‌ای که بیشترش پایان یافته و تو هنوز اجازه نداده‌ای همه‌اش برود: یک رابطه، یا تصویری از خودت در عشق، یا وعده‌ای کهنه که نپذیرفته‌ای برآورده نخواهد شد. و چون این کارت را کنار احمق بگذاری، تناقض را روشن می‌بینی. احمق هیچ از گذشته با خود ندارد، و مرگِ معکوس همه‌چیز را دارد. تو میان آن دویی: نه معصوم چنان‌که بودی، و نه رها از آنچه آموخته‌ای. و پرسش تو — «آیا آماده‌ام؟» — دقیقاً در همین فاصله زندگی می‌کند.
+>
+> از این رو کارت‌ها به تو آری یا نه نمی‌گویند. آنچه کارتِ معکوس می‌گوید این است که آمادگی بر پایان مقدم نیست، بلکه از پی آن می‌آید. قلبت را از نو مگشا در حالی که هنوز نیمی از تو در آستانهٔ کهنه ایستاده است. و آنچه بیشتر وقت‌ها نمی‌گذارد مرگ کامل شود، ترس از آن تهیّ است که پس از آن می‌آید، نه عشقی که باقی مانده. تهیّ ترسناک است، اما کارت مرگ در اصل خود پایان می‌دهد تا جا باز کند.
+>
+> و ستاره در آینده مستقیماً به همین ترس پاسخ می‌دهد. زنی عریان پس از شبِ دراز کنار آب زانو می‌زند و از دو کوزه می‌ریزد: یکی در آب و یکی بر خاک. هیچ‌چیز پنهان نیست و هیچ‌چیز زره‌پوش. اما او احمق نیست؛ احمق نمی‌دانست چه چیزی می‌تواند از دست برود، اما ستاره می‌داند، و با این همه دستش را می‌گشاید. این گشودگیِ دوم از نخستین عمیق‌تر است، زیرا پس از دانستن می‌آید. و توجه کن که ستاره در توالیِ کارت‌های بزرگ پس از مرگ می‌آید، و این بی‌سبب نیست: امیدی که به تو می‌دهد از زخم نمی‌گذرد، بلکه از آن می‌روید.
+>
+> پس رشته‌ای که این سه را به هم می‌پیوندد این است که گشودگیِ آیندهٔ تو شبیه نخستین نخواهد بود. احمق قلبش را از ناآگاهی از خطر گشود، و ستاره آن را می‌گشاید در حالی که خطر را می‌شناسد. و میان آن دو، مرگِ معکوس است — همان که باید از آن بگذری، با نام بردن از آنچه واقعاً پایان یافته و با دست کشیدن از معلق نگه داشتنش.
+>
+> و آمادگی‌ات را کارت‌ها چنین می‌خوانند: تو به همان اندازه آماده‌ای که می‌گذاری آنچه پایان یافته، پایان یابد. و خواسته این نیست که از احتیاط رها شوی یا معصومیت را بازگردانی؛ ستاره چنین چیزی از تو نمی‌خواهد. خواسته این است که تأمل کنی: چه چیزی را هنوز از آستانهٔ کهنه در دست داری، و چرا؟ و چون به این صادقانه پاسخ دهی، شاید ببینی که پرسشِ آمادگی خودش به خودش پاسخ داده است.
+
+## The verdict: the gap is the model, not the prompt
+
+| | Free (Haiku 4.5) | Paid (Sonnet 5.5) |
+|---|---|---|
+| Words | ~300 | 403 |
+| Clear grammatical errors | **5** | **0** |
+| Arguable slips | — | 1 (`لم تتسلّم` where `لم تُسلِّم بـ` is the idiom for "you haven't accepted that") |
+| Persian letters | 0 | 0 |
+| Latin runs | 0 | 0 |
+| Deterministic prediction | none | none |
+
+All five Haiku error classes are absent. More than that, Sonnet does things the
+free tier did not:
+
+- **Correct agreement on a harder construction.** Haiku wrote `الموت المعكوس`
+  (masculine, agreeing with `الموت`). Sonnet writes `بطاقة الموت، وهي معكوسة`
+  (feminine, agreeing with `بطاقة`) *and* `ومعكوس الموت` later — both correct,
+  chosen by context.
+- **Real card imagery**: the Fool's flower, the Star's two vessels poured into
+  water and onto earth. It is reading the Rider-Waite images, not paraphrasing
+  keywords.
+- **A structural argument** rather than three descriptive paragraphs: it names the
+  Fool/Death contradiction explicitly (`ترى التناقض واضحًا`), then names the thread
+  (`فالخيط الذي يجمع الثلاثة`), which is exactly what `NARRATIVE_STRUCTURE.ar` asks for
+  and what the free tier only gestured at.
+- **It refuses the binary correctly** — `لهذا لا تجيبك البطاقات بنعم أو لا` — for a
+  "am I ready?" question on the `love` topic, where no yes-or-no format applies.
+- `الاستعداد لا يسبق الانتهاء، بل يتبعه` ("readiness does not precede the ending,
+  it follows it") is the kind of line the register was designed to make possible.
+
+**One terminology note, not an error:** Sonnet wrote `تسلسل الأوراق الكبرى` for the
+Major Arcana, where this project's committed term is `الأركانا الكبرى`. Free
+generation is not bundle copy so nothing is inconsistent in the codebase — but it
+shows the model does not know the project's chosen term. If Phase 2 cares about
+that term appearing consistently in generated prose, it belongs in
+`VOICE_CONSTRAINTS.ar` or the spread shapes, not only in `ar.json`.
+
+## What this means for shipping
+
+The Arabic prompt family is sound — confirmed twice now, on two models. The
+free tier's five errors were Haiku's morphology, not a prompt defect, which also
+explains why `VOICE_CONSTRAINTS.ar` did not catch them: it governs register and
+cliché, and these were inflection.
+
+So the decision is a product one, not an engineering one:
+
+1. **Ship as is.** Paid Arabic is good. Free Arabic is comprehensible but reads
+   as machine-written to a native speaker — the same bargain English and Farsi
+   free readings already make, except Arabic morphology makes the gap more
+   visible.
+2. **Route Arabic free readings to Sonnet.** Closes the gap at the cost of free-tier
+   margin on Arabic traffic only. `getModel` in `app/src/lib/ai/client.ts` already
+   takes the tier; it would need the locale too.
+3. **Add a morphology instruction to `VOICE_CONSTRAINTS.ar`** and re-test on Haiku.
+   Cheapest, least certain — the five errors are the kind a stronger model avoids
+   naturally rather than the kind a rule reliably prevents.
+
+My recommendation is **2**, scoped to Arabic only, if Arabic free traffic is small
+enough that the cost is noise. Otherwise **1**, with the free-tier limitation
+written down rather than discovered.
+
