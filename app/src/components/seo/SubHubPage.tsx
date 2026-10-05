@@ -99,7 +99,7 @@ export default async function SubHubPage({ configKey, locale }: { configKey: str
         <nav className="text-sm text-stone-500 mb-8 flex items-center gap-2">
           <Link href="/" className="hover:text-gold-400 transition-colors">{tCommon('home')}</Link>
           <span>/</span>
-          <CardMeaningLink className="hover:text-gold-400 transition-colors">{t('tarotCardMeanings')}</CardMeaningLink>
+          <CardMeaningLink linkClassName="hover:text-gold-400 transition-colors">{t('tarotCardMeanings')}</CardMeaningLink>
           <span>/</span>
           <span className="text-stone-300">{heading}</span>
         </nav>

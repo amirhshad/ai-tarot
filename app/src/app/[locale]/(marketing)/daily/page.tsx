@@ -193,7 +193,8 @@ export default async function DailyPage({ params }: { params: Promise<{ locale: 
       <div className="text-center mt-12">
         <CardMeaningLink
           slug={card.name.toLowerCase().replace(/\s+/g, '-')}
-          className="text-sm text-gray-500 hover:text-amber-400 transition-colors"
+          className="text-sm text-gray-500"
+          linkClassName="hover:text-amber-400 transition-colors"
         >
           {tc('learnMore')} {cardName} &rarr;
         </CardMeaningLink>

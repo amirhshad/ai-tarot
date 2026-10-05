@@ -330,7 +330,7 @@ export default async function YesOrNoPage({ params }: { params: Promise<{ locale
                 <p className="font-display text-lg font-semibold text-white">
                   <CardMeaningLink
                     slug="justice"
-                    className="hover:text-gold-400 transition-colors"
+                    linkClassName="hover:text-gold-400 transition-colors"
                   >
                     {t('sampleCardName')}
                   </CardMeaningLink>{' '}

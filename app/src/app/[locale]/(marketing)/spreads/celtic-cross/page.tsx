@@ -393,7 +393,10 @@ export default async function CelticCrossSpreadPage({ params }: { params: Promis
           <p className="font-body text-sm font-medium text-stone-400 mb-4">
             {t('learnDesc')}
           </p>
-          <CardMeaningLink className="text-sm text-gold-400 hover:text-gold-300 transition-colors font-medium">
+          <CardMeaningLink
+            className="text-sm font-medium"
+            linkClassName="text-gold-400 hover:text-gold-300 transition-colors"
+          >
             {t('learnLink')}
           </CardMeaningLink>
         </section>

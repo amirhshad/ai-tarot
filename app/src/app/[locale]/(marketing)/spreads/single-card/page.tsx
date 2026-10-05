@@ -240,7 +240,7 @@ export default async function SingleCardSpreadPage({ params }: { params: Promise
                 <p className="font-display text-lg font-semibold text-white">
                   <CardMeaningLink
                     slug="the-star"
-                    className="hover:text-gold-400 transition-colors"
+                    linkClassName="hover:text-gold-400 transition-colors"
                   >
                     {t('sampleCardName')}
                   </CardMeaningLink>{' '}
@@ -308,7 +308,10 @@ export default async function SingleCardSpreadPage({ params }: { params: Promise
           <p className="font-body text-sm font-medium text-stone-400 mb-4">
             {t('learnDesc')}
           </p>
-          <CardMeaningLink className="text-sm text-gold-400 hover:text-gold-300 transition-colors font-medium">
+          <CardMeaningLink
+            className="text-sm font-medium"
+            linkClassName="text-gold-400 hover:text-gold-300 transition-colors"
+          >
             {t('learnLink')}
           </CardMeaningLink>
         </section>

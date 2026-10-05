@@ -270,7 +270,7 @@ export default async function HorseshoeSpreadPage({ params }: { params: Promise<
                     <p className="font-display text-sm font-semibold text-white">
                       <CardMeaningLink
                         slug={pos.cardSlug}
-                        className="hover:text-gold-400 transition-colors"
+                        linkClassName="hover:text-gold-400 transition-colors"
                       >
                         {pos.card}
                       </CardMeaningLink>

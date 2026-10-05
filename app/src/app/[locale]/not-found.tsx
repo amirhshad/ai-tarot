@@ -36,7 +36,7 @@ export default async function NotFound() {
             </Link>
           </div>
           <div className="mt-8 flex flex-wrap gap-4 justify-center text-sm">
-            <CardMeaningLink className="text-stone-500 hover:text-gold-400 transition-colors">
+            <CardMeaningLink className="text-stone-500" linkClassName="hover:text-gold-400 transition-colors">
               {tn('cardMeanings')}
             </CardMeaningLink>
             <Link href="/spreads" className="text-stone-500 hover:text-gold-400 transition-colors">

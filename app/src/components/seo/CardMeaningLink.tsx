@@ -24,6 +24,11 @@ import { CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
  * `<span>` and `<a>` are both `display: inline` by default, so the box model
  * is unchanged and the callers' layout classes keep working.
  *
+ * `className` is applied in both branches — keep it to layout (spacing,
+ * alignment, `group`). `linkClassName` applies only to the `<Link>` branch —
+ * use it for click affordance (underline, link colour, hover transition), so
+ * a degraded `<span>` never advertises a click it cannot honour.
+ *
  * This is the single gate for every in-body link, so Phase 2's one-constant
  * change in `CARD_CONTENT_LOCALES` lights all of them back up at once — the
  * same property the constant already gives the routes, the sitemap and the
@@ -37,11 +42,15 @@ import { CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
 export default function CardMeaningLink({
   slug,
   className,
+  linkClassName,
   children,
 }: {
   /** Card or sub-hub slug. Omit for the master hub. */
   slug?: string;
+  /** Layout only — applied in both the link and degraded-span branches. */
   className?: string;
+  /** Click affordance — applied only when rendered as a `<Link>`. */
+  linkClassName?: string;
   children: ReactNode;
 }) {
   const locale = toLocale(useLocale());
@@ -52,7 +61,7 @@ export default function CardMeaningLink({
   }
 
   return (
-    <Link href={href} className={className}>
+    <Link href={href} className={[className, linkClassName].filter(Boolean).join(' ') || undefined}>
       {children}
     </Link>
   );

@@ -109,7 +109,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         </Link>
         <p className="mt-6 font-body text-sm text-stone-500">
           {t('exploreLink')}{' '}
-          <CardMeaningLink className="text-gold-400/70 hover:text-gold-400 transition-colors underline underline-offset-2">
+          <CardMeaningLink linkClassName="text-gold-400/70 hover:text-gold-400 transition-colors underline underline-offset-2">
             {t('exploreLinkText')}
           </CardMeaningLink>
         </p>
