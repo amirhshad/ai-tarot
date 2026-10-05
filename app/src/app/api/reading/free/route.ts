@@ -75,6 +75,7 @@ export async function POST(request: NextRequest) {
     systemPrompt,
     userMessage: userMessage + questionSuffix,
     tier: 'free',
+    locale: language,
   });
 
   const encoder = new TextEncoder();

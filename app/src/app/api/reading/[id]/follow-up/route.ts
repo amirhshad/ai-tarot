@@ -147,6 +147,7 @@ export async function POST(
       systemPrompt,
       messages,
       tier: tier as 'free' | 'pro' | 'premium',
+      locale: language,
     });
   } catch (err) {
     if (!isIncluded) await refund(followUpRef);

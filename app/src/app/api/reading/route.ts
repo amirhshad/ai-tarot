@@ -138,6 +138,7 @@ export async function POST(request: NextRequest) {
       userMessage: userMessage + questionSuffix,
       tier,
       spreadType: spread.type,
+      locale: language,
     });
   } catch (err) {
     await refund(readingId);
