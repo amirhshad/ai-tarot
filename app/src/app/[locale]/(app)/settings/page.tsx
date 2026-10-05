@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { DEFAULT_LOCALE, LOCALES, LOCALE_LABELS, toLocale, type Locale } from '@/i18n/locales';
 
 export default function SettingsPage() {
   const router = useRouter();
   const [displayName, setDisplayName] = useState('');
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState<Locale>(DEFAULT_LOCALE);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -16,7 +17,9 @@ export default function SettingsPage() {
       const data = await res.json();
       if (data.profile) {
         setDisplayName(data.profile.display_name || '');
-        setLanguage(data.profile.language || 'en');
+        // A stored value outside LOCALES would leave the select with no
+        // matching option, so narrow it instead of trusting the row.
+        setLanguage(toLocale(data.profile.language));
       }
     }
     loadProfile();
@@ -65,11 +68,14 @@ export default function SettingsPage() {
           <label className="block text-sm text-gray-400 mb-1.5">Language</label>
           <select
             value={language}
-            onChange={(e) => setLanguage(e.target.value)}
+            onChange={(e) => setLanguage(toLocale(e.target.value))}
             className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400/50"
           >
-            <option value="en">English</option>
-            <option value="fa">فارسی (Farsi)</option>
+            {LOCALES.map((candidate) => (
+              <option key={candidate} value={candidate}>
+                {LOCALE_LABELS[candidate]}
+              </option>
+            ))}
           </select>
         </div>
 

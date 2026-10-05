@@ -26,7 +26,8 @@
     "dailyCard": "Daily Card",
     "about": "About",
     "billing": "Billing",
-    "settings": "Settings"
+    "settings": "Settings",
+    "language": "Language"
   },
   "cardDetail": {
     "tarotCardMeanings": "Tarot Card Meanings",

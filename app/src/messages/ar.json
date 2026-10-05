@@ -26,7 +26,8 @@
     "dailyCard": "بطاقة اليوم",
     "about": "من نحن",
     "billing": "الفواتير",
-    "settings": "الإعدادات"
+    "settings": "الإعدادات",
+    "language": "اللغة"
   },
   "cardDetail": {
     "tarotCardMeanings": "معاني بطاقات التاروت",

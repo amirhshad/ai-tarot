@@ -2,9 +2,10 @@
 
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { trackLanguageSwitch, resetUser } from '@/lib/analytics/events';
 import { PAYMENTS_ENABLED } from '@/lib/config/features';
+import { LOCALES, LOCALE_LABELS, toLocale, type Locale } from '@/i18n/locales';
 
 interface HeaderProps {
   user?: { email: string; tier: string } | null;
@@ -13,7 +14,6 @@ interface HeaderProps {
 export default function Header({ user }: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const locale = useLocale();
   const t = useTranslations('nav');
   const tc = useTranslations('common');
   const [loggingOut, setLoggingOut] = useState(false);
@@ -33,12 +33,6 @@ export default function Header({ user }: HeaderProps) {
     } catch {
       setLoggingOut(false);
     }
-  }
-
-  function toggleLanguage() {
-    const newLocale = locale === 'en' ? 'fa' : 'en';
-    trackLanguageSwitch(locale, newLocale);
-    router.replace(pathname, { locale: newLocale });
   }
 
   return (
@@ -73,13 +67,7 @@ export default function Header({ user }: HeaderProps) {
               <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-amber-200/80 capitalize">
                 {user.tier}
               </span>
-              <button
-                onClick={toggleLanguage}
-                className="text-xs px-2 py-1 rounded-full border border-white/15 text-gray-400 hover:border-amber-400/50 hover:text-amber-400 transition-colors"
-                title={locale === 'en' ? 'فارسی' : 'English'}
-              >
-                {locale === 'en' ? 'فا' : 'EN'}
-              </button>
+              <LanguageSwitcher label={t('language')} />
               <button
                 onClick={handleLogout}
                 disabled={loggingOut}
@@ -99,13 +87,7 @@ export default function Header({ user }: HeaderProps) {
               <Link href="/spreads" className="text-sm text-gray-400 hover:text-white transition-colors">
                 {t('spreads')}
               </Link>
-              <button
-                onClick={toggleLanguage}
-                className="text-xs px-2 py-1 rounded-full border border-white/15 text-gray-400 hover:border-amber-400/50 hover:text-amber-400 transition-colors"
-                title={locale === 'en' ? 'فارسی' : 'English'}
-              >
-                {locale === 'en' ? 'فا' : 'EN'}
-              </button>
+              <LanguageSwitcher label={t('language')} />
               <Link href="/login" className="text-sm text-gray-400 hover:text-white transition-colors">
                 {tc('signIn')}
               </Link>
@@ -132,12 +114,7 @@ export default function Header({ user }: HeaderProps) {
                 <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-amber-200/80 capitalize">
                   {user.tier}
                 </span>
-                <button
-                  onClick={toggleLanguage}
-                  className="text-xs px-2 py-1 rounded-full border border-white/15 text-gray-400 hover:border-amber-400/50 hover:text-amber-400 transition-colors"
-                >
-                  {locale === 'en' ? 'فا' : 'EN'}
-                </button>
+                <LanguageSwitcher label={t('language')} align="start" onSwitch={() => setMenuOpen(false)} />
                 <button
                   onClick={handleLogout}
                   disabled={loggingOut}
@@ -159,12 +136,7 @@ export default function Header({ user }: HeaderProps) {
                 {t('spreads')}
               </Link>
               <div className="flex items-center gap-3 pt-1">
-                <button
-                  onClick={toggleLanguage}
-                  className="text-xs px-2 py-1 rounded-full border border-white/15 text-gray-400 hover:border-amber-400/50 hover:text-amber-400 transition-colors"
-                >
-                  {locale === 'en' ? 'فارسی' : 'English'}
-                </button>
+                <LanguageSwitcher label={t('language')} align="start" onSwitch={() => setMenuOpen(false)} />
                 <Link href="/login" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setMenuOpen(false)}>
                   {tc('signIn')}
                 </Link>
@@ -177,6 +149,184 @@ export default function Header({ user }: HeaderProps) {
         </nav>
       )}
     </header>
+  );
+}
+
+/**
+ * Locale picker for the header.
+ *
+ * A two-way toggle cannot express three locales, so this is a select-only
+ * combobox over `LOCALES` — the ARIA APG pattern: a labelled button owning a
+ * `listbox`, with `aria-activedescendant` roving over non-focusable options.
+ * Every label comes from `LOCALE_LABELS`, in its own script, because a
+ * language name should never be translated.
+ *
+ * All box-side classes are logical (`start-0`/`end-0`, `text-start`): the
+ * header renders LTR in English and RTL in Farsi and Arabic, and a physical
+ * `right-0` would push the menu off-screen in one of them. `align` says which
+ * logical edge the menu hangs from — the desktop nav sits at the container's
+ * inline-end so its menu hangs from `end`, while the mobile row starts at the
+ * inline-start, where an `end`-hung menu overflows the viewport.
+ */
+function LanguageSwitcher({
+  label,
+  align = 'end',
+  onSwitch,
+}: {
+  label: string;
+  align?: 'start' | 'end';
+  onSwitch?: () => void;
+}) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const locale = toLocale(useLocale());
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(() => LOCALES.indexOf(locale));
+
+  const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const baseId = useId();
+  const labelId = `${baseId}-label`;
+  const triggerId = `${baseId}-trigger`;
+  const listboxId = `${baseId}-listbox`;
+  const optionId = (candidate: Locale) => `${baseId}-option-${candidate}`;
+
+  // Close on a click anywhere outside the control.
+  useEffect(() => {
+    if (!open) return;
+    function handlePointerDown(event: MouseEvent | TouchEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    }
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('touchstart', handlePointerDown);
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('touchstart', handlePointerDown);
+    };
+  }, [open]);
+
+  // Move focus into the listbox when it opens so the arrow keys reach it.
+  useEffect(() => {
+    if (open) listRef.current?.focus();
+  }, [open]);
+
+  function openList() {
+    setActiveIndex(LOCALES.indexOf(locale));
+    setOpen(true);
+  }
+
+  function closeList() {
+    setOpen(false);
+    triggerRef.current?.focus();
+  }
+
+  function select(next: Locale) {
+    setOpen(false);
+    if (next === locale) {
+      triggerRef.current?.focus();
+      return;
+    }
+    trackLanguageSwitch(locale, next);
+    onSwitch?.();
+    router.replace(pathname, { locale: next });
+  }
+
+  function handleTriggerKeyDown(event: React.KeyboardEvent<HTMLButtonElement>) {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openList();
+    }
+  }
+
+  function handleListKeyDown(event: React.KeyboardEvent<HTMLUListElement>) {
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        setActiveIndex((index) => Math.min(index + 1, LOCALES.length - 1));
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        setActiveIndex((index) => Math.max(index - 1, 0));
+        break;
+      case 'Home':
+        event.preventDefault();
+        setActiveIndex(0);
+        break;
+      case 'End':
+        event.preventDefault();
+        setActiveIndex(LOCALES.length - 1);
+        break;
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        select(LOCALES[activeIndex]);
+        break;
+      case 'Escape':
+        event.preventDefault();
+        closeList();
+        break;
+      case 'Tab':
+        // No preventDefault: focus returns to the trigger and the browser's
+        // own Tab then carries on to the next nav item.
+        closeList();
+        break;
+      default:
+        break;
+    }
+  }
+
+  return (
+    <div ref={rootRef} className="relative">
+      <span id={labelId} className="sr-only">
+        {label}
+      </span>
+      <button
+        ref={triggerRef}
+        id={triggerId}
+        type="button"
+        role="combobox"
+        aria-labelledby={`${labelId} ${triggerId}`}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={open ? listboxId : undefined}
+        onClick={() => (open ? setOpen(false) : openList())}
+        onKeyDown={handleTriggerKeyDown}
+        className="text-xs px-2 py-1 rounded-full border border-white/15 text-gray-400 hover:border-amber-400/50 hover:text-amber-400 transition-colors"
+      >
+        {LOCALE_LABELS[locale]}
+      </button>
+      {open && (
+        <ul
+          ref={listRef}
+          id={listboxId}
+          role="listbox"
+          tabIndex={-1}
+          aria-labelledby={labelId}
+          aria-activedescendant={optionId(LOCALES[activeIndex])}
+          onKeyDown={handleListKeyDown}
+          className={`absolute ${
+            align === 'start' ? 'start-0' : 'end-0'
+          } mt-1 min-w-[8rem] rounded-lg border border-white/10 bg-black/95 py-1 shadow-lg z-50 focus:outline-none`}
+        >
+          {LOCALES.map((candidate, index) => (
+            <li
+              key={candidate}
+              id={optionId(candidate)}
+              role="option"
+              aria-selected={candidate === locale}
+              onClick={() => select(candidate)}
+              onMouseEnter={() => setActiveIndex(index)}
+              className={`cursor-pointer px-3 py-1.5 text-start text-sm transition-colors ${
+                candidate === locale ? 'text-amber-400' : 'text-gray-300'
+              } ${index === activeIndex ? 'bg-white/10' : ''}`}
+            >
+              {LOCALE_LABELS[candidate]}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 
