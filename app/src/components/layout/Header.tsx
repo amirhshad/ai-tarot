@@ -153,6 +153,23 @@ export default function Header({ user }: HeaderProps) {
 }
 
 /**
+ * Set when the switcher navigates, read by the next switcher to mount.
+ *
+ * Changing locale changes the `[locale]` route segment, so Next.js remounts
+ * the header: the trigger that had focus is destroyed and replaced by a new
+ * DOM node, and focus falls to `<body>`. Refocusing before `router.replace`
+ * therefore does nothing — the node it focuses is about to be thrown away
+ * (verified in the browser, not assumed). The focus return has to happen on
+ * the far side of the navigation instead.
+ *
+ * Module scope, not `sessionStorage`: `router.replace` is a soft navigation,
+ * so the JS context survives it and a plain module variable is enough. The
+ * first switcher to mount claims the flag and clears it, so the four instances
+ * cannot fight over it.
+ */
+let claimFocusAfterSwitch = false;
+
+/**
  * Locale picker for the header.
  *
  * A two-way toggle cannot express three locales, so this is a select-only
@@ -226,6 +243,16 @@ function LanguageSwitcher({
     if (open) listRef.current?.focus();
   }, [open]);
 
+  // Take focus back after a locale switch remounted the header. Claim the flag
+  // either way so it cannot go stale, but only focus a trigger that is
+  // actually rendered — the hidden desktop instance must not swallow it.
+  useEffect(() => {
+    if (!claimFocusAfterSwitch) return;
+    claimFocusAfterSwitch = false;
+    const trigger = triggerRef.current;
+    if (trigger && trigger.offsetParent !== null) trigger.focus();
+  }, []);
+
   function openList() {
     setActiveIndex(LOCALES.indexOf(locale));
     setOpen(true);
@@ -237,13 +264,18 @@ function LanguageSwitcher({
   }
 
   function select(next: Locale) {
-    setOpen(false);
-    if (next === locale) {
-      triggerRef.current?.focus();
-      return;
-    }
+    // `closeList` first, and before `onSwitch`: the focused `<ul>` unmounts
+    // with `open`, so focus has to come back to the trigger or a keyboard user
+    // is deposited on `<body>` and must Tab from the top of the document. Every
+    // keyboard dismissal path — Escape, Tab, trigger click, and this one, the
+    // primary action — goes through `closeList` so they cannot drift. The
+    // outside-click path deliberately does not: that click moves focus itself,
+    // and yanking it back to the trigger would fight the user.
+    closeList();
+    if (next === locale) return;
     trackLanguageSwitch(locale, next);
     onSwitch?.();
+    claimFocusAfterSwitch = true;
     router.replace(pathname, { locale: next });
   }
 
@@ -305,7 +337,7 @@ function LanguageSwitcher({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={open ? listboxId : undefined}
-        onClick={() => (open ? setOpen(false) : openList())}
+        onClick={() => (open ? closeList() : openList())}
         onKeyDown={handleTriggerKeyDown}
         className="text-xs px-2 py-1 rounded-full border border-white/15 text-gray-400 hover:border-amber-400/50 hover:text-amber-400 transition-colors"
       >
