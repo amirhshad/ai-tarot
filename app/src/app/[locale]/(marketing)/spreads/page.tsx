@@ -46,7 +46,7 @@ export default async function SpreadsIndexPage({ params }: { params: Promise<{ l
       name: t('spreadSingleCard'),
       cardCount: 1,
       difficulty: t('difficultyBeginner'),
-      timeEstimate: '2 minutes',
+      timeEstimate: t('timeEstimateSingleCard'),
       description: t('spreadSingleCardDesc'),
       image: '/cards/major/m17.jpg',
       tier: 'Free',
@@ -56,7 +56,7 @@ export default async function SpreadsIndexPage({ params }: { params: Promise<{ l
       name: t('spreadThreeCard'),
       cardCount: 3,
       difficulty: t('difficultyBeginner'),
-      timeEstimate: '5 minutes',
+      timeEstimate: t('timeEstimateThreeCard'),
       description: t('spreadThreeCardDesc'),
       image: '/cards/major/m01.jpg',
       tier: 'Free',
@@ -66,7 +66,7 @@ export default async function SpreadsIndexPage({ params }: { params: Promise<{ l
       name: t('spreadCelticCross'),
       cardCount: 10,
       difficulty: t('difficultyIntermediate'),
-      timeEstimate: '10 minutes',
+      timeEstimate: t('timeEstimateCelticCross'),
       description: t('spreadCelticCrossDesc'),
       image: '/cards/major/m10.jpg',
       tier: 'Pro',
@@ -76,7 +76,7 @@ export default async function SpreadsIndexPage({ params }: { params: Promise<{ l
       name: t('spreadHorseshoe'),
       cardCount: 7,
       difficulty: t('difficultyIntermediate'),
-      timeEstimate: '8 minutes',
+      timeEstimate: t('timeEstimateHorseshoe'),
       description: t('spreadHorseshoeDesc'),
       image: '/cards/major/m07.jpg',
       tier: 'Pro',
@@ -178,10 +178,7 @@ export default async function SpreadsIndexPage({ params }: { params: Promise<{ l
                     <span className="text-stone-400">{spread.cardCount}</span>{' '}
                     {spread.cardCount === 1 ? t('card') : t('cards')}
                   </span>
-                  <span>
-                    <span className="text-stone-400">{spread.difficulty}</span>{' '}
-                    {t('level')}
-                  </span>
+                  <span>{t('level', { value: spread.difficulty })}</span>
                   <span>
                     ~<span className="text-stone-400">{spread.timeEstimate}</span>
                   </span>
