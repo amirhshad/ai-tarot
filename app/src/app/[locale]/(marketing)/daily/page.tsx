@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
+import CardMeaningLink from '@/components/seo/CardMeaningLink';
 import Image from 'next/image';
 import { getDailyCard, getTodayDateStr } from '@/lib/tarot/daily';
 import { generateCompletion } from '@/lib/ai/client';
@@ -190,12 +191,12 @@ export default async function DailyPage({ params }: { params: Promise<{ locale: 
 
       {/* Learn more link */}
       <div className="text-center mt-12">
-        <Link
-          href={`/tarot-card-meanings/${card.name.toLowerCase().replace(/\s+/g, '-')}`}
+        <CardMeaningLink
+          slug={card.name.toLowerCase().replace(/\s+/g, '-')}
           className="text-sm text-gray-500 hover:text-amber-400 transition-colors"
         >
           {tc('learnMore')} {cardName} &rarr;
-        </Link>
+        </CardMeaningLink>
       </div>
     </div>
   );

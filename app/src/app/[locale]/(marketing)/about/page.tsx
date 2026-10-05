@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
+import CardMeaningLink from '@/components/seo/CardMeaningLink';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buildAlternates } from '@/lib/seo/alternates';
 
@@ -108,9 +109,9 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         </Link>
         <p className="mt-6 font-body text-sm text-stone-500">
           {t('exploreLink')}{' '}
-          <Link href="/tarot-card-meanings" className="text-gold-400/70 hover:text-gold-400 transition-colors underline underline-offset-2">
+          <CardMeaningLink className="text-gold-400/70 hover:text-gold-400 transition-colors underline underline-offset-2">
             {t('exploreLinkText')}
-          </Link>
+          </CardMeaningLink>
         </p>
       </section>
     </div>

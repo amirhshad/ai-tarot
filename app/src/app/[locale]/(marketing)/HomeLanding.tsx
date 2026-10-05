@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import CardMeaningLink from '@/components/seo/CardMeaningLink';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import PricingTable from '@/components/billing/PricingTable';
@@ -506,12 +507,9 @@ export default function LandingPage() {
           </div>
 
           {/* CTA to card meanings */}
-          <Link
-            href="/tarot-card-meanings"
-            className="inline-block mt-10 px-8 py-3 border border-gold-400/20 text-gold-400/80 font-display text-base tracking-wide rounded-sm hover:border-gold-400/40 hover:text-gold-400 transition-all duration-300"
-          >
+          <CardMeaningLink className="inline-block mt-10 px-8 py-3 border border-gold-400/20 text-gold-400/80 font-display text-base tracking-wide rounded-sm hover:border-gold-400/40 hover:text-gold-400 transition-all duration-300">
             {t('showcaseCta')}
-          </Link>
+          </CardMeaningLink>
         </div>
       </RevealSection>
 

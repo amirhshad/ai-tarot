@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import CardMeaningLink from '@/components/seo/CardMeaningLink';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buildAlternates } from '@/lib/seo/alternates';
 import { PAYMENTS_ENABLED } from '@/lib/config/features';
@@ -315,9 +316,9 @@ export default async function CelticCrossSpreadPage({ params }: { params: Promis
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {positions.map((pos) => (
-              <Link
+              <CardMeaningLink
                 key={pos.num}
-                href={`/tarot-card-meanings/${pos.cardSlug}`}
+                slug={pos.cardSlug}
                 className="group text-center"
               >
                 <div className="relative w-full aspect-[2/3] rounded overflow-hidden border border-gold-400/10 group-hover:border-gold-400/30 transition-all mb-1">
@@ -333,7 +334,7 @@ export default async function CelticCrossSpreadPage({ params }: { params: Promis
                 <p className="font-display text-[11px] text-stone-400 group-hover:text-gold-400 transition-colors leading-tight">
                   {pos.card}
                 </p>
-              </Link>
+              </CardMeaningLink>
             ))}
           </div>
         </section>
@@ -392,12 +393,9 @@ export default async function CelticCrossSpreadPage({ params }: { params: Promis
           <p className="font-body text-sm font-medium text-stone-400 mb-4">
             {t('learnDesc')}
           </p>
-          <Link
-            href="/tarot-card-meanings"
-            className="text-sm text-gold-400 hover:text-gold-300 transition-colors font-medium"
-          >
+          <CardMeaningLink className="text-sm text-gold-400 hover:text-gold-300 transition-colors font-medium">
             {t('learnLink')}
-          </Link>
+          </CardMeaningLink>
         </section>
 
         {/* Bottom CTA */}
