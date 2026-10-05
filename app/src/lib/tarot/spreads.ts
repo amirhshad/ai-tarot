@@ -175,7 +175,7 @@ export const SPREADS: Record<string, SpreadDefinition> = {
     description: 'A 7-card arc for decision-making and path-forward questions.',
     localized: {
       fa: { name: 'نعل اسب', description: 'یک گسترش ۷ کارتی برای تصمیم‌گیری و سؤالات مسیر پیش رو.' },
-      ar: { name: 'انتشار حَذوة الفرس', description: 'قوسٌ من سبع بطاقات، لأسئلة القرار واختيار الدرب.' },
+      ar: { name: 'حَذوة الفرس', description: 'قوسٌ من سبع بطاقات، لأسئلة القرار واختيار الدرب.' },
     },
     cardCount: 7,
     minimumTier: 'pro',
