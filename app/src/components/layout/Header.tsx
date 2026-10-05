@@ -155,12 +155,20 @@ export default function Header({ user }: HeaderProps) {
 /**
  * Set when the switcher navigates, read by the next switcher to mount.
  *
- * Changing locale changes the `[locale]` route segment, so Next.js remounts
- * the header: the trigger that had focus is destroyed and replaced by a new
- * DOM node, and focus falls to `<body>`. Refocusing before `router.replace`
- * therefore does nothing — the node it focuses is about to be thrown away
- * (verified in the browser, not assumed). The focus return has to happen on
- * the far side of the navigation instead.
+ * Changing locale changes the `[locale]` route segment, and `Header` renders
+ * from layouts under that segment, so Next.js remounts the header: the trigger
+ * that had focus is destroyed and replaced by a new DOM node, and focus falls
+ * to `<body>`. No ordering of synchronous calls inside `select` can survive
+ * that — the node being focused is about to be thrown away (verified in the
+ * browser, not assumed). The focus return has to happen on the far side of the
+ * navigation instead, which is what this flag is for.
+ *
+ * That does not make `closeList`'s own `focus()` redundant, despite the two
+ * comments reading as if they disagree. It is what returns focus on the three
+ * paths that never navigate — Escape, Tab, trigger click — and on `select`'s
+ * same-locale early return; it is also the fallback if a future routing change
+ * ever makes a locale switch *not* remount the subtree, in which case this flag
+ * finds no newly mounted claimant. The two mechanisms cover disjoint cases.
  *
  * Module scope, not `sessionStorage`: `router.replace` is a soft navigation,
  * so the JS context survives it and a plain module variable is enough. The
@@ -243,9 +251,17 @@ function LanguageSwitcher({
     if (open) listRef.current?.focus();
   }, [open]);
 
-  // Take focus back after a locale switch remounted the header. Claim the flag
-  // either way so it cannot go stale, but only focus a trigger that is
-  // actually rendered — the hidden desktop instance must not swallow it.
+  // Take focus back after a locale switch remounted the header.
+  //
+  // The flag is claimed unconditionally, before the visibility check, so a
+  // hidden instance *does* swallow it. That is deliberate, not an oversight:
+  // on the mobile path `onSwitch` has closed the hamburger, so the only
+  // instance that mounts is the CSS-hidden desktop one and no visible claimant
+  // will ever arrive. Declining without claiming would leave the flag set
+  // until the user next opened the menu, and it would then steal focus onto
+  // the language button. The `offsetParent` guard exists only to skip a
+  // pointless `focus()` on a trigger nobody can see — it does not, and must
+  // not, defer the claim.
   useEffect(() => {
     if (!claimFocusAfterSwitch) return;
     claimFocusAfterSwitch = false;
@@ -258,6 +274,12 @@ function LanguageSwitcher({
     setOpen(true);
   }
 
+  /**
+   * Close and put focus back on the trigger. Every dismissal but the outside
+   * click routes through here, the trigger's own click-to-close included —
+   * Safari does not focus a `<button>` on click, so relying on the browser
+   * there would leave focus on `<body>` in one engine only.
+   */
   function closeList() {
     setOpen(false);
     triggerRef.current?.focus();
@@ -271,6 +293,12 @@ function LanguageSwitcher({
     // primary action — goes through `closeList` so they cannot drift. The
     // outside-click path deliberately does not: that click moves focus itself,
     // and yanking it back to the trigger would fight the user.
+    //
+    // On the branch below that navigates, this call is not what lands focus —
+    // the remount discards the node it focuses, which is why
+    // `claimFocusAfterSwitch` exists. It is kept here for the same-locale
+    // return just below, and as the fallback should a locale switch ever stop
+    // remounting the subtree. See the flag's own comment.
     closeList();
     if (next === locale) return;
     trackLanguageSwitch(locale, next);
