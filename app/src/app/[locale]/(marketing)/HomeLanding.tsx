@@ -506,8 +506,13 @@ export default function LandingPage() {
             </motion.div>
           </div>
 
-          {/* CTA to card meanings */}
-          <CardMeaningLink className="inline-block mt-10 px-8 py-3 border border-gold-400/20 text-gold-400/80 font-display text-base tracking-wide rounded-sm hover:border-gold-400/40 hover:text-gold-400 transition-all duration-300">
+          {/* CTA to card meanings — a button has no sensible non-link form, so
+              it hides entirely where card content does not exist */}
+          <CardMeaningLink
+            className="inline-block mt-10"
+            linkClassName="px-8 py-3 border border-gold-400/20 text-gold-400/80 font-display text-base tracking-wide rounded-sm hover:border-gold-400/40 hover:text-gold-400 transition-all duration-300"
+            hideWhenUnavailable
+          >
             {t('showcaseCta')}
           </CardMeaningLink>
         </div>

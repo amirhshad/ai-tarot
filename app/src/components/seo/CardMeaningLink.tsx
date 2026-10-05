@@ -24,10 +24,17 @@ import { CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
  * `<span>` and `<a>` are both `display: inline` by default, so the box model
  * is unchanged and the callers' layout classes keep working.
  *
- * `className` is applied in both branches — keep it to layout (spacing,
- * alignment, `group`). `linkClassName` applies only to the `<Link>` branch —
- * use it for click affordance (underline, link colour, hover transition), so
- * a degraded `<span>` never advertises a click it cannot honour.
+ * Three call shapes, three props. `className` is applied in both branches —
+ * keep it to layout (spacing, alignment, `group`); a tile whose text becomes
+ * a span looks identical either way, so tiles need nothing else.
+ * `linkClassName` applies only to the `<Link>` branch — use it for click
+ * affordance (underline, link colour, hover transition) on a prose link, so
+ * the degraded `<span>` never advertises a click it cannot honour.
+ * `hideWhenUnavailable` is for a control with no meaningful non-link form —
+ * a CTA button — where a bordered, hover-reactive, button-shaped span would
+ * be a false affordance with no "plain text" fallback that makes sense in
+ * its slot; it renders `null` instead of a span when the locale lacks card
+ * content.
  *
  * This is the single gate for every in-body link, so Phase 2's one-constant
  * change in `CARD_CONTENT_LOCALES` lights all of them back up at once — the
@@ -43,6 +50,7 @@ export default function CardMeaningLink({
   slug,
   className,
   linkClassName,
+  hideWhenUnavailable,
   children,
 }: {
   /** Card or sub-hub slug. Omit for the master hub. */
@@ -51,12 +59,18 @@ export default function CardMeaningLink({
   className?: string;
   /** Click affordance — applied only when rendered as a `<Link>`. */
   linkClassName?: string;
+  /**
+   * For a control with no meaningful non-link form (a CTA button). Renders
+   * `null` instead of a degraded `<span>` when the locale lacks card content.
+   */
+  hideWhenUnavailable?: boolean;
   children: ReactNode;
 }) {
   const locale = toLocale(useLocale());
   const href = slug ? `/tarot-card-meanings/${slug}` : '/tarot-card-meanings';
 
   if (!CARD_CONTENT_LOCALES.includes(locale)) {
+    if (hideWhenUnavailable) return null;
     return <span className={className}>{children}</span>;
   }
 
