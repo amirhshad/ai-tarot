@@ -3,7 +3,7 @@ import { Link } from '@/i18n/navigation';
 import CardMeaningLink from '@/components/seo/CardMeaningLink';
 import Image from 'next/image';
 import { getDailyCard, getTodayDateStr } from '@/lib/tarot/daily';
-import { generateCompletion } from '@/lib/ai/client';
+import { generateCompletion, getDailyMaxTokens } from '@/lib/ai/client';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buildAlternates } from '@/lib/seo/alternates';
 import { HTML_LANG, toLocale, type Locale } from '@/i18n/locales';
@@ -72,7 +72,7 @@ function stripMarkdown(text: string): string {
 async function getDailyInterpretation(cardName: string, keywords: string[], locale: Locale): Promise<string> {
   const systemPrompt = DAILY_SYSTEM_PROMPT[locale];
   const userMessage = DAILY_USER_MESSAGE[locale](cardName, keywords);
-  return generateCompletion(systemPrompt, userMessage, 300);
+  return generateCompletion(systemPrompt, userMessage, getDailyMaxTokens(locale), locale);
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {

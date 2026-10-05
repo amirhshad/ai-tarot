@@ -180,3 +180,178 @@ the new cheap model. If it cleans up: delete `UPGRADED_FREE_LOCALES` and the
 `InterpretationRequest`/`FollowUpRequest` and their three call sites) — Arabic
 then falls back to the cheap model like every other locale. `getThinking`
 stays keyed on model regardless, since that asymmetry is permanent.
+
+---
+
+# Follow-up: the daily card (2026-10-05)
+
+The owner decided to extend the above to the daily card surface
+(`/[locale]/daily`), which the previous pass deliberately left on
+`CHEAP_MODEL`. Two traps were called out up front: (1) `generateCompletion`
+passes no `thinking` param at all, which is only safe while it's pinned to
+Haiku; (2) the daily prompts' own 100-150 word target was already too dense
+for the existing flat `maxTokens = 300` ceiling on Farsi/Arabic, independent
+of this model change.
+
+## `client.ts` diff
+
+```diff
++/**
++ * Max tokens for the daily card (generateCompletion), sized the same way as
++ * getMaxTokens above (~1.3x the worst case) but against the daily prompts'
++ * own 100-150 word target in prompts.ts for the daily page, not the reading
++ * targets above.
++ *
++ * Measured from a real Arabic reading: ~300 words consumed under 800 tokens,
++ * i.e. ~2.7 tokens/word — denser than English (~1.3) and close to Farsi's
++ * ~3.5. At the top of the range (150 words) that's ~405-525 tokens needed,
++ * so English's flat 300 ceiling silently truncates any RTL locale routed
++ * through it. 600 covers both fa and ar with headroom; en stays at 300 since
++ * ~1.3 tokens/word only needs ~195 for the same 150 words.
++ */
++function getDailyMaxTokens(locale: Locale): number {
++  return locale === 'fa' || locale === 'ar' ? 600 : 300;
++}
+
+ /**
+  * Non-streaming completion for simple use cases (e.g. daily card interpretation).
+- * Always uses the cheap model for cost efficiency. This does not get the
+- * Arabic-locale upgrade above — the daily card is a separate surface and a
+- * separate spend decision the owner has not made.
++ * Uses the cheap model by default, except for locales in UPGRADED_FREE_LOCALES
++ * (currently just Arabic — see the comment above that set), which get the
++ * capable model like every other free-tier surface now does.
+  */
+ export async function generateCompletion(
+   systemPrompt: string,
+   userMessage: string,
+   maxTokens = 300,
++  locale?: Locale,
+ ): Promise<string> {
++  const model = getModel('free', locale);
++
+   const response = await anthropic.messages.create({
+-    model: CHEAP_MODEL,
++    model,
+     max_tokens: maxTokens,
++    thinking: getThinking(model),
+     system: systemPrompt,
+     messages: [{ role: 'user', content: userMessage }],
+   });
+
+   const block = response.content[0];
+   return block.type === 'text' ? block.text : '';
+ }
+
+-export { getModel, getThinking, CHEAP_MODEL, CAPABLE_MODEL };
++export { getModel, getThinking, getDailyMaxTokens, CHEAP_MODEL, CAPABLE_MODEL };
+```
+
+`generateCompletion` gained an optional trailing `locale` param so any
+existing or future caller that doesn't pass one (there happen to be none
+besides the daily page) keeps identical behavior when omitted — `getModel('free', undefined)`
+resolves to `CHEAP_MODEL` exactly as the old hardcoded constant did, and
+`getThinking` on that model still resolves to `'disabled'`, matching the
+previous hardcoded-Haiku behavior exactly. The only new behavior is for a
+locale in `UPGRADED_FREE_LOCALES`.
+
+## `daily/page.tsx` diff
+
+```diff
+-import { generateCompletion } from '@/lib/ai/client';
++import { generateCompletion, getDailyMaxTokens } from '@/lib/ai/client';
+@@
+ async function getDailyInterpretation(cardName: string, keywords: string[], locale: Locale): Promise<string> {
+   const systemPrompt = DAILY_SYSTEM_PROMPT[locale];
+   const userMessage = DAILY_USER_MESSAGE[locale](cardName, keywords);
+-  return generateCompletion(systemPrompt, userMessage, 300);
++  return generateCompletion(systemPrompt, userMessage, getDailyMaxTokens(locale), locale);
+ }
+```
+
+No prompt text touched (word targets, tone, language — all unchanged).
+
+## Farsi truncation — measured, not assumed
+
+Rendered `/fa/daily` against the dev server (port 3100 — 3000 was occupied)
+**before** the change, by fetching the page and extracting the rendered
+interpretation paragraph:
+
+- **Before:** 92 words, cut off mid-sentence:
+  `...یک تصمیم به تأخیر انداختیدید؟ امروز روز خوبی برای` — ends on "today is a
+  good day for" with nothing after it. This confirms the bug was live: the
+  daily prompt targets 100-150 words but the response was truncated at 92,
+  mid-clause, well short of even the low end of the target.
+
+- **After** (same page, same `maxTokens` change applied, `getDailyMaxTokens('fa') = 600`):
+  168 words, ends on a complete closing sentence: `...تو هم بخشی از این
+  چرخهای. حرکت کن.` ("You too are part of this cycle. Move.") — a clean,
+  deliberate ending, not a cutoff.
+
+So: **the Farsi daily card was in fact truncating before this change**, and
+the 600-token ceiling fixes it in this sample.
+
+## Arabic output after the change
+
+Rendered `/ar/daily` after the change:
+
+- 149 words (within the 100-150 target), ends on a complete sentence:
+  `...فاللحظة التي تنتظرها ربما تكون أقرب مما تظن.` ("...the moment you're
+  waiting for may be closer than you think.")
+- No Persian-only letters (پ چ ژ گ ک ی) found anywhere in the output —
+  confirmed by scanning the extracted text for that character set.
+- Dev server log showed `GET /ar/daily ... 200` with no 400/500 — the
+  `thinking: getThinking(model)` fix means Sonnet got `'between_tools'`
+  rather than no `thinking` param (which would have used Sonnet's default,
+  untested here) or a hardcoded `'disabled'` (which would 400).
+
+## Tests added (`client.test.ts`)
+
+Added `describe('generateCompletion', ...)` and
+`describe('getDailyMaxTokens', ...)`:
+
+- Mocked `@anthropic-ai/sdk`'s `messages.create` via `vi.mock` +
+  `vi.hoisted` (no live API calls) to capture the arguments `generateCompletion`
+  passes through.
+- Asserted `generateCompletion` resolves to `CHEAP_MODEL` for `en`, `fa`, and
+  no-locale, and to `CAPABLE_MODEL` for `ar` — the same `UPGRADED_FREE_LOCALES`
+  rule as `getModel`.
+- Asserted the thinking param is never hardcoded/omitted: `'between_tools'`
+  when the resolved model is `CAPABLE_MODEL`, `'disabled'` when it's
+  `CHEAP_MODEL` — the same invariant the existing pairing test covers for
+  `streamInterpretation`/`streamFollowUp`, now extended to `generateCompletion`.
+- Asserted `getDailyMaxTokens('en') === 300`, `getDailyMaxTokens('fa') ===
+  getDailyMaxTokens('ar') === 600`.
+
+A `vi.hoisted` wrapper was needed around the mock factory because
+`vi.mock(...)` itself is hoisted above regular `const` declarations by
+vitest/Vite, so a plain `const createMock = vi.fn()` above `vi.mock(...)`
+threw `ReferenceError: Cannot access 'createMock' before initialization` on
+first run; `vi.hoisted` hoists the mock's own backing fn to the same point.
+
+## Verify output
+
+```
+> app@0.1.0 verify
+> tsc --noEmit && vitest run && node ../execution/prompt-freeze.mjs
+
+ Test Files  18 passed (18)
+      Tests  189 passed (189)   (186 existing + 3 new: generateCompletion x2, getDailyMaxTokens x1)
+   Start at  21:36:21
+   Duration  2.62s
+
+✓ 207 prompts match the snapshot.
+```
+
+tsc clean, full suite green, freeze gate unmoved at 207 (no prompt text
+touched, as required).
+
+## Scope held
+
+- `UPGRADED_FREE_LOCALES` untouched — still just `{'ar'}`.
+- No prompt text (word targets, tone, language) changed in `prompts.ts` or
+  the daily page's inline prompt constants.
+- `getMaxTokens`'s existing reading ceilings (800/5000/3500/2800) untouched —
+  the new `getDailyMaxTokens` is a separate function for the daily surface
+  only, per the task's instruction to keep the two concerns apart.
+- `.gitignore` left alone.

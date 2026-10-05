@@ -78,6 +78,23 @@ function getMaxTokens(tier: Tier, spreadType?: SpreadType): number {
   return 2800;                                    // target 400-600 words
 }
 
+/**
+ * Max tokens for the daily card (generateCompletion), sized the same way as
+ * getMaxTokens above (~1.3x the worst case) but against the daily prompts'
+ * own 100-150 word target in prompts.ts for the daily page, not the reading
+ * targets above.
+ *
+ * Measured from a real Arabic reading: ~300 words consumed under 800 tokens,
+ * i.e. ~2.7 tokens/word — denser than English (~1.3) and close to Farsi's
+ * ~3.5. At the top of the range (150 words) that's ~405-525 tokens needed,
+ * so English's flat 300 ceiling silently truncates any RTL locale routed
+ * through it. 600 covers both fa and ar with headroom; en stays at 300 since
+ * ~1.3 tokens/word only needs ~195 for the same 150 words.
+ */
+function getDailyMaxTokens(locale: Locale): number {
+  return locale === 'fa' || locale === 'ar' ? 600 : 300;
+}
+
 export interface InterpretationRequest {
   systemPrompt: string;
   userMessage: string;
@@ -127,18 +144,22 @@ export async function streamFollowUp(req: FollowUpRequest) {
 
 /**
  * Non-streaming completion for simple use cases (e.g. daily card interpretation).
- * Always uses the cheap model for cost efficiency. This does not get the
- * Arabic-locale upgrade above — the daily card is a separate surface and a
- * separate spend decision the owner has not made.
+ * Uses the cheap model by default, except for locales in UPGRADED_FREE_LOCALES
+ * (currently just Arabic — see the comment above that set), which get the
+ * capable model like every other free-tier surface now does.
  */
 export async function generateCompletion(
   systemPrompt: string,
   userMessage: string,
   maxTokens = 300,
+  locale?: Locale,
 ): Promise<string> {
+  const model = getModel('free', locale);
+
   const response = await anthropic.messages.create({
-    model: CHEAP_MODEL,
+    model,
     max_tokens: maxTokens,
+    thinking: getThinking(model),
     system: systemPrompt,
     messages: [{ role: 'user', content: userMessage }],
   });
@@ -147,4 +168,4 @@ export async function generateCompletion(
   return block.type === 'text' ? block.text : '';
 }
 
-export { getModel, getThinking, CHEAP_MODEL, CAPABLE_MODEL };
+export { getModel, getThinking, getDailyMaxTokens, CHEAP_MODEL, CAPABLE_MODEL };
