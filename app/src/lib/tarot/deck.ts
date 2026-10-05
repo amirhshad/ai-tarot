@@ -480,7 +480,7 @@ const PENTACLES: TarotCard[] = [
   }, 'knight'),
   createMinorCard(76, 13, 'pentacles', 'Queen of Pentacles', ['nurturing', 'practical', 'providing financially', 'working parent'], {
     fa: { name: 'ملکه سکه‌ها', keywords: ['پرورش‌دهنده', 'عملگرا', 'تأمین مالی', 'والد شاغل'] },
-    ar: { name: 'ملكة الدنانير', keywords: ['رعاية', 'عملية', 'إعالة مالية', 'رعاية عاملة'] },
+    ar: { name: 'ملكة الدنانير', keywords: ['رعاية', 'عملية', 'إعالة مالية', 'والدية عاملة'] },
   }, 'queen'),
   createMinorCard(77, 14, 'pentacles', 'King of Pentacles', ['wealth', 'business', 'leadership', 'security'], {
     fa: { name: 'شاه سکه‌ها', keywords: ['ثروت', 'کسب‌وکار', 'رهبری', 'امنیت'] },
