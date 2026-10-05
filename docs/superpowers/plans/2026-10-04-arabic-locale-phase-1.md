@@ -2743,6 +2743,34 @@ additive: the snapshot diff is insertions only, so every English and
 Farsi hash Task 4 proved unchanged is still unchanged."
 ```
 
+- [ ] **Step 2c: The static Persian sweep — the load-bearing Arabic check**
+
+Do this BEFORE any browser work, and treat it as the primary gate.
+
+Task 12 established that a curl sweep certifies the **initial server render only**. Two real defects escaped exactly that way: `SpreadSelector.tsx` rendered `نیاز به …` on every tier-gated spread and `CardFace.tsx` rendered `معکوس` under every reversed card — both Persian, both on Arabic pages, both invisible to curl because they appear only after a client interaction (a spread selected, a card revealed). Five share-panel strings have the same property.
+
+So sweep the source, not the rendered page. It is cheap, deterministic, and complete:
+
+```bash
+cd app && grep -rnE '[پچژگکی]' src --include=*.ts --include=*.tsx
+```
+
+Every hit must be in a **legitimate Farsi home**. The allowlist:
+- `src/messages/fa.json`
+- `src/lib/tarot/farsi-names.ts` and the `localized.fa` entries in `deck.ts` / `spreads.ts`
+- the `fa` entries of a `Record<Locale, …>` table (`prompts.ts` and any page-level table)
+- `FORBIDDEN_PATTERNS_AR`'s Persian-letter character class, which names those letters deliberately
+
+A hit anywhere else — especially a bare string literal in a `.tsx` — is a Persian leak onto a non-Farsi surface. Fix it before continuing.
+
+Then sweep the predicate, not the spelling. The Task 12 reviewer's miss came from grepping for a ternary *spelling* (`en ?`) rather than the defect *class*:
+
+```bash
+cd app && grep -rn "language === 'en'\|locale === 'fa'\|language === 'fa'\|locale === 'en'" src
+```
+
+Review every hit site by site. Legitimate homes are `localized.ts` (English is canonical by design), `parity.test.ts`, `card-queries.ts` (Phase 2), and `locales.ts` itself. Anything else collapses three locales into two.
+
 - [ ] **Step 3: Manual Arabic pass**
 
 Run `cd app && npm run dev`, then walk through and confirm each:
