@@ -7,7 +7,7 @@ const anthropic = new Anthropic({
 });
 
 /** The cheap model used for the free tier (and the daily card) by default. */
-const CHEAP_MODEL = 'claude-haiku-4-5-20251001';
+const CHEAP_MODEL = 'claude-haiku-5-5';
 
 /** The capable model used for every paid tier, and for the upgraded free locales below. */
 const CAPABLE_MODEL = 'claude-sonnet-5-5';
@@ -72,7 +72,7 @@ function getThinking(model: string): Anthropic.ThinkingConfigParam {
  * only tokens actually generated are billed.
  */
 function getMaxTokens(tier: Tier, spreadType?: SpreadType): number {
-  if (tier === 'free') return 800;              // target 150-200 words
+  if (tier === 'free') return 1500;             // target 150-200 words; Haiku 5.5 runs ~15% long
   if (spreadType === 'celtic-cross') return 5000; // target 1000-1100 words
   if (spreadType === 'horseshoe') return 3500;    // target 550-750 words
   return 2800;                                    // target 400-600 words
