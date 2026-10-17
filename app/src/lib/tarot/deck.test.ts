@@ -90,3 +90,48 @@ describe('Arabic minor-arcana naming scheme', () => {
     expect(cardName(queen, 'ar')).toBe('ملكة الكؤوس');
   });
 });
+
+describe('Farsi minor-arcana naming scheme', () => {
+  // Persian does not pluralize the noun after a numeral: "پنج شمشیر", never
+  // "پنج شمشیرها". The plural suit survives only where no numeral precedes it
+  // (آس / شاه / ملکه / شوالیه / شاهزاده), where it names the suit itself.
+  const COUNTED = { wands: 'چوب‌دست', cups: 'جام', swords: 'شمشیر', pentacles: 'سکه' };
+  const NUMERALS = ['دو', 'سه', 'چهار', 'پنج', 'شش', 'هفت', 'هشت', 'نُه', 'ده'];
+
+  const numbered = DECK.filter(
+    (c) => c.arcana === 'minor' && c.suit && /^(Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten) of /.test(c.name),
+  );
+
+  it('covers all 36 numbered minor cards', () => {
+    expect(numbered).toHaveLength(36);
+  });
+
+  it('never pluralizes the suit noun after a numeral', () => {
+    for (const card of numbered) {
+      const fa = cardName(card, 'fa');
+      const [numeral, ...rest] = fa.split(' ');
+      expect(NUMERALS, `${card.name} → "${fa}" starts with an unknown numeral`).toContain(numeral);
+      expect(rest.join(' '), `${card.name} → "${fa}" should use the singular suit`).toBe(
+        COUNTED[card.suit!],
+      );
+    }
+  });
+
+  it("writes nine with its zamme so it cannot be read as the negation 'نه'", () => {
+    const nines = DECK.filter((c) => /^Nine of /.test(c.name));
+    expect(nines).toHaveLength(4);
+    for (const card of nines) {
+      expect(cardName(card, 'fa'), `${card.name} must use نُه, not bare نه`).toMatch(/^نُه /);
+    }
+  });
+
+  it('keeps the High Priestess distinct from the Hierophant by more than one letter', () => {
+    const priestess = cardName(DECK.find((c) => c.name === 'The High Priestess')!, 'fa');
+    const hierophant = cardName(DECK.find((c) => c.name === 'The Hierophant')!, 'fa');
+    expect(priestess).toBe('کاهنه بزرگ');
+    expect(hierophant).toBe('کاهن اعظم');
+    // The old pair was کاهنه اعظم / کاهن اعظم — one ه apart, and the model
+    // blended the two archetypes under a single name.
+    expect(priestess.replace('کاهنه ', '')).not.toBe(hierophant.replace('کاهن ', ''));
+  });
+});

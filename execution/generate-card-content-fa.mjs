@@ -44,7 +44,7 @@ function loadEnv() {
 
 // ── Farsi card names (from deck.ts) ─────────────────────────────────
 const FARSI_NAMES = {
-  'the-fool': 'احمق', 'the-magician': 'جادوگر', 'the-high-priestess': 'کاهنه اعظم',
+  'the-fool': 'احمق', 'the-magician': 'جادوگر', 'the-high-priestess': 'کاهنه بزرگ',
   'the-empress': 'ملکه', 'the-emperor': 'امپراتور', 'the-hierophant': 'کاهن اعظم',
   'the-lovers': 'عاشقان', 'the-chariot': 'ارابه', 'strength': 'قدرت',
   'the-hermit': 'زاهد', 'wheel-of-fortune': 'چرخ بخت', 'justice': 'عدالت',
@@ -53,13 +53,24 @@ const FARSI_NAMES = {
   'the-moon': 'ماه', 'the-sun': 'خورشید', 'judgement': 'داوری', 'the-world': 'جهان',
 };
 
-// Minor arcana Farsi patterns
+// Minor arcana Farsi patterns.
+//
+// Two forms of the suit, because Persian does not pluralize the noun that
+// follows a numeral: "پنج شمشیر", never "پنج شمشیرها". The plural stays for
+// the ranks that carry no number (آس، شاه، ملکه، شوالیه، ندیمه), where it
+// reads as the name of the suit itself — "شاه شمشیرها".
 const SUIT_FA = { wands: 'عصاها', cups: 'جام‌ها', swords: 'شمشیرها', pentacles: 'سکه‌ها' };
+const SUIT_FA_COUNTED = { wands: 'عصا', cups: 'جام', swords: 'شمشیر', pentacles: 'سکه' };
+
+// 'Nine' keeps its zamme. Bare "نه" is also the word for "no", so "نه جام"
+// in running prose reads as "no cups" — which is how a reading ended up
+// closing on "نه جام‌ها می‌تواند راست بایستد".
 const RANK_FA = {
   'Ace': 'آس', 'Two': 'دو', 'Three': 'سه', 'Four': 'چهار', 'Five': 'پنج',
-  'Six': 'شش', 'Seven': 'هفت', 'Eight': 'هشت', 'Nine': 'نه', 'Ten': 'ده',
+  'Six': 'شش', 'Seven': 'هفت', 'Eight': 'هشت', 'Nine': 'نُه', 'Ten': 'ده',
   'Page': 'ندیمه', 'Knight': 'شوالیه', 'Queen': 'ملکه', 'King': 'شاه',
 };
+const NUMBERED_RANKS = new Set(['Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten']);
 
 function getFarsiName(slug, englishName) {
   if (FARSI_NAMES[slug]) return FARSI_NAMES[slug];
@@ -67,7 +78,10 @@ function getFarsiName(slug, englishName) {
   const match = englishName.match(/^(\w+) of (\w+)$/);
   if (match) {
     const rank = RANK_FA[match[1]] || match[1];
-    const suit = SUIT_FA[match[2].toLowerCase()] || match[2];
+    const suitKey = match[2].toLowerCase();
+    const suit = NUMBERED_RANKS.has(match[1])
+      ? (SUIT_FA_COUNTED[suitKey] || match[2])
+      : (SUIT_FA[suitKey] || match[2]);
     return `${rank} ${suit}`;
   }
   return englishName;

@@ -8,7 +8,7 @@ export const FARSI_NAME_VARIANTS: Record<string, string[]> = {
   // Major Arcana
   'the-fool': ['احمق', 'ابله', 'دلقک'],
   'the-magician': ['جادوگر', 'کیمیاگر', 'شعبده‌باز'],
-  'the-high-priestess': ['کاهنه اعظم', 'پاپ بانو', 'راهبه', 'بانوی کلیسا'],
+  'the-high-priestess': ['کاهنه بزرگ', 'کاهنه اعظم', 'پاپ بانو', 'راهبه', 'بانوی کلیسا'],
   'the-empress': ['ملکه', 'شهبانو', 'امپراتور زن'],
   'the-emperor': ['امپراتور', 'شاه', 'پادشاه'],
   'the-hierophant': ['کاهن اعظم', 'پاپ اعظم', 'هیروفانت'],
@@ -62,7 +62,7 @@ export const FARSI_NAME_VARIANTS: Record<string, string[]> = {
   'six-of-wands': ['شش عصا', 'شش عصاها'],
   'seven-of-wands': ['هفت عصا', 'هفت عصاها'],
   'eight-of-wands': ['هشت عصا', 'هشت عصاها'],
-  'nine-of-wands': ['نه عصا', 'نه عصاها'],
+  'nine-of-wands': ['نُه عصا', 'نه عصا', 'نه عصاها'],
   'ten-of-wands': ['ده عصا', 'ده عصاها'],
 
   // Number cards — Cups
@@ -74,7 +74,7 @@ export const FARSI_NAME_VARIANTS: Record<string, string[]> = {
   'six-of-cups': ['شش جام', 'شش جام‌ها'],
   'seven-of-cups': ['هفت جام', 'هفت جام‌ها'],
   'eight-of-cups': ['هشت جام', 'هشت جام‌ها'],
-  'nine-of-cups': ['نه جام', 'نه جام‌ها'],
+  'nine-of-cups': ['نُه جام', 'نه جام', 'نه جام‌ها'],
   'ten-of-cups': ['ده جام', 'ده جام‌ها'],
 
   // Number cards — Swords
@@ -86,7 +86,7 @@ export const FARSI_NAME_VARIANTS: Record<string, string[]> = {
   'six-of-swords': ['شش شمشیر', 'شش شمشیرها'],
   'seven-of-swords': ['هفت شمشیر', 'هفت شمشیرها'],
   'eight-of-swords': ['هشت شمشیر', 'هشت شمشیرها'],
-  'nine-of-swords': ['نه شمشیر', 'نه شمشیرها'],
+  'nine-of-swords': ['نُه شمشیر', 'نه شمشیر', 'نه شمشیرها'],
   'ten-of-swords': ['ده شمشیر', 'ده شمشیرها'],
 
   // Number cards — Pentacles
@@ -98,7 +98,7 @@ export const FARSI_NAME_VARIANTS: Record<string, string[]> = {
   'six-of-pentacles': ['شش سکه', 'شش سکه‌ها'],
   'seven-of-pentacles': ['هفت سکه', 'هفت سکه‌ها'],
   'eight-of-pentacles': ['هشت سکه', 'هشت سکه‌ها'],
-  'nine-of-pentacles': ['نه سکه', 'نه سکه‌ها'],
+  'nine-of-pentacles': ['نُه سکه', 'نه سکه', 'نه سکه‌ها'],
   'ten-of-pentacles': ['ده سکه', 'ده سکه‌ها'],
 };
 

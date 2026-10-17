@@ -26,7 +26,7 @@ export const MAJOR_ARCANA: TarotCard[] = [
     arcana: 'major', number: 2,
     keywords: ['intuition', 'sacred knowledge', 'divine feminine', 'subconscious'],
     localized: {
-      fa: { name: 'کاهنه اعظم', keywords: ['شهود', 'دانش مقدس', 'مؤنث الهی', 'ناخودآگاه'] },
+      fa: { name: 'کاهنه بزرگ', keywords: ['شهود', 'دانش مقدس', 'مؤنث الهی', 'ناخودآگاه'] },
       ar: { name: 'الكاهنة العظمى', keywords: ['حدس', 'معرفة مقدّسة', 'أنوثة إلهية', 'اللاوعي'] },
     },
     image: '/cards/major/m02.jpg',
@@ -255,39 +255,39 @@ const WANDS: TarotCard[] = [
     ar: { name: 'آس العصي', keywords: ['إلهام', 'فرص جديدة', 'نمو', 'إمكانات'] },
   }),
   createMinorCard(23, 2, 'wands', 'Two of Wands', ['future planning', 'progress', 'decisions', 'discovery'], {
-    fa: { name: 'دو چوب‌دست‌ها', keywords: ['برنامه‌ریزی آینده', 'پیشرفت', 'تصمیمات', 'کشف'] },
+    fa: { name: 'دو چوب‌دست', keywords: ['برنامه‌ریزی آینده', 'پیشرفت', 'تصمیمات', 'کشف'] },
     ar: { name: 'اثنان من العصي', keywords: ['تخطيط للمستقبل', 'تقدّم', 'قرارات', 'اكتشاف'] },
   }),
   createMinorCard(24, 3, 'wands', 'Three of Wands', ['progress', 'expansion', 'foresight', 'overseas opportunities'], {
-    fa: { name: 'سه چوب‌دست‌ها', keywords: ['پیشرفت', 'گسترش', 'دوراندیشی', 'فرصت‌های فرامرزی'] },
+    fa: { name: 'سه چوب‌دست', keywords: ['پیشرفت', 'گسترش', 'دوراندیشی', 'فرصت‌های فرامرزی'] },
     ar: { name: 'ثلاثة من العصي', keywords: ['تقدّم', 'توسّع', 'بُعد نظر', 'فرص خارجية'] },
   }),
   createMinorCard(25, 4, 'wands', 'Four of Wands', ['celebration', 'joy', 'harmony', 'relaxation'], {
-    fa: { name: 'چهار چوب‌دست‌ها', keywords: ['جشن', 'شادی', 'هماهنگی', 'آرامش'] },
+    fa: { name: 'چهار چوب‌دست', keywords: ['جشن', 'شادی', 'هماهنگی', 'آرامش'] },
     ar: { name: 'أربعة من العصي', keywords: ['احتفال', 'فرح', 'انسجام', 'استرخاء'] },
   }),
   createMinorCard(26, 5, 'wands', 'Five of Wands', ['disagreement', 'competition', 'tension', 'conflict'], {
-    fa: { name: 'پنج چوب‌دست‌ها', keywords: ['اختلاف', 'رقابت', 'تنش', 'تعارض'] },
+    fa: { name: 'پنج چوب‌دست', keywords: ['اختلاف', 'رقابت', 'تنش', 'تعارض'] },
     ar: { name: 'خمسة من العصي', keywords: ['خلاف', 'تنافس', 'توتّر', 'صراع'] },
   }),
   createMinorCard(27, 6, 'wands', 'Six of Wands', ['success', 'public recognition', 'progress', 'self-confidence'], {
-    fa: { name: 'شش چوب‌دست‌ها', keywords: ['موفقیت', 'تقدیر عمومی', 'پیشرفت', 'اعتمادبه‌نفس'] },
+    fa: { name: 'شش چوب‌دست', keywords: ['موفقیت', 'تقدیر عمومی', 'پیشرفت', 'اعتمادبه‌نفس'] },
     ar: { name: 'ستة من العصي', keywords: ['نجاح', 'تقدير عام', 'تقدّم', 'ثقة بالنفس'] },
   }),
   createMinorCard(28, 7, 'wands', 'Seven of Wands', ['challenge', 'competition', 'protection', 'perseverance'], {
-    fa: { name: 'هفت چوب‌دست‌ها', keywords: ['چالش', 'رقابت', 'حمایت', 'پشتکار'] },
+    fa: { name: 'هفت چوب‌دست', keywords: ['چالش', 'رقابت', 'حمایت', 'پشتکار'] },
     ar: { name: 'سبعة من العصي', keywords: ['تحدٍّ', 'تنافس', 'حماية', 'مثابرة'] },
   }),
   createMinorCard(29, 8, 'wands', 'Eight of Wands', ['speed', 'action', 'air travel', 'movement'], {
-    fa: { name: 'هشت چوب‌دست‌ها', keywords: ['سرعت', 'عمل', 'سفر هوایی', 'حرکت'] },
+    fa: { name: 'هشت چوب‌دست', keywords: ['سرعت', 'عمل', 'سفر هوایی', 'حرکت'] },
     ar: { name: 'ثمانية من العصي', keywords: ['سرعة', 'فعل', 'سفر جوّي', 'حركة'] },
   }),
   createMinorCard(30, 9, 'wands', 'Nine of Wands', ['resilience', 'courage', 'persistence', 'test of faith'], {
-    fa: { name: 'نه چوب‌دست‌ها', keywords: ['تاب‌آوری', 'شجاعت', 'پایداری', 'آزمون ایمان'] },
+    fa: { name: 'نُه چوب‌دست', keywords: ['تاب‌آوری', 'شجاعت', 'پایداری', 'آزمون ایمان'] },
     ar: { name: 'تسعة من العصي', keywords: ['صمود', 'شجاعة', 'مثابرة', 'امتحان الإيمان'] },
   }),
   createMinorCard(31, 10, 'wands', 'Ten of Wands', ['burden', 'extra responsibility', 'hard work', 'completion'], {
-    fa: { name: 'ده چوب‌دست‌ها', keywords: ['بار سنگین', 'مسئولیت اضافی', 'سخت‌کوشی', 'اتمام'] },
+    fa: { name: 'ده چوب‌دست', keywords: ['بار سنگین', 'مسئولیت اضافی', 'سخت‌کوشی', 'اتمام'] },
     ar: { name: 'عشرة من العصي', keywords: ['عبء ثقيل', 'مسؤولية إضافية', 'كدّ', 'إتمام'] },
   }),
   createMinorCard(32, 11, 'wands', 'Page of Wands', ['inspiration', 'ideas', 'discovery', 'limitless potential'], {
@@ -315,39 +315,39 @@ const CUPS: TarotCard[] = [
     ar: { name: 'آس الكؤوس', keywords: ['حبّ', 'مشاعر جديدة', 'صحوة عاطفية', 'إبداع'] },
   }),
   createMinorCard(37, 2, 'cups', 'Two of Cups', ['unified love', 'partnership', 'mutual attraction', 'connection'], {
-    fa: { name: 'دو جام‌ها', keywords: ['عشق متحد', 'مشارکت', 'جذابیت متقابل', 'ارتباط'] },
+    fa: { name: 'دو جام', keywords: ['عشق متحد', 'مشارکت', 'جذابیت متقابل', 'ارتباط'] },
     ar: { name: 'اثنان من الكؤوس', keywords: ['حبّ متّحد', 'شراكة', 'انجذاب متبادل', 'ارتباط'] },
   }),
   createMinorCard(38, 3, 'cups', 'Three of Cups', ['celebration', 'friendship', 'creativity', 'community'], {
-    fa: { name: 'سه جام‌ها', keywords: ['جشن', 'دوستی', 'خلاقیت', 'اجتماع'] },
+    fa: { name: 'سه جام', keywords: ['جشن', 'دوستی', 'خلاقیت', 'اجتماع'] },
     ar: { name: 'ثلاثة من الكؤوس', keywords: ['احتفال', 'صداقة', 'إبداع', 'جماعة'] },
   }),
   createMinorCard(39, 4, 'cups', 'Four of Cups', ['meditation', 'contemplation', 'apathy', 'reevaluation'], {
-    fa: { name: 'چهار جام‌ها', keywords: ['مراقبه', 'تأمل', 'بی‌تفاوتی', 'بازارزیابی'] },
+    fa: { name: 'چهار جام', keywords: ['مراقبه', 'تأمل', 'بی‌تفاوتی', 'بازارزیابی'] },
     ar: { name: 'أربعة من الكؤوس', keywords: ['تأمّل', 'تفكّر', 'فتور', 'إعادة تقييم'] },
   }),
   createMinorCard(40, 5, 'cups', 'Five of Cups', ['regret', 'failure', 'disappointment', 'pessimism'], {
-    fa: { name: 'پنج جام‌ها', keywords: ['افسوس', 'شکست', 'ناامیدی', 'بدبینی'] },
+    fa: { name: 'پنج جام', keywords: ['افسوس', 'شکست', 'ناامیدی', 'بدبینی'] },
     ar: { name: 'خمسة من الكؤوس', keywords: ['ندم', 'فشل', 'خيبة أمل', 'تشاؤم'] },
   }),
   createMinorCard(41, 6, 'cups', 'Six of Cups', ['revisiting the past', 'childhood memories', 'innocence', 'joy'], {
-    fa: { name: 'شش جام‌ها', keywords: ['بازگشت به گذشته', 'خاطرات کودکی', 'معصومیت', 'شادی'] },
+    fa: { name: 'شش جام', keywords: ['بازگشت به گذشته', 'خاطرات کودکی', 'معصومیت', 'شادی'] },
     ar: { name: 'ستة من الكؤوس', keywords: ['عودة إلى الماضي', 'ذكريات الطفولة', 'براءة', 'فرح'] },
   }),
   createMinorCard(42, 7, 'cups', 'Seven of Cups', ['opportunities', 'choices', 'wishful thinking', 'illusion'], {
-    fa: { name: 'هفت جام‌ها', keywords: ['فرصت‌ها', 'انتخاب‌ها', 'آرزواندیشی', 'توهم'] },
+    fa: { name: 'هفت جام', keywords: ['فرصت‌ها', 'انتخاب‌ها', 'آرزواندیشی', 'توهم'] },
     ar: { name: 'سبعة من الكؤوس', keywords: ['فرص', 'خيارات', 'تمنّيات', 'وهم'] },
   }),
   createMinorCard(43, 8, 'cups', 'Eight of Cups', ['disappointment', 'abandonment', 'withdrawal', 'escapism'], {
-    fa: { name: 'هشت جام‌ها', keywords: ['ناامیدی', 'رها کردن', 'کناره‌گیری', 'فرار از واقعیت'] },
+    fa: { name: 'هشت جام', keywords: ['ناامیدی', 'رها کردن', 'کناره‌گیری', 'فرار از واقعیت'] },
     ar: { name: 'ثمانية من الكؤوس', keywords: ['خيبة أمل', 'تخلٍّ', 'انسحاب', 'هروب من الواقع'] },
   }),
   createMinorCard(44, 9, 'cups', 'Nine of Cups', ['contentment', 'satisfaction', 'gratitude', 'wish come true'], {
-    fa: { name: 'نه جام‌ها', keywords: ['رضایت', 'خرسندی', 'سپاسگزاری', 'برآورده شدن آرزو'] },
+    fa: { name: 'نُه جام', keywords: ['رضایت', 'خرسندی', 'سپاسگزاری', 'برآورده شدن آرزو'] },
     ar: { name: 'تسعة من الكؤوس', keywords: ['رضا', 'قناعة', 'شكر', 'تحقّق أمنية'] },
   }),
   createMinorCard(45, 10, 'cups', 'Ten of Cups', ['divine love', 'blissful relationships', 'harmony', 'alignment'], {
-    fa: { name: 'ده جام‌ها', keywords: ['عشق الهی', 'روابط پرشکوه', 'هماهنگی', 'همسویی'] },
+    fa: { name: 'ده جام', keywords: ['عشق الهی', 'روابط پرشکوه', 'هماهنگی', 'همسویی'] },
     ar: { name: 'عشرة من الكؤوس', keywords: ['حبّ إلهي', 'علاقات سعيدة', 'انسجام', 'توافق'] },
   }),
   createMinorCard(46, 11, 'cups', 'Page of Cups', ['creative opportunities', 'intuitive messages', 'curiosity', 'possibility'], {
@@ -375,39 +375,39 @@ const SWORDS: TarotCard[] = [
     ar: { name: 'آس السيوف', keywords: ['اختراق', 'وضوح', 'ذهن حادّ', 'حقيقة'] },
   }),
   createMinorCard(51, 2, 'swords', 'Two of Swords', ['difficult choices', 'indecision', 'stalemate', 'blocked emotions'], {
-    fa: { name: 'دو شمشیرها', keywords: ['انتخاب‌های دشوار', 'بلاتکلیفی', 'بن‌بست', 'احساسات مسدود'] },
+    fa: { name: 'دو شمشیر', keywords: ['انتخاب‌های دشوار', 'بلاتکلیفی', 'بن‌بست', 'احساسات مسدود'] },
     ar: { name: 'اثنان من السيوف', keywords: ['خيارات صعبة', 'تردّد', 'طريق مسدود', 'مشاعر مكبوتة'] },
   }),
   createMinorCard(52, 3, 'swords', 'Three of Swords', ['heartbreak', 'emotional pain', 'sorrow', 'grief'], {
-    fa: { name: 'سه شمشیرها', keywords: ['دل‌شکستگی', 'درد عاطفی', 'اندوه', 'سوگ'] },
+    fa: { name: 'سه شمشیر', keywords: ['دل‌شکستگی', 'درد عاطفی', 'اندوه', 'سوگ'] },
     ar: { name: 'ثلاثة من السيوف', keywords: ['انكسار القلب', 'ألم عاطفي', 'حزن', 'ثكل'] },
   }),
   createMinorCard(53, 4, 'swords', 'Four of Swords', ['rest', 'relaxation', 'meditation', 'contemplation'], {
-    fa: { name: 'چهار شمشیرها', keywords: ['استراحت', 'آرامش', 'مراقبه', 'تأمل'] },
+    fa: { name: 'چهار شمشیر', keywords: ['استراحت', 'آرامش', 'مراقبه', 'تأمل'] },
     ar: { name: 'أربعة من السيوف', keywords: ['راحة', 'استرخاء', 'تأمّل', 'تفكّر'] },
   }),
   createMinorCard(54, 5, 'swords', 'Five of Swords', ['conflict', 'disagreements', 'competition', 'defeat'], {
-    fa: { name: 'پنج شمشیرها', keywords: ['تعارض', 'اختلافات', 'رقابت', 'شکست'] },
+    fa: { name: 'پنج شمشیر', keywords: ['تعارض', 'اختلافات', 'رقابت', 'شکست'] },
     ar: { name: 'خمسة من السيوف', keywords: ['صراع', 'خلافات', 'تنافس', 'هزيمة'] },
   }),
   createMinorCard(55, 6, 'swords', 'Six of Swords', ['transition', 'change', 'rite of passage', 'releasing baggage'], {
-    fa: { name: 'شش شمشیرها', keywords: ['گذار', 'تغییر', 'مراسم عبور', 'رها کردن بارها'] },
+    fa: { name: 'شش شمشیر', keywords: ['گذار', 'تغییر', 'مراسم عبور', 'رها کردن بارها'] },
     ar: { name: 'ستة من السيوف', keywords: ['انتقال', 'تغيير', 'طقس عبور', 'تخفيف الأعباء'] },
   }),
   createMinorCard(56, 7, 'swords', 'Seven of Swords', ['betrayal', 'deception', 'getting away with something', 'strategy'], {
-    fa: { name: 'هفت شمشیرها', keywords: ['خیانت', 'فریب', 'فرار از مسئولیت', 'استراتژی'] },
+    fa: { name: 'هفت شمشیر', keywords: ['خیانت', 'فریب', 'فرار از مسئولیت', 'استراتژی'] },
     ar: { name: 'سبعة من السيوف', keywords: ['خيانة', 'خداع', 'تملّص', 'استراتيجية'] },
   }),
   createMinorCard(57, 8, 'swords', 'Eight of Swords', ['negative thoughts', 'self-imposed restriction', 'imprisonment', 'victim mentality'], {
-    fa: { name: 'هشت شمشیرها', keywords: ['افکار منفی', 'محدودیت خودساخته', 'زندان', 'ذهنیت قربانی'] },
+    fa: { name: 'هشت شمشیر', keywords: ['افکار منفی', 'محدودیت خودساخته', 'زندان', 'ذهنیت قربانی'] },
     ar: { name: 'ثمانية من السيوف', keywords: ['أفكار سلبية', 'تقييد ذاتي', 'سجن', 'عقلية الضحية'] },
   }),
   createMinorCard(58, 9, 'swords', 'Nine of Swords', ['anxiety', 'worry', 'fear', 'depression'], {
-    fa: { name: 'نه شمشیرها', keywords: ['اضطراب', 'نگرانی', 'ترس', 'افسردگی'] },
+    fa: { name: 'نُه شمشیر', keywords: ['اضطراب', 'نگرانی', 'ترس', 'افسردگی'] },
     ar: { name: 'تسعة من السيوف', keywords: ['قلق', 'هَمّ', 'خوف', 'اكتئاب'] },
   }),
   createMinorCard(59, 10, 'swords', 'Ten of Swords', ['painful endings', 'deep wounds', 'betrayal', 'loss'], {
-    fa: { name: 'ده شمشیرها', keywords: ['پایان دردناک', 'زخم‌های عمیق', 'خیانت', 'از دست دادن'] },
+    fa: { name: 'ده شمشیر', keywords: ['پایان دردناک', 'زخم‌های عمیق', 'خیانت', 'از دست دادن'] },
     ar: { name: 'عشرة من السيوف', keywords: ['نهاية مؤلمة', 'جروح عميقة', 'خيانة', 'فقدان'] },
   }),
   createMinorCard(60, 11, 'swords', 'Page of Swords', ['new ideas', 'curiosity', 'thirst for knowledge', 'new communication'], {
@@ -435,39 +435,39 @@ const PENTACLES: TarotCard[] = [
     ar: { name: 'آس الدنانير', keywords: ['فرصة مالية جديدة', 'ازدهار', 'وفرة', 'أمان'] },
   }),
   createMinorCard(65, 2, 'pentacles', 'Two of Pentacles', ['balance', 'adaptability', 'time management', 'prioritisation'], {
-    fa: { name: 'دو سکه‌ها', keywords: ['تعادل', 'سازگاری', 'مدیریت زمان', 'اولویت‌بندی'] },
+    fa: { name: 'دو سکه', keywords: ['تعادل', 'سازگاری', 'مدیریت زمان', 'اولویت‌بندی'] },
     ar: { name: 'اثنان من الدنانير', keywords: ['توازن', 'مرونة', 'إدارة الوقت', 'ترتيب الأولويات'] },
   }),
   createMinorCard(66, 3, 'pentacles', 'Three of Pentacles', ['teamwork', 'collaboration', 'learning', 'implementation'], {
-    fa: { name: 'سه سکه‌ها', keywords: ['کار تیمی', 'همکاری', 'یادگیری', 'اجرا'] },
+    fa: { name: 'سه سکه', keywords: ['کار تیمی', 'همکاری', 'یادگیری', 'اجرا'] },
     ar: { name: 'ثلاثة من الدنانير', keywords: ['عمل جماعي', 'تعاون', 'تعلّم', 'تنفيذ'] },
   }),
   createMinorCard(67, 4, 'pentacles', 'Four of Pentacles', ['saving money', 'security', 'conservatism', 'scarcity'], {
-    fa: { name: 'چهار سکه‌ها', keywords: ['پس‌انداز', 'امنیت', 'محافظه‌کاری', 'کمبود'] },
+    fa: { name: 'چهار سکه', keywords: ['پس‌انداز', 'امنیت', 'محافظه‌کاری', 'کمبود'] },
     ar: { name: 'أربعة من الدنانير', keywords: ['ادّخار', 'أمان', 'تحفّظ', 'شحّ'] },
   }),
   createMinorCard(68, 5, 'pentacles', 'Five of Pentacles', ['financial loss', 'poverty', 'lack mindset', 'isolation'], {
-    fa: { name: 'پنج سکه‌ها', keywords: ['ضرر مالی', 'فقر', 'ذهنیت کمبود', 'انزوا'] },
+    fa: { name: 'پنج سکه', keywords: ['ضرر مالی', 'فقر', 'ذهنیت کمبود', 'انزوا'] },
     ar: { name: 'خمسة من الدنانير', keywords: ['خسارة مالية', 'فقر', 'عقلية الندرة', 'انعزال'] },
   }),
   createMinorCard(69, 6, 'pentacles', 'Six of Pentacles', ['giving', 'receiving', 'sharing wealth', 'generosity'], {
-    fa: { name: 'شش سکه‌ها', keywords: ['بخشیدن', 'دریافت کردن', 'تقسیم ثروت', 'سخاوت'] },
+    fa: { name: 'شش سکه', keywords: ['بخشیدن', 'دریافت کردن', 'تقسیم ثروت', 'سخاوت'] },
     ar: { name: 'ستة من الدنانير', keywords: ['عطاء', 'تلقٍّ', 'تقاسم الثروة', 'كرم'] },
   }),
   createMinorCard(70, 7, 'pentacles', 'Seven of Pentacles', ['long-term view', 'sustainable results', 'perseverance', 'investment'], {
-    fa: { name: 'هفت سکه‌ها', keywords: ['دید بلندمدت', 'نتایج پایدار', 'پشتکار', 'سرمایه‌گذاری'] },
+    fa: { name: 'هفت سکه', keywords: ['دید بلندمدت', 'نتایج پایدار', 'پشتکار', 'سرمایه‌گذاری'] },
     ar: { name: 'سبعة من الدنانير', keywords: ['رؤية بعيدة المدى', 'نتائج مستدامة', 'مثابرة', 'استثمار'] },
   }),
   createMinorCard(71, 8, 'pentacles', 'Eight of Pentacles', ['apprenticeship', 'repetitive tasks', 'mastery', 'skill development'], {
-    fa: { name: 'هشت سکه‌ها', keywords: ['کارآموزی', 'کارهای تکراری', 'تسلط', 'توسعه مهارت'] },
+    fa: { name: 'هشت سکه', keywords: ['کارآموزی', 'کارهای تکراری', 'تسلط', 'توسعه مهارت'] },
     ar: { name: 'ثمانية من الدنانير', keywords: ['تمرّس', 'مهام متكررة', 'إتقان', 'تطوير مهارة'] },
   }),
   createMinorCard(72, 9, 'pentacles', 'Nine of Pentacles', ['abundance', 'luxury', 'self-sufficiency', 'financial independence'], {
-    fa: { name: 'نه سکه‌ها', keywords: ['فراوانی', 'تجمل', 'خودکفایی', 'استقلال مالی'] },
+    fa: { name: 'نُه سکه', keywords: ['فراوانی', 'تجمل', 'خودکفایی', 'استقلال مالی'] },
     ar: { name: 'تسعة من الدنانير', keywords: ['وفرة', 'رفاهية', 'استقلالية', 'استقلال مالي'] },
   }),
   createMinorCard(73, 10, 'pentacles', 'Ten of Pentacles', ['wealth', 'financial security', 'family', 'long-term success'], {
-    fa: { name: 'ده سکه‌ها', keywords: ['ثروت', 'امنیت مالی', 'خانواده', 'موفقیت بلندمدت'] },
+    fa: { name: 'ده سکه', keywords: ['ثروت', 'امنیت مالی', 'خانواده', 'موفقیت بلندمدت'] },
     ar: { name: 'عشرة من الدنانير', keywords: ['ثراء', 'أمان مالي', 'عائلة', 'نجاح طويل الأمد'] },
   }),
   createMinorCard(74, 11, 'pentacles', 'Page of Pentacles', ['manifestation', 'financial opportunity', 'skill development', 'ambition'], {
