@@ -27,6 +27,40 @@
 - Maintain the reflective, poetic register that Persian speakers expect from spiritual content
 - RTL formatting must be preserved
 
+#### Card naming (Farsi)
+
+Card names are prompt input, so a bad name becomes a bad reading. Two rules,
+both enforced by `deck.test.ts` → "Farsi minor-arcana naming scheme":
+
+- **No plural noun after a numeral.** `پنج شمشیر`, never `پنج شمشیرها`. The
+  plural suit survives only where no numeral precedes it — `شاه شمشیرها`,
+  `آس جام‌ها` — where it reads as the name of the suit itself.
+- **Nine carries its zamme: `نُه`.** Bare `نه` is also the word for *no*, so
+  `نه جام` inside running prose reads as "no cups". A premium three-card
+  reading once closed on `نه جام‌ها می‌تواند راست بایستد` — "then no cups can
+  stand upright" — which is the opposite of what it meant.
+
+Names that differ by one letter are a model hazard, not just a typo risk. The
+High Priestess and the Hierophant were `کاهنه اعظم` / `کاهن اعظم`. In the
+reading that prompted this section the Hierophant was drawn, and the model
+named it correctly — then spent half a paragraph on the High Priestess's
+archetype ("نگهبان دانستن‌هایی که با زبان گفته نمی‌شوند"), discarding the
+keywords it had been handed (`حکمت معنوی، سنت، همنوایی، آموزش`) in favour of
+the neighbour's (`شهود`, `ناخودآگاه`). The failure was semantic, not
+orthographic: one letter of distance was enough to let the meanings bleed.
+
+Two mitigations, both in place. She is now `کاهنه بزرگ`, matching `fa.json` —
+keep every pair of Farsi card names distinct by a whole word. And the prompt
+now requires each card's meaning to be built from the keywords supplied for
+that card, never substituted from memory or borrowed from another card. The
+keywords are the grounding; a correct name over imported meanings still
+produces an incoherent paragraph.
+
+Orientation vocabulary is fixed at `ایستاده` / `معکوس` — the labels the card
+pages already use. The prompt forbids inventing `وارونه` or `راست‌ایستاده`,
+and forbids using `ایستاده` for a card's *placement*, since "در جایگاه آینده
+ایستاده ولی وارونه است" reads as self-contradictory.
+
 ### Arabic
 - Respect the literary and spiritual register appropriate to the audience
 - Use culturally resonant metaphors — the desert, the oasis, light and guidance
