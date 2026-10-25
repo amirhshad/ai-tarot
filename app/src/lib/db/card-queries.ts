@@ -2,41 +2,59 @@ import { getDb, ensureSchema } from './sqlite';
 import type { RichCardContent, CardHubEntry } from '../seo/types';
 
 
-/** Map a DB row to RichCardContent, using Farsi columns when locale is 'fa' with English fallback */
+/**
+ * Map a DB row to RichCardContent in the requested locale.
+ *
+ * Localised content lives in suffixed columns beside the English ones
+ * (`upright_meaning_fa`, `upright_meaning_ar`, …). `col` resolves one field by
+ * deriving the suffix from the locale, so adding a locale means adding columns
+ * and nothing here — it replaced one hand-written ternary per field per locale,
+ * which is 16 for Farsi alone and would have been 32 with Arabic.
+ *
+ * The English fallback is deliberate and load-bearing: a locale with no row for
+ * a field renders the English one. That is why card-meaning routes are gated by
+ * `CARD_CONTENT_LOCALES` — without the gate this fallback would quietly serve
+ * English card text under a localised URL.
+ */
 function rowToRichCard(row: Record<string, unknown>, locale: string = 'en'): RichCardContent {
-  const fa = locale === 'fa';
+  const suffix = locale === 'en' ? '' : `_${locale}`;
+  const col = (name: string): unknown =>
+    (suffix && row[`${name}${suffix}`]) || row[name];
+
+  // The deepening experiment's extra content is English-only. Appending English
+  // sections to a localised page would be worse than having none.
+  const isEnglish = locale === 'en';
+
   return {
     slug: row.slug as string,
     cardId: row.card_id as number,
-    name: (fa && row.name_fa ? row.name_fa : row.name) as string,
+    name: col('name') as string,
     arcana: row.arcana as 'major' | 'minor',
     suit: (row.suit as string) || null,
     number: row.number as number,
     element: (row.element as string) || null,
     zodiac: (row.zodiac as string) || null,
-    uprightKeywords: JSON.parse((fa && row.upright_keywords_fa ? row.upright_keywords_fa : row.upright_keywords) as string),
-    reversedKeywords: JSON.parse((fa && row.reversed_keywords_fa ? row.reversed_keywords_fa : row.reversed_keywords) as string),
-    featuredSnippet: (fa && row.featured_snippet_fa ? row.featured_snippet_fa : row.featured_snippet) as string,
-    uprightMeaning: (fa && row.upright_meaning_fa ? row.upright_meaning_fa : row.upright_meaning) as string,
-    reversedMeaning: (fa && row.reversed_meaning_fa ? row.reversed_meaning_fa : row.reversed_meaning) as string,
-    loveRelationships: (fa && row.love_relationships_fa ? row.love_relationships_fa : row.love_relationships) as string,
-    careerFinances: (fa && row.career_finances_fa ? row.career_finances_fa : row.career_finances) as string,
-    asFeelings: ((fa && row.as_feelings_fa ? row.as_feelings_fa : row.as_feelings) as string) || null,
-    howSomeoneSeesYou: ((fa && row.how_someone_sees_you_fa ? row.how_someone_sees_you_fa : row.how_someone_sees_you) as string) || null,
-    advice: ((fa && row.advice_fa ? row.advice_fa : row.advice) as string) || null,
-    yesOrNo: (fa && row.yes_or_no_fa ? row.yes_or_no_fa : row.yes_or_no) as string,
+    uprightKeywords: JSON.parse(col('upright_keywords') as string),
+    reversedKeywords: JSON.parse(col('reversed_keywords') as string),
+    featuredSnippet: col('featured_snippet') as string,
+    uprightMeaning: col('upright_meaning') as string,
+    reversedMeaning: col('reversed_meaning') as string,
+    loveRelationships: col('love_relationships') as string,
+    careerFinances: col('career_finances') as string,
+    asFeelings: (col('as_feelings') as string) || null,
+    howSomeoneSeesYou: (col('how_someone_sees_you') as string) || null,
+    advice: (col('advice') as string) || null,
+    yesOrNo: col('yes_or_no') as string,
     yesOrNoVerdict: row.yes_or_no_verdict as 'yes' | 'no' | 'maybe',
-    combinations: JSON.parse((fa && row.combinations_fa ? row.combinations_fa : row.combinations) as string),
+    combinations: JSON.parse(col('combinations') as string),
     faq: [
-      ...JSON.parse((fa && row.faq_fa ? row.faq_fa : row.faq) as string),
-      // Extra FAQs from the deepening experiment. English only — appending
-      // English answers to a Farsi page would be worse than having none.
-      ...(!fa && row.deep_faq ? JSON.parse(row.deep_faq as string) : []),
+      ...JSON.parse(col('faq') as string),
+      ...(isEnglish && row.deep_faq ? JSON.parse(row.deep_faq as string) : []),
     ],
-    deepSections: !fa && row.deep_sections ? JSON.parse(row.deep_sections as string) : [],
+    deepSections: isEnglish && row.deep_sections ? JSON.parse(row.deep_sections as string) : [],
     relatedCards: JSON.parse(row.related_cards as string),
-    metaTitle: (fa && row.meta_title_fa ? row.meta_title_fa : row.meta_title) as string,
-    metaDescription: (fa && row.meta_description_fa ? row.meta_description_fa : row.meta_description) as string,
+    metaTitle: col('meta_title') as string,
+    metaDescription: col('meta_description') as string,
   };
 }
 

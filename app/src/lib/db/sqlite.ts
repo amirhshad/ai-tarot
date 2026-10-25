@@ -129,6 +129,28 @@ export async function ensureSchema(): Promise<void> {
     `ALTER TABLE card_content ADD COLUMN faq_fa TEXT`,
     `ALTER TABLE card_content ADD COLUMN meta_title_fa TEXT`,
     `ALTER TABLE card_content ADD COLUMN meta_description_fa TEXT`,
+    // Arabic card content (Phase 2). Mirrors the `_fa` block above rather than
+    // restructuring to locale-keyed rows — additive, so the Farsi pages that
+    // actually earn clicks are untouched. The locale-keyed migration the Phase 2
+    // spec describes is deferred, not cancelled; `rowToRichCard` now resolves
+    // the suffix from the locale, so a fourth locale costs 17 ALTERs, not a
+    // rewrite of the mapper.
+    `ALTER TABLE card_content ADD COLUMN name_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN upright_keywords_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN reversed_keywords_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN featured_snippet_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN upright_meaning_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN reversed_meaning_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN love_relationships_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN career_finances_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN as_feelings_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN how_someone_sees_you_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN advice_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN yes_or_no_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN combinations_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN faq_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN meta_title_ar TEXT`,
+    `ALTER TABLE card_content ADD COLUMN meta_description_ar TEXT`,
     // Indexation experiment: per-card deep sections (see execution/deepen-cards-kimi.mjs).
     // deep_sections is an ordered JSON array of { id, heading, body } so each card
     // can carry a different set of sections without a column per section.
