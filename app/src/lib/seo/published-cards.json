@@ -1,0 +1,322 @@
+{
+  "the-fool": [
+    "en",
+    "fa"
+  ],
+  "the-magician": [
+    "en",
+    "fa"
+  ],
+  "the-high-priestess": [
+    "en",
+    "fa"
+  ],
+  "the-empress": [
+    "en",
+    "fa"
+  ],
+  "the-emperor": [
+    "en",
+    "fa"
+  ],
+  "the-hierophant": [
+    "en",
+    "fa"
+  ],
+  "the-lovers": [
+    "en",
+    "fa"
+  ],
+  "the-chariot": [
+    "en",
+    "fa"
+  ],
+  "strength": [
+    "en",
+    "fa"
+  ],
+  "the-hermit": [
+    "en",
+    "fa",
+    "ar"
+  ],
+  "wheel-of-fortune": [
+    "en",
+    "fa"
+  ],
+  "justice": [
+    "en",
+    "fa"
+  ],
+  "the-hanged-man": [
+    "en",
+    "fa"
+  ],
+  "death": [
+    "en",
+    "fa"
+  ],
+  "temperance": [
+    "en",
+    "fa"
+  ],
+  "the-devil": [
+    "en",
+    "fa"
+  ],
+  "the-tower": [
+    "en",
+    "fa",
+    "ar"
+  ],
+  "the-star": [
+    "en",
+    "fa"
+  ],
+  "the-moon": [
+    "en",
+    "fa",
+    "ar"
+  ],
+  "the-sun": [
+    "en",
+    "fa"
+  ],
+  "judgement": [
+    "en",
+    "fa",
+    "ar"
+  ],
+  "the-world": [
+    "en",
+    "fa"
+  ],
+  "ace-of-wands": [
+    "en",
+    "fa"
+  ],
+  "two-of-wands": [
+    "en",
+    "fa"
+  ],
+  "three-of-wands": [
+    "en",
+    "fa"
+  ],
+  "four-of-wands": [
+    "en",
+    "fa"
+  ],
+  "five-of-wands": [
+    "en",
+    "fa"
+  ],
+  "six-of-wands": [
+    "en",
+    "fa"
+  ],
+  "seven-of-wands": [
+    "en",
+    "fa"
+  ],
+  "eight-of-wands": [
+    "en",
+    "fa"
+  ],
+  "nine-of-wands": [
+    "en",
+    "fa"
+  ],
+  "ten-of-wands": [
+    "en",
+    "fa"
+  ],
+  "page-of-wands": [
+    "en",
+    "fa"
+  ],
+  "knight-of-wands": [
+    "en",
+    "fa"
+  ],
+  "queen-of-wands": [
+    "en",
+    "fa"
+  ],
+  "king-of-wands": [
+    "en",
+    "fa"
+  ],
+  "ace-of-cups": [
+    "en",
+    "fa"
+  ],
+  "two-of-cups": [
+    "en",
+    "fa"
+  ],
+  "three-of-cups": [
+    "en",
+    "fa"
+  ],
+  "four-of-cups": [
+    "en",
+    "fa"
+  ],
+  "five-of-cups": [
+    "en",
+    "fa"
+  ],
+  "six-of-cups": [
+    "en",
+    "fa"
+  ],
+  "seven-of-cups": [
+    "en",
+    "fa"
+  ],
+  "eight-of-cups": [
+    "en",
+    "fa"
+  ],
+  "nine-of-cups": [
+    "en",
+    "fa"
+  ],
+  "ten-of-cups": [
+    "en",
+    "fa",
+    "ar"
+  ],
+  "page-of-cups": [
+    "en",
+    "fa"
+  ],
+  "knight-of-cups": [
+    "en",
+    "fa"
+  ],
+  "queen-of-cups": [
+    "en",
+    "fa"
+  ],
+  "king-of-cups": [
+    "en",
+    "fa"
+  ],
+  "ace-of-swords": [
+    "en",
+    "fa"
+  ],
+  "two-of-swords": [
+    "en",
+    "fa"
+  ],
+  "three-of-swords": [
+    "en",
+    "fa"
+  ],
+  "four-of-swords": [
+    "en",
+    "fa"
+  ],
+  "five-of-swords": [
+    "en",
+    "fa"
+  ],
+  "six-of-swords": [
+    "en",
+    "fa",
+    "ar"
+  ],
+  "seven-of-swords": [
+    "en",
+    "fa"
+  ],
+  "eight-of-swords": [
+    "en",
+    "fa",
+    "ar"
+  ],
+  "nine-of-swords": [
+    "en",
+    "fa"
+  ],
+  "ten-of-swords": [
+    "en",
+    "fa"
+  ],
+  "page-of-swords": [
+    "en",
+    "fa"
+  ],
+  "knight-of-swords": [
+    "en",
+    "fa"
+  ],
+  "queen-of-swords": [
+    "en",
+    "fa"
+  ],
+  "king-of-swords": [
+    "en",
+    "fa"
+  ],
+  "ace-of-pentacles": [
+    "en",
+    "fa"
+  ],
+  "two-of-pentacles": [
+    "en",
+    "fa"
+  ],
+  "three-of-pentacles": [
+    "en",
+    "fa"
+  ],
+  "four-of-pentacles": [
+    "en",
+    "fa"
+  ],
+  "five-of-pentacles": [
+    "en",
+    "fa"
+  ],
+  "six-of-pentacles": [
+    "en",
+    "fa"
+  ],
+  "seven-of-pentacles": [
+    "en",
+    "fa"
+  ],
+  "eight-of-pentacles": [
+    "en",
+    "fa"
+  ],
+  "nine-of-pentacles": [
+    "en",
+    "fa"
+  ],
+  "ten-of-pentacles": [
+    "en",
+    "fa",
+    "ar"
+  ],
+  "page-of-pentacles": [
+    "en",
+    "fa"
+  ],
+  "knight-of-pentacles": [
+    "en",
+    "fa"
+  ],
+  "queen-of-pentacles": [
+    "en",
+    "fa"
+  ],
+  "king-of-pentacles": [
+    "en",
+    "fa"
+  ]
+}
