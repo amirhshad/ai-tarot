@@ -2,16 +2,26 @@
 /**
  * Rewrite English meta_title / meta_description for all 78 card pages.
  *
- * Why: every card currently ships the same description skeleton —
- *   "What does «CARD» mean? Upright & reversed meanings for love, career,
- *    feelings, and yes-or-no readings. Free AI tarot reading included."
- * On Bing these pages hold 3,622 impressions at avg position 7.5 and earn
- * 26 clicks (0.72%); 57 of 79 have never been clicked. A seventh result with
- * a visibly templated snippet gets skipped.
+ * ATTEMPT TWO. The first run of this script (2026-09-10) replaced a shared
+ * description skeleton with per-card copy, but kept leading on the yes/no
+ * verdict — "The Sun leans yes in a yes or no reading…". It did not work.
+ * Bing English card pages, around that boundary:
  *
- * This generates per-card copy from data ALREADY in the table — no LLM call,
- * no API spend. Variation comes from yes_or_no_verdict and the keyword lists,
- * which differ for every card.
+ *   Aug 1 – Sep 9    16 clicks / 1,890 impr   0.85%   position 7.8
+ *   Sep 11 – Oct 16  11 clicks / 1,701 impr   0.65%   position 7.2
+ *
+ * CTR fell while position improved, and 56 of 80 pages have still never been
+ * clicked. Uniqueness was never the problem: every query these pages rank for
+ * is meaning-intent ("the sun tarot meaning", "what does the sun mean in
+ * tarot"), so a yes/no snippet answered a question nobody asked.
+ *
+ * So this version leads with the meaning question and keeps a trailing free-AI
+ * clause, because queries containing "ai" out-convert everything else on the
+ * site by an order of magnitude (Bing "yes and no tarot ai": 37.1% CTR at
+ * position 1.7, against 1.66% for "yes or no tarot" at 4.8).
+ *
+ * Still generates from data ALREADY in the table — no LLM call, no API spend.
+ * Variation comes from the per-card keyword lists.
  *
  * Backup naming: each `--write` run creates execution/output/card-meta-backup-
  * <ISO>.json holding the values it is ABOUT TO OVERWRITE. If this script is
@@ -55,12 +65,19 @@ function loadEnv() {
   }
 }
 
-/** "yes" -> the clause that opens the description. */
-const VERDICT_CLAUSE = {
-  yes: 'leans yes',
-  no: 'leans no',
-  maybe: 'is a conditional card',
-};
+/**
+ * "the Ace of Cups", but "Strength" and "The Sun".
+ *
+ * Needed because the description now opens with a question about the card.
+ * Court and pip names ("Ace of Cups", "Knight of Wands", "Wheel of Fortune")
+ * take an article; single-word major arcana ("Strength", "Justice", "Death")
+ * do not, and names already starting with "The" carry their own.
+ */
+function withArticle(name) {
+  if (/^the /i.test(name)) return name;
+  if (/ of /i.test(name)) return `the ${name}`;
+  return name;
+}
 
 /**
  * The keyword columns hold full phrases ("New beginnings and fresh starts"),
@@ -82,35 +99,37 @@ function capitalize(s) {
 }
 
 /**
- * Title: keep the card name first (that is what the searcher scanned for),
- * then add the Yes/No hook — per-card yes/no is the site's strongest query
- * family. Drop the hook when the name is long enough to blow the budget.
+ * Title: card name first (that is what the searcher scanned for), then this
+ * card's own keyword, then the meaning signal — "Upright & Reversed".
  *
- * A pure "{name} Tarot Meaning — Upright, Reversed & Yes/No" hook is
- * identical across every card once the guard strips the name out to check
- * for a shared template — that is exactly the collision the guard exists to
- * catch. So the hook leads with this card's own top keyword (from
- * upright_keywords) instead of the generic phrase; the generic phrase is
- * kept only as a last-resort fallback for the handful of names too long for
- * a keyword-bearing title to fit in 60 chars.
+ * No "(Yes/No)". That hook is what the previous attempt led with and it is
+ * why this is attempt two: these pages' queries are all meaning-intent ("the
+ * sun tarot meaning", "what does the sun mean in tarot"), so a yes/no hook
+ * answers a question nobody on this page asked.
+ *
+ * The keyword is not decoration — it is what makes each title unique. A pure
+ * "{name} Tarot Meaning — Upright & Reversed" reduces to the same skeleton for
+ * all 78 once the guard strips the card name out, which is exactly the
+ * templated-copy collision the guard exists to catch. The generic form is kept
+ * only as a last resort for names too long to fit a keyword inside 60 chars.
  */
 function buildTitle(name, u, kwIndex = 0) {
   const kw = capitalize(u[kwIndex] ?? u[0] ?? '');
   const forms = [];
   if (kw) {
-    forms.push(`${name} Tarot Meaning — ${kw} (Yes/No)`);
+    forms.push(`${name} Tarot Meaning — ${kw}, Upright & Reversed`);
     forms.push(`${name} Tarot Meaning — ${kw}`);
   }
-  forms.push(`${name} Tarot Meaning — Upright, Reversed & Yes/No`);
   forms.push(`${name} Tarot Meaning — Upright & Reversed`);
   forms.push(`${name} Tarot Meaning`);
   return forms.find(f => f.length <= TITLE_MAX) || forms[forms.length - 1].slice(0, TITLE_MAX);
 }
 
 /**
- * Description: opens with this card's actual verdict and its own keywords,
- * so no two are alike. Falls back through progressively shorter forms to
- * stay inside 155 chars.
+ * Description: opens with the meaning question this page's queries actually
+ * ask, answers it from this card's own keywords, and closes on the free-AI
+ * hook. Falls back through progressively shorter forms to stay inside 155
+ * chars.
  *
  * `offset` shifts the keyword window used for BOTH the upright list and the
  * reversed word — a dedupe collision (two cards whose first upright/reversed
@@ -120,18 +139,28 @@ function buildTitle(name, u, kwIndex = 0) {
  * rather than only shifting the reversed word as before (which left the
  * upright clause — the actual collision source — untouched).
  */
-function buildDescription(name, verdict, u, r, offset = 0) {
-  const v = VERDICT_CLAUSE[verdict] || VERDICT_CLAUSE.maybe;
+function buildDescription(name, u, r, offset = 0) {
+  const subject = withArticle(name);
   const uu = offset && u.length > offset ? u.slice(offset).concat(u.slice(0, offset)) : u;
   const rWord = r[offset] ?? r[0] ?? '';
 
-  // Try the richest form first, shedding keywords then trailing clauses until
-  // it fits. Verified against all 78 live rows: 0 over budget, 78/78 unique,
-  // avg 147 chars, min 134, max 155.
+  // Opens with the question the page's queries actually ask, then answers it
+  // with this card's own upright and reversed keywords.
+  //
+  // The trailing AI clause is held onto as long as the budget allows: queries
+  // containing "ai" are the highest-converting token on the site by an order of
+  // magnitude — Bing "yes and no tarot ai" earns 37.1% CTR at position 1.7
+  // against 1.66% for "yes or no tarot" at 4.8, and on Google "free ai tarot"
+  // earns 40.9% at position 25. So it sheds keywords before it sheds that
+  // clause.
+  //
+  // The yes/no verdict is deliberately gone. It led the previous version and
+  // the pages still earned 0.65%.
   const forms = [
-    n => `${name} ${v} in a yes or no reading. Upright: ${uu.slice(0, n).join(', ')}. Reversed: ${rWord}. Love, feelings and career — free AI reading.`,
-    n => `${name} ${v} in a yes or no reading. Upright: ${uu.slice(0, n).join(', ')}. Reversed: ${rWord}. Love, feelings and career.`,
-    n => `${name} ${v} in a yes or no reading. Upright: ${uu.slice(0, n).join(', ')}. Reversed: ${rWord}.`,
+    n => `What does ${subject} mean in tarot? Upright: ${uu.slice(0, n).join(', ')}. Reversed: ${rWord}. Love, career and feelings — plus a free AI reading.`,
+    n => `What does ${subject} mean? Upright: ${uu.slice(0, n).join(', ')}. Reversed: ${rWord}. Love, career and feelings — plus a free AI reading.`,
+    n => `What does ${subject} mean in tarot? Upright: ${uu.slice(0, n).join(', ')}. Reversed: ${rWord}. Free AI tarot reading included.`,
+    n => `What does ${subject} mean in tarot? Upright: ${uu.slice(0, n).join(', ')}. Reversed: ${rWord}.`,
   ];
   for (const f of forms) {
     for (const n of [3, 2, 1]) {
@@ -139,7 +168,7 @@ function buildDescription(name, verdict, u, r, offset = 0) {
       if (candidate.length <= DESC_MAX) return candidate;
     }
   }
-  return `${name} ${v} in a yes or no reading. Upright: ${u[0] || ''}.`.slice(0, DESC_MAX);
+  return `What does ${subject} mean in tarot? Upright: ${u[0] || ''}.`.slice(0, DESC_MAX);
 }
 
 async function main() {
@@ -163,7 +192,7 @@ async function main() {
       u, rv,
       verdict: r.yes_or_no_verdict,
       title: buildTitle(r.name, u),
-      description: buildDescription(r.name, r.yes_or_no_verdict, u, rv),
+      description: buildDescription(r.name, u, rv),
       oldTitle: r.meta_title,
       oldDescription: r.meta_description,
     };
@@ -195,7 +224,7 @@ async function main() {
     }
   }
   dedupe('title', (upd, i) => buildTitle(upd.name, upd.u, i));
-  dedupe('description', (upd, i) => buildDescription(upd.name, upd.verdict, upd.u, upd.rv, i));
+  dedupe('description', (upd, i) => buildDescription(upd.name, upd.u, upd.rv, i));
 
   for (const u of updates) {
     console.log(`${u.slug}`);
@@ -252,9 +281,15 @@ async function main() {
   // dropped connection mid-loop previously could have left some rows
   // rewritten and the rest untouched, with no detection. libSQL applies a
   // batch atomically.
+  // `updated_at` must move with the copy. The sitemap reads it per card for
+  // `lastmod` (getCardLastModifiedMap in app/src/lib/db/card-queries.ts), so a
+  // rewrite that left the timestamp alone would tell crawlers the page had not
+  // changed — which is exactly why the August deepening experiment was never
+  // recrawled, and it would have silently wasted this rewrite the same way.
+  // Every other writer in execution/ already does this.
   await db.batch(
     updates.map(u => ({
-      sql: 'UPDATE card_content SET meta_title = ?, meta_description = ? WHERE slug = ?',
+      sql: "UPDATE card_content SET meta_title = ?, meta_description = ?, updated_at = datetime('now') WHERE slug = ?",
       args: [u.title, u.description, u.slug],
     })),
     'write'
