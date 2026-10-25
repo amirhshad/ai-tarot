@@ -11,18 +11,24 @@ export async function findUserByGoogleId(googleId: string): Promise<{ id: string
   return result.rows[0] as unknown as { id: string; email: string } | undefined;
 }
 
+/**
+ * `isNew` distinguishes a first-ever Google account from a returning sign-in, so
+ * the callback can report `user_signed_up` vs `user_logged_in` instead of
+ * collapsing both into one event. Linking Google to an account that already
+ * exists under the same email counts as a login, not a signup.
+ */
 export async function findOrCreateGoogleUser(
   email: string,
   googleId: string,
   displayName?: string,
-): Promise<AuthUser> {
+): Promise<AuthUser & { isNew: boolean }> {
   await ensureSchema();
   const db = getDb();
 
   // 1. Check by Google ID
   const byGoogleId = await findUserByGoogleId(googleId);
   if (byGoogleId) {
-    return { id: byGoogleId.id, email: byGoogleId.email };
+    return { id: byGoogleId.id, email: byGoogleId.email, isNew: false };
   }
 
   // 2. Check by email — link Google to existing account
@@ -42,7 +48,7 @@ export async function findOrCreateGoogleUser(
             WHERE id = ?`,
       args: [googleId, existing.id],
     });
-    return { id: existing.id, email: existing.email };
+    return { id: existing.id, email: existing.email, isNew: false };
   }
 
   // 3. Create new user
@@ -55,5 +61,5 @@ export async function findOrCreateGoogleUser(
     args: [id, email.toLowerCase().trim(), sentinelHash, displayName || null, googleId],
   });
 
-  return { id, email: email.toLowerCase().trim() };
+  return { id, email: email.toLowerCase().trim(), isNew: true };
 }

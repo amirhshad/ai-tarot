@@ -105,5 +105,13 @@ export async function GET(request: NextRequest) {
   // Send welcome email for new users (fire-and-forget)
   void sendWelcomeEmail(user.email, name);
 
-  return NextResponse.redirect(`${baseUrl}${redirect}`);
+  // Analytics can only run in the browser, and this route is the server side of
+  // the OAuth hop — so hand the outcome to the client on the redirect and let
+  // OAuthEventTracker emit the event. Without this the Google path reports no
+  // signup or login at all, and `user_signed_up` undercounts by however much
+  // OAuth contributes. The param is stripped from the URL once consumed.
+  const destination = new URL(`${baseUrl}${redirect}`);
+  destination.searchParams.set('auth', user.isNew ? 'signup' : 'login');
+
+  return NextResponse.redirect(destination.toString());
 }

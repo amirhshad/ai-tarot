@@ -10,6 +10,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { assertCardContentLocale, buildAlternates, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
 import { toLocale } from '@/i18n/locales';
 import Disclaimer from '@/components/seo/Disclaimer';
+import TrackCardMeaningView from '@/components/analytics/TrackCardMeaningView';
 import { getPinglishVariants } from '@/lib/seo/pinglish';
 import { getFarsiVariants } from '@/lib/tarot/farsi-names';
 import cardContentJson from '@/data/card-content.json';
@@ -163,7 +164,14 @@ export default async function CardMeaningPage({ params }: { params: Promise<{ sl
       const current = toLocale(locale);
       redirect(current === 'en' ? '/tarot-card-meanings' : `/${current}/tarot-card-meanings`);
     }
-    return <FallbackCardPage card={fb} deckCard={deckCard} t={t} tc={tc} />;
+    // Wrapped rather than threaded through FallbackCardPage's props: the view
+    // event is the same either way, and the fallback branch has no say in it.
+    return (
+      <>
+        <TrackCardMeaningView slug={slug} locale={locale} />
+        <FallbackCardPage card={fb} deckCard={deckCard} t={t} tc={tc} />
+      </>
+    );
   }
 
   if (!deckCard) notFound();
@@ -173,6 +181,7 @@ export default async function CardMeaningPage({ params }: { params: Promise<{ sl
 
   return (
     <>
+      <TrackCardMeaningView slug={slug} locale={locale} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

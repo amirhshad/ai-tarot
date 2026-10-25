@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { trackFeedbackSubmitted } from '@/lib/analytics/events';
 
 export default function ReadingFeedback({
   readingId,
@@ -23,6 +24,11 @@ export default function ReadingFeedback({
         body: JSON.stringify({ readingId, helpful }),
       });
       if (res.ok) {
+        // Only on success, so the event means "feedback was recorded" rather
+        // than "a button was pressed". The free flow renders this component
+        // without a readingId (its reading lives in localStorage, unsaved), so
+        // that case reports 'anonymous' instead of dropping the signal.
+        trackFeedbackSubmitted(readingId ?? 'anonymous', helpful);
         setSubmitted(helpful);
       }
     } catch {

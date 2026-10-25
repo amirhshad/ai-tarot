@@ -14,6 +14,7 @@ import { serializeDrawnCards } from '@/lib/tarot/shuffle';
 import type { ReadingTopic } from '@/lib/ai/prompts';
 import ReadingLoadingAnimation from '@/components/reading/ReadingLoadingAnimation';
 import { toLocale } from '@/i18n/locales';
+import { trackReadingStarted, trackReadingCompleted } from '@/lib/analytics/events';
 
 type Step = 'topic' | 'select-spread' | 'question' | 'draw' | 'reveal' | 'interpret';
 
@@ -157,6 +158,11 @@ export default function NewReadingPage() {
     setIsInterpreting(true);
     setError('');
     setInterpretation('');
+    // Paired with trackReadingCompleted below: the two together give the
+    // completion rate per spread, topic and language. Fired here rather than at
+    // the draw step so a started reading always means "an interpretation was
+    // requested" in both this flow and the free one.
+    trackReadingStarted(spreadType, topic ?? undefined, language);
 
     try {
       const response = await fetch('/api/reading', {
@@ -204,6 +210,9 @@ export default function NewReadingPage() {
               }
               setInterpretation(data.fullText);
               setReadingId(data.readingId);
+              // `tokens_used` is left unset: /api/reading streams
+              // `{ done, fullText, readingId }` and never reports usage.
+              trackReadingCompleted(spreadType, topic ?? undefined, language);
               break;
             }
             if (data.error) {

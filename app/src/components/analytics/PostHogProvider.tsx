@@ -4,6 +4,7 @@ import posthog from 'posthog-js';
 import { PostHogProvider as PHProvider } from 'posthog-js/react';
 import { Suspense, useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
+import OAuthEventTracker from '@/components/analytics/OAuthEventTracker';
 
 const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const POSTHOG_HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com';
@@ -41,6 +42,7 @@ export default function PostHogProviderWrapper({ children }: { children: React.R
     <PHProvider client={posthog}>
       <Suspense fallback={null}>
         <PostHogPageView />
+        <OAuthEventTracker />
       </Suspense>
       {children}
     </PHProvider>

@@ -7,6 +7,7 @@ import { PAYMENTS_ENABLED } from '@/lib/config/features';
 import { DECK } from '@/lib/tarot/deck';
 import { TarotCard } from '@/lib/tarot/types';
 import { cardName, cardKeywords } from '@/lib/tarot/localized';
+import { trackFollowUpAsked } from '@/lib/analytics/events';
 import Image from 'next/image';
 import type { Locale } from '@/i18n/locales';
 
@@ -77,6 +78,13 @@ export default function FollowUpChat({
   ) {
     setIsLoading(true);
     setStreamingText('');
+
+    // Both callers optimistically append the user message before awaiting this
+    // function, but `userMessageCount` is captured from the render that created
+    // this closure — i.e. the count *before* that append — so +1 numbers the
+    // question being sent. Tracked here rather than in each caller so the typed
+    // question and the extra-card question stay on one counter.
+    trackFollowUpAsked(readingId, userMessageCount + 1);
 
     try {
       const response = await fetch(`/api/reading/${readingId}/follow-up`, {

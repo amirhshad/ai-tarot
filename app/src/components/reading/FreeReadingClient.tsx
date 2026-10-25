@@ -13,8 +13,26 @@ import { drawCards, serializeDrawnCards } from '@/lib/tarot/shuffle';
 import { getSpread } from '@/lib/tarot/spreads';
 import type { ReadingTopic } from '@/lib/ai/prompts';
 import type { Locale } from '@/i18n/locales';
+import {
+  trackFreeReadingStarted,
+  trackReadingStarted,
+  trackReadingCompleted,
+} from '@/lib/analytics/events';
 
 type Step = 'question' | 'draw' | 'reveal' | 'interpret';
+
+/**
+ * Funnel instrumentation for this flow, in order:
+ *
+ *   $pageview            — landed (autocaptured by PostHogProvider)
+ *   free_reading_started — committed to the flow by leaving the question step
+ *   reading_started      — asked for the interpretation
+ *   reading_completed    — the stream finished and text was rendered
+ *
+ * `reading_completed / reading_started` is the completion rate, which is the
+ * number this flow could not report at all before. The reveal step is left to
+ * autocapture: its button carries stable copy and needs no custom event.
+ */
 
 const FREE_READING_KEY = 'tarotveil_anonymous_reading';
 
@@ -60,6 +78,7 @@ function FreeReadingContent({ language }: { language: Locale }) {
   const spread = getSpread('three-card')!;
 
   function handleQuestion() {
+    trackFreeReadingStarted(selectedTopic ?? undefined);
     setStep('draw');
   }
 
@@ -91,6 +110,7 @@ function FreeReadingContent({ language }: { language: Locale }) {
     if (drawnCards.length === 0) return;
     setIsInterpreting(true);
     setError('');
+    trackReadingStarted('three-card', selectedTopic ?? undefined, language);
 
     try {
       const response = await fetch('/api/reading/free', {
@@ -141,6 +161,11 @@ function FreeReadingContent({ language }: { language: Locale }) {
                 await new Promise((r) => setTimeout(r, minDisplayTime - elapsed));
               }
               setInterpretation(fullText);
+              // `tokens_used` is left unset: /api/reading/free streams
+              // `{ done, fullText }` and never reports usage, so there is no
+              // honest number to send. Wire it here if the route starts
+              // returning one.
+              trackReadingCompleted('three-card', selectedTopic ?? undefined, language);
             }
             if (data.error) {
               throw new Error(data.error);
