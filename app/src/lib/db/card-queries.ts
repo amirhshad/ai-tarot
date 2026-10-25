@@ -69,6 +69,41 @@ export async function getAllCardSlugs(): Promise<string[]> {
   return cards.map(c => c.slug);
 }
 
+/**
+ * slug -> the day that card's content last changed, as `YYYY-MM-DD`.
+ *
+ * For the sitemap's `lastModified`. `updated_at` is already maintained by every
+ * script that writes card content, and it already holds real per-card dates —
+ * the 8 pages from the August deepening carry 2026-08-30 while untouched cards
+ * carry 2026-04-10 or 2026-05-14. The sitemap used to publish one hardcoded
+ * constant for all 78, which told Google nothing had changed on precisely the
+ * pages whose change we needed it to notice.
+ *
+ * Returns an empty map rather than throwing: a sitemap that 500s is worse than
+ * one with slightly stale dates, so the caller falls back to its constant.
+ *
+ * One row carries both the English and Farsi columns, so both locales of a card
+ * advertise the same date. That is imprecise but never wrong in the direction
+ * that matters — it cannot claim a page is older than it is.
+ */
+export async function getCardLastModifiedMap(): Promise<Record<string, string>> {
+  try {
+    await ensureSchema();
+    const db = getDb();
+    const result = await db.execute(
+      "SELECT slug, substr(coalesce(updated_at, created_at), 1, 10) AS day FROM card_content",
+    );
+    const map: Record<string, string> = {};
+    for (const row of result.rows as unknown as { slug: string; day: string | null }[]) {
+      if (row.slug && row.day) map[row.slug] = row.day;
+    }
+    return map;
+  } catch (err) {
+    console.error('sitemap: could not read card updated_at, falling back to constant', err);
+    return {};
+  }
+}
+
 export async function getCardsByArcana(arcana: string, locale: string = 'en'): Promise<CardHubEntry[]> {
   const cards = await getAllCardContent(locale);
   return cards

@@ -2,9 +2,15 @@ import { MetadataRoute } from 'next';
 import cardContent from '@/data/card-content.json';
 import { LOCALES, DEFAULT_LOCALE, type Locale } from '@/i18n/locales';
 import { CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
+import { getCardLastModifiedMap } from '@/lib/db/card-queries';
 
 // Use stable dates so Google trusts lastModified signals.
 // Update these when actual content changes are deployed.
+//
+// CONTENT_LAST_MODIFIED is now only a FALLBACK for card pages — their real
+// dates come per-card from the database (see getCardLastModifiedMap). It still
+// applies to the hubs, whose content is generated from the cards rather than
+// stored, so there is no row to date them by.
 const CONTENT_LAST_MODIFIED = '2026-05-14';
 const STATIC_LAST_MODIFIED = '2026-05-14';
 
@@ -43,7 +49,11 @@ function withAlternates(
   return locales.map((locale) => ({ url: urlFor(locale), ...entry, alternates: { languages } }));
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Real per-card content dates. Empty if the database is unreachable, in
+  // which case every card falls back to CONTENT_LAST_MODIFIED below.
+  const cardDates = await getCardLastModifiedMap();
+
   // Each withAlternates() call yields one entry per locale it covers, so this
   // is a list of groups that gets flattened before it is returned.
   const staticPages: MetadataRoute.Sitemap[] = [
@@ -126,12 +136,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // where Google is already declining to index the pages that matter.
   ];
 
-  // Generate entries for all 78 card meaning pages
+  // Generate entries for all 78 card meaning pages.
+  //
+  // The slug list stays sourced from the bundled JSON rather than the database:
+  // it is the stable set of 78, so a database hiccup degrades the dates but
+  // never drops URLs out of the sitemap.
   const cardPages: MetadataRoute.Sitemap[] = Object.keys(
     cardContent as Record<string, unknown>
   ).map(slug =>
     withAlternates(`/tarot-card-meanings/${slug}`, {
-      lastModified: CONTENT_LAST_MODIFIED,
+      lastModified: cardDates[slug] ?? CONTENT_LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     }, CARD_CONTENT_LOCALES),
