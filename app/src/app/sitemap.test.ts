@@ -31,11 +31,69 @@ describe('sitemap', () => {
     expect(urls).toContain('https://www.tarotveil.com/ar/spreads');
   });
 
-  // Arabic card-meaning pages 404 in Phase 1. Listing them would feed Search
-  // Console a set of soft-404s and burn crawl budget on the ar namespace.
-  it('lists no Arabic card-meaning URLs', () => {
-    const arabicCardUrls = urls.filter((u) => u.startsWith('https://www.tarotveil.com/ar/tarot-card-meanings'));
-    expect(arabicCardUrls).toEqual([]);
+  /**
+   * Arabic card-meaning URLs are now listed — but only the Phase 2 cohort.
+   *
+   * This replaced an assertion that NO Arabic card URL appears, which was
+   * correct until 2026-10-25 and failed deliberately when 'ar' was added to
+   * CARD_CONTENT_LOCALES. The protective intent is unchanged: the sitemap must
+   * never advertise an Arabic URL that 404s, and the ~70 cards with no Arabic
+   * content still 404.
+   */
+  const AR_COHORT = [
+    'judgement', 'ten-of-cups', 'eight-of-swords', 'ten-of-pentacles',
+    'the-moon', 'the-tower', 'the-hermit', 'six-of-swords',
+  ];
+
+  it('lists every Arabic card in the cohort', () => {
+    for (const slug of AR_COHORT) {
+      expect(urls).toContain(`https://www.tarotveil.com/ar/tarot-card-meanings/${slug}`);
+    }
+  });
+
+  it('lists no Arabic card outside the cohort', () => {
+    const listed = urls
+      .filter(u => u.startsWith('https://www.tarotveil.com/ar/tarot-card-meanings/'))
+      .map(u => u.split('/').pop()!)
+      // Sub-hubs share the prefix but are not cards.
+      .filter(slug => !slug.startsWith('suit-of-') && slug !== 'major-arcana');
+    expect(listed.sort()).toEqual([...AR_COHORT].sort());
+  });
+
+  // The cohort contains no Wand, so that sub-hub has an empty list and
+  // SubHubPage 404s it. A listed 404 is worse than an unlisted page.
+  it('omits the Arabic sub-hub that has no cohort card', () => {
+    expect(urls).not.toContain('https://www.tarotveil.com/ar/tarot-card-meanings/suit-of-wands');
+  });
+
+  it('lists the Arabic sub-hubs that do have cohort cards', () => {
+    for (const slug of ['major-arcana', 'suit-of-cups', 'suit-of-swords', 'suit-of-pentacles']) {
+      expect(urls).toContain(`https://www.tarotveil.com/ar/tarot-card-meanings/${slug}`);
+    }
+  });
+
+  // The per-card half of the gate now reads the bundled manifest
+  // (published-cards.json), not a query, so it cannot be exercised through the
+  // mock above — these assert it against the real manifest. 'the-sun' has no
+  // Arabic content, which is what makes it the useful case.
+  it('omits a card from a locale it has no authored content in', () => {
+    expect(urls).not.toContain('https://www.tarotveil.com/ar/tarot-card-meanings/the-sun');
+  });
+
+  it('still lists a card in a locale it does have content in', () => {
+    expect(urls).toContain('https://www.tarotveil.com/ar/tarot-card-meanings/the-moon');
+  });
+
+  // English is canonical and must never be gated away by this mechanism.
+  it('lists every card in English regardless of the per-card map', () => {
+    expect(urls).toContain('https://www.tarotveil.com/tarot-card-meanings/the-sun');
+    expect(urls).toContain('https://www.tarotveil.com/tarot-card-meanings/the-moon');
+  });
+
+  // A card the map says nothing about (a failed read yields {} for every slug)
+  // must keep the pre-cohort behaviour rather than vanish from the sitemap.
+  it('falls back to the site-wide locales for a card absent from the map', () => {
+    expect(urls).toContain('https://www.tarotveil.com/fa/tarot-card-meanings/the-star');
   });
 
   it('still lists English and Farsi card-meaning URLs', () => {
@@ -43,10 +101,19 @@ describe('sitemap', () => {
     expect(urls).toContain('https://www.tarotveil.com/fa/tarot-card-meanings');
   });
 
-  it('never advertises an ar alternate on a card-meaning entry', () => {
+  /**
+   * hreflang must agree with what is actually published. Previously this
+   * asserted no card-meaning entry ever carries an `ar` alternate; now an
+   * entry may carry one, but only if that Arabic URL is itself in the sitemap.
+   * An `ar` alternate pointing at a 404 is the specific defect being guarded.
+   */
+  it('advertises an ar alternate only where the Arabic URL exists', () => {
+    const urlSet = new Set(urls);
     for (const entry of entries) {
       if (!entry.url.includes('tarot-card-meanings')) continue;
-      expect(entry.alternates?.languages, entry.url).not.toHaveProperty('ar');
+      const ar = (entry.alternates?.languages as Record<string, string> | undefined)?.ar;
+      if (!ar) continue;
+      expect(urlSet.has(ar), `${entry.url} advertises ar -> ${ar}, which is not listed`).toBe(true);
     }
   });
 

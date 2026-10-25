@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next';
 import cardContent from '@/data/card-content.json';
 import { LOCALES, DEFAULT_LOCALE, type Locale } from '@/i18n/locales';
-import { CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
+import { CARD_CONTENT_LOCALES, cardLocales } from '@/lib/seo/alternates';
 import { getCardLastModifiedMap } from '@/lib/db/card-queries';
+import { authoredLocales, subHubAuthoredLocales } from '@/lib/seo/published-cards';
 
 // Use stable dates so Google trusts lastModified signals.
 // Update these when actual content changes are deployed.
@@ -73,13 +74,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.9,
     }, CARD_CONTENT_LOCALES),
-    // Sub-hubs
+    // Sub-hubs. Listed per locale, because a sub-hub is only as published as
+    // its contents: the Arabic cohort has no Wand, so that page 404s for `ar`
+    // and must not appear here.
     ...['major-arcana', 'suit-of-wands', 'suit-of-cups', 'suit-of-swords', 'suit-of-pentacles'].map(slug =>
       withAlternates(`/tarot-card-meanings/${slug}`, {
         lastModified: CONTENT_LAST_MODIFIED,
         changeFrequency: 'monthly' as const,
         priority: 0.85,
-      }, CARD_CONTENT_LOCALES),
+      }, cardLocales(subHubAuthoredLocales(slug))),
     ),
     withAlternates('/spreads', {
       lastModified: STATIC_LAST_MODIFIED,
@@ -148,7 +151,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: cardDates[slug] ?? CONTENT_LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
-    }, CARD_CONTENT_LOCALES),
+    }, cardLocales(authoredLocales(slug))),
   );
 
   return [...staticPages, ...cardPages].flat();

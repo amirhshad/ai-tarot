@@ -2,11 +2,15 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import CardMeaningLink from '@/components/seo/CardMeaningLink';
+import { notFound } from 'next/navigation';
+import { toLocale } from '@/i18n/locales';
 import { DECK } from '@/lib/tarot/deck';
 import { cardToSlug } from '@/lib/tarot/slugs';
+import { cardName } from '@/lib/tarot/localized';
 import { buildHubJsonLd } from '@/lib/seo/json-ld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { buildAlternates, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
+import { buildAlternates, cardLocales, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
+import { authoredLocales } from '@/lib/seo/published-cards';
 import Disclaimer from '@/components/seo/Disclaimer';
 
 const siteUrl = 'https://www.tarotveil.com';
@@ -73,13 +77,22 @@ export default async function SubHubPage({ configKey, locale }: { configKey: str
   const heading = tConfig(`${configKey}.heading`);
   const intro = tConfig(`${configKey}.intro`);
 
+  // Only the cards live in THIS locale. Without the filter, /ar/… would list
+  // all 78 with English names for the ~70 that have no Arabic yet, each one
+  // linking to a page that 404s.
   const cards = DECK.filter(config.filter)
     .sort((a, b) => a.number - b.number)
+    .filter(c => cardLocales(authoredLocales(cardToSlug(c))).includes(toLocale(locale)))
     .map(c => ({
-      name: c.name,
+      name: cardName(c, toLocale(locale)),
       slug: cardToSlug(c),
       image: c.image,
     }));
+
+  // A sub-hub with nothing to list is a thin page, not a page with an empty
+  // section: `suit-of-wands` has no card in the Arabic cohort at all. 404 is
+  // the honest response, and it keeps the URL out of the index.
+  if (cards.length === 0) notFound();
 
   const pageUrl = `${siteUrl}/tarot-card-meanings/${config.slug}`;
   const jsonLd = buildHubJsonLd(heading, pageUrl, [

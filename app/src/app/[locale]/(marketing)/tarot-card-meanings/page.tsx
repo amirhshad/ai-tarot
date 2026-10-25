@@ -3,9 +3,11 @@ import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { DECK } from '@/lib/tarot/deck';
 import { cardToSlug } from '@/lib/tarot/slugs';
+import { cardName } from '@/lib/tarot/localized';
 import { buildHubJsonLd } from '@/lib/seo/json-ld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { assertCardContentLocale, buildAlternates, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
+import { assertCardContentLocale, buildAlternates, cardLocales, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
+import { authoredLocales } from '@/lib/seo/published-cards';
 import { BRAND, toLocale } from '@/i18n/locales';
 
 const siteUrl = 'https://www.tarotveil.com';
@@ -110,6 +112,7 @@ export default async function TarotCardMeaningsHub({ params }: { params: Promise
   assertCardContentLocale(locale);
 
   setRequestLocale(locale);
+  const loc = toLocale(locale);
 
   const t = await getTranslations('cardHub');
   const tCommon = await getTranslations('common');
@@ -159,9 +162,17 @@ export default async function TarotCardMeaningsHub({ params }: { params: Promise
 
         {/* Sections */}
         {SECTION_KEYS.map(section => {
+          // Only the cards live in this locale, named in it. Listing all 78 for
+          // a partly-published locale would show English names for the cards
+          // without content and link every one of them to a 404.
           const cards = DECK.filter(section.filter)
             .sort((a, b) => a.number - b.number)
-            .map(c => ({ name: c.name, slug: cardToSlug(c), image: c.image }));
+            .filter(c => cardLocales(authoredLocales(cardToSlug(c))).includes(loc))
+            .map(c => ({ name: cardName(c, loc), slug: cardToSlug(c), image: c.image }));
+
+          // A section with nothing live in this locale is omitted rather than
+          // rendered as an empty grid under a heading.
+          if (cards.length === 0) return null;
 
           return (
             <section key={section.key} className="mb-16" id={section.slug}>

@@ -4,7 +4,8 @@ import type { ReactNode } from 'react';
 import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { toLocale } from '@/i18n/locales';
-import { CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
+import { cardLocales, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
+import { authoredLocales } from '@/lib/seo/published-cards';
 
 /**
  * A link to a card-meaning route that degrades to plain text where those
@@ -69,7 +70,21 @@ export default function CardMeaningLink({
   const locale = toLocale(useLocale());
   const href = slug ? `/tarot-card-meanings/${slug}` : '/tarot-card-meanings';
 
-  if (!CARD_CONTENT_LOCALES.includes(locale)) {
+  // Two conditions, because a locale can be partly published. The hub and the
+  // sub-hubs exist whenever the locale has any card content, so they need only
+  // the first check; a link to one specific card also needs that card to be
+  // live in this locale, or the Phase 2 cohort would surface ~70 Arabic links
+  // to pages that 404.
+  //
+  // `slug` here is a card OR a sub-hub slug ('major-arcana', 'suit-of-cups').
+  // Sub-hubs are absent from the manifest, so `authoredLocales` returns
+  // undefined and `cardLocales` falls back to the site-wide set — which is the
+  // right answer for them.
+  const unavailable =
+    !CARD_CONTENT_LOCALES.includes(locale) ||
+    (!!slug && !cardLocales(authoredLocales(slug)).includes(locale));
+
+  if (unavailable) {
     if (hideWhenUnavailable) return null;
     return <span className={className}>{children}</span>;
   }

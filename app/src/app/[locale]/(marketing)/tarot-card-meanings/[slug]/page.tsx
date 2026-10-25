@@ -3,11 +3,18 @@ import { notFound, redirect } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { getAllCardContent, getCardContent } from '@/lib/db/card-queries';
+import { authoredLocales } from '@/lib/seo/published-cards';
 import { DECK } from '@/lib/tarot/deck';
 import { cardToSlug } from '@/lib/tarot/slugs';
 import { buildCardJsonLd } from '@/lib/seo/json-ld';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { assertCardContentLocale, buildAlternates, CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
+import {
+  assertCardContentLocale,
+  assertCardPublished,
+  buildAlternates,
+  cardLocales,
+  CARD_CONTENT_LOCALES,
+} from '@/lib/seo/alternates';
 import { toLocale } from '@/i18n/locales';
 import Disclaimer from '@/components/seo/Disclaimer';
 import TrackCardMeaningView from '@/components/analytics/TrackCardMeaningView';
@@ -33,10 +40,20 @@ const fallbackContent = cardContentJson as Record<string, FallbackCard>;
  * returning an empty list for `ar` drops that whole branch.
  */
 export async function generateStaticParams({ params }: { params: { locale: string } }) {
-  if (!CARD_CONTENT_LOCALES.includes(toLocale(params.locale))) return [];
+  const locale = toLocale(params.locale);
+  if (!CARD_CONTENT_LOCALES.includes(locale)) return [];
   try {
     const slugs = await getAllCardSlugsFromDb();
-    if (slugs.length > 0) return slugs.map(slug => ({ slug }));
+    if (slugs.length > 0) {
+      // Prerender only the cards live in THIS locale. The per-locale check
+      // above cannot express the Phase 2 cohort — 8 Arabic cards live, 70 not —
+      // so without this Next would prerender 70 Arabic pages that immediately
+      // notFound(). An empty or failed map leaves every slug in, matching the
+      // pre-cohort behaviour.
+      return slugs
+        .filter(slug => cardLocales(authoredLocales(slug)).includes(locale))
+        .map(slug => ({ slug }));
+    }
   } catch { /* fall through to DECK */ }
   return DECK.map(c => ({ slug: cardToSlug(c) }));
 }
@@ -51,8 +68,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   setRequestLocale(locale);
   const card = await getCardContent(slug, locale);
   if (card) {
+    // hreflang is per-card, not per-locale: advertising an `ar` alternate for a
+    // card with no Arabic content would point crawlers at a 404, which is worse
+    // than advertising nothing.
     const alternates = buildAlternates(`/tarot-card-meanings/${card.slug}`, locale, {
-      locales: CARD_CONTENT_LOCALES,
+      locales: cardLocales(authoredLocales(card.slug)),
     });
     return {
       // Opt out of the layout's '%s | brand' template: card names push these
@@ -87,7 +107,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const title = `${fb.name} Tarot Meaning — Upright & Reversed`;
   const description = `What does ${article}${fb.name} mean? Upright & reversed meanings for love, career, feelings, and yes-or-no readings. Free AI tarot reading included.`;
   const alternates = buildAlternates(`/tarot-card-meanings/${fb.slug}`, locale, {
-    locales: CARD_CONTENT_LOCALES,
+    locales: cardLocales(authoredLocales(fb.slug)),
   });
   return {
     title,
@@ -144,11 +164,16 @@ function Paragraphs({ text }: { text: string }) {
 export default async function CardMeaningPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params;
 
-  // Arabic card content lands in Phase 2. `getCardContent` falls back to the
-  // English columns when a locale's columns are empty, so without this gate
-  // /ar/tarot-card-meanings/<slug> would serve English card text under an
-  // Arabic URL — duplicate content in the ar namespace.
+  // `getCardContent` falls back to the English columns when a locale's columns
+  // are empty, so without a gate /ar/tarot-card-meanings/<slug> would serve
+  // English card text under an Arabic URL — duplicate content in the ar
+  // namespace, on a site whose primary search channel is Bing.
+  //
+  // Two halves, because one locale can be partly published: this rejects a
+  // locale with no card content at all, and `assertCardPublished` below rejects
+  // a card that this particular locale has no content for.
   assertCardContentLocale(locale);
+  assertCardPublished(locale, authoredLocales(slug));
 
   setRequestLocale(locale);
   const t = await getTranslations('cardDetail');

@@ -6,15 +6,20 @@ const SITE_URL = 'https://www.tarotveil.com';
 /**
  * Locales with authored card-meaning content.
  *
- * Arabic is absent until Phase 2 fills the `_ar` columns. Those routes return
- * 404 for `ar`, so advertising an Arabic hreflang for them would point
- * crawlers at a dead URL — worse than advertising nothing.
+ * Arabic joined on 2026-10-25 with the Phase 2 cohort of 8 cards. It is no
+ * longer the whole story: this constant is now the *site-wide* half of the
+ * gate, and `cardLocales()` below intersects it with each card's authored
+ * locales. A locale listed here with content for only some cards publishes
+ * only those cards — which is exactly the cohort's shape, 8 live and 70 still
+ * 404ing as the control group.
  *
- * This constant is the single source of truth for the gate: the routes, the
- * sitemap, the hreflang sets, and the nav links all read it. Phase 2 ships by
- * adding 'ar' here and nowhere else.
+ * Every card-meaning surface reads one of the two halves: routes, the sitemap,
+ * hreflang sets, nav links, the hub and sub-hub listings, and the ~20 in-body
+ * links through `CardMeaningLink`. Per-card membership comes from
+ * `published-cards.json`, regenerated from the database — so publishing the
+ * remaining 70 is a content operation with no code change at all.
  */
-export const CARD_CONTENT_LOCALES: readonly Locale[] = ['en', 'fa'];
+export const CARD_CONTENT_LOCALES: readonly Locale[] = ['en', 'fa', 'ar'];
 
 /**
  * The Phase-1 gate for every card-meaning route. Calls `notFound()` when the
@@ -28,6 +33,42 @@ export const CARD_CONTENT_LOCALES: readonly Locale[] = ['en', 'fa'];
  */
 export function assertCardContentLocale(locale: string): void {
   if (!CARD_CONTENT_LOCALES.includes(toLocale(locale))) notFound();
+}
+
+/**
+ * The locales one card is actually live in.
+ *
+ * `CARD_CONTENT_LOCALES` is a per-locale switch, so it can say "Arabic is on"
+ * or "Arabic is off" but not "8 Arabic cards are on and 70 are not" — which is
+ * the exact shape of the Phase 2 cohort. This intersects the site-wide switch
+ * with each card's authored locales from `published-cards.json`, so a
+ * locale is live for a card only when **both** agree.
+ *
+ * Two consequences worth stating, because they are the design:
+ *
+ * - Adding `'ar'` to `CARD_CONTENT_LOCALES` turns on exactly the cards that
+ *   have Arabic, and no others. The 70 without it keep 404ing and stay a clean
+ *   control group. No cohort list is hardcoded anywhere.
+ * - `authored === undefined` (an unknown card, or a database read that failed)
+ *   means "no per-card opinion" and falls back to the site-wide set. A Turso
+ *   blip therefore degrades this to the old behaviour rather than 404ing every
+ *   card page or emptying the sitemap.
+ */
+export function cardLocales(authored: readonly Locale[] | undefined): Locale[] {
+  if (!authored) return [...CARD_CONTENT_LOCALES];
+  return CARD_CONTENT_LOCALES.filter(l => authored.includes(l));
+}
+
+/**
+ * The per-card half of the Phase 2 gate: `notFound()` unless this card is live
+ * in this locale. Call it after `assertCardContentLocale`, which rejects the
+ * locale outright; this one rejects a locale the card itself has no content in.
+ */
+export function assertCardPublished(
+  locale: string,
+  authored: readonly Locale[] | undefined,
+): void {
+  if (!cardLocales(authored).includes(toLocale(locale))) notFound();
 }
 
 function localeUrl(locale: Locale, cleanPath: string): string {
