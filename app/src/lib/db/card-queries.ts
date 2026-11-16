@@ -61,13 +61,31 @@ function rowToRichCard(row: Record<string, unknown>, locale: string = 'en'): Ric
 // Locale-keyed caches for build-time performance
 const _cardsCacheByLocale: Record<string, RichCardContent[]> = {};
 
+/**
+ * Preview builds have no Turso credentials and no `data/` directory, so the
+ * local file cannot be opened (SQLITE_CANTOPEN) once these pages are
+ * prerendered. Card pages already render bundled JSON when a row is missing.
+ * A configured Turso URL still throws: production must not silently swap the
+ * database for the JSON bundle.
+ */
+function bundledCardsAfterDbFailure(err: unknown, locale: string): RichCardContent[] {
+  if (process.env.TURSO_DATABASE_URL) throw err;
+  console.error('card content: local database unavailable, using bundled JSON', err);
+  _cardsCacheByLocale[locale] = [];
+  return _cardsCacheByLocale[locale];
+}
+
 export async function getAllCardContent(locale: string = 'en'): Promise<RichCardContent[]> {
   if (_cardsCacheByLocale[locale]) return _cardsCacheByLocale[locale];
-  await ensureSchema();
-  const db = getDb();
-  const result = await db.execute('SELECT * FROM card_content ORDER BY card_id');
-  _cardsCacheByLocale[locale] = result.rows.map(row => rowToRichCard(row as Record<string, unknown>, locale));
-  return _cardsCacheByLocale[locale];
+  try {
+    await ensureSchema();
+    const db = getDb();
+    const result = await db.execute('SELECT * FROM card_content ORDER BY card_id');
+    _cardsCacheByLocale[locale] = result.rows.map(row => rowToRichCard(row as Record<string, unknown>, locale));
+    return _cardsCacheByLocale[locale];
+  } catch (err) {
+    return bundledCardsAfterDbFailure(err, locale);
+  }
 }
 
 export async function getCardContent(slug: string, locale: string = 'en'): Promise<RichCardContent | null> {
@@ -75,11 +93,16 @@ export async function getCardContent(slug: string, locale: string = 'en'): Promi
   if (_cardsCacheByLocale[locale]) {
     return _cardsCacheByLocale[locale].find(c => c.slug === slug) || null;
   }
-  await ensureSchema();
-  const db = getDb();
-  const result = await db.execute({ sql: 'SELECT * FROM card_content WHERE slug = ?', args: [slug] });
-  if (result.rows.length === 0) return null;
-  return rowToRichCard(result.rows[0] as Record<string, unknown>, locale);
+  try {
+    await ensureSchema();
+    const db = getDb();
+    const result = await db.execute({ sql: 'SELECT * FROM card_content WHERE slug = ?', args: [slug] });
+    if (result.rows.length === 0) return null;
+    return rowToRichCard(result.rows[0] as Record<string, unknown>, locale);
+  } catch (err) {
+    bundledCardsAfterDbFailure(err, locale);
+    return null;
+  }
 }
 
 export async function getAllCardSlugs(): Promise<string[]> {
