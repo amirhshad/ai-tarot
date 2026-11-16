@@ -9,7 +9,17 @@ import { buildAlternates } from '@/lib/seo/alternates';
 import { HTML_LANG, toLocale, type Locale } from '@/i18n/locales';
 import { cardName as getCardName, cardKeywords as getCardKeywords } from '@/lib/tarot/localized';
 
-export const revalidate = 86400; // ISR: regenerate once per day
+// Generated live. The model call must not run during `next build`: preview
+// builds often have no ANTHROPIC_API_KEY, and a failed generation baked into
+// an ISR page would stay up for the whole revalidate window. The marketing
+// layout used to call cookies(), which already forced this route dynamic.
+export const dynamic = 'force-dynamic';
+
+const DAILY_UNAVAILABLE: Record<Locale, string> = {
+  en: "Today's written interpretation is temporarily unavailable. The card above is still yours — a free reading will tell the rest of the story.",
+  fa: 'تفسیر نوشتاری امروز موقتاً در دسترس نیست. کارت بالا همچنان مال شماست — فال رایگان بقیهٔ داستان را می‌گوید.',
+  ar: 'التفسير المكتوب لهذا اليوم غير متاح مؤقتاً. البطاقة أعلاه ما زالت بطاقتك، والقراءة المجانية تكمل الحكاية.',
+};
 
 const DAILY_SYSTEM_PROMPT: Record<Locale, string> = {
   en: `You are a wise and warm tarot reader. Provide today's daily card interpretation.
@@ -116,8 +126,17 @@ export default async function DailyPage({ params }: { params: Promise<{ locale: 
     day: 'numeric',
   });
 
-  const rawInterpretation = await getDailyInterpretation(cardName, cardKeywords, current);
-  const interpretation = stripMarkdown(rawInterpretation);
+  // ANTHROPIC_API_KEY is Production-only. A missing key or a model error must
+  // not 500 the page; the card itself is deterministic and still useful.
+  let interpretation: string;
+  try {
+    interpretation = stripMarkdown(
+      await getDailyInterpretation(cardName, cardKeywords, current),
+    );
+  } catch (error) {
+    console.error('daily: interpretation failed', error);
+    interpretation = DAILY_UNAVAILABLE[current];
+  }
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-16">

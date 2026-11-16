@@ -8,18 +8,49 @@ import { PAYMENTS_ENABLED } from '@/lib/config/features';
 import { LOCALES, LOCALE_LABELS, toLocale, type Locale } from '@/i18n/locales';
 import { CARD_CONTENT_LOCALES } from '@/lib/seo/alternates';
 
+type HeaderUser = { email: string; tier: string };
+
 interface HeaderProps {
-  user?: { email: string; tier: string } | null;
+  /**
+   * Set by the authenticated app shell, which already read the session.
+   * Marketing pages omit it. The header then looks the session up in the
+   * browser so the HTML can be cached without reading the session cookie.
+   */
+  user?: HeaderUser | null;
 }
 
-export default function Header({ user }: HeaderProps) {
+export default function Header({ user: serverUser }: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
   const t = useTranslations('nav');
   const tc = useTranslations('common');
   const [loggingOut, setLoggingOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [clientUser, setClientUser] = useState<HeaderUser | null>(null);
   const locale = toLocale(useLocale());
+  const sessionFromServer = serverUser !== undefined;
+  // First paint on marketing pages is the logged-out shell, matching the
+  // static HTML. The effect below fills in a signed-in visitor after mount.
+  const user = sessionFromServer ? serverUser : clientUser;
+
+  useEffect(() => {
+    if (sessionFromServer) return;
+    const controller = new AbortController();
+    fetch('/api/auth/me', { cache: 'no-store', signal: controller.signal })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!data?.user) return;
+        setClientUser({
+          email: data.user.email || '',
+          tier: data.profile?.tier || 'free',
+        });
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+        console.error('Header session lookup failed', error);
+      });
+    return () => controller.abort();
+  }, [sessionFromServer]);
 
   // Arabic card meanings land in Phase 2; those routes 404 for `ar` until
   // then, and a visible link to a 404 is worse than an absent one.
@@ -33,6 +64,7 @@ export default function Header({ user }: HeaderProps) {
     setLoggingOut(true);
     try {
       await fetch('/api/auth/signout', { method: 'POST' });
+      setClientUser(null);
       resetUser();
       router.push('/login');
       router.refresh();

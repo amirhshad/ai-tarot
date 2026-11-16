@@ -1,9 +1,10 @@
+import { Suspense } from 'react';
 import { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import FreeReadingClient from '@/components/reading/FreeReadingClient';
 import { buildAlternates } from '@/lib/seo/alternates';
 import { BRAND, toLocale } from '@/i18n/locales';
+import FreeReadingGate from './FreeReadingGate';
 
 const siteUrl = 'https://www.tarotveil.com';
 
@@ -23,32 +24,43 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       title: `${t('metaTitle')} | ${BRAND[toLocale(locale)]}`,
       description: t('metaDescription'),
       url: `${siteUrl}/reading/free`,
+      images: [
+        {
+          url: '/opengraph-image',
+          width: 1200,
+          height: 630,
+          alt: 'TarotVeil — Free AI Tarot Reading',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: ['/twitter-image'],
     },
   };
 }
 
-interface PageProps {
+export default async function FreeReadingPage({
+  params,
+}: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ topic?: string }>;
-}
-
-const VALID_TOPICS = ['general', 'love', 'yes-or-no', 'career'];
-
-export default async function FreeReadingPage({ params, searchParams }: PageProps) {
+}) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const { topic } = await searchParams;
-  const hasTopic = topic && VALID_TOPICS.includes(topic);
+  return (
+    <Suspense fallback={<TopicPicker />}>
+      <FreeReadingGate language={toLocale(locale)}>
+        <TopicPicker />
+      </FreeReadingGate>
+    </Suspense>
+  );
+}
 
-  // If a topic is selected (via URL), render the interactive client component
-  if (hasTopic) {
-    return <FreeReadingClient language={toLocale(locale)} />;
-  }
-
+/** Topic selection as static server HTML. Works without JS and is what crawlers index. */
+async function TopicPicker() {
   const t = await getTranslations('freeReading');
 
-  // Otherwise, render the topic selection as static server HTML (SEO-friendly)
   return (
     <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
       {/* Header — server-rendered for crawlers */}
