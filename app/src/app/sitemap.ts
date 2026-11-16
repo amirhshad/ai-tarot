@@ -5,15 +5,15 @@ import { CARD_CONTENT_LOCALES, cardLocales } from '@/lib/seo/alternates';
 import { getCardLastModifiedMap } from '@/lib/db/card-queries';
 import { authoredLocales, subHubAuthoredLocales } from '@/lib/seo/published-cards';
 
-// Use stable dates so Google trusts lastModified signals.
-// Update these when actual content changes are deployed.
+// Pages without a content row (homepage, hubs, spreads) used to share one
+// hardcoded date, which went stale and told Google nothing had shipped.
+// Stamp them with the deploy date instead. Card pages still prefer the
+// per-card database date and only fall back here when that read has no row.
 //
-// CONTENT_LAST_MODIFIED is now only a FALLBACK for card pages — their real
-// dates come per-card from the database (see getCardLastModifiedMap). It still
-// applies to the hubs, whose content is generated from the cards rather than
-// stored, so there is no row to date them by.
-const CONTENT_LAST_MODIFIED = '2026-05-14';
-const STATIC_LAST_MODIFIED = '2026-05-14';
+// SITEMAP_BUILD_DATE is inlined from next.config at build time so a daily
+// sitemap revalidation does not bump lastmod on a cold start.
+export const SITEMAP_BUILD_DATE =
+  process.env.SITEMAP_BUILD_DATE || new Date().toISOString().slice(0, 10);
 
 const baseUrl = 'https://www.tarotveil.com';
 
@@ -52,25 +52,25 @@ function withAlternates(
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Real per-card content dates. Empty if the database is unreachable, in
-  // which case every card falls back to CONTENT_LAST_MODIFIED below.
+  // which case every card falls back to SITEMAP_BUILD_DATE below.
   const cardDates = await getCardLastModifiedMap();
 
   // Each withAlternates() call yields one entry per locale it covers, so this
   // is a list of groups that gets flattened before it is returned.
   const staticPages: MetadataRoute.Sitemap[] = [
     withAlternates('', {
-      lastModified: STATIC_LAST_MODIFIED,
+      lastModified: SITEMAP_BUILD_DATE,
       changeFrequency: 'weekly',
       priority: 1,
     }),
     withAlternates('/reading/free', {
-      lastModified: STATIC_LAST_MODIFIED,
+      lastModified: SITEMAP_BUILD_DATE,
       changeFrequency: 'weekly',
       priority: 0.9,
     }),
     // Master hub
     withAlternates('/tarot-card-meanings', {
-      lastModified: CONTENT_LAST_MODIFIED,
+      lastModified: SITEMAP_BUILD_DATE,
       changeFrequency: 'monthly',
       priority: 0.9,
     }, CARD_CONTENT_LOCALES),
@@ -79,48 +79,48 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // and must not appear here.
     ...['major-arcana', 'suit-of-wands', 'suit-of-cups', 'suit-of-swords', 'suit-of-pentacles'].map(slug =>
       withAlternates(`/tarot-card-meanings/${slug}`, {
-        lastModified: CONTENT_LAST_MODIFIED,
+        lastModified: SITEMAP_BUILD_DATE,
         changeFrequency: 'monthly' as const,
         priority: 0.85,
       }, cardLocales(subHubAuthoredLocales(slug))),
     ),
     withAlternates('/spreads', {
-      lastModified: STATIC_LAST_MODIFIED,
+      lastModified: SITEMAP_BUILD_DATE,
       changeFrequency: 'monthly',
       priority: 0.9,
     }),
     withAlternates('/spreads/single-card', {
-      lastModified: STATIC_LAST_MODIFIED,
+      lastModified: SITEMAP_BUILD_DATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     }),
     withAlternates('/spreads/three-card', {
-      lastModified: STATIC_LAST_MODIFIED,
+      lastModified: SITEMAP_BUILD_DATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     }),
     withAlternates('/spreads/celtic-cross', {
-      lastModified: STATIC_LAST_MODIFIED,
+      lastModified: SITEMAP_BUILD_DATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     }),
     withAlternates('/spreads/horseshoe', {
-      lastModified: STATIC_LAST_MODIFIED,
+      lastModified: SITEMAP_BUILD_DATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     }),
     withAlternates('/love-tarot', {
-      lastModified: STATIC_LAST_MODIFIED,
+      lastModified: SITEMAP_BUILD_DATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     }),
     withAlternates('/yes-or-no', {
-      lastModified: STATIC_LAST_MODIFIED,
+      lastModified: SITEMAP_BUILD_DATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     }),
     withAlternates('/career-tarot', {
-      lastModified: STATIC_LAST_MODIFIED,
+      lastModified: SITEMAP_BUILD_DATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     }),
@@ -130,7 +130,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.85,
     }),
     withAlternates('/about', {
-      lastModified: STATIC_LAST_MODIFIED,
+      lastModified: SITEMAP_BUILD_DATE,
       changeFrequency: 'monthly',
       priority: 0.6,
     }),
@@ -148,7 +148,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     cardContent as Record<string, unknown>
   ).map(slug =>
     withAlternates(`/tarot-card-meanings/${slug}`, {
-      lastModified: cardDates[slug] ?? CONTENT_LAST_MODIFIED,
+      lastModified: cardDates[slug] ?? SITEMAP_BUILD_DATE,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     }, cardLocales(authoredLocales(slug))),

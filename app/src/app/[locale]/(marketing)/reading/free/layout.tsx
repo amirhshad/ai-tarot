@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-reading.jpg',
+        url: '/opengraph-image',
         width: 1200,
         height: 630,
         alt: 'TarotVeil — Free AI Tarot Reading',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Free AI Tarot Reading | TarotVeil',
     description: 'Not generic card meanings — a narrative woven from your entire spread.',
-    images: ['/og-reading.jpg'],
+    images: ['/twitter-image'],
   },
 };
 

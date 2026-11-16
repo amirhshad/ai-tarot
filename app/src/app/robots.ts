@@ -9,13 +9,13 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           '/api/',
           '/auth/',
-          '/dashboard', '/fa/dashboard',
-          '/reading/new', '/fa/reading/new',
-          '/settings', '/fa/settings',
-          '/billing', '/fa/billing',
+          '/dashboard', '/fa/dashboard', '/ar/dashboard',
+          '/reading/new', '/fa/reading/new', '/ar/reading/new',
+          '/settings', '/fa/settings', '/ar/settings',
+          '/billing', '/fa/billing', '/ar/billing',
           // Auth-gated; middleware redirects these to /login, which shows up in
           // Search Console as "Page with redirect" / "Redirect error".
-          '/admin', '/fa/admin',
+          '/admin', '/fa/admin', '/ar/admin',
         ],
       },
     ],

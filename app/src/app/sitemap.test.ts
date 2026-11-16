@@ -14,7 +14,7 @@ vi.mock('@/lib/db/card-queries', () => ({
   getCardLastModifiedMap: () => Promise.resolve(lastModifiedMap),
 }));
 
-import sitemap from './sitemap';
+import sitemap, { SITEMAP_BUILD_DATE } from './sitemap';
 
 describe('sitemap', () => {
   let entries: MetadataRoute.Sitemap;
@@ -138,9 +138,16 @@ describe('sitemap', () => {
     expect(fa?.lastModified).toBe('2026-08-30');
   });
 
-  it('falls back to the constant for a card with no recorded date', () => {
+  it('falls back to the build date for a card with no recorded date', () => {
     const sun = entries.find((e) => e.url === 'https://www.tarotveil.com/tarot-card-meanings/the-sun');
-    expect(sun?.lastModified).toBe('2026-05-14');
+    expect(sun?.lastModified).toBe(SITEMAP_BUILD_DATE);
+    expect(SITEMAP_BUILD_DATE).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+  });
+
+  it('stamps the homepage with the build date rather than a hardcoded one', () => {
+    const home = entries.find((e) => e.url === 'https://www.tarotveil.com/');
+    expect(home?.lastModified).toBe(SITEMAP_BUILD_DATE);
+    expect(home?.lastModified).not.toBe('2026-05-14');
   });
 
   it('does not freeze every card on one date', () => {

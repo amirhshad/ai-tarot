@@ -1,25 +1,20 @@
-import { getSessionUser } from '@/lib/db/auth';
-import { getProfile } from '@/lib/db/queries';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-export default async function MarketingLayout({
+/**
+ * No session read here. `cookies()` would opt every marketing page into
+ * dynamic rendering (`Cache-Control: private, no-cache, no-store`). The
+ * header resolves the session in the browser instead, so logged-in and
+ * logged-out visitors share one cacheable HTML document.
+ */
+export default function MarketingLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getSessionUser();
-  const profile = user ? await getProfile(user.id) : null;
-
   return (
     <>
-      <Header
-        user={
-          user
-            ? { email: user.email || '', tier: profile?.tier || 'free' }
-            : undefined
-        }
-      />
+      <Header />
       <main className="flex-1">{children}</main>
       <Footer />
     </>

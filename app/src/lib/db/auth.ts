@@ -3,12 +3,19 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { getDb, ensureSchema } from './sqlite';
 
+/**
+ * Read at call time, not at import.
+ *
+ * Preview builds do not have JWT_SECRET (it is Production-only). Evaluating
+ * it while the module loads throws during `next build` page-data collection
+ * for every route that imports this file, including /api/admin/analytics.
+ * There is no default: signing or verifying without a secret still throws.
+ */
 function getJwtSecret(): string {
   const secret = process.env.JWT_SECRET;
   if (!secret) throw new Error('JWT_SECRET environment variable is required');
   return secret;
 }
-const JWT_SECRET = getJwtSecret();
 const COOKIE_NAME = 'tarot_session';
 const TOKEN_EXPIRY = '7d';
 
@@ -30,14 +37,17 @@ export function verifyPassword(password: string, hash: string): boolean {
 // ── JWT helpers ──
 
 export function createToken(user: AuthUser): string {
-  return jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
+  return jwt.sign({ id: user.id, email: user.email }, getJwtSecret(), {
     expiresIn: TOKEN_EXPIRY,
   });
 }
 
 export function verifyToken(token: string): AuthUser | null {
+  // Outside the try: a missing secret must fail the request, not look like
+  // an invalid token (which would sign the user out and hide the misconfig).
+  const secret = getJwtSecret();
   try {
-    const payload = jwt.verify(token, JWT_SECRET) as AuthUser;
+    const payload = jwt.verify(token, secret) as AuthUser;
     return { id: payload.id, email: payload.email };
   } catch {
     return null;
